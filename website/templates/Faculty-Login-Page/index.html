@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Faculty-Login-Page/style.css')}}">
 
     <style>
       a,
@@ -31,10 +31,9 @@
     <div class="faculty-login-page">
       <div class="rectangle-1"></div>
       <div class="rectangle-3"></div>
-      <img class="rectangle-5" src="rectangle-5.png" /><img
-        class="image-1"
-        src="image-1.png"
-      /><img class="image-2" src="image-2.png" />
+      <img class="rectangle-5" src="{{ url_for('static', filename='images/Faculty-Login-Page/rectangle-5.png')}}" />
+      <img class="image-1" src="{{ url_for('static', filename='images/Faculty-Login-Page/image-1.png')}}"/>
+      <img class="image-2" src="{{ url_for('static', filename='images/Faculty-Login-Page/image-2.png')}}"/>
       <div class="telephone-632-8952-7818-632-8287-8204">
         Telephone (632) 8952-7818 (632) 8287-8204
       </div>
@@ -54,10 +53,10 @@
       </div>
       <button class="i-forgot-my-password">I forgot my password</button>
       <div class="password">Password:</div>
-      <div class="rectangle-6"></div>
-      <div class="rectangle-7"></div>
+      <input type="text" class="rectangle-6"></input>
+      <input type="password" class="rectangle-7"></input>
       <button class="rectangle-8"></button>
-      <div class="sign-in">Sign In</div>
+      <button class="sign-in">Sign In</button>
     </div>
   </body>
 </html>

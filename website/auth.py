@@ -10,7 +10,7 @@ def adminL():
 
 @auth.route("/faculty-login")
 def facultyL():
-    return ("<h1>Faculty Login</h1>")
+    return render_template("Faculty-Login-Page/index.html")
 
 
 @auth.route("/logout")
