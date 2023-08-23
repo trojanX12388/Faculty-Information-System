@@ -1,0 +1,162 @@
+.faculty-login-page,
+.faculty-login-page * {
+  box-sizing: border-box;
+}
+.faculty-login-page {
+  background: #d9d9d9;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 1px;
+  width: 1440px;
+  height: 1024px;
+  position: relative;
+  overflow: hidden;
+}
+.rectangle-1 {
+  background: #800000;
+  width: 1440px;
+  height: 96px;
+  position: absolute;
+  left: 0px;
+  top: 928px;
+}
+.rectangle-3 {
+  background: linear-gradient(to left, #ffffff, #ffffff),
+    linear-gradient(to left, #ffffff, #ffffff);
+  width: 615px;
+  height: 928px;
+  position: absolute;
+  left: 825px;
+  top: 0px;
+}
+.rectangle-5 {
+  width: 825px;
+  height: 928px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.image-1 {
+  width: 67px;
+  height: 67px;
+  position: absolute;
+  left: 27px;
+  top: 942px;
+}
+.image-2 {
+  width: 135px;
+  height: 135px;
+  position: absolute;
+  left: 1065px;
+  top: 44px;
+}
+.telephone-632-8952-7818-632-8287-8204 {
+  color: #ffffff;
+  text-align: left;
+  font: 400 12px "Inter", sans-serif;
+  position: absolute;
+  left: 619px;
+  top: 968px;
+  width: 272px;
+  height: 19px;
+}
+.quezoncity-pup-edu-ph-postal-mail {
+  color: #ffffff;
+  text-align: left;
+  font: 400 12px "Inter", sans-serif;
+  position: absolute;
+  left: 920px;
+  top: 966px;
+  width: 272px;
+  height: 19px;
+}
+.pup-quezon-city-branch-don-fabian-st-commonwealth-quezon-city-philippines {
+  color: #ffffff;
+  text-align: left;
+  font: 400 12px "Inter", sans-serif;
+  position: absolute;
+  left: 125px;
+  top: 968px;
+  width: 463px;
+  height: 19px;
+}
+.faculty-login {
+  color: #000000;
+  text-align: center;
+  font: 700 48px "Inter", sans-serif;
+  position: absolute;
+  left: 930px;
+  top: 207px;
+  width: 405px;
+  height: 62px;
+}
+.username {
+  color: #000000;
+  text-align: center;
+  font: 400 25px "Inter", sans-serif;
+  position: absolute;
+  left: 905px;
+  top: 382px;
+}
+.sign-in-to-start-your-session {
+  color: #000000;
+  text-align: center;
+  font: 400 20px "Inter", sans-serif;
+  position: absolute;
+  left: 998px;
+  top: 269px;
+}
+.i-forgot-my-password {
+  color: #800000;
+  text-align: center;
+  font: 600 20px "Inter", sans-serif;
+  position: absolute;
+  left: 1030px;
+  top: 733px;
+}
+.password {
+  color: #000000;
+  text-align: center;
+  font: 400 25px "Inter", sans-serif;
+  position: absolute;
+  left: 900px;
+  top: 512px;
+}
+.rectangle-6 {
+  background: #ffffff;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 1px;
+  width: 455px;
+  height: 44px;
+  position: absolute;
+  left: 905px;
+  top: 425px;
+}
+.rectangle-7 {
+  background: #ffffff;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 1px;
+  width: 455px;
+  height: 44px;
+  position: absolute;
+  left: 905px;
+  top: 555px;
+}
+.rectangle-8 {
+  background: #091c80;
+  width: 170px;
+  height: 49px;
+  position: absolute;
+  left: 1048px;
+  top: 660px;
+}
+.sign-in {
+  color: #ffffff;
+  text-align: center;
+  font: 400 25px "Inter", sans-serif;
+  position: absolute;
+  left: 1092px;
+  top: 670px;
+}

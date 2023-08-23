@@ -1,0 +1,136 @@
+.welcome-page,
+.welcome-page * {
+  box-sizing: border-box;
+}
+.welcome-page {
+  background: #d9d9d9;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 1px;
+  width: 1440px;
+  height: 1024px;
+  position: relative;
+  overflow: hidden;
+}
+.rectangle-1 {
+  background: #800000;
+  width: 1440px;
+  height: 96px;
+  position: absolute;
+  left: 0px;
+  top: 928px;
+}
+.rectangle-3 {
+  background: linear-gradient(to left, #ffffff, #ffffff),
+    linear-gradient(to left, #ffffff, #ffffff);
+  width: 615px;
+  height: 928px;
+  position: absolute;
+  left: 825px;
+  top: 0px;
+}
+.rectangle-5 {
+  width: 825px;
+  height: 928px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.image-1 {
+  width: 67px;
+  height: 67px;
+  position: absolute;
+  left: 27px;
+  top: 942px;
+}
+.image-2 {
+  width: 135px;
+  height: 135px;
+  position: absolute;
+  left: 1065px;
+  top: 44px;
+}
+.telephone-632-8952-7818-632-8287-8204 {
+  color: #ffffff;
+  text-align: left;
+  font: 400 12px "Inter", sans-serif;
+  position: absolute;
+  left: 619px;
+  top: 968px;
+  width: 272px;
+  height: 19px;
+}
+.quezoncity-pup-edu-ph-postal-mail {
+  color: #ffffff;
+  text-align: left;
+  font: 400 12px "Inter", sans-serif;
+  position: absolute;
+  left: 920px;
+  top: 966px;
+  width: 272px;
+  height: 19px;
+}
+.pup-quezon-city-branch-don-fabian-st-commonwealth-quezon-city-philippines {
+  color: #ffffff;
+  text-align: left;
+  font: 400 12px "Inter", sans-serif;
+  position: absolute;
+  left: 125px;
+  top: 968px;
+  width: 463px;
+  height: 19px;
+}
+.faculty-information-system {
+  color: #000000;
+  text-align: center;
+  font: 700 36px "Inter", sans-serif;
+  position: absolute;
+  left: 915px;
+  top: 234px;
+  width: 436px;
+  height: 89px;
+}
+.login-as {
+  color: #000000;
+  text-align: center;
+  font: 400 25px "Inter", sans-serif;
+  position: absolute;
+  left: 1078px;
+  top: 336px;
+}
+.rectangle-9 {
+  background: #091c80;
+  width: 360px;
+  height: 49px;
+  position: absolute;
+  left: 953px;
+  top: 464px;
+}
+.faculty {
+  color: #ffffff;
+  text-align: center;
+  font: 600 25px "Inter", sans-serif;
+  position: absolute;
+  left: 1046px;
+  top: 474px;
+  width: 172px;
+  height: 30px;
+}
+.rectangle-10 {
+  background: #091c80;
+  width: 360px;
+  height: 49px;
+  position: absolute;
+  left: 953px;
+  top: 561px;
+}
+.admin {
+  color: #ffffff;
+  text-align: center;
+  font: 600 25px "Inter", sans-serif;
+  position: absolute;
+  left: 1046px;
+  top: 571px;
+  width: 172px;
+  height: 30px;
+}
