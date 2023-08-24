@@ -3,7 +3,6 @@ body {
     margin: 0;
     padding: 0;
 }
-<<<<<<< HEAD
 .navbar {
     display: flex;
     position: relative;
@@ -40,19 +39,12 @@ body {
     height: 100%;
     width: 250px;
     position: absolute;
-=======
-.sidebar {
-    height: 100%;
-    width: 250px;
-    position: fixed;
->>>>>>> 65fade7bb12f2d886cccd49ea3b9e06db5da0bf3
     top: 0;
     left: 0;
     background-color: #091C80;
     padding-top: 20px;
 }
 .sidebar a {
-<<<<<<< HEAD
     display: flex;
     padding: 15px;
     text-decoration: none;
@@ -66,22 +58,10 @@ body {
 }
 .sidebar a:hover {
     background-color: #000000;
-=======
-    padding: 15px;
-    text-decoration: none;
-    font-size: 18px;
-    color: white;
-    display: block;
-    transition: 0.3s;
-}
-.sidebar a:hover {
-    background-color: #555;
->>>>>>> 65fade7bb12f2d886cccd49ea3b9e06db5da0bf3
 }
 .content {
     margin-left: 250px;
     padding: 20px;
-<<<<<<< HEAD
 }
 .logo {
     display: block;
@@ -92,6 +72,3 @@ body {
     max-height: 121px;
     max-width: 121px;
 }
-=======
-}
->>>>>>> 65fade7bb12f2d886cccd49ea3b9e06db5da0bf3
