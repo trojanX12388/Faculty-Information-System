@@ -37,7 +37,7 @@
         background: none;
       }
     </style>
-    <title>Document</title>
+    <title>Faculty Login</title>
   </head>
   <body>
     <div class="faculty-login-page">
@@ -63,12 +63,14 @@
       <div class="sign-in-to-start-your-session">
         Sign In to start your session:
       </div>
-      <button class="i-forgot-my-password">I forgot my password</button>
+      <a href="/faculty-home-page" class="i-forgot-my-password">I forgot my password</a>
       <div class="password">Password:</div>
-      <input type="email" class="rectangle-6"></input>
-      <input type="password" class="rectangle-7"></input>
-      <button class="rectangle-8"></button>
-      <button class="sign-in">Sign In</button>
+      <form method="POST">
+        <input type="email" id="email" name="email" placeholder="Enter your Email" class="rectangle-6"></input>
+        <input type="password" id="password" name="password" placeholder="Enter your Password"  class="rectangle-7"></input>
+        <button class="rectangle-8" type="submit"></button>
+        <button class="sign-in" type="submit">Sign In</button>
+      </form>
     </div>
   </body>
 </html>
