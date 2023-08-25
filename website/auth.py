@@ -13,13 +13,23 @@ def adminL():
 
 @auth.route('/faculty-login', methods=['GET', 'POST'])
 def facultyL():
-    data = request.form
-    print(data)
+
     email = request.form.get('email')
     password = request.form.get('password')
-    password1 = "John"
-    if password == password1:
-        return redirect(url_for('auth.facultyH'))
+
+
+    cur = conn.cursor()
+    query = "SELECT * FROM faculty_account WHERE email = %s"
+    cur.execute(query,[email])
+
+    result = cur.fetchall()
+    if result:
+        for i in result:
+            cemail = str(i[3])
+            cpass = str(i[4])
+            print(cpass)
+            if email == cemail and password == cpass:
+                return redirect(url_for('auth.facultyH'))
       
     return render_template("Faculty-Login-Page/index.html")
 

@@ -4,11 +4,13 @@ conn = psycopg2.connect(host="34.72.164.60", dbname="FIS", user="postgres",
         
 cur = conn.cursor()
 
-cur.execute("""CREATE TABLE IF NOT EXISTS person (
-    id INT PRIMARY KEY,
+cur.execute("""CREATE TABLE IF NOT EXISTS Faculty_Account (
+    faculty_Account_id INT PRIMARY KEY,
     name VARCHAR(255),
     age INT,
-    gender CHAR
+    email VARCHAR(255),
+    password VARCHAR(255),
+    gender VARCHAR(255)
 );
             """)
 
