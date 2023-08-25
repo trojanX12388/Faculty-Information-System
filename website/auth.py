@@ -1,7 +1,5 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
-import psycopg2
-conn = psycopg2.connect(host="localhost", dbname="FIS", user="postgres",
-                                password="plazma12388", port=5432)
+
 
 auth = Blueprint('auth', __name__)
 
