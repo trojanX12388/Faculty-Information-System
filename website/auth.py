@@ -1,5 +1,7 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
-
+import psycopg2
+conn = psycopg2.connect(host="34.72.164.60", dbname="FIS", user="postgres",
+                                password="plazma12388", port=5432)
 
 auth = Blueprint('auth', __name__)
 
@@ -13,15 +15,12 @@ def adminL():
 def facultyL():
     data = request.form
     print(data)
-    if request.form == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
-        password1 = "John"
-        if password == password1:
-            return redirect(url_for('auth.facultyH'))
-        else:
-            return redirect(url_for('views.facultyH'))
-            
+    email = request.form.get('email')
+    password = request.form.get('password')
+    password1 = "John"
+    if password == password1:
+        return redirect(url_for('auth.facultyH'))
+      
     return render_template("Faculty-Login-Page/index.html")
 
 
