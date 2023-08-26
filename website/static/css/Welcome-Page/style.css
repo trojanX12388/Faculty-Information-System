@@ -8,14 +8,14 @@
   border-color: #000000;
   border-width: 1px;
   width: 100%;
-  height: 100%;
+  height: 1024px;
   position: relative;
   overflow: hidden;
 }
 .rectangle-1 {
   background: #800000;
-  width: 1440px;
-  height: 96px;
+  width: 100%;
+  height: 100%;
   position: absolute;
   left: 0px;
   top: 928px;
@@ -23,7 +23,7 @@
 .rectangle-3 {
   background: linear-gradient(to left, #ffffff, #ffffff),
     linear-gradient(to left, #ffffff, #ffffff);
-  width: 615px;
+  width: 100%;
   height: 928px;
   position: absolute;
   left: 825px;

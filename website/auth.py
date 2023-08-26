@@ -27,7 +27,6 @@ def facultyL():
         for i in result:
             cemail = str(i[3])
             cpass = str(i[4])
-            print(cpass)
             if email == cemail and password == cpass:
                 return redirect(url_for('auth.facultyH'))
       
