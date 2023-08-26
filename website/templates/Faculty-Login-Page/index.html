@@ -18,6 +18,7 @@
   />
 
 
+
     <style>
       a,
       button,
@@ -40,22 +41,21 @@
     <title>{% block title %} Faculty Login {% endblock %}</title>
   </head>
   <body>
+    <div class="faculty-login-page">
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
       {% for category, message in messages%}
         {% if category == 'error' %}
-      <div class="aler alert-danger alter-dismissable fade show" role="alert">
-        <br>
+        <div class="alert alert-danger alter-dismissable fade show" role="alert" style="z-index:1;">
         {{ message }}
         <button type="button" class="close" data-dismiss="alert">
-          <span aria-hidden="ture">&times;</span>
+          <span aria-hidden="true">&times;</span>
         </button>
       </div>
           {% endif %}
         {% endfor %}
       {% endif %}
     {% endwith %}
-    <div class="faculty-login-page">
       <div class="rectangle-1"></div>
       <div class="rectangle-3"></div>
       <img class="rectangle-5" src="{{ url_for('static', filename='images/Faculty-Login-Page/rectangle-5.png')}}" />
@@ -89,7 +89,7 @@
     </div>
 
     {# JAVASCRIPTS  #} 
-    
+
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -105,5 +105,6 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"
     ></script>
+
   </body>
 </html>
