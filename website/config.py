@@ -15,5 +15,4 @@ cur.execute("""CREATE TABLE IF NOT EXISTS Faculty_Account (
             """)
 
 conn.commit()
-cur.close()
-conn.close()  
+
