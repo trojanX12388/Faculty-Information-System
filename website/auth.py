@@ -8,6 +8,8 @@ conn = psycopg2.connect(host="34.72.164.60", dbname="FIS", user="postgres",
 
 # -------------------------------------------------------------
 
+email = ''
+
 # WEB AUTH ROUTES URL
 
 auth = Blueprint('auth', __name__)
@@ -20,6 +22,8 @@ def adminL():
 @auth.route('/faculty-login', methods=['GET', 'POST'])
 def facultyL():
 
+    global email
+    
     email = request.form.get('email')
     password = request.form.get('password')
 
@@ -41,19 +45,35 @@ def facultyL():
         for i in result:
             cemail = str(i[3])
             cpass = str(i[4])
-            print(cemail)
             
             if email == cemail and password != cpass:
                 flash('Incorrect Password.', category='error') 
             elif email == cemail and password == cpass:
                 return redirect(url_for('auth.facultyH'))   
                 
-      
     return render_template("Faculty-Login-Page/index.html")
 
 
-@auth.route("/faculty-home-page", methods=['GET', 'POST'])
+@auth.route("/faculty-home-page")
 def facultyH():
+    
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT
+    
+    global email
+    
+    cur = conn.cursor()
+    query = "SELECT * FROM faculty_account WHERE email = %s"
+    cur.execute(query,[email])
+        
+    result = cur.fetchall()
+        
+    if result:
+        for i in result:
+            username = str(i[1])
+            
+    message = 'Welcome! ' + str(username)
+            
+    flash(message, category='success') 
     return render_template("Faculty-Home-Page/home.html")
 
 
