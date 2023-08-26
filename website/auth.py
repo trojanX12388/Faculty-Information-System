@@ -29,12 +29,25 @@ def facultyL():
     cur.execute(query,[email])
 
     result = cur.fetchall()
+    
+    # CHECKING IF ENTERED EMAIL IS NOT IN THE DATABASE
+    if request.method == 'POST':
+        checkemail = result
+        if len(checkemail) == 0:
+            flash('Entered Email is not found in the system. Please try again.', category='error')  
+
+    # USER ACCOUNT VERIFICATION
     if result:
         for i in result:
             cemail = str(i[3])
             cpass = str(i[4])
-            if email == cemail and password == cpass:
-                return redirect(url_for('auth.facultyH'))
+            print(cemail)
+            
+            if email == cemail and password != cpass:
+                flash('Incorrect Password.', category='error') 
+            elif email == cemail and password == cpass:
+                return redirect(url_for('auth.facultyH'))   
+                
       
     return render_template("Faculty-Login-Page/index.html")
 
