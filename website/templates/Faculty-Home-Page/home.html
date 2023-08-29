@@ -19,23 +19,23 @@
 
 </head>
 <body>
+       {# DISPLAY WELCOME NOTIFICATION #} 
 
-    {# DISPLAY WELCOME NOTIFICATION #} 
+       {% with messages = get_flashed_messages(with_categories=true) %}
+       {% if messages %}
+         {% for category, message in messages%}
+           {% if category == 'success' %}
+           <div class="alert alert-success alter-dismissable fade show" role="alert" style="z-index:1;">
+           {{ message }}
+           <button type="button" class="close" data-dismiss="alert">
+             <span aria-hidden="true">&times;</span>
+           </button>
+         </div>
+             {% endif %}
+           {% endfor %}
+         {% endif %}
+       {% endwith %}
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      {% for category, message in messages%}
-        {% if category == 'success' %}
-        <div class="alert alert-success alter-dismissable fade show" role="alert" style="z-index:1;">
-        {{ message }}
-        <button type="button" class="close" data-dismiss="alert">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-          {% endif %}
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
     <nav class="navbar">
         <div class="left-label">
             <i class="fa-solid fa-bars"></i>
