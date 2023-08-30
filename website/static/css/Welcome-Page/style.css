@@ -1,28 +1,31 @@
+@media only screen and (max-width:800px) {
+  /* For tablets: */
+  .main {
+    width: 80%;
+    padding: 0;
+  }
+  .right {
+    width: 100%;
+  }
+}
+@media only screen and (max-width:500px) {
+  /* For mobile phones: */
+  .menu, .main, .right {
+    width: 100%;
+  }
+}
+
 .welcome-page,
 .welcome-page * {
   box-sizing: border-box;
 }
-.welcome-page {
-  background: #d9d9d9;
-  border-style: solid;
-  border-color: #000000;
-  border-width: 1px;
-  width: 100%;
-  height: 100%;
-  max-height: 950px;
-  position: relative;
-  overflow: hidden;
-} 
+
 .rectangle-5 {
-  width: 73%;
+  width: 80%;
   height: 100%;
-  position: absolute;
 }
 .rectangle-3 {
-  background: white;
-  width: 1px;
-  height: 100%;
-  right: 0px;
+  width: 100%;
 }
 .rectangle-1 {
   background: #800000;
@@ -39,20 +42,13 @@
   justify-content: center;
   padding-top: 5px;
 }
-.rectangle-3 {
-  background: linear-gradient(to left, #ffffff, #ffffff),
-    linear-gradient(to left, #ffffff, #ffffff);
-  width: 100%;
-  height: 928px;
-  position: absolute;
-  top: 0px;
-}
+
 .image-1 {
   width: 67px;
   height: 67px;
   position: absolute;
   left: 27px;
-  z-index: 11;
+ 
 }
 .image-2 {
   width: 135px;
@@ -60,7 +56,7 @@
   position: absolute;
   top: 20px;
   right: 183px;
-  z-index: 11;
+
 }
 .telephone-632-8952-7818-632-8287-8204 {
   color: #ffffff;
@@ -70,7 +66,7 @@
   left: 619px;
   width: 272px;
   height: 19px;
-  z-index: 11;
+
 }
 .quezoncity-pup-edu-ph-postal-mail {
   color: #ffffff;
@@ -80,7 +76,7 @@
   left: 920px;
   width: 272px;
   height: 19px;
-  z-index: 11;
+
 }
 .pup-quezon-city-branch-don-fabian-st-commonwealth-quezon-city-philippines {
   color: #ffffff;
@@ -90,7 +86,7 @@
   left: 125px;
   width: 463px;
   height: 19px;
-  z-index: 11;
+
 }
 .faculty-information-system {
   color: #000000;
@@ -112,6 +108,9 @@
 }
 .rectangle-9 {
   background: #091c80;
+  color: #000000;
+  text-align: center;
+  font: 400 25px "Inter", sans-serif;
   color: white;
   width: 360px;
   height: 49px;

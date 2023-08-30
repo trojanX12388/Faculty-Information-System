@@ -19,19 +19,21 @@
     <title>Faculty Information System</title>
   </head>
   <body>
-    <div class="welcome-page">
-      <div class="rectangle-3">
-        <div>
+    <div class="rectangle-5">
+      <img class="rectangle-5" src="{{ url_for('static', filename='images/Welcome-Page/rectangle-5.png')}}" />
+    </div>
+     <div class="column">
           <img class="image-2" src="{{ url_for('static', filename='images/Welcome-Page/image-2.png')}}"/>
           <div class="faculty-information-system">FACULTY INFORMATION SYSTEM</div>
           <div class="login-as">Login As:</div>
           <a type="button"class="rectangle-9" href="/faculty-login">Faculty</a>
-          <a type="button" class="rectangle-10" href="/admin-login">Admin</a>
-        </div>
+          <a type="button" class="rectangle-10" href="/admin-login">Admin</a>  
       </div>
-        <img class="rectangle-5" src="{{ url_for('static', filename='images/Welcome-Page/rectangle-5.png')}}" />
 
-      
+
+ 
+
+     
       <!-- FOOTER -->
 
       <div class="rectangle-1">
@@ -51,6 +53,24 @@
           </div>
       </div>
       </div>
-    </div>
+    
+   {# JAVASCRIPTS  #} 
+
+      <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+
   </body>
 </html>
