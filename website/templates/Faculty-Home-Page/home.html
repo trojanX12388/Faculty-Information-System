@@ -16,7 +16,9 @@
     href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
     crossorigin="anonymous"
   />
-
+  <title>{% block title %} Faculty Home Page {% endblock %}</title>
+  <link rel = "icon" href = "{{url_for('static', filename='images/Default-Images/pupicon.png')}}" 
+          type = "image/x-icon">
 </head>
 <body>
        {# DISPLAY WELCOME NOTIFICATION #} 

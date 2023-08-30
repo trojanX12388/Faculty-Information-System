@@ -8,7 +8,12 @@ conn = psycopg2.connect(host="34.72.164.60", dbname="FIS", user="postgres",
 
 # -------------------------------------------------------------
 
-email = ''
+# GLOBAL VARIABLES
+
+email = '' 
+
+
+# -------------------------------------------------------------
 
 # WEB AUTH ROUTES URL
 
@@ -79,7 +84,7 @@ def facultyH():
 
 @auth.route("/faculty-forgot-pass")
 def facultyF():
-    return ("<h1>Forgot Password</h1>")
+    return ("<title>Forgot Faculty Password</title><h1>Forgot Password</h1>")
 
 
 @auth.route("/logout")
