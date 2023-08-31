@@ -1,4 +1,4 @@
-from flask import Blueprint, flash, json, make_response, redirect, render_template, request, jsonify, url_for
+from flask import Blueprint, flash, json, make_response, redirect, render_template, request, jsonify, url_for, session
 from flask_restx import Api, Resource
 import psycopg2
 
@@ -12,7 +12,6 @@ conn = psycopg2.connect(host="34.72.164.60", dbname="FIS", user="postgres",
 
 # GLOBAL VARIABLES
 
-email = '' 
 
 
 # -------------------------------------------------------------
@@ -56,6 +55,7 @@ def facultyL():
             if email == cemail and password != cpass:
                 flash('Incorrect Password.', category='error') 
             elif email == cemail and password == cpass:
+                session['user'] = request.form.get('email')
                 return redirect(url_for('auth.facultyH'))   
                 
     return render_template("Faculty-Login-Page/index.html")
@@ -63,25 +63,30 @@ def facultyL():
 
 @auth.route("/faculty-home-page")
 def facultyH():
-    
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT
-    
-    global email
-    
-    cur = conn.cursor()
-    query = "SELECT * FROM faculty_account WHERE email = %s"
-    cur.execute(query,[email])
+        if session:
+            if session['user']:
+                user = session['user']
+                        
+                cur = conn.cursor()
+                query = "SELECT * FROM faculty_account WHERE email = %s"
+                cur.execute(query,[user])
+                            
+                result = cur.fetchall()
+                            
+                if result:
+                    for i in result:
+                        username = str(i[1])
+                                
+                message = 'Welcome! ' + str(username)
+                                
+                flash(message, category='success') 
+                return render_template("Faculty-Home-Page/home.html")
         
-    result = cur.fetchall()
-        
-    if result:
-        for i in result:
-            username = str(i[1])
-            
-    message = 'Welcome! ' + str(username)
-            
-    flash(message, category='success') 
-    return render_template("Faculty-Home-Page/home.html")
+        else:
+            flash('Sign In First to enter Faculty Home Page.', category='error') 
+            return redirect(url_for('auth.facultyL')) 
+
 
 
 @auth.route("/faculty-forgot-pass")
@@ -91,6 +96,7 @@ def facultyF():
 
 @auth.route("/logout")
 def Logout():
+    session.pop('user', None)
     return ("<h1>Logged Out</h1>")
 
 
