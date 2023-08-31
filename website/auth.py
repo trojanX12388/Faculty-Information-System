@@ -84,7 +84,7 @@ def facultyH():
                 return render_template("Faculty-Home-Page/home.html")
         
         else:
-            flash('Sign In First to enter Faculty Home Page.', category='error') 
+            flash('Session Expired. Login to enter', category='error') 
             return redirect(url_for('auth.facultyL')) 
 
 
@@ -97,7 +97,10 @@ def facultyF():
 @auth.route("/logout")
 def Logout():
     session.pop('user', None)
-    return ("<h1>Logged Out</h1>")
+    flash('Logged Out Successfully!.', category='success')
+    return redirect(url_for('auth.facultyL')) 
+     
+   
 
 
 @auth.route("/sign-up")
