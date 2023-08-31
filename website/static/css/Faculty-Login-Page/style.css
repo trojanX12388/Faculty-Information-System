@@ -151,12 +151,6 @@
   position: absolute;
   left: 1048px;
   top: 660px;
-}
-.sign-in {
-  color: #ffffff;
-  text-align: center;
   font: 400 25px "Inter", sans-serif;
-  position: absolute;
-  left: 1092px;
-  top: 670px;
+  text-align: center;
 }

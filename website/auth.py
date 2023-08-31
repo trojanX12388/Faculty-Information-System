@@ -1,5 +1,7 @@
-from flask import Blueprint, flash, redirect, render_template, request, jsonify, url_for
+from flask import Blueprint, flash, json, make_response, redirect, render_template, request, jsonify, url_for
+from flask_restx import Api, Resource
 import psycopg2
+
 
 # DATABASE CONNECTION
 
@@ -101,7 +103,36 @@ def signUp():
 
 # JSON DATA API
 
+
+# JSON UNSORTING DATA FUNCTION
+
+api = Api(auth)
+
+def make_unsorted_response(results_dict: dict, status_code: int):
+    resp = make_response({}, status_code)
+    j_string = json.dumps(results_dict, separators=(',', ':'))
+    resp.set_data(value=j_string)
+    return resp
+
+# -------------------------------------------------------------
+
+# TESTING UNSORTING JSON FUNCTION
+
+@api.route('/test', endpoint='test')
+@api.doc(params={}, description="test")
+class Health(Resource):
+    def get(self):
+        my_dict = {'z': 'z value',
+                   'w': 'w value',
+                   'p': 'p value'}
+        results_dict = {"results": my_dict}
+        return make_unsorted_response(results_dict, 200)
+
+# -------------------------------------------------------------
+
+
 # JSON DATA SAMPLE FROM GET "user_id"
+
 
 @auth.route("/get-user/<user_id>")
 def get_user(user_id):
@@ -114,7 +145,7 @@ def get_user(user_id):
     extra = request.args.get("extra")
     if extra:
         user_data["extra"] = extra
-    
+   
     return jsonify(user_data), 200
 
 
