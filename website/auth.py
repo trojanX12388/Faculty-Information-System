@@ -14,7 +14,7 @@ from .Token.token_gen import *
 # DATABASE CONNECTION
 
 conn = psycopg2.connect(host="34.72.164.60", dbname="FIS", user="postgres",
-                                password="plazma12388", port=5432)
+                                password="449adc1aa39e436ca6a0425ef3a6e1f9", port=5432)
 
 # -------------------------------------------------------------
 
@@ -120,6 +120,7 @@ def facultyF():
 @auth.route("/logout")
 def Logout():
     session.pop('user', None)
+    session.pop('faculty_logged_in', None)
     flash('Logged Out Successfully!.', category='success')
     return redirect(url_for('auth.facultyL')) 
      
