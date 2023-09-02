@@ -1,6 +1,11 @@
-from flask import Blueprint, flash, json, make_response, redirect, render_template, request, jsonify, url_for, session
+from flask import Flask, Blueprint, flash, json, make_response, redirect, render_template, request, jsonify, url_for, session
 from flask_restx import Api, Resource
+
 import psycopg2
+
+# IMPORT LOCAL FUNCTIONS
+from .Authentication.authentication import *
+from token_gen import *
 
 
 # DATABASE CONNECTION
@@ -12,24 +17,38 @@ conn = psycopg2.connect(host="34.72.164.60", dbname="FIS", user="postgres",
 
 # GLOBAL VARIABLES
 
-
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'db8ec40dda154bd4a75b85021b1708a0'
 
 # -------------------------------------------------------------
+
 
 # WEB AUTH ROUTES URL
 
 auth = Blueprint('auth', __name__)
 
-@auth.route("/admin-login", methods=['GET', 'POST'])
-def adminL():
-    return ("<h1>Admin Login</h1>")
+@auth.route("/admin-login-auth", methods=['GET', 'POST'])
+def adminLA():
+    if request.method == 'POST':
+        if request.form['username'] and request.form['password'] == '123456':
+            admin_token_gen()
+            return redirect(url_for('auth.adminP'))
+        else:            
+            return make_response('Unable to verify', 403, {'WWW-Authenticate' : 'Basic realm:"Authentication Failed!'})     
+    else:
+        return 'Login First!'    
+        
 
+@auth.route("/admin-page", methods=['GET', 'POST'])
+@admin_token_required
+def adminP():
+    session['admin_logged_in'] = True
+    return 'JWT is verified. Welcome to your dashboard !  '
+   
 
 @auth.route('/faculty-login', methods=['GET', 'POST'])
 def facultyL():
 
-    global email
-    
     email = request.form.get('email')
     password = request.form.get('password')
 
@@ -56,6 +75,7 @@ def facultyL():
                 flash('Incorrect Password.', category='error') 
             elif email == cemail and password == cpass:
                 session['user'] = request.form.get('email')
+                session['faculty_logged_in'] = True
                 return redirect(url_for('auth.facultyH'))   
                 
     return render_template("Faculty-Login-Page/index.html")
