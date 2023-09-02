@@ -3,9 +3,12 @@ from flask_restx import Api, Resource
 
 import psycopg2
 
+
 # IMPORT LOCAL FUNCTIONS
+
 from .Authentication.authentication import *
-from token_gen import *
+#--TOKEN GENERATOR FUNCTION
+from .Token.token_gen import *
 
 
 # DATABASE CONNECTION
