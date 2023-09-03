@@ -19,10 +19,9 @@ HOST = os.getenv("HOST")
 DB = os.getenv("DB")
 USER = os.getenv("USER")
 PASSWORD = os.getenv("PASSWORD")
-PORT = os.getenv("PORT")
 
 conn = psycopg2.connect(host=f"{HOST}", dbname=f"{DB}", user=f"{USER}",
-                                password=f"{PASSWORD}", port=PORT)
+                                password=f"{PASSWORD}", port=5432)
 # -------------------------------------------------------------
 
 # 
