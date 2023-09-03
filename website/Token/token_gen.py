@@ -5,7 +5,7 @@ import jwt
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'db8ec40dda154bd4a75b85021b1708a0'
 
-# FUNCTIONS
+# SECRET KEY GEN:
 
 def admin_token_gen():
         session['logged_in'] = True

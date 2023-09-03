@@ -3,12 +3,6 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-# SECRET KEY GEN:
-#   import uuid
-#   uuid.uuid4().hex
-# OR
-#   import secrets
-#   secrets.token_urlsafe(12)
 
 def create_app():
     app = Flask(__name__)
