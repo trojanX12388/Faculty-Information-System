@@ -36,3 +36,4 @@ solus==1.1.0
 typing-aliases==1.1.3
 typing_extensions==4.7.1
 wraps==0.6.1
+Flask-SQLAlchemy==3.0.5
