@@ -169,6 +169,7 @@ dmypy.json
 cython_debug/
 
 # MAIN APP PYTHON
+app.py
 
 
 
