@@ -1,9 +1,10 @@
 from flask import Flask, jsonify, session
 from functools import wraps
 import jwt
+import os
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'db8ec40dda154bd4a75b85021b1708a0'
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 
 # TOKEN VERIFICATION FUNCTION
 

@@ -1,8 +1,10 @@
 from flask import Flask, Blueprint, flash, json, make_response, redirect, render_template, request, jsonify, url_for, session
 from flask_restx import Api, Resource
-
+from dotenv import load_dotenv
 import psycopg2
+import os
 
+load_dotenv()
 
 # IMPORT LOCAL FUNCTIONS
 
@@ -13,15 +15,20 @@ from .Token.token_gen import *
 
 # DATABASE CONNECTION
 
-conn = psycopg2.connect(host="34.72.164.60", dbname="FIS", user="postgres",
-                                password="449adc1aa39e436ca6a0425ef3a6e1f9", port=5432)
+HOST = os.getenv("HOST")
+DB = os.getenv("DB")
+USER = os.getenv("USER")
+PASSWORD = os.getenv("PASSWORD")
+PORT = os.getenv("PORT")
 
+conn = psycopg2.connect(host=f"{HOST}", dbname=f"{DB}", user=f"{USER}",
+                                password=f"{PASSWORD}", port=PORT)
 # -------------------------------------------------------------
 
-# GLOBAL VARIABLES
+# 
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'db8ec40dda154bd4a75b85021b1708a0'
+
+
 
 # -------------------------------------------------------------
 

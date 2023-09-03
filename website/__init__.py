@@ -1,5 +1,8 @@
 from flask import Flask
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 # SECRET KEY GEN:
 #   import uuid
 #   uuid.uuid4().hex
@@ -7,11 +10,9 @@ from flask import Flask
 #   import secrets
 #   secrets.token_urlsafe(12)
 
-
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'db8ec40dda154bd4a75b85021b1708a0'
-    
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     from .views import views
     from .auth import auth
     
