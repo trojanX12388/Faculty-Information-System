@@ -1,7 +1,8 @@
 from flask import Flask
-import os
+from flask_login import LoginManager
 from dotenv import load_dotenv
 
+import os
 load_dotenv()
 
 def create_app():
@@ -16,12 +17,24 @@ def create_app():
     from website.models import init_db
     init_db(app)
     
+    # LOADING MODEL CLASSES
+    from .models import Admin,Faculty,Faculty_Data,Faculty_Profile,Student 
+    
     # IMPORTING ROUTES
     from .views import views
     from .auth import auth
     
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
+    
+    # LOADING LOGIN MANAGER CACHE
+    login_manager = LoginManager()
+    login_manager.login_view = 'auth.faculty_denied'
+    login_manager.init_app(app)
+    
+    @login_manager.user_loader
+    def load_user(faculty_account_id):
+        return Faculty_Profile.query.get(int(faculty_account_id))
     
     return app
     

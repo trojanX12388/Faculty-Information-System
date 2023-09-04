@@ -1,30 +1,36 @@
 from flask import Flask, Blueprint, flash, json, make_response, redirect, render_template, request, jsonify, url_for, session
 from flask_restx import Api, Resource
+from werkzeug.security import check_password_hash
 from dotenv import load_dotenv
+from flask_login import login_user,login_required, logout_user, current_user
+
 import psycopg2
 import os
 
 load_dotenv()
 
 # IMPORT LOCAL FUNCTIONS
-
 from .Authentication.authentication import *
-#--TOKEN GENERATOR FUNCTION
 from .Token.token_gen import *
 
 
+
 # DATABASE CONNECTION
+from .models import db
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import inspect
+
+# LOADING MODEL CLASSES
+from .models import Admin,Faculty,Faculty_Data,Faculty_Profile,Student
 
 HOST = os.getenv("HOST")
 DB = os.getenv("DB")
 USER = os.getenv("USER")
 PASSWORD = os.getenv("PASSWORD")
 
-conn = psycopg2.connect(host=f"{HOST}", dbname=f"{DB}", user=f"{USER}",
-                                password=f"{PASSWORD}", port=5432)
 # -------------------------------------------------------------
 
-# 
+
 
 
 
@@ -61,61 +67,42 @@ def facultyL():
     email = request.form.get('email')
     password = request.form.get('password')
 
-
-    cur = conn.cursor()
-    query = "SELECT * FROM faculty_account WHERE email = %s"
-    cur.execute(query,[email])
-
-    result = cur.fetchall()
+    User = Faculty_Profile.query.filter_by(email=email).first()
     
     # CHECKING IF ENTERED EMAIL IS NOT IN THE DATABASE
     if request.method == 'POST':
-        checkemail = result
-        if len(checkemail) == 0:
+        if not User:
             flash('Entered Email is not found in the system. Please try again.', category='error')  
-
-    # USER ACCOUNT VERIFICATION
-    if result:
-        for i in result:
-            cemail = str(i[3])
-            cpass = str(i[4])
-            
-            if email == cemail and password != cpass:
-                flash('Incorrect Password.', category='error') 
-            elif email == cemail and password == cpass:
-                session['user'] = request.form.get('email')
-                session['faculty_logged_in'] = True
-                return redirect(url_for('auth.facultyH'))   
-                
+        
+        # USER ACCOUNT VERIFICATION
+        else:
+            if check_password_hash(User.password,password):
+                    session['user'] = email
+                    session['faculty_logged_in'] = True
+                    login_user(User, remember=True)
+                    
+                    return redirect(url_for('auth.facultyH'))   
+                    
+            else:
+                flash('Incorrect Password.', category='error')
+                          
     return render_template("Faculty-Login-Page/index.html")
 
 
 @auth.route("/faculty-home-page")
+@login_required
 def facultyH():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT
-        if session:
-            if session['user']:
-                user = session['user']
-                        
-                cur = conn.cursor()
-                query = "SELECT * FROM faculty_account WHERE email = %s"
-                cur.execute(query,[user])
-                            
-                result = cur.fetchall()
-                            
-                if result:
-                    for i in result:
-                        username = str(i[1])
+        username = Faculty_Profile.query.filter_by(name=current_user.name).first()     
+        message = 'Welcome! ' f'{username.name}'
                                 
-                message = 'Welcome! ' + str(username)
-                                
-                flash(message, category='success') 
-                return render_template("Faculty-Home-Page/home.html")
+        flash(message, category='success') 
+        return render_template("Faculty-Home-Page/home.html", User=current_user)
         
-        else:
-            flash('Session Expired. Login to enter', category='error') 
-            return redirect(url_for('auth.facultyL')) 
-
+@auth.route("/faculty-login-denied")
+def faculty_denied():
+     flash('Session Expired. Please Login again.', category='error')
+     return redirect(url_for('auth.facultyL')) 
 
 
 @auth.route("/faculty-forgot-pass")
@@ -124,9 +111,11 @@ def facultyF():
 
 
 @auth.route("/logout")
+@login_required
 def Logout():
     session.pop('user', None)
     session.pop('faculty_logged_in', None)
+    logout_user()
     flash('Logged Out Successfully!.', category='success')
     return redirect(url_for('auth.facultyL')) 
      

@@ -1,11 +1,13 @@
 from flask import Blueprint, render_template, session, flash, redirect, url_for
+from flask_login import current_user
+
 
 views = Blueprint('views', __name__)
 
 @views.route("/", methods=['GET', 'POST'])
 def home():
     # CHECKING ACTIVE SESSIONS
-    if session.get('faculty_logged_in'):      
+    if current_user.is_authenticated:     
         return redirect(url_for('auth.facultyH'))
     
     elif session.get('admin_logged_in'): 
