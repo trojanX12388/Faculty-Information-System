@@ -92,8 +92,8 @@ def facultyL():
 @auth.route("/faculty-home-page")
 @login_required
 def facultyH():
-    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT
-        username = Faculty_Profile.query.filter_by(name=current_user.name).first()     
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(name=current_user.name).first() 
         message = 'Welcome! ' f'{username.name}'
                                 
         flash(message, category='success') 

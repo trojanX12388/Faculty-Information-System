@@ -33,8 +33,8 @@ def create_app():
     login_manager.init_app(app)
     
     @login_manager.user_loader
-    def load_user(faculty_account_id):
-        return Faculty_Profile.query.get(int(faculty_account_id))
+    def load_user(user_id):
+        return Faculty_Profile.query.get(int(user_id))
     
     return app
     
