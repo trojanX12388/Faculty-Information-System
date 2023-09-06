@@ -18,14 +18,16 @@ def create_app():
     init_db(app)
     
     # LOADING MODEL CLASSES
-    from .models import Admin,Faculty,Faculty_Data,Faculty_Profile,Student 
+    from .models import Faculty_Profile
     
     # IMPORTING ROUTES
     from .views import views
     from .auth import auth
+    from .API.api_routes import API
     
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(API, url_prefix='/')
     
     # LOADING LOGIN MANAGER CACHE
     login_manager = LoginManager()

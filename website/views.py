@@ -3,6 +3,9 @@ from flask_login import current_user
 
 views = Blueprint('views', __name__)
 
+
+
+# MAIN PAGE
 @views.route("/", methods=['GET', 'POST'])
 def home():
     # CHECKING ACTIVE SESSIONS
@@ -16,6 +19,9 @@ def home():
     else:
         return render_template("base.html")
 
+
+
+# ADMIN PAGE
 
 @views.route("/admin-login", methods=['GET', 'POST'])
 def adminL():

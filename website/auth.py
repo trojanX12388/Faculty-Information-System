@@ -14,14 +14,13 @@ from .Authentication.authentication import *
 from .Token.token_gen import *
 
 
-
 # DATABASE CONNECTION
 from .models import db
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import inspect
 
 # LOADING MODEL CLASSES
-from .models import Admin,Faculty,Faculty_Data,Faculty_Profile,Student
+from .models import Faculty_Profile
 
 HOST = os.getenv("HOST")
 DB = os.getenv("DB")
@@ -42,24 +41,7 @@ PASSWORD = os.getenv("PASSWORD")
 
 auth = Blueprint('auth', __name__)
 
-@auth.route("/admin-login-auth", methods=['GET', 'POST'])
-def adminLA():
-    if request.method == 'POST':
-        if request.form['username'] and request.form['password'] == '123456':
-            admin_token_gen()
-            return redirect(url_for('auth.adminP'))
-        else:            
-            return make_response('Unable to verify', 403, {'WWW-Authenticate' : 'Basic realm:"Authentication Failed!'})     
-    else:
-        return 'Login First!'    
-        
-
-@auth.route("/admin-page", methods=['GET', 'POST'])
-@admin_token_required
-def adminP():
-    session['admin_logged_in'] = True
-    return 'JWT is verified. Welcome to your dashboard !  '
-   
+# FACULTY PAGE ROUTE
 
 @auth.route('/faculty-login', methods=['GET', 'POST'])
 def facultyL():
@@ -98,18 +80,41 @@ def facultyH():
                                 
         flash(message, category='success') 
         return render_template("Faculty-Home-Page/home.html", User=current_user)
+    
+    
+# ADMIN PAGE ROUTE
+
+@auth.route("/admin-login-auth", methods=['GET', 'POST'])
+def adminLA():
+    if request.method == 'POST':
+        if request.form['username'] and request.form['password'] == '123456':
+            admin_token_gen()
+            return redirect(url_for('auth.adminP'))
+        else:            
+            return make_response('Unable to verify', 403, {'WWW-Authenticate' : 'Basic realm:"Authentication Failed!'})     
+    else:
+        return 'Login First!'    
         
+
+@auth.route("/admin-page", methods=['GET', 'POST'])
+@admin_token_required
+def adminP():
+    session['admin_logged_in'] = True
+    return 'JWT is verified. Welcome to your dashboard !  '
+     
+    
+    # IF USER SESSION IS NULL
 @auth.route("/faculty-login-denied")
 def faculty_denied():
      flash('Session Expired. Please Login again.', category='error')
      return redirect(url_for('auth.facultyL')) 
 
-
+    # FORGOT PASSWORD ROUTE
 @auth.route("/faculty-forgot-pass")
 def facultyF():
     return ("<title>Forgot Faculty Password</title><h1>Forgot Password</h1>")
 
-
+    # LOGOUT ROUTE
 @auth.route("/logout")
 @login_required
 def Logout():
@@ -121,68 +126,7 @@ def Logout():
      
    
 
-
-@auth.route("/sign-up")
-def signUp():
-    return ("<h1>Sign Up</h1>")
-
-
 # -------------------------------------------------------------
 
-# JSON DATA API
-
-
-# JSON UNSORTING DATA FUNCTION
-
-api = Api(auth)
-
-def make_unsorted_response(results_dict: dict, status_code: int):
-    resp = make_response({}, status_code)
-    j_string = json.dumps(results_dict, separators=(',', ':'))
-    resp.set_data(value=j_string)
-    return resp
-
-# -------------------------------------------------------------
-
-# TESTING UNSORTING JSON FUNCTION
-
-@api.route('/test', endpoint='test')
-@api.doc(params={}, description="test")
-class Health(Resource):
-    def get(self):
-        my_dict = {'z': 'z value',
-                   'w': 'w value',
-                   'p': 'p value'}
-        results_dict = {"results": my_dict}
-        return make_unsorted_response(results_dict, 200)
-
-# -------------------------------------------------------------
-
-
-# JSON DATA SAMPLE FROM GET "user_id"
-
-
-@auth.route("/get-user/<user_id>")
-def get_user(user_id):
-    user_data = {
-        "user_id": user_id,
-        "name": "Alma Matter",
-        "email": "alma123@gmail.com"
-        }
-    
-    extra = request.args.get("extra")
-    if extra:
-        user_data["extra"] = extra
-   
-    return jsonify(user_data), 200
-
-
-# JSON POST METHOD
-
-@auth.route("/create-user", methods=["POST"])
-def create_user():
-    data = request.get_json()
-    
-    return jsonify(data), 201
 
 # -------------------------------------------------------------

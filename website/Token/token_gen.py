@@ -1,9 +1,9 @@
 from flask import Flask, request, session
 from datetime import datetime, timedelta
-import jwt
+import jwt,os
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'db8ec40dda154bd4a75b85021b1708a0'
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 
 # SECRET KEY GEN:
 
