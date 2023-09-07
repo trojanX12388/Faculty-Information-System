@@ -123,6 +123,7 @@ def Logout():
     logout_user()
     flash('Logged Out Successfully!.', category='success')
     return redirect(url_for('auth.facultyL')) 
+
      
    
 
