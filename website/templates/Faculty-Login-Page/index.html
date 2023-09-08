@@ -16,16 +16,6 @@
         </button>
       </div>
       
-      {# DISPLAY NOTIFICATION SUCCESS  #} 
-
-      {% else %}
-      <div class="alert alert-success alter-dismissable fade show" role="alert" style="z-index:1;">
-      {{ message }}
-      <button type="button" class="close" data-dismiss="alert">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-        
           {% endif %}
         {% endfor %}
       {% endif %}
@@ -56,8 +46,8 @@
             <a href="/faculty-forgot-pass" class="i-forgot-my-password">I forgot my password</a>
         <div class="password">Password:</div>
           <form method="POST">
-              <input type="email" id="email" name="email" placeholder="Enter your Email" class="rectangle-6"></input>
-              <input type="password" id="password" name="password" placeholder="Enter your Password"  class="rectangle-7"></input>
+              <input type="email" id="email" name="email" placeholder="Enter your Email" class="rectangle-6" required></input>
+              <input type="password" id="password" name="password" placeholder="Enter your Password"  class="rectangle-7" required></input>
               <button class="rectangle-8" type="submit">Sign In</button>
           </form>
     </div>

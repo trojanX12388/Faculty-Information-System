@@ -10,7 +10,7 @@ import os
 load_dotenv()
 
 # IMPORT LOCAL FUNCTIONS
-from .Authentication.authentication import *
+from .API.authentication import *
 from .Token.token_gen import *
 
 
@@ -80,29 +80,8 @@ def facultyH():
                                 
         flash(message, category='success') 
         return render_template("Faculty-Home-Page/home.html", User=current_user)
-    
-    
-# ADMIN PAGE ROUTE
-
-@auth.route("/admin-login-auth", methods=['GET', 'POST'])
-def adminLA():
-    if request.method == 'POST':
-        if request.form['username'] and request.form['password'] == '123456':
-            admin_token_gen()
-            return redirect(url_for('auth.adminP'))
-        else:            
-            return make_response('Unable to verify', 403, {'WWW-Authenticate' : 'Basic realm:"Authentication Failed!'})     
-    else:
-        return 'Login First!'    
-        
-
-@auth.route("/admin-page", methods=['GET', 'POST'])
-@admin_token_required
-def adminP():
-    session['admin_logged_in'] = True
-    return 'JWT is verified. Welcome to your dashboard !  '
-     
-    
+   
+      
     # IF USER SESSION IS NULL
 @auth.route("/faculty-login-denied")
 def faculty_denied():
@@ -121,7 +100,7 @@ def Logout():
     session.pop('user', None)
     session.pop('faculty_logged_in', None)
     logout_user()
-    flash('Logged Out Successfully!.', category='success')
+    flash('Logged Out Successfully!', category='success')
     return redirect(url_for('auth.facultyL')) 
 
      

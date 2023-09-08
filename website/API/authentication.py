@@ -1,5 +1,7 @@
-from flask import Flask, jsonify, session
+from flask import Flask, jsonify, session, request
 from functools import wraps
+
+
 import jwt
 import os
 
@@ -12,7 +14,7 @@ def admin_token_required(func):
     # decorator factory which invoks update_wrapper() method and passes decorated function as an argument
     @wraps(func)
     def decorated(*args, **kwargs):
-        token = session['admin_token']
+        token = request.args.get('token')
         if not token:
             return jsonify({'Alert!': 'Token is missing!'}), 401
 
@@ -23,7 +25,6 @@ def admin_token_required(func):
         # except jwt.InvalidTokenError:
         #     return 'Invalid token. Please log in again.'
         except:
-            session['admin_logged_in'] = False
             return jsonify({'Message': 'Invalid token'}), 403
         return func(*args, **kwargs)
     return decorated

@@ -12,13 +12,9 @@ def home():
     if current_user.__class__.__name__ == "Faculty_Profile":     
         return redirect(url_for('auth.facultyH'))
     
-    elif session.get('admin_logged_in'): 
-        return redirect(url_for('auth.adminP'))
-    
     # IF NO ACTIVE SESSION, REDIRECT TO MAIN PAGE
     else:
         return render_template("base.html")
-
 
 
 # ADMIN PAGE

@@ -7,6 +7,7 @@ load_dotenv()
 
 def create_app():
     app = Flask(__name__)
+    app.json.sort_keys = False
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     
     # CONFIGURING POSTGRESQL CONNECTIONS
