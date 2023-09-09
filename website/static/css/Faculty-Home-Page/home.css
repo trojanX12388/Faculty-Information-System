@@ -10,6 +10,7 @@ body {
     overflow: hidden;
     border-bottom: .5px solid #333333;
     left: 255px;
+    width: 85%;
 }
 .left-label {
     display: flex;
@@ -71,4 +72,95 @@ body {
     width: 100%;
     max-height: 121px;
     max-width: 121px;
+}
+
+
+.home {
+  color: #ffffff;
+  text-align: left;
+  font: 600 35px "Source Sans Pro", sans-serif;
+  position: absolute;
+  left: 377px;
+  top: 136px;
+  width: 114px;
+  height: 44px;
+}
+.news-feed {
+  color: #000000;
+  text-align: left;
+  font: 400 25px "Source Sans Pro", sans-serif;
+  position: absolute;
+  left: 436px;
+  top: 512px;
+  width: 189px;
+  height: 44px;
+}
+.announcement {
+  color: #000000;
+  text-align: left;
+  font: 400 25px "Source Sans Pro", sans-serif;
+  position: absolute;
+  left: 761px;
+  top: 512px;
+  width: 268px;
+  height: 44px;
+}
+.faculty-members {
+  color: #000000;
+  text-align: center;
+  font: 400 25px "Source Sans Pro", sans-serif;
+  position: absolute;
+  left: 1118px;
+  top: 512px;
+  width: 268px;
+  height: 44px;
+}
+.latest-announcement-news-feed-faculty-members {
+  color: #ffffff;
+  text-align: left;
+  font: 400 18px "Source Sans Pro", sans-serif;
+  position: absolute;
+  left: 388px;
+  top: 180px;
+  width: 655px;
+  height: 30px;
+}
+
+.rectangle-16 {
+  width: 100%;
+  height: 187px;
+  position: absolute;
+}
+.rectangle-17 {
+  width: 265px;
+  height: 262px;
+  position: absolute;
+  left: 398px;
+  top: 230px;
+}
+.rectangle-18 {
+  width: 265px;
+  height: 262px;
+  position: absolute;
+  left: 758px;
+  top: 230px;
+}
+.rectangle-19 {
+  width: 265px;
+  height: 262px;
+  position: absolute;
+  left: 1118px;
+  top: 230px;
+}
+.rectangle-20 {
+  width: 70%;
+  height: 326px;
+  position: absolute;
+  left: 398px;
+  top: 602px;
+}
+
+.top-right {
+  top: 0;
+  right: 0;
 }
