@@ -93,7 +93,7 @@ def adminP():
        
         user_data = {
             # TABLE NAME
-            "User_Data":
+            "Faculty_Data":
             {
             # API DATA 
             "user_id": '2020-0001',
