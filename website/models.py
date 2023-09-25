@@ -122,6 +122,7 @@ def create_sample_data():
         admin = Admin(**data)
         db.session.add(admin)
         
+           
  # Create and insert Faculty_Profile
     faculty_profile = Faculty_Profile(
         name='Alma Matter',
