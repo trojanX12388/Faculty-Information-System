@@ -3,6 +3,8 @@ from flask_restx import Api, Resource
 from werkzeug.security import check_password_hash
 from dotenv import load_dotenv
 from flask_login import login_user,login_required, logout_user, current_user
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
 
 import psycopg2
 import os
@@ -29,7 +31,14 @@ PASSWORD = os.getenv("PASSWORD")
 
 # -------------------------------------------------------------
 
+gauth = GoogleAuth()
+drive = GoogleDrive(gauth)
 
+folder = '1mT1alkWJ-akPnPyB9T7vtumNutwqRK0S'
+
+file1 = drive.CreateFile({'parents' : [{'id' : folder}], 'title' : 'hello2.txt'})
+file1.SetContentString('Hello world!, this is my second file')
+file1.Upload()
 
 
 
