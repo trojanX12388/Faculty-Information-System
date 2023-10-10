@@ -31,16 +31,6 @@ PASSWORD = os.getenv("PASSWORD")
 
 # -------------------------------------------------------------
 
-gauth = GoogleAuth()
-drive = GoogleDrive(gauth)
-
-folder = '1mT1alkWJ-akPnPyB9T7vtumNutwqRK0S'
-
-file1 = drive.CreateFile({'parents' : [{'id' : folder}], 'title' : 'hello2.txt'})
-file1.SetContentString('Hello world!, this is my second file')
-file1.Upload()
-
-
 
 
 # -------------------------------------------------------------
@@ -63,7 +53,7 @@ def facultyL():
     # CHECKING IF ENTERED EMAIL IS NOT IN THE DATABASE
     if request.method == 'POST':
         if not User:
-            flash('Entered Email is not found in the system. Please try again.', category='error')  
+            flash('Entered Email is not found in the system.', category='error')  
         
         # USER ACCOUNT VERIFICATION
         else:

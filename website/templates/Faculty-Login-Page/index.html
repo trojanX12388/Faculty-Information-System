@@ -1,56 +1,106 @@
 {% extends "base.html" %}{% block title %}Faculty Login Page{% endblock %} {% block content%}
 
   <body>
-    <div class="faculty-login-page">
+    <div class="limiter">
+      <div class="container-login100">
+        <div class="wrap-login100">
+          <form method="POST" class="login100-form validate-form">
+            <img src="{{ url_for('static', filename='images/Default-Images/pupqc-logo.png')}}" class="rounded mx-auto d-block" />
+            <h1 class="text-center">
+              Faculty Login
+            </h1>
+            <h5 class="text-center">
+              Sign in to start your session:
+            </h5>
+            
+            <br>
+            <br>
+            <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@webmail.com">
+              <input class="input100" type="text" name="email">
+              <span class="focus-input100"></span>
+              <span class="label-input100">Email</span>
+            </div>
+            
+            
+            <div class="wrap-input100 validate-input" data-validate="Password is required">
+              <input class="input100" type="password" name="password"> 
+              <span class="focus-input100"></span>
+              <span class="label-input100">Password</span>
+            </div>
+             {# DISPLAY NOTIFICATION ERROR  #} 
 
-    {# DISPLAY NOTIFICATION ERROR  #} 
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages%}
+                {% if category == 'error' %}
+                <div class="alert alert-danger alter-dismissable fade show" role="alert" style="z-index:1;">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+            <div class="flex-sb-m w-full p-t-3 p-b-32">
+              <div class="contact100-form-checkbox">
+                <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+                <label class="label-checkbox100" for="ckb1">
+                  Remember me
+                </label>
+              </div>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      {% for category, message in messages%}
-        {% if category == 'error' %}
-        <div class="alert alert-danger alter-dismissable fade show" role="alert" style="z-index:1;">
-        {{ message }}
-        <button type="button" class="close" data-dismiss="alert">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      
-          {% endif %}
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-
-      <div class="rectangle-1"></div>
-        <div class="rectangle-3"></div>
-          <img class="rectangle-5" src="{{ url_for('static', filename='images/Faculty-Login-Page/rectangle-5.png')}}" />
-          <img class="image-1" src="{{ url_for('static', filename='images/Faculty-Login-Page/image-1.png')}}"/>
-          <img class="image-2" src="{{ url_for('static', filename='images/Faculty-Login-Page/image-2.png')}}"/>
-            <div class="telephone-632-8952-7818-632-8287-8204">
-              Telephone (632) 8952-7818 (632) 8287-8204
-          </div>
-          <div class="quezoncity-pup-edu-ph-postal-mail">
-              quezoncity@pup.edu.ph Postal Mail
-          </div>
-          <div
-            class="pup-quezon-city-branch-don-fabian-st-commonwealth-quezon-city-philippines"
-          >
-              PUP Quezon City Branch Don Fabian St., Commonwealth Quezon City
-              Philippines
-          </div>
-      <div class="faculty-login">FACULTY LOGIN</div>
-        <div class="username">Username:</div>
-        <div class="sign-in-to-start-your-session">
-          Sign In to start your session:
-        </div>
-            <a href="/faculty-forgot-pass" class="i-forgot-my-password">I forgot my password</a>
-        <div class="password">Password:</div>
-          <form method="POST">
-              <input type="email" id="email" name="email" placeholder="Enter your Email" class="rectangle-6" required></input>
-              <input type="password" id="password" name="password" placeholder="Enter your Password"  class="rectangle-7" required></input>
-              <button class="rectangle-8" type="submit">Sign In</button>
+             
+  
+              <div>
+                <a href="/forgot-pass" class="txt1" data-target="#exampleModal" data-toggle="modal">
+                  Forgot Password?
+                </a>
+              </div>
+            </div>
+        
+  
+            <div class="container-login100-form-btn">
+              <button class="login100-form-btn">
+                Login
+              </button>
+            </div>
+            
+            
           </form>
+  
+          <div class="login100-more" style="background-image: url({{url_for('static', filename='images/Default-Images/pupqc-statue.png')}});">
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!--Reset Password Modal-->
+    <div class="modal top fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" data-mdb-backdrop="true" data-mdb-keyboard="true">
+   <div class="modal-dialog" style="width: 600px;">
+       <div class="modal-content text-center">
+           <div class="modal-header h5 text-white bg-danger justify-content-center">
+               Faculty Account Reset Password
+           </div>
+           <div class="modal-body px-5">
+               <p class="py-2">
+                   Enter your webmail address and we'll send you your new password. (ex@webmail.com)
+               </p>
+               <div class="form-outline">
+                <form method="POST" action="/reset-pass">
+                   <input name="resetemailpass" type="email" id="typeEmail" class="form-control my-3" required/>
+                   <label class="form-label" for="typeEmail">Email input</label>
+               </div>
+               <button class="btn btn-primary w-50 btn-danger">Reset Password</button>
+           </div>
+              </form>
+       </div>
+   </div>
+</div>
+
   </body>
 
   {% endblock %}
