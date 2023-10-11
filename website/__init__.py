@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_login import LoginManager
 from dotenv import load_dotenv
+from flask_mail import Mail
 
 import os
 load_dotenv()
@@ -14,6 +15,18 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     
+    # SMTP CONFIGURATION
+
+    app.config["MAIL_SERVER"]='smtp.gmail.com'
+    app.config["MAIL_PORT"]=465
+    app.config["MAIL_USERNAME"] = os.getenv("FISGMAIL")     
+    app.config['MAIL_PASSWORD'] = os.getenv("FISGMAILPASS") 
+    app.config['MAIL_DEFAULT_SENDER'] = 'PUPQC FIS'               
+    app.config['MAIL_USE_TLS']=False
+    app.config['MAIL_USE_SSL']=True
+
+    mail=Mail(app)
+        
     # LOADING DATABASE 
     from website.models import init_db
     init_db(app)

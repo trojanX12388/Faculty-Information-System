@@ -59,3 +59,8 @@ rsa==4.9
 six==1.16.0
 uritemplate==4.1.1
 
+# VERSION 1.8
+
+Flask-Mail==0.9.1
+flask_wtf==1.2.1
+

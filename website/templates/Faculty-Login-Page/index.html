@@ -55,7 +55,7 @@
              
   
               <div>
-                <a href="/forgot-pass" class="txt1" data-target="#exampleModal" data-toggle="modal">
+                <a class="txt1" data-target="#exampleModal" data-toggle="modal">
                   Forgot Password?
                 </a>
               </div>
@@ -85,21 +85,51 @@
            <div class="modal-header h5 text-white bg-danger justify-content-center">
                Faculty Account Reset Password
            </div>
-           <div class="modal-body px-5">
+           <div class="modal-body px-10">
                <p class="py-2">
-                   Enter your webmail address and we'll send you your new password. (ex@webmail.com)
+                   Enter your webmail address and we'll send you a link to reset your password. 
                </p>
+               <p class="py-2">(example123@webmail.com)</p>
                <div class="form-outline">
-                <form method="POST" action="/reset-pass">
-                   <input name="resetemailpass" type="email" id="typeEmail" class="form-control my-3" required/>
+                <form action="/request-reset-pass" method="POST">
+                   <input name="resetpass" type="email" id="typeEmail" class="form-control my-3" required/>
                    <label class="form-label" for="typeEmail">Email input</label>
                </div>
-               <button class="btn btn-primary w-50 btn-danger">Reset Password</button>
+               <button type="submit" class="btn btn-primary w-50 btn-danger">Reset Password</button>
            </div>
               </form>
        </div>
    </div>
 </div>
+
+{# SUCCESS MODAL #}  
+
+<button type="hidden" id="success" href="#successmodal" class="trigger-btn" data-toggle="modal"></button>
+
+<div id="successmodal" class="modal fade" data-backdrop="static"> 
+  <div class="modal-dialog modal-confirm">
+    <div class="modal-content text-center">
+      <div class="modal-header h5 text-white bg-success justify-content-center">				
+        <h4 class="modal-title w-100">Successfully Sent!</h4>	
+      </div>
+      <div class="modal-body px-10">
+        <p class="text-center">Your link to reset your Faculty Account Password was confirmed. Please check your webmail.</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <a href="/faculty-login" class="btn btn-primary w-50 btn-success">OK</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% if sentreset == 1 %}
+<script>
+  window.onload = function(){
+    document.getElementById('success').click();
+  }
+</script>
+{% endif %}
 
   </body>
 
