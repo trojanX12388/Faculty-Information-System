@@ -1,6 +1,0 @@
-{
-    "python.analysis.extraPaths": [
-        "./website",
-        "./website/Authentication"
-    ]
-}
