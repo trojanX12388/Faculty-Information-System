@@ -120,38 +120,6 @@ def faculty_denied():
      flash('Session Expired. Please Login again.', category='error')
      return redirect(url_for('auth.facultyL')) 
 
-# -------------------------------------------------------------
-
-# FORGOT PASSWORD ROUTE
-@auth.route('/request-reset-pass', methods=["POST"])
-def facultyF():
-    otp = generate_password_hash('sample')
-    email = request.form['resetpass']
-    msg = Message( 
-                    'Reset Faculty Password', 
-                    sender=("PUPQC FIS", "fis.pupqc2023@gmail.com"),
-                    recipients = [email] 
-                ) 
-    assert msg.sender == "PUPQC FIS <fis.pupqc2023@gmail.com>"
-    msg.body = (otp)
-    mail.send(msg)
-    return render_template("Faculty-Login-Page/index.html", sentreset=1) 
-
-# -------------------------------------------------------------
-
-# RESET PASSWORD ROUTE
-
-@auth.route('/reset-pass', methods=['GET', 'POST'])
-def facultyRP():
-    
-    # Update
-    u = update(Faculty_Profile)
-    u = u.values({"password": generate_password_hash('sample123')})
-    u = u.where(Faculty_Profile.email == "robertandrewb.up@gmail.com")
-    db.session.execute(u)
-    db.session.commit()
-    
-    return render_template("Faculty-Login-Page/resetpass.html") 
 
 # -------------------------------------------------------------
 
@@ -165,59 +133,98 @@ def Logout():
     flash('Logged Out Successfully!', category='success')
     return redirect(url_for('auth.facultyL')) 
 
-# -------------------------------------------------------------
-     
-@app.route('/reset', methods=["GET", "POST"])
-def reset():
-    form = EmailForm()
-    if form.validate_on_submit():
-        user = Faculty_Profile.query.filter_by(email=form.email.data).first_or_404()
-
-        subject = "Password reset requested"
-
-        # Here we use the URLSafeTimedSerializer we created in `util` at the
-        # beginning of the chapter
-        token = jwt.encode(Faculty_Profile.email, salt="recover-key")
-
-        recover_url = url_for(
-            'reset_with_token',
-            token=token,
-            _external=True)
-
-        html = render_template(
-            'email/recover.html',
-            recover_url=recover_url)
-
-        # SEND EMAIL
-        mail.send(user.email, subject, html)
-
-        return redirect(url_for('index'))
-    return render_template('reset.html', form=form)
-   
 
 # -------------------------------------------------------------
 
-@app.route('/reset/<token>', methods=["GET", "POST"])
-def reset_with_token(token):
-    try:
-        email = jwt.decode(token, salt="recover-key", max_age=86400)
-    except:
-        abort(404)
+# FORGOT PASSWORD ROUTE
+@auth.route('/request-reset-pass', methods=["POST"])
+def facultyF():
+    email = request.form['resetpass']
+    User = Faculty_Profile.query.filter_by(email=email).first()
+    
+    # CHECKING IF ENTERED EMAIL IS NOT IN THE DATABASE
+    if request.method == 'POST':
+        if not User:
+            return render_template("Faculty-Login-Page/emailnotfound.html", email=email) 
+        else:
+            token = jwt.encode({
+                    'user': request.form['resetpass'],
+                    # don't foget to wrap it in str function, otherwise it won't work [ i struggled with this one! ]
+                    'exp': (datetime.utcnow() + timedelta(minutes=15))
+                },
+                    app.config['SECRET_KEY'])
+            accesstoken = token.decode('utf-8')
+            
+            
+            
+            email = request.form['resetpass']
+            msg = Message( 
+                            'Reset Faculty Password', 
+                            sender=("PUPQC FIS", "fis.pupqc2023@gmail.com"),
+                            recipients = [email] 
+                        ) 
+            assert msg.sender == "PUPQC FIS <fis.pupqc2023@gmail.com>"
+            
+            recover_url = url_for(
+                    'auth.facultyRP',
+                    email=email,
+                    token=accesstoken,
+                    _external=True)
 
-    form = PasswordForm()
+            
+            msg.html = render_template(
+                    'Email/Recover.html',
+                    recover_url=recover_url)
+            
+            msg.body = (accesstoken)
+            mail.send(msg)
+            return render_template("Faculty-Login-Page/index.html", sentreset=1) 
 
-    if form.validate_on_submit():
-        user = Faculty_Profile.query.filter_by(email=email).first_or_404()
+# -------------------------------------------------------------
 
-        user.password = form.password.data
+# RESET PASSWORD ROUTE
 
-        db.session.add(user)
-        db.session.commit()
+# AUTHENTICATION WITH TOKEN KEY TO RESET PASSWORD
 
-        return redirect(url_for('signin'))
+def token_required(func):
+    # decorator factory which invoks update_wrapper() method and passes decorated function as an argument
+    @wraps(func)
+    def decorated(*args, **kwargs):
+        token = request.args.get('token')
+        if not token:
+            return jsonify({'Alert!': 'Token is missing!'}), 401
 
-    return render_template('reset_with_token.html', form=form, token=token)
+        try:
 
+            data = jwt.decode(token, app.config['SECRET_KEY'])
+        # You can use the JWT errors in exception
+        # except jwt.InvalidTokenError:
+        #     return 'Invalid token. Please log in again.'
+        except:
+            return jsonify({'Message': 'Invalid token'}), 403
+        return func(*args, **kwargs)
+    return decorated
+
+@auth.route('/reset-pass', methods=['GET', 'POST'])
+@token_required
+def facultyRP():
+    password1 = request.form.get('password1')
+    password2 = request.form.get('password2')
+
+    email = request.args.get('email')
+
+    # UPDATE NEW PASSWORD TO THE FACULTY ACCOUNT
+    if request.method == 'POST':
+        if password1 == password2:
+            # Update
+            u = update(Faculty_Profile)
+            u = u.values({"password": generate_password_hash(password1)})
+            u = u.where(Faculty_Profile.email == email)
+            db.session.execute(u)
+            db.session.commit()
+            return redirect(url_for('auth.facultyL')) 
+    
+    return render_template("Faculty-Login-Page/resetpass.html", email=email) 
 
 
 # -------------------------------------------------------------

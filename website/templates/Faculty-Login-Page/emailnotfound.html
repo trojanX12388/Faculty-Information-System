@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% block title %}Client Error!{% endblock %} {% block content%}
+
+<div class="d-flex align-items-center justify-content-center vh-100">
+    <div class="text-center">
+        <h1 class="display-1 fw-bold">Client Error!</h1>
+        <p class="lead"> <span class="text-danger">Opps!</span> Entered Email not found.</p>
+        <p class="lead">
+            The email {{ email }} you entered doesn't exist.
+          </p>
+        <a href="/faculty-login" class="btn btn-primary bg-danger">Go Back</a>
+    </div>
+</div>
+
+{% endblock %}

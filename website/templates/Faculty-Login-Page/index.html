@@ -4,7 +4,9 @@
     <div class="limiter">
       <div class="container-login100">
         <div class="wrap-login100">
-          <form method="POST" class="login100-form validate-form">
+ 
+          <form method="POST" class="login100-form validate-form" autocomplete="off"> 
+            <input autocomplete="false" name="hidden" type="text" style="display:none;">
             <img src="{{ url_for('static', filename='images/Default-Images/pupqc-logo.png')}}" class="rounded mx-auto d-block" />
             <h1 class="text-center">
               Faculty Login
@@ -16,14 +18,14 @@
             <br>
             <br>
             <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@webmail.com">
-              <input class="input100" type="text" name="email">
+              <input class="input100" type="text" name="email" autocomplete="off">
               <span class="focus-input100"></span>
               <span class="label-input100">Email</span>
             </div>
             
             
             <div class="wrap-input100 validate-input" data-validate="Password is required">
-              <input class="input100" type="password" name="password"> 
+              <input class="input100" type="password" name="password" autocomplete="off"> 
               <span class="focus-input100"></span>
               <span class="label-input100">Password</span>
             </div>
@@ -121,7 +123,6 @@
     </div>
   </div>
 </div>
-
 
 {% if sentreset == 1 %}
 <script>
