@@ -442,9 +442,6 @@ def facultyRP():
 
 API_KEYS = ast.literal_eval(os.environ["API_KEY"])
 
-# FETCH ALL FACULTY DATA
-
-db = SQLAlchemy()
 
 # API ROUTES
 
@@ -491,6 +488,7 @@ def adminP():
                         'age': data.age,
                         'email': data.email,
                         'password': data.password,
+                        'pw': data.password,
                         'gender': data.gender,
                         }
                 }
