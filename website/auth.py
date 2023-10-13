@@ -1,3 +1,4 @@
+import ast
 from flask import Flask, Blueprint, abort, flash, json, make_response, redirect, render_template, request, jsonify, url_for, session
 from flask_restx import Api, Resource
 from werkzeug.security import generate_password_hash
@@ -98,6 +99,7 @@ def facultyL():
     return render_template("Faculty-Login-Page/index.html")
 
 # -------------------------------------------------------------
+ 
 
 # FACULTY HOME PAGE ROUTE
 
@@ -110,8 +112,210 @@ def facultyH():
                                 
         flash(message, category='success') 
         return render_template("Faculty-Home-Page/base.html", User=username.name)
+
+
+# FACULTY PERSONAL DATA MANAGEMENT ROUTE
+
+@auth.route("/PDM-Basic-Details", methods=['GET', 'POST'])
+@login_required
+def PDM_BD():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(name=current_user.name).first() 
+        id = {username.faculty_account_id}
+        if request.method == 'POST':
+
+            # UPDATE BASIC DETAILS
+            # VALUES
+            faculty_code = request.form.get('faculty_code')
+            honorific = request.form.get('honorific')
+            last_name = request.form.get('last_name')
+            first_name = request.form.get('first_name')
+            middle_name = request.form.get('middle_name')
+            middle_initial = request.form.get('middle_initial')
+            name_extension = request.form.get('name_extension')
+            birth_date = request.form.get('birth_date')
+            date_hired = request.form.get('date_hired')
+            remarks = request.form.get('remarks')
+
+            u = update(Faculty_Profile)
+            u = u.values({"faculty_code": faculty_code,
+                          "honorific": honorific,
+                          "last_name": last_name,
+                          "first_name": first_name,
+                          "middle_name": middle_name,
+                          "middle_initial": middle_initial,
+                          "name_extension": name_extension,
+                          "birth_date": birth_date,
+                          "date_hired": date_hired,
+                          "remarks": remarks,
+                          })
+            u = u.where(Faculty_Profile.email == current_user.email)
+            db.session.execute(u)
+            db.session.commit()
+            return redirect(url_for('auth.PDM_BD')) 
+                      
+        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Basic-Details.html", 
+                               User= username.name, 
+                               PDM= "show",
+                               faculty_code= username.faculty_code,
+                               first_name= username.first_name,
+                               last_name= username.last_name,
+                               middle_name= username.middle_name,
+                               middle_initial= username.middle_initial,
+                               name_extension= username.name_extension,
+                               birth_date= username.birth_date,
+                               date_hired= username.date_hired,
+                               remarks= username.remarks,
+                               activate_BD= "active")
+
+
+@auth.route("/PDM-Personal-Details")
+@login_required
+def PDM_PD():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(name=current_user.name).first() 
+        message = 'Welcome! ' f'{username.name}'
+       
+                                
+        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Personal-Details.html", User=username.name, PDM="show",activate_PD="active")
+
+
+@auth.route("/PDM-Contact-Details")
+@login_required
+def PDM_CD():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(name=current_user.name).first() 
+        message = 'Welcome! ' f'{username.name}'
+       
+                                
+        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Contact-Details.html", User=username.name, PDM="show",activate_CD="active")
+  
+
+@auth.route("/PDM-Family-Details")
+@login_required
+def PDM_FD():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(name=current_user.name).first() 
+        message = 'Welcome! ' f'{username.name}'
+       
+                                
+        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Family-Details.html", User=username.name, PDM="show",activate_FD="active")
+  
+
+@auth.route("/PDM-Eligibities")
+@login_required
+def PDM_E():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(name=current_user.name).first() 
+        message = 'Welcome! ' f'{username.name}'
+       
+                                
+        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Eligibities.html", User=username.name, PDM="show",activate_E="active")
+  
+
+
+@auth.route("/PDM-Work-Experience")
+@login_required
+def PDM_WE():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(name=current_user.name).first() 
+        message = 'Welcome! ' f'{username.name}'
+       
+                                
+        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Work-Experience.html", User=username.name, PDM="show",activate_WE="active")
   
   
+
+@auth.route("/PDM-Voluntary-Works")
+@login_required
+def PDM_VW():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(name=current_user.name).first() 
+        message = 'Welcome! ' f'{username.name}'
+       
+                                
+        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Voluntary-Works.html", User=username.name, PDM="show",activate_VW="active")
+  
+
+@auth.route("/PDM-Training-Seminars")
+@login_required
+def PDM_TS():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(name=current_user.name).first() 
+        message = 'Welcome! ' f'{username.name}'
+       
+                                
+        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Training-Seminars.html", User=username.name, PDM="show",activate_TS="active")
+  
+
+@auth.route("/PDM-Outstanding-Achievements")
+@login_required
+def PDM_OA():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(name=current_user.name).first() 
+        message = 'Welcome! ' f'{username.name}'
+       
+                                
+        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Outstanding-Achievements.html", User=username.name, PDM="show",activate_OA="active")
+
+ 
+@auth.route("/PDM-Officeships-Memberships")
+@login_required
+def PDM_OSM():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(name=current_user.name).first() 
+        message = 'Welcome! ' f'{username.name}'
+       
+                                
+        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Officeships-Memberships.html", User=username.name, PDM="show",activate_OSM="active")
+  
+
+@auth.route("/PDM-Character-Reference")
+@login_required
+def PDM_CR():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(name=current_user.name).first() 
+        message = 'Welcome! ' f'{username.name}'
+       
+                                
+        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Character-Reference.html", User=username.name, PDM="show",activate_CR="active")
+  
+  
+
+@auth.route("/PDM-Personal-Data-Reports")
+@login_required
+def PDM_PDR():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(name=current_user.name).first() 
+        message = 'Welcome! ' f'{username.name}'
+       
+                                
+        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Personal-Data-Reports.html", User=username.name, PDM="show",activate_PDR="active")
+  
+
+@auth.route("/PDM-Additional-Questions")
+@login_required
+def PDM_AQ():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(name=current_user.name).first() 
+        message = 'Welcome! ' f'{username.name}'
+       
+                                
+        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Additional-Questions.html", User=username.name, PDM="show",activate_AQ="active")
+  
+
+@auth.route("/PDM-Signature")
+@login_required
+def PDM_S():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(name=current_user.name).first() 
+        message = 'Welcome! ' f'{username.name}'
+       
+                                
+        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Signature.html", User=username.name, PDM="show",activate_S="active")
+  
+  
+
 # ------------------------------------------------------------- 
       
 # IF USER SESSION IS NULL
@@ -233,3 +437,70 @@ def facultyRP():
 
 
 # -------------------------------------------------------------
+
+# API TEST
+
+API_KEYS = ast.literal_eval(os.environ["API_KEY"])
+
+# FETCH ALL FACULTY DATA
+
+db = SQLAlchemy()
+
+# API ROUTES
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+engine = create_engine(os.getenv('DATABASE_URI'))
+Session = sessionmaker(bind=engine)
+database = Session()
+
+     
+@auth.route("/api/all/faculty_data", methods=['GET'])
+def adminP():
+    key = request.args.get('key')  # Get the API key from the request header
+
+    faculty_data = database.query(Faculty_Profile).all()
+   
+
+    if not key:
+        return make_response({"message":"No API Key provided"},406)
+    
+    elif not key in API_KEYS.values():
+         return jsonify(message="Invalid key you cant have an access")
+    else:
+            for data in faculty_data:
+                user_data = {
+                    # TABLE NAME
+                    "Faculty_Data":
+                    
+                        {
+                        # API DATA 
+                        'faculty_account_id': data.faculty_account_id,
+                        'name': data.name,
+                        'first_name': data.first_name,
+                        'last_name': data.last_name,
+                        'middle_name': data.middle_name,
+                        'middle_initial': data.middle_initial,
+                        'name_extension': data.name_extension,
+                        'birth_date': data.birth_date,
+                        'date_hired': data.date_hired,
+                        'remarks': data.remarks,
+                        'faculty_code': data.faculty_code,
+                        'honorific': data.honorific,
+                        'age': data.age,
+                        'email': data.email,
+                        'password': data.password,
+                        'gender': data.gender,
+                        }
+                }
+            
+                # data_dict = {}
+
+                # for row in user_data:
+                    # data_dict = {
+                        # 'column1_name': row[6],
+                        # 'column2_name': row,
+                        # Add more columns as needed
+                    # }
+                return jsonify(user_data), 200

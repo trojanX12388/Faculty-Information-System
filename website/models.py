@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import inspect
 from werkzeug.security import generate_password_hash
@@ -11,6 +12,16 @@ class Faculty_Profile(db.Model, UserMixin):
 
     faculty_account_id = db.Column(db.Integer, primary_key=True)  # UserID
     name = db.Column(db.String(50), nullable=False)  # Name
+    first_name = db.Column(db.String(50))  # First Name
+    last_name = db.Column(db.String(50))  # Last Name
+    middle_name = db.Column(db.String(50))  # Middle Name
+    middle_initial = db.Column(db.String(50))  # Middle Initial
+    name_extension = db.Column(db.String(50))  # Name Extension
+    birth_date = db.Column(db.Date)  # Birthdate
+    date_hired = db.Column(db.Date)  # Date Hired
+    remarks = db.Column(db.String)  # Remarks
+    faculty_code = db.Column(db.Integer, nullable=False)  # Faculty Code
+    honorific = db.Column(db.String(50))  # Honorific
     age = db.Column(db.Integer, nullable=False)  # Age
     email = db.Column(db.String(50), unique=True, nullable=False)  # Email
     password = db.Column(db.String(128), nullable=False)  # Password
@@ -21,6 +32,16 @@ class Faculty_Profile(db.Model, UserMixin):
         return {
             'faculty_account_id': self.faculty_account_id,
             'name': self.name,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'middle_name': self.middle_name,
+            'middle_initial': self.middle_initial,
+            'name_extension': self.name_extension,
+            'birth_date': self.birth_date,
+            'date_hired': self.date_hired,
+            'remarks': self.remarks,
+            'faculty_code': self.faculty_code,
+            'honorific': self.honorific,
             'age': self.age,
             'email': self.email,
             'password': self.password,
@@ -124,16 +145,46 @@ def create_sample_data():
         
            
  # Create and insert Faculty_Profile
-    faculty_profile = Faculty_Profile(
+    faculty_sample1 = Faculty_Profile(
         name='Alma Matter',
-        age=35,email='alma123@gmail.com',
+        first_name='Palma',
+        last_name='Matter',
+        middle_name='Bryant',
+        middle_initial='B',
+        name_extension='',
+        birth_date= datetime.now(timezone.utc),
+        date_hired= datetime.now(timezone.utc),
+        remarks='',
+        faculty_code=91801,
+        honorific='N/A',
+        age=35,
+        email='alma123@gmail.com',
         password=generate_password_hash('alma123'),
         gender='Female'
         # Add more attributes here
+        )
+    
+    faculty_sample2 = Faculty_Profile(
+        name='Andrew Bardoquillo',
+        first_name='Andrew',
+        last_name='Bardoquillo',
+        middle_name='Lucero',
+        middle_initial='L',
+        name_extension='',
+        birth_date= datetime.now(timezone.utc),
+        date_hired= datetime.now(timezone.utc),
+        remarks='',
+        faculty_code=51295,
+        honorific='N/A',
+        age=26,
+        email='robertandrewb.up@gmail.com',
+        password=generate_password_hash('plazma@123'),
+        gender='Male'
+        # Add more attributes here
         ) 
     
-    
-    db.session.add(faculty_profile)
+    db.session.add(faculty_sample1)
+    db.session.add(faculty_sample2)
 
     db.session.commit()
 

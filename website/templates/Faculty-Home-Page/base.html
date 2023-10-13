@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Faculty Home Page</title>
+  <title>{% block title %}Faculty Home Page{% endblock %}</title> 
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -75,7 +75,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+              <a class="dropdown-item d-flex align-items-center" href="/PDM-Basic-Details">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -108,7 +108,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link " href="/faculty-home-page">
+        <a class="nav-link collapsed" href="/faculty-home-page">
           <i class="bi bi-house-fill"></i>
           <span>HOMEPAGE</span>
         </a>
@@ -118,74 +118,74 @@
         <a class="nav-link collapsed" data-bs-target="#PDM-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-person-fill"></i><span>PERSONAL DATA MANAGEMENT</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="PDM-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <ul id="PDM-nav" class="nav-content collapse {{ PDM }}" data-bs-parent="#sidebar-nav">
           <li>
-            <a href="forms-elements.html">
+            <a href="/PDM-Basic-Details" class="{{activate_BD}}">
               <i class="bi bi-circle"></i><span>Basic Details</span>
             </a>
           </li>
           <li>
-            <a href="forms-layouts.html">
+            <a href="/PDM-Personal-Details" class="{{activate_PD}}">
               <i class="bi bi-circle"></i><span>Personal Details</span>
             </a>
           </li>
           <li>
-            <a href="forms-editors.html">
+            <a href="/PDM-Contact-Details" class="{{activate_CD}}">
               <i class="bi bi-circle"></i><span>Contact Details</span>
             </a>
           </li>
           <li>
-            <a href="forms-validation.html">
+            <a href="/PDM-Family-Details" class="{{activate_FD}}">
               <i class="bi bi-circle"></i><span>Family Details</span>
             </a>
           </li>
            <li>
-            <a href="forms-validation.html">
+            <a href="/PDM-Eligibities" class="{{activate_E}}">
               <i class="bi bi-circle"></i><span>Eligibities</span>
             </a>
           </li>
           <li>
-            <a href="forms-validation.html">
+            <a href="/PDM-Work-Experience" class="{{activate_WE}}">
               <i class="bi bi-circle"></i><span>Work Experience</span>
             </a>
           </li>
           <li>
-            <a href="forms-validation.html">
+            <a href="/PDM-Voluntary-Works" class="{{activate_VW}}">
               <i class="bi bi-circle"></i><span>Voluntary Works</span>
             </a>
           </li>
           <li>
-            <a href="forms-validation.html">
+            <a href="/PDM-Training-Seminars" class="{{activate_TS}}">
               <i class="bi bi-circle"></i><span>Training & Seminars</span>
             </a>
           </li>
           <li>
-            <a href="forms-validation.html">
+            <a href="/PDM-Outstanding-Achievements" class="{{activate_OA}}">
               <i class="bi bi-circle"></i><span>Outstanding Achievements</span>
             </a>
           </li>
           <li>
-            <a href="forms-validation.html">
+            <a href="/PDM-Officeships-Memberships" class="{{activate_OSM}}">
               <i class="bi bi-circle"></i><span>Office Ships/ Memberships</span>
             </a>
           </li>
           <li>
-            <a href="forms-validation.html">
+            <a href="/PDM-Character-Reference" class="{{activate_CR}}">
               <i class="bi bi-circle"></i><span>Character Reference</span>
             </a>
           </li>
           <li>
-            <a href="forms-validation.html">
+            <a href="/PDM-Personal-Data-Reports" class="{{activate_PDR}}">
               <i class="bi bi-circle"></i><span>Personal Data Reports</span>
             </a>
           </li>
           <li>
-            <a href="forms-validation.html">
+            <a href="/PDM-Additional-Questions" class="{{activate_AQ}}">
               <i class="bi bi-circle"></i><span>Additional Questions</span>
             </a>
           </li>
           <li>
-            <a href="forms-validation.html">
+            <a href="/PDM-Signature" class="{{activate_S}}">
               <i class="bi bi-circle"></i><span>Signature</span>
             </a>
           </li>
