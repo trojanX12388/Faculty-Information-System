@@ -7,6 +7,7 @@ from flask_login import login_user,login_required, logout_user, current_user
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 from flask_mail import Mail,Message
+from datetime import datetime, timedelta, timezone
 
 import psycopg2
 import os
@@ -108,7 +109,7 @@ def facultyH():
         message = 'Welcome! ' f'{username.name}'
                                 
         flash(message, category='success') 
-        return render_template("Faculty-Home-Page/home.html", User=current_user)
+        return render_template("Faculty-Home-Page/base.html", User=username.name)
   
   
 # ------------------------------------------------------------- 
@@ -149,12 +150,12 @@ def facultyF():
         else:
             token = jwt.encode({
                     'user': request.form['resetpass'],
-                    # don't foget to wrap it in str function, otherwise it won't work [ i struggled with this one! ]
+                    # don't foget to wrap it in str function, otherwise it won't work 
                     'exp': (datetime.utcnow() + timedelta(minutes=15))
                 },
                     app.config['SECRET_KEY'])
-            accesstoken = token.decode('utf-8')
             
+            accesstoken = token.decode('utf-8')
             
             
             email = request.form['resetpass']
@@ -182,9 +183,13 @@ def facultyF():
 
 # -------------------------------------------------------------
 
+
+
+# -------------------------------------------------------------
+
 # RESET PASSWORD ROUTE
 
-# AUTHENTICATION WITH TOKEN KEY TO RESET PASSWORD
+# AUTHENTICATION FUNCTION WITH TOKEN KEY TO RESET PASSWORD
 
 def token_required(func):
     # decorator factory which invoks update_wrapper() method and passes decorated function as an argument
