@@ -39,6 +39,12 @@ from .models import Faculty_Profile
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+connection = psycopg2.connect(user= os.getenv('USER'),
+                                  password=os.getenv('PASSWORD'),
+                                  host=os.getenv('HOST'),
+                                  port=os.getenv('PORT'),
+                                  database=os.getenv('DB'))
+
 # -------------------------------------------------------------
 
 # SMTP CONFIGURATION
@@ -444,20 +450,24 @@ API_KEYS = ast.literal_eval(os.environ["API_KEY"])
 
 
 # API ROUTES
-
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
-engine = create_engine(os.getenv('DATABASE_URI'))
-Session = sessionmaker(bind=engine)
-database = Session()
-
      
 @auth.route("/api/all/faculty_data", methods=['GET'])
 def adminP():
     key = request.args.get('key')  # Get the API key from the request header
 
-    faculty_data = database.query(Faculty_Profile).all()
+    cursor = connection.cursor()
+    f = '"'
+    faculty = str("Faculty_Profile")
+    postgreSQL_select_Query = "SELECT * FROM" f'{f}'f'{faculty}'f'{f}'
+    
+    cursor.execute(postgreSQL_select_Query)
+
+    faculty_data = cursor.fetchall()
+
+    jsondict = ['faculty_data']
+   
+    for data in faculty_data:
+           jsondict.append(data)
    
 
     if not key:
@@ -466,39 +476,5 @@ def adminP():
     elif not key in API_KEYS.values():
          return jsonify(message="Invalid key you cant have an access")
     else:
-            for data in faculty_data:
-                user_data = {
-                    # TABLE NAME
-                    "Faculty_Data":
-                    
-                        {
-                        # API DATA 
-                        'faculty_account_id': data.faculty_account_id,
-                        'name': data.name,
-                        'first_name': data.first_name,
-                        'last_name': data.last_name,
-                        'middle_name': data.middle_name,
-                        'middle_initial': data.middle_initial,
-                        'name_extension': data.name_extension,
-                        'birth_date': data.birth_date,
-                        'date_hired': data.date_hired,
-                        'remarks': data.remarks,
-                        'faculty_code': data.faculty_code,
-                        'honorific': data.honorific,
-                        'age': data.age,
-                        'email': data.email,
-                        'password': data.password,
-                        'pw': data.password,
-                        'gender': data.gender,
-                        }
-                }
-            
-                # data_dict = {}
 
-                # for row in user_data:
-                    # data_dict = {
-                        # 'column1_name': row[6],
-                        # 'column2_name': row,
-                        # Add more columns as needed
-                    # }
-                return jsonify(user_data), 200
+        return jsonify(jsondict), 200

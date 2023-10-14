@@ -183,8 +183,28 @@ def create_sample_data():
         # Add more attributes here
         ) 
     
+    faculty_sample3 = Faculty_Profile(
+        name='Jason Derbis',
+        first_name='Jason',
+        last_name='Derbis',
+        middle_name='Lucero',
+        middle_initial='L',
+        name_extension='Jr.',
+        birth_date= datetime.now(timezone.utc),
+        date_hired= datetime.now(timezone.utc),
+        remarks='N/A',
+        faculty_code=81214,
+        honorific='N/A',
+        age=29,
+        email='sample123@gmail.com',
+        password=generate_password_hash('plazma@123'),
+        gender='Male'
+        # Add more attributes here
+        ) 
+    
     db.session.add(faculty_sample1)
     db.session.add(faculty_sample2)
+    db.session.add(faculty_sample3)
 
     db.session.commit()
 
