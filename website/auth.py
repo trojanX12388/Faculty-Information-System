@@ -12,6 +12,7 @@ from datetime import datetime, timedelta, timezone
 
 import psycopg2
 import os
+import requests
 
 load_dotenv()
 
@@ -455,26 +456,45 @@ API_KEYS = ast.literal_eval(os.environ["API_KEY"])
 def adminP():
     key = request.args.get('key')  # Get the API key from the request header
 
-    cursor = connection.cursor()
-    f = '"'
-    faculty = str("Faculty_Profile")
-    postgreSQL_select_Query = "SELECT * FROM" f'{f}'f'{faculty}'f'{f}'
-    
-    cursor.execute(postgreSQL_select_Query)
-
-    faculty_data = cursor.fetchall()
-
-    jsondict = ['faculty_data']
-   
-    for data in faculty_data:
-           jsondict.append(data)
-   
-
     if not key:
         return make_response({"message":"No API Key provided"},406)
     
     elif not key in API_KEYS.values():
          return jsonify(message="Invalid key you cant have an access")
     else:
+        cursor = connection.cursor()
+        f = '"'
+        faculty = str("Faculty_Profile")
+        postgreSQL_select_Query = "SELECT * FROM" f'{f}'f'{faculty}'f'{f}'
+        
+        cursor.execute(postgreSQL_select_Query)
 
-        return jsonify(jsondict), 200
+        faculty_data = cursor.fetchall()
+
+        jsontable = ['faculty_data']
+        
+    
+        for data in faculty_data:   
+            jsondata = {
+            'faculty_account_id': data[0],
+            'name': data[1],
+            'first_name': data[2],
+            'last_name': data[3],
+            'middle_name': data[4],
+            'middle_initial': data[5],
+            'name_extension': data[6],
+            'birth_date': data[7],
+            'date_hired': data[8],
+            'remarks': data[9],
+            'faculty_code': data[10],
+            'honorific': data[11],
+            'age': data[12],
+            'email': data[13],
+            'password': data[14],
+            'gender': data[15],
+        }
+            jsontable.append(jsondata)
+
+        return jsonify(jsontable), 200
+    
+
