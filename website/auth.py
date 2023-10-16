@@ -474,7 +474,6 @@ def adminP():
         faculty_data = cursor.fetchall()
 
         jsontable = ['faculty_data']
-        
     
         for data in faculty_data:   
             jsondata = {
