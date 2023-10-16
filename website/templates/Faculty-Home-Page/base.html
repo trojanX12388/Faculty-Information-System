@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Faculty Home Page</title>
+  <title>{% block title %}Faculty Home Page{% endblock %}</title> 
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -27,7 +27,8 @@
   <link href="https://cdn.remixicon.com/releases/v1.2.2/remixicon.css" rel="stylesheet">
  
    <!-- Template Main CSS File -->
-   <link rel="stylesheet" href="https://drive.google.com/uc?view&id=1NzevCnImUXuO-5vAuVlW081T6EEJXN4-">
+ <link rel="stylesheet" href="https://drive.google.com/uc?view&id=1NzevCnImUXuO-5vAuVlW081T6EEJXN4-">
+
 
   <!-- =======================================================
   * Template Name: NiceAdmin
@@ -74,7 +75,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+              <a class="dropdown-item d-flex align-items-center" href="/PDM-Basic-Details">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -107,501 +108,475 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link " href="/faculty-home-page">
-          <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
+        <a class="nav-link collapsed" href="/faculty-home-page">
+          <i class="bi bi-house-fill"></i>
+          <span>HOMEPAGE</span>
         </a>
-      </li><!-- End Dashboard Nav -->
+      </li><!-- End HOMEPAGE Nav -->
 
-     
+      <li class="nav-item"><!-- PERSONAL DATA MANAGEMENT Nav -->
+        <a class="nav-link collapsed" data-bs-target="#PDM-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-person-fill"></i><span>PERSONAL DATA MANAGEMENT</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="PDM-nav" class="nav-content collapse {{ PDM }}" data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="/PDM-Basic-Details" class="{{activate_BD}}">
+              <i class="bi bi-circle"></i><span>Basic Details</span>
+            </a>
+          </li>
+          <li>
+            <a href="/PDM-Personal-Details" class="{{activate_PD}}">
+              <i class="bi bi-circle"></i><span>Personal Details</span>
+            </a>
+          </li>
+          <li>
+            <a href="/PDM-Contact-Details" class="{{activate_CD}}">
+              <i class="bi bi-circle"></i><span>Contact Details</span>
+            </a>
+          </li>
+          <li>
+            <a href="/PDM-Family-Details" class="{{activate_FD}}">
+              <i class="bi bi-circle"></i><span>Family Details</span>
+            </a>
+          </li>
+           <li>
+            <a href="/PDM-Eligibities" class="{{activate_E}}">
+              <i class="bi bi-circle"></i><span>Eligibities</span>
+            </a>
+          </li>
+          <li>
+            <a href="/PDM-Work-Experience" class="{{activate_WE}}">
+              <i class="bi bi-circle"></i><span>Work Experience</span>
+            </a>
+          </li>
+          <li>
+            <a href="/PDM-Voluntary-Works" class="{{activate_VW}}">
+              <i class="bi bi-circle"></i><span>Voluntary Works</span>
+            </a>
+          </li>
+          <li>
+            <a href="/PDM-Training-Seminars" class="{{activate_TS}}">
+              <i class="bi bi-circle"></i><span>Training & Seminars</span>
+            </a>
+          </li>
+          <li>
+            <a href="/PDM-Outstanding-Achievements" class="{{activate_OA}}">
+              <i class="bi bi-circle"></i><span>Outstanding Achievements</span>
+            </a>
+          </li>
+          <li>
+            <a href="/PDM-Officeships-Memberships" class="{{activate_OSM}}">
+              <i class="bi bi-circle"></i><span>Office Ships/ Memberships</span>
+            </a>
+          </li>
+          <li>
+            <a href="/PDM-Character-Reference" class="{{activate_CR}}">
+              <i class="bi bi-circle"></i><span>Character Reference</span>
+            </a>
+          </li>
+          <li>
+            <a href="/PDM-Personal-Data-Reports" class="{{activate_PDR}}">
+              <i class="bi bi-circle"></i><span>Personal Data Reports</span>
+            </a>
+          </li>
+          <li>
+            <a href="/PDM-Additional-Questions" class="{{activate_AQ}}">
+              <i class="bi bi-circle"></i><span>Additional Questions</span>
+            </a>
+          </li>
+          <li>
+            <a href="/PDM-Signature" class="{{activate_S}}">
+              <i class="bi bi-circle"></i><span>Signature</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End PERSONAL DATA MANAGEMENT Nav -->
 
-      <li class="nav-heading">Pages</li>
-
+      <li class="nav-item"><!-- TEACHING INSTRUCTIONS Nav -->
+        <a class="nav-link collapsed" data-bs-target="#teaching-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-book-fill"></i><span>TEACHING INSTRUCTIONS</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="teaching-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Teaching Assignments</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Advising Mentoring</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-layouts.html">
+              <i class="bi bi-circle"></i><span>Teaching Effectiveness</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-layouts.html">
+              <i class="bi bi-circle"></i><span>Curriculum</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-layouts.html">
+              <i class="bi bi-circle"></i><span>Instructional Materials Developed</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-layouts.html">
+              <i class="bi bi-circle"></i><span>Special Project</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-layouts.html">
+              <i class="bi bi-circle"></i><span>Capstone</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-layouts.html">
+              <i class="bi bi-circle"></i><span>Thesis</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-layouts.html">
+              <i class="bi bi-circle"></i><span>Dissertation</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-layouts.html">
+              <i class="bi bi-circle"></i><span>Services</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End TEACHING INSTRUCTION Nav -->
+      
       <li class="nav-item">
-        <a class="nav-link collapsed" href="users-profile.html">
-          <i class="bi bi-person"></i>
-          <span>Profile</span>
+        <a class="nav-link collapsed" href="pages-register.html">
+          <i class="bi bi-chat-right-dots-fill"></i>
+          <span>FACULTY FEEDBACK & SURVEY</span>
         </a>
-      </li><!-- End Profile Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-faq.html">
-          <i class="bi bi-question-circle"></i>
-          <span>F.A.Q</span>
-        </a>
-      </li><!-- End F.A.Q Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-contact.html">
-          <i class="bi bi-envelope"></i>
-          <span>Contact</span>
-        </a>
-      </li><!-- End Contact Page Nav -->
+      </li><!-- End FEEDBACK AND SURVEY Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="pages-register.html">
-          <i class="bi bi-card-list"></i>
-          <span>Register</span>
+          <i class="bi bi-trophy-fill"></i>
+          <span>AWARDS & RECOGNITIONS</span>
         </a>
-      </li><!-- End Register Page Nav -->
+      </li><!-- End AWARDS & RECOGNITIONS Nav -->
+
+      
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="pages-register.html">
+          <i class="bi bi-people-fill"></i>
+          <span>COMMITTEE & ADMINISTRATIVE ROLES</span>
+        </a>
+      </li><!-- End COMMITTEE & ADMINISTRATIVE ROLES Nav -->
+
+      <li class="nav-item"><!-- RESEARCH INNOVATION FOR CREATIVE WORK Nav -->
+        <a class="nav-link collapsed" data-bs-target="#research-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-lightbulb-fill"></i><span>RESEARCH INNOVATION FOR CREATIVE WORK</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="research-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Research Utilization</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Research & Publication</span>
+            </a>
+          </li>
+
+        </ul>
+      </li><!-- End RESEARCH INNOVATION FOR CREATIVE WORK Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-login.html">
-          <i class="bi bi-box-arrow-in-right"></i>
-          <span>Login</span>
+        <a class="nav-link collapsed" href="pages-register.html">
+          <i class="bi bi-collection-fill"></i>
+          <span>COLLABORATION & RESEARCH OPPORTUNITIES</span>
         </a>
-      </li><!-- End Login Page Nav -->
+      </li><!-- End COLLABORATION & RESEARCH OPPORTUNITIES Nav -->
+
+      <li class="nav-item"><!-- PROFESSIONAL DEVELOPMENT Nav -->
+        <a class="nav-link collapsed" data-bs-target="#professional-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-file-earmark-person-fill"></i><span>PROFESSIONAL DEVELOPMENT</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="professional-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Workshops</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Enhancements</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Continuing Development</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Educational Qualifications</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Self-Assessment Tests</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Personal Development</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Training</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End RESEARCH INNOVATION FOR CREATIVE WORK Nav -->
+
+      <li class="nav-item"><!-- PROFESSIONAL EVALUATION Nav -->
+        <a class="nav-link collapsed" data-bs-target="#prof-evaluation-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-person-lines-fill"></i><span>PROFESSIONAL EVALUATION</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="prof-evaluation-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Professional Evaluation</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Teaching Effectiveness Evaluation</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Research & Publication Assessment</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Advising & Mentoring Evaluation</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Other Evaluations</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End PROFESSIONAL EVALUATION Nav -->
+
+      <li class="nav-item"><!-- EXTENSION SERVICES Nav -->
+        <a class="nav-link collapsed" data-bs-target="#extension-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-puzzle-fill"></i><span>EXTENSION SERVICES</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="extension-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Services To The Institution</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Services To The Community</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Quality Of The Services</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Other Extension Services</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End EXTENSION SERVICES Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-error-404.html">
-          <i class="bi bi-dash-circle"></i>
-          <span>Error 404</span>
+        <a class="nav-link collapsed" href="pages-register.html">
+          <i class="bi bi-calendar-check-fill"></i>
+          <span>ATTENDANCE MANAGEMENT</span>
         </a>
-      </li><!-- End Error 404 Page Nav -->
+      </li><!-- End ATTENDANCE MANAGEMENT Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-blank.html">
-          <i class="bi bi-file-earmark"></i>
-          <span>Blank</span>
+        <a class="nav-link collapsed" href="pages-register.html">
+          <i class="bi bi-person-dash-fill"></i>
+          <span>LEAVE OF ABSENCE MANAGEMENT</span>
         </a>
-      </li><!-- End Blank Page Nav -->
+      </li><!-- End LEAVE OF ABSENCE MANAGEMENT Nav -->
+
+      <li class="nav-item"><!-- SCHEDULE MANAGEMENT Nav -->
+        <a class="nav-link collapsed" data-bs-target="#schedule-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-clock-fill"></i><span>SCHEDULE MANAGEMENT</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="schedule-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Class Schedule</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Scheduled Programs</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Scheduled Activities</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Scheduled Events</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End SCHEDULE MANAGEMENT Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="pages-register.html">
+          <i class="bi bi-exclamation-circle-fill"></i>
+          <span>REQUEST</span>
+        </a>
+      </li><!-- End REQUEST Nav -->
+
+      
+      <li class="nav-item"><!-- ANNOUNCEMENT/FORUM Nav -->
+        <a class="nav-link collapsed" data-bs-target="#announcement-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-chat-left-quote-fill"></i><span>ANNOUNCEMENT/FORUM</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="announcement-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Announcements</span>
+            </a>
+          </li>
+          <li>
+            <a href="forms-elements.html">
+              <i class="bi bi-circle"></i><span>Forum</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End ANNOUNCEMENT/FORUM Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="pages-register.html">
+          <i class="bi bi-file-earmark-text-fill"></i>
+          <span>RECORDS</span>
+        </a>
+      </li><!-- End RECORDS Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="pages-register.html">
+          <i class="bi bi-bar-chart-line-fill"></i>
+          <span>ANALYTICS</span>
+        </a>
+      </li><!-- End ANALYTICS Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="pages-register.html">
+          <i><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-pulse-fill" viewBox="0 0 16 16">
+            <path d="M1.475 9C2.702 10.84 4.779 12.871 8 15c3.221-2.129 5.298-4.16 6.525-6H12a.5.5 0 0 1-.464-.314l-1.457-3.642-1.598 5.593a.5.5 0 0 1-.945.049L5.889 6.568l-1.473 2.21A.5.5 0 0 1 4 9H1.475Z"/>
+            <path d="M.88 8C-2.427 1.68 4.41-2 7.823 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C11.59-2 18.426 1.68 15.12 8h-2.783l-1.874-4.686a.5.5 0 0 0-.945.049L7.921 8.956 6.464 5.314a.5.5 0 0 0-.88-.091L3.732 8H.88Z"/>
+          </svg></i>
+          <span>MEDICAL INFORMATION</span>
+        </a>
+      </li><!-- End MEDICAL INFORMATION Nav -->
 
     </ul>
+    <br>
+    <br>
+    <br>
+    <div class="footer-copyright">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <img src="{{ url_for('static', filename='images/Default-Images/pupqc-logo.png')}}" class="rounded mx-auto d-block" style="width: 80px;height: 80px;"/>
+            <br>
+            <p style="font-size: small;">Faculty Information System of the Polytechnic University of the Philippines</p>
+            <p style="font-size: smaller; color: blue;">#123-456-789/ @pup.gov.ph</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </aside><!-- End Sidebar-->
+
+{% block content %}
 
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Dashboard</h1>
+      <h1>Homepage</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item active">Dashboard</li>
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item active">Announcements & Newsfeed</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
 
-    <section class="section dashboard">
-      <div class="row">
+    <section class="section">
+      <div class="row align-items-top">
+        <div class="col-lg-6">
 
-        <!-- Left side columns -->
-        <div class="col-lg-8">
-          <div class="row">
-
-            <!-- Sales Card -->
-            <div class="col-xxl-4 col-md-6">
-              <div class="card info-card sales-card">
-
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
-
-                <div class="card-body">
-                  <h5 class="card-title">Sales <span>| Today</span></h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-cart"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6>145</h6>
-                      <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div><!-- End Sales Card -->
-
-            <!-- Revenue Card -->
-            <div class="col-xxl-4 col-md-6">
-              <div class="card info-card revenue-card">
-
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
-
-                <div class="card-body">
-                  <h5 class="card-title">Revenue <span>| This Month</span></h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-currency-dollar"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6>$3,264</h6>
-                      <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div><!-- End Revenue Card -->
-
-            <!-- Customers Card -->
-            <div class="col-xxl-4 col-xl-12">
-
-              <div class="card info-card customers-card">
-
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
-
-                <div class="card-body">
-                  <h5 class="card-title">Customers <span>| This Year</span></h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-people"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6>1244</h6>
-                      <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span>
-
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-            </div><!-- End Customers Card -->
-
-            <!-- Reports -->
-            <div class="col-12">
-              <div class="card">
-
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
-
-                <div class="card-body">
-                  <h5 class="card-title">Reports <span>/Today</span></h5>
-
-                  <!-- Line Chart -->
-                  <div id="reportsChart"></div>
-
-                  <script>
-                    document.addEventListener("DOMContentLoaded", () => {
-                      new ApexCharts(document.querySelector("#reportsChart"), {
-                        series: [{
-                          name: 'Sales',
-                          data: [31, 40, 28, 51, 42, 82, 56],
-                        }, {
-                          name: 'Revenue',
-                          data: [11, 32, 45, 32, 34, 52, 41]
-                        }, {
-                          name: 'Customers',
-                          data: [15, 11, 32, 18, 9, 24, 11]
-                        }],
-                        chart: {
-                          height: 350,
-                          type: 'area',
-                          toolbar: {
-                            show: false
-                          },
-                        },
-                        markers: {
-                          size: 4
-                        },
-                        colors: ['#4154f1', '#2eca6a', '#ff771d'],
-                        fill: {
-                          type: "gradient",
-                          gradient: {
-                            shadeIntensity: 1,
-                            opacityFrom: 0.3,
-                            opacityTo: 0.4,
-                            stops: [0, 90, 100]
-                          }
-                        },
-                        dataLabels: {
-                          enabled: false
-                        },
-                        stroke: {
-                          curve: 'smooth',
-                          width: 2
-                        },
-                        xaxis: {
-                          type: 'datetime',
-                          categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
-                        },
-                        tooltip: {
-                          x: {
-                            format: 'dd/MM/yy HH:mm'
-                          },
-                        }
-                      }).render();
-                    });
-                  </script>
-                  <!-- End Line Chart -->
-
-                </div>
-
-              </div>
-            </div><!-- End Reports -->
-
-          </div>
-        </div><!-- End Left side columns -->
-
-        <!-- Right side columns -->
-        <div class="col-lg-4">
-
-          <!-- Recent Activity -->
+          <!-- Default Card -->
           <div class="card">
-            <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
-
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
-            </div>
-
             <div class="card-body">
-              <h5 class="card-title">Recent Activity <span>| Today</span></h5>
-
-              <div class="activity">
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">32 min</div>
-                  <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
-                  <div class="activity-content">
-                    Quia quae rerum <a href="#" class="fw-bold text-dark">explicabo officiis</a> beatae
-                  </div>
-                </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">56 min</div>
-                  <i class='bi bi-circle-fill activity-badge text-danger align-self-start'></i>
-                  <div class="activity-content">
-                    Voluptatem blanditiis blanditiis eveniet
-                  </div>
-                </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">2 hrs</div>
-                  <i class='bi bi-circle-fill activity-badge text-primary align-self-start'></i>
-                  <div class="activity-content">
-                    Voluptates corrupti molestias voluptatem
-                  </div>
-                </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">1 day</div>
-                  <i class='bi bi-circle-fill activity-badge text-info align-self-start'></i>
-                  <div class="activity-content">
-                    Tempore autem saepe <a href="#" class="fw-bold text-dark">occaecati voluptatem</a> tempore
-                  </div>
-                </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">2 days</div>
-                  <i class='bi bi-circle-fill activity-badge text-warning align-self-start'></i>
-                  <div class="activity-content">
-                    Est sit eum reiciendis exercitationem
-                  </div>
-                </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">4 weeks</div>
-                  <i class='bi bi-circle-fill activity-badge text-muted align-self-start'></i>
-                  <div class="activity-content">
-                    Dicta dolorem harum nulla eius. Ut quidem quidem sit quas
-                  </div>
-                </div><!-- End activity item-->
-
-              </div>
-
+              <h5 class="card-title">Announcement!</h5>
+              𝙄𝙉 𝙋𝙃𝙊𝙏𝙊𝙎|| "The First Year and Transferees Orientation," commenced at the Winnie Castelo Sports Complex yesterday, 12th of October. Following Mrs. Demelyn E. Monzon's speech addressing the faculty members, Director Jaime P. Gutierrez Jr. alongside Asst. Prof. Philip Soberano also introduced the PUPQC Officials and its Administrative Staffs.
+              As the program director of each course introduced themselves, the first year students discovered a lot more with the degree they had chosen. Aiming to aid the students with regard their queries, the different offices such as the Student and Affairs Services, Registrar Services, Scholarship Services, Guidance and Counseling Services were introduced. 
+              Brightening up the said programme, the Mag-aaral ng Unibersidad sa Sining at Adhika (MUSA) performed a highly spirited dance routine. On top of that, all academic and non-academic student organizations presented a brief overview of what their organization is all about.
+              The goal of this orientation is to ensure that everyone witnesses the glorious brilliance of the "𝙄𝙨𝙠𝙤𝙡𝙖𝙧𝙨 𝙣𝙜 𝘽𝙖𝙮𝙖𝙣." 
+              𝗖𝗮𝗺𝗲𝗿𝗮 𝗦𝗽𝗼𝘁𝘁𝗲𝗱? 👀 𝘊𝘩𝘦𝘤𝘬 𝘰𝘶𝘵 𝘪𝘧 𝘸𝘦 𝘩𝘢𝘥 𝘤𝘢𝘶𝘨𝘩𝘵 𝘺𝘰𝘶 𝘰𝘯 𝘤𝘢𝘮, 𝘮𝘨𝘢 𝘒𝘢-𝘣𝘰𝘴𝘦𝘴!
+              #WriteToReformPublishToInform
             </div>
-          </div><!-- End Recent Activity -->
+          </div><!-- End Default Card -->
+
 
       
 
-          <!-- Website Traffic -->
-          <div class="card">
-            <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
+        </div>
 
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
+        <div class="col-lg-6">
+          <!-- Card with an image on left -->
+          <div class="card mb-3">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="http://drive.google.com/uc?export=view&id=160D-XSWWXyiJw-LB-HExTsJl44zMTaji" class="img-fluid rounded-start" alt="Announcement Pic">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">The First Year and Transferees Orientation</h5>
+                  <p class="card-text">The goal of this orientation is to ensure that everyone witnesses the glorious brilliance of the "𝙄𝙨𝙠𝙤𝙡𝙖𝙧𝙨 𝙣𝙜 𝘽𝙖𝙮𝙖𝙣." - Oct 13, 2023</p>
+                </div>
+              </div>
             </div>
-
-            <div class="card-body pb-0">
-              <h5 class="card-title">Website Traffic <span>| Today</span></h5>
-
-              <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
-
-              <script>
-                document.addEventListener("DOMContentLoaded", () => {
-                  echarts.init(document.querySelector("#trafficChart")).setOption({
-                    tooltip: {
-                      trigger: 'item'
-                    },
-                    legend: {
-                      top: '5%',
-                      left: 'center'
-                    },
-                    series: [{
-                      name: 'Access From',
-                      type: 'pie',
-                      radius: ['40%', '70%'],
-                      avoidLabelOverlap: false,
-                      label: {
-                        show: false,
-                        position: 'center'
-                      },
-                      emphasis: {
-                        label: {
-                          show: true,
-                          fontSize: '18',
-                          fontWeight: 'bold'
-                        }
-                      },
-                      labelLine: {
-                        show: false
-                      },
-                      data: [{
-                          value: 1048,
-                          name: 'Search Engine'
-                        },
-                        {
-                          value: 735,
-                          name: 'Direct'
-                        },
-                        {
-                          value: 580,
-                          name: 'Email'
-                        },
-                        {
-                          value: 484,
-                          name: 'Union Ads'
-                        },
-                        {
-                          value: 300,
-                          name: 'Video Ads'
-                        }
-                      ]
-                    }]
-                  });
-                });
-              </script>
-
-            </div>
-          </div><!-- End Website Traffic -->
-
-          <!-- News & Updates Traffic -->
-          <div class="card">
-            <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
-
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
-            </div>
-
-            <div class="card-body pb-0">
-              <h5 class="card-title">News &amp; Updates <span>| Today</span></h5>
-
-              <div class="news">
-                <div class="post-item clearfix">
-                  <img src="assets/img/news-1.jpg" alt="">
-                  <h4><a href="#">Nihil blanditiis at in nihil autem</a></h4>
-                  <p>Sit recusandae non aspernatur laboriosam. Quia enim eligendi sed ut harum...</p>
-                </div>
-
-                <div class="post-item clearfix">
-                  <img src="assets/img/news-2.jpg" alt="">
-                  <h4><a href="#">Quidem autem et impedit</a></h4>
-                  <p>Illo nemo neque maiores vitae officiis cum eum turos elan dries werona nande...</p>
-                </div>
-
-                <div class="post-item clearfix">
-                  <img src="assets/img/news-3.jpg" alt="">
-                  <h4><a href="#">Id quia et et ut maxime similique occaecati ut</a></h4>
-                  <p>Fugiat voluptas vero eaque accusantium eos. Consequuntur sed ipsam et totam...</p>
-                </div>
-
-                <div class="post-item clearfix">
-                  <img src="assets/img/news-4.jpg" alt="">
-                  <h4><a href="#">Laborum corporis quo dara net para</a></h4>
-                  <p>Qui enim quia optio. Eligendi aut asperiores enim repellendusvel rerum cuder...</p>
-                </div>
-
-                <div class="post-item clearfix">
-                  <img src="assets/img/news-5.jpg" alt="">
-                  <h4><a href="#">Et dolores corrupti quae illo quod dolor</a></h4>
-                  <p>Odit ut eveniet modi reiciendis. Atque cupiditate libero beatae dignissimos eius...</p>
-                </div>
-
-              </div><!-- End sidebar recent posts-->
-
-            </div>
-          </div><!-- End News & Updates -->
-
-        </div><!-- End Right side columns -->
+          </div><!-- End Card with an image on left -->
+        </div>
 
       </div>
     </section>
 
   </main><!-- End #main -->
 
+{% endblock %}
+
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy;<strong><span>MAIN FACULTY PAGE</span></strong>. All Rights Reserved
+      &copy;<strong><span>Copyright PUPQCFIS 2023.</span></strong>. All Rights Reserved
     </div>
     
   </footer><!-- End Footer -->

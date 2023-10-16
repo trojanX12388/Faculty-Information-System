@@ -3,10 +3,29 @@ from flask_restx import Api, Resource
 from dotenv import load_dotenv
 from .authentication import *
 
+
+# DATABASE CONNECTION
+
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import inspect,update, values
+from sqlalchemy.orm.attributes import flag_modified
+
 import ast
 import os
 
+# LOADING MODEL CLASSES
+
+
+
+# LOADING MODEL CLASSES
+
 load_dotenv()
+
+
+# EXECUTING DATABASE
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Access API keys from environment variables
 
@@ -76,6 +95,10 @@ def create_user():
     data = request.get_json()
     
     return jsonify(data), 201
+
+
+
+
 
 
 # API ROUTES
