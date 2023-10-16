@@ -468,8 +468,8 @@ def adminP():
         cursor.execute(postgreSQL_select_Query)
 
         faculty_data = cursor.fetchall()
-
-        jsontable = ['faculty_data']
+        
+        jsontable = {'faculty_data':[]}
     
         for data in faculty_data:   
             jsondata = {
@@ -490,7 +490,7 @@ def adminP():
             'password': data[14],
             'gender': data[15],
         }
-            jsontable.append(jsondata)
+            jsontable["faculty_data"].append(dict(jsondata))
             cursor.close()
 
         return jsonify(jsontable), 200
