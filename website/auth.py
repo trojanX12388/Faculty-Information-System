@@ -81,18 +81,17 @@ def facultyL():
 
     email = request.form.get('email')
     password = request.form.get('password')
+    User = Faculty_Profile.query.filter_by(email=email).first()
     
     # CHECKING IF ENTERED EMAIL IS NOT IN THE DATABASE
     if request.method == 'POST':
-        User = Faculty_Profile.query.filter_by(email=email).first()
         if not User:
             flash('Entered Email is not found in the system.', category='error')  
         
         # USER ACCOUNT VERIFICATION
         else:
             if check_password_hash(User.password,password):
-                    session['user'] = email
-                    session['faculty_logged_in'] = True
+                
                     login_user(User, remember=True)
                    
                     return redirect(url_for('auth.facultyH'))   
@@ -336,8 +335,6 @@ def faculty_denied():
 @auth.route("/logout")
 @login_required
 def Logout():
-    session.pop('user', None)
-    session.pop('faculty_logged_in', None)
     logout_user()
     flash('Logged Out Successfully!', category='success')
     return redirect(url_for('auth.facultyL')) 
