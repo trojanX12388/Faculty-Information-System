@@ -44,10 +44,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 engine=create_engine(os.getenv('DATABASE_URI'))
 session=sessionmaker(bind= engine)()
 
-# DATABASE CURSOR
-cursor=session.connection().connection.cursor()
-
-
 # -------------------------------------------------------------
 
 # SMTP CONFIGURATION
@@ -85,11 +81,10 @@ def facultyL():
 
     email = request.form.get('email')
     password = request.form.get('password')
-
-    User = Faculty_Profile.query.filter_by(email=email).first()
     
     # CHECKING IF ENTERED EMAIL IS NOT IN THE DATABASE
     if request.method == 'POST':
+        User = Faculty_Profile.query.filter_by(email=email).first()
         if not User:
             flash('Entered Email is not found in the system.', category='error')  
         
@@ -99,7 +94,7 @@ def facultyL():
                     session['user'] = email
                     session['faculty_logged_in'] = True
                     login_user(User, remember=True)
-                    
+                   
                     return redirect(url_for('auth.facultyH'))   
                     
             else:
@@ -468,7 +463,8 @@ def adminP():
         f = '"'
         faculty = str("Faculty_Profile")
         postgreSQL_select_Query = "SELECT * FROM" f'{f}'f'{faculty}'f'{f}'
-        
+        # DATABASE CURSOR
+        cursor=session.connection().connection.cursor()
         cursor.execute(postgreSQL_select_Query)
 
         faculty_data = cursor.fetchall()
@@ -495,6 +491,7 @@ def adminP():
             'gender': data[15],
         }
             jsontable.append(jsondata)
+            cursor.close()
 
         return jsonify(jsontable), 200
     
