@@ -470,11 +470,14 @@ def adminP():
         faculty_data = cursor.fetchall()
         
         jsontable = {'faculty_data':[]}
-    
+        faculty_primary = {'faculty':[]}
+      
         for data in faculty_data:   
-            jsondata = {
+            jsonprimarydata = {
             'faculty_account_id': data[0],
             'name': data[1],
+        }
+            jsondata = {
             'first_name': data[2],
             'last_name': data[3],
             'middle_name': data[4],
@@ -488,11 +491,14 @@ def adminP():
             'age': data[12],
             'email': data[13],
             'password': data[14],
-            'gender': data[15],
-        }
-            jsontable["faculty_data"].append(dict(jsondata))
+            'gender': data[15]
+            }
+            
+            faculty_primary["faculty"].append(dict(jsonprimarydata))
+            faculty_primary["faculty"].append(dict(jsondata))
             cursor.close()
-
+            
+        jsontable["faculty_data"].append(dict(faculty_primary))
         return jsonify(jsontable), 200
     
 
