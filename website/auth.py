@@ -81,10 +81,11 @@ def facultyL():
 
     email = request.form.get('email')
     password = request.form.get('password')
-    User = Faculty_Profile.query.filter_by(email=email).first()
+   
     
     # CHECKING IF ENTERED EMAIL IS NOT IN THE DATABASE
     if request.method == 'POST':
+        User = Faculty_Profile.query.filter_by(email=email).first()
         if not User:
             flash('Entered Email is not found in the system.', category='error')  
         
@@ -468,11 +469,13 @@ def adminP():
         
         jsontable = {'faculty_data':[]}
         faculty_primary = {'faculty':[]}
+        faculty_primary_data = {'data':[]}
       
         for data in faculty_data:   
             jsonprimarydata = {
             'faculty_account_id': data[0],
             'name': data[1],
+            'data':[]
         }
             jsondata = {
             'first_name': data[2],
@@ -491,11 +494,12 @@ def adminP():
             'gender': data[15]
             }
             
-            faculty_primary["faculty"].append(dict(jsonprimarydata))
-            faculty_primary["faculty"].append(dict(jsondata))
-            cursor.close()
+            jsonprimarydata["data"].append(dict(jsondata))
+            faculty_primary["faculty"].append(dict(jsonprimarydata))   
             
+            cursor.close()
         jsontable["faculty_data"].append(dict(faculty_primary))
+        
         return jsonify(jsontable), 200
     
 
