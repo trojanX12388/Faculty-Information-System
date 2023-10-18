@@ -469,7 +469,6 @@ def adminP():
         
         jsontable = {'faculty_data':[]}
         faculty_primary = {'faculty':[]}
-        faculty_primary_data = {'data':[]}
       
         for data in faculty_data:   
             jsonprimarydata = {
