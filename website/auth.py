@@ -9,7 +9,6 @@ from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 from flask_mail import Mail,Message
 from datetime import datetime, timedelta, timezone
-from PIL import Image
 from mimetypes import guess_extension
 from urllib.request import urlretrieve
 import ast
