@@ -1,14 +1,20 @@
-import ast
 from flask import Flask, Blueprint, abort, flash, json, make_response, redirect, render_template, request, jsonify, url_for, session
 from flask_restx import Api, Resource
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
+from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 from flask_login import login_user,login_required, logout_user, current_user
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 from flask_mail import Mail,Message
 from datetime import datetime, timedelta, timezone
+from PIL import Image
+from mimetypes import guess_extension
+from urllib.request import urlretrieve
+import ast
+import base64
+import io
 
 import psycopg2
 import os
@@ -66,6 +72,15 @@ class PasswordForm(Form):
 
 # -------------------------------------------------------------
 
+# PYDRIVE AUTH CONFIGURATION
+gauth = GoogleAuth()
+drive = GoogleDrive(gauth)
+
+# -------------------------------------------------------------
+
+ # UPLOAD CONFIGURATION
+    
+app.config['IMAGE_UPLOADS']='temp/'
 
 # WEB AUTH ROUTES URL
 
@@ -113,9 +128,18 @@ def facultyH():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(name=current_user.name).first() 
         message = 'Welcome! ' f'{username.name}'
+        
+        profile_default='1vWDGtiKcOO89TnO2EpSr7oLOeGXV9h8-'
+
+        if username.profile_pic == None:
+            profile_pic=profile_default
+        else:
+            profile_pic=username.profile_pic
                                 
         flash(message, category='success') 
-        return render_template("Faculty-Home-Page/base.html", User=username.name)
+        return render_template("Faculty-Home-Page/base.html", 
+                               User=username.name,
+                               profile_pic=profile_pic)
 
 
 # FACULTY PERSONAL DATA MANAGEMENT ROUTE
@@ -125,7 +149,17 @@ def facultyH():
 def PDM_BD():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(name=current_user.name).first() 
-        id = {username.faculty_account_id}
+        
+        profile_default='1vWDGtiKcOO89TnO2EpSr7oLOeGXV9h8-'
+
+        if username.profile_pic == None:
+            profile_pic=profile_default
+        else:
+            profile_pic=username.profile_pic
+           
+        
+        # UPDATE PROFILE BASIC DETAILS
+        
         if request.method == 'POST':
 
             # UPDATE BASIC DETAILS
@@ -170,7 +204,59 @@ def PDM_BD():
                                birth_date= username.birth_date,
                                date_hired= username.date_hired,
                                remarks= username.remarks,
+                               profile_pic=profile_pic,
                                activate_BD= "active")
+
+
+
+
+@auth.route("/PDM-Basic-Details-Update-Pic", methods=['POST'])
+@login_required
+def PDM_BDUP():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(name=current_user.name).first() 
+        id = username.faculty_account_id
+        
+        # UPDATE PROFILE PIC
+        
+        file =  request.form.get('base64')
+        ext = request.files.get('fileup')
+        ext = ext.filename
+        
+        # FACULTY FIS PROFILE PIC FOLDER ID
+        folder = '1mT1alkWJ-akPnPyB9T7vtumNutwqRK0S'
+        
+        
+        url = """{}""".format(file)
+                
+        filename, m = urlretrieve(url)
+       
+        file_list = drive.ListFile({'q': "'%s' in parents and trashed=false"%(folder)}).GetList()
+        try:
+            for file1 in file_list:
+                if file1['title'] == str(id):
+                    file1.Delete()                
+        except:
+            pass
+        # CONFIGURE FILE FORMAT AND NAME
+        file1 = drive.CreateFile(metadata={
+            "title": ""+ str(id),
+            "parents": [{"id": folder}],
+            "mimeType": "image/png"
+            })
+        
+        # GENERATE FILE AND UPLOAD
+        file1.SetContentFile(filename)
+        file1.Upload()
+        
+        u = update(Faculty_Profile)
+        u = u.values({"profile_pic": '%s'%(file1['id'])})
+        u = u.where(Faculty_Profile.faculty_account_id == current_user.faculty_account_id)
+        db.session.execute(u)
+        db.session.commit()
+        
+        return redirect(url_for('auth.PDM_BD')) 
+        
 
 
 @auth.route("/PDM-Personal-Details")

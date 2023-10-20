@@ -26,6 +26,7 @@ class Faculty_Profile(db.Model, UserMixin):
     email = db.Column(db.String(50), unique=True, nullable=False)  # Email
     password = db.Column(db.String(128), nullable=False)  # Password
     gender = db.Column(db.String(10), nullable=False)  # Gender
+    profile_pic = db.Column(db.String(50))  # Profile Pic
     data = db.relationship('Faculty_Data')
 
     def to_dict(self):
@@ -46,6 +47,7 @@ class Faculty_Profile(db.Model, UserMixin):
             'email': self.email,
             'password': self.password,
             'gender': self.gender,
+            'profile_pic': self.profile_pic,
             'data': self.data
         }
         

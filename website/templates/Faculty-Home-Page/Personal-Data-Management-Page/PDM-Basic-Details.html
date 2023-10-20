@@ -21,7 +21,7 @@
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-              <img src="http://drive.google.com/uc?export=view&id=1vWDGtiKcOO89TnO2EpSr7oLOeGXV9h8-" alt="Profile" class="rounded-circle">
+              <img src="http://drive.google.com/uc?export=view&id={{profile_pic}}" alt="Profile" class="rounded-circle">
               <h2>{{User}}</h2>
               <h3>Faculty Member</h3>
               <h3>00064</h3>
@@ -50,18 +50,17 @@
                 <div class="tab-pane fade show active profile-edit pt-3" id="profile-basic-details">
 
                   <!-- Profile Edit Form -->
-                  <form method="POST">
                     <div class="row mb-3">
                       <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Picture</label>
                       <div class="col-md-8 col-lg-9">
-                        <img src="http://drive.google.com/uc?export=view&id=1vWDGtiKcOO89TnO2EpSr7oLOeGXV9h8-" alt="Profile">
+                        <img src="http://drive.google.com/uc?export=view&id={{profile_pic}}" alt="Profile">
                         <div class="pt-2">
                           <a class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload" data-target="#uploadprofile" data-toggle="modal"></i></a>
                           <a class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
                         </div>
                       </div>
                     </div>
-
+                  <form method="POST" enctype="multipart/form-data" accept-charset="utf-8">
                     <div class="row mb-3">
                       <label for="employee_no" class="col-md-4 col-lg-3 col-form-label">Employee No.</label>
                       <div class="col-md-8 col-lg-9">
@@ -187,8 +186,7 @@
                 <p class="white">Select Image file to update your profile photo.</p>
               </div>
             </div>
-            <form name="upload" method="post" action="#" enctype="multipart/form-data" accept-charset="utf-8">
-             
+            <form method="POST" action="/PDM-Basic-Details-Update-Pic" enctype="multipart/form-data" accept-charset="utf-8">
                   <div class="col-md-12">
                     <div id="selectedBanner"></div>
                     <!--the three icons: default, ok file (img), error file (not an img)-->
@@ -202,6 +200,7 @@
                     <button type="button" id="btnup" class="btn btn-warning btn-sm" onclick="document.getElementById('fileup').click()">Browse image...</button>
                     <!--this is the actual file input, is set with opacity=0 beacause we wanna see our custom one-->
                     <input type="file" value="" name="fileup" id="fileup" hidden></input>
+                    <input type="text" id="base64" name="base64" hidden></input>
   
               </div>
                 <!--additional fields-->
@@ -221,11 +220,11 @@
     </div>
  </div>
 
-
- 
  
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.3/js/bootstrap.min.js"></script>
+
+
 
 
 {% endblock %}

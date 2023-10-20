@@ -25,7 +25,6 @@ def create_app():
     app.config['MAIL_USE_TLS']=False
     app.config['MAIL_USE_SSL']=True
     
-
     mail=Mail(app)
         
     # LOADING DATABASE 
