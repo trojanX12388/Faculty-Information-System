@@ -11,13 +11,10 @@ from flask_mail import Mail,Message
 from datetime import datetime, timedelta, timezone
 from mimetypes import guess_extension
 from urllib.request import urlretrieve
-import ast
-import base64
-import io
 
-import psycopg2
+import ast
 import os
-import requests
+
 
 load_dotenv()
 
@@ -107,8 +104,7 @@ def facultyL():
         else:
             if check_password_hash(User.password,password):
                 
-                    login_user(User, remember=True)
-                   
+                    login_user(User, remember=False)
                     return redirect(url_for('auth.facultyH'))   
                     
             else:

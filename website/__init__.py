@@ -1,7 +1,8 @@
-from flask import Flask
+from flask import Flask, session
 from flask_login import LoginManager
 from dotenv import load_dotenv
 from flask_mail import Mail
+from datetime import timedelta
 
 import os
 load_dotenv()
@@ -51,6 +52,12 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         return Faculty_Profile.query.get(int(user_id))
+    
+    @app.before_request
+    def before_request():
+        session.permanent = True
+        app.permanent_session_lifetime = timedelta(minutes=60)
+        session.modified = True
     
     return app
     
