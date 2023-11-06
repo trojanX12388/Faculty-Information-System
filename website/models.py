@@ -12,13 +12,13 @@ class Faculty_Profile(db.Model, UserMixin):
 
     faculty_account_id = db.Column(db.Integer, primary_key=True)  # UserID
     name = db.Column(db.String(50), nullable=False)  # Name
-    first_name = db.Column(db.String(50))  # First Name
-    last_name = db.Column(db.String(50))  # Last Name
+    first_name = db.Column(db.String(50), nullable=False)  # First Name
+    last_name = db.Column(db.String(50), nullable=False)  # Last Name
     middle_name = db.Column(db.String(50))  # Middle Name
     middle_initial = db.Column(db.String(50))  # Middle Initial
     name_extension = db.Column(db.String(50))  # Name Extension
-    birth_date = db.Column(db.Date)  # Birthdate
-    date_hired = db.Column(db.Date)  # Date Hired
+    birth_date = db.Column(db.Date, nullable=False)  # Birthdate
+    date_hired = db.Column(db.Date, nullable=False)  # Date Hired
     remarks = db.Column(db.String)  # Remarks
     faculty_code = db.Column(db.Integer, nullable=False)  # Faculty Code
     honorific = db.Column(db.String(50))  # Honorific
