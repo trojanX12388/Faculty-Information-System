@@ -28,7 +28,7 @@ load_dotenv()
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-engine=create_engine(os.getenv('DATABASE_URI'))
+engine=create_engine(os.getenv('DATABASE_URI'), pool_pre_ping=True, pool_size=10, max_overflow=20, pool_recycle=1800)
 session=sessionmaker(bind= engine)()
 
 
