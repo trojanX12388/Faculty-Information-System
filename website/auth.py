@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, abort, flash, json, make_response, redirect, render_template, request, jsonify, url_for, session
+from flask import Flask, Blueprint, abort, flash, json, make_response, redirect, render_template, request, jsonify, url_for
 from flask_restx import Api, Resource
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
@@ -31,10 +31,7 @@ from wtforms.validators import DataRequired, Email
 
 # DATABASE CONNECTION
 from .models import db
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine,inspect,update, values
-from sqlalchemy.orm.attributes import flag_modified
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import update
 
 # LOADING MODEL CLASSES
 from .models import Faculty_Profile
@@ -43,9 +40,6 @@ from .models import Faculty_Profile
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-engine=create_engine(os.getenv('DATABASE_URI'))
-session=sessionmaker(bind= engine)()
 
 # -------------------------------------------------------------
 
@@ -193,6 +187,7 @@ def PDM_BD():
             u = u.where(Faculty_Profile.faculty_account_id == current_user.faculty_account_id)
             db.session.execute(u)
             db.session.commit()
+            db.session.close()
             return redirect(url_for('auth.PDM_BD')) 
                       
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Basic-Details.html", 
@@ -258,6 +253,7 @@ def PDM_BDUP():
         u = u.where(Faculty_Profile.faculty_account_id == current_user.faculty_account_id)
         db.session.execute(u)
         db.session.commit()
+        db.session.close()
         
         return redirect(url_for('auth.PDM_BD')) 
         
@@ -287,6 +283,7 @@ def PDM_BDCP():
         u = u.where(Faculty_Profile.faculty_account_id == current_user.faculty_account_id)
         db.session.execute(u)
         db.session.commit()
+        db.session.close()
         
         return redirect(url_for('auth.PDM_BD')) 
 
@@ -642,6 +639,7 @@ def facultyRP():
             u = u.where(Faculty_Profile.email == email)
             db.session.execute(u)
             db.session.commit()
+            db.session.close()
             return redirect(url_for('auth.facultyL')) 
     
     return render_template("Faculty-Login-Page/resetpass.html", email=email) 

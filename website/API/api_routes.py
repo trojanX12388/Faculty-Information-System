@@ -31,7 +31,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 engine=create_engine(os.getenv('DATABASE_URI'), pool_pre_ping=True, pool_size=10, max_overflow=20, pool_recycle=1800)
 session=sessionmaker(bind= engine)()
 
-
 # Access API keys from environment variables
 
 API_KEYS = ast.literal_eval(os.environ["API_KEY"])
@@ -162,6 +161,10 @@ def faculty_data():
         faculty = str("Faculty_Profile")
         postgreSQL_select_Query = "SELECT * FROM" f'{f}'f'{faculty}'f'{f}'
         # DATABASE CURSOR
+        
+     
+        cursor = session.begin()
+        
         cursor=session.connection().connection.cursor()
         cursor.execute(postgreSQL_select_Query)
 
@@ -197,6 +200,7 @@ def faculty_data():
             faculty_primary["faculty"].append(dict(jsonprimarydata))   
             
             cursor.close()
+            session.close()
         jsontable["faculty_data"].append(dict(faculty_primary))
         
         return jsonify(jsontable), 200

@@ -210,3 +210,4 @@ def create_sample_data():
 
     db.session.commit()
 
+    db.session.close()
