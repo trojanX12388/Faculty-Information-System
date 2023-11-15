@@ -12,6 +12,7 @@ from datetime import datetime, timedelta, timezone
 from mimetypes import guess_extension
 from urllib.request import urlretrieve
 
+import time 
 import ast
 import os
 
@@ -87,29 +88,41 @@ auth = Blueprint('auth', __name__)
 
 # FACULTY PAGE ROUTE
 
+entry = 2
+
+# Default Profile Pic
+profile_default='14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08'
+
+
 @auth.route('/faculty-login', methods=['GET', 'POST'])
 def facultyL():
 
     email = request.form.get('email')
     password = request.form.get('password')
-   
+    
+    global entry
     
     # CHECKING IF ENTERED EMAIL IS NOT IN THE DATABASE
-    if request.method == 'POST':
-        User = Faculty_Profile.query.filter_by(email=email).first()
-        if not User:
-            flash('Entered Email is not found in the system.', category='error')  
-        
-        # USER ACCOUNT VERIFICATION
-        else:
-            if check_password_hash(User.password,password):
-                
-                    login_user(User, remember=False)
-                    return redirect(url_for('auth.facultyH'))   
-                    
+    if entry != 0:
+        if request.method == 'POST':
+            User = Faculty_Profile.query.filter_by(email=email).first()
+            if not User:
+                entry -= 1
+                flash('Incorrect email or password!', category='error')  
+
+            # USER ACCOUNT VERIFICATION
             else:
-                flash('Incorrect Password.', category='error')
-                          
+                if check_password_hash(User.password,password):
+                    
+                        login_user(User, remember=False)
+                        return redirect(url_for('auth.facultyH'))   
+                        
+                else:
+                    entry -= 1
+                    flash('Incorrect email or password!', category='error')
+    else:
+        flash('Incorrect attempt... wait 3 minutes to try again.', category='error')   
+        entry = 2                 
     return render_template("Faculty-Login-Page/index.html")
 
 # -------------------------------------------------------------
@@ -123,8 +136,6 @@ def facultyH():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
         
-        profile_default='1vWDGtiKcOO89TnO2EpSr7oLOeGXV9h8-'
-
         if username.profile_pic == None:
             profile_pic=profile_default
         else:
@@ -143,7 +154,6 @@ def PDM_BD():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
         
-        profile_default='1vWDGtiKcOO89TnO2EpSr7oLOeGXV9h8-'
 
         if username.profile_pic == None:
             profile_pic=profile_default
@@ -251,15 +261,40 @@ def PDM_BDUP():
         
         return redirect(url_for('auth.PDM_BD')) 
         
+@auth.route("/PDM-Basic-Details-Clear-Pic")
+@login_required
+def PDM_BDCP():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+        id = username.faculty_account_id
+        
+        # FACULTY FIS PROFILE PIC FOLDER ID
+        folder = '1mT1alkWJ-akPnPyB9T7vtumNutwqRK0S'
+       
+        # CLEAR PROFILE PIC
+        file_list = drive.ListFile({'q': "'%s' in parents and trashed=false"%(folder)}).GetList()
+        try:
+            for file1 in file_list:
+                if file1['title'] == str(id):
+                    file1.Delete()                
+        except:
+            pass
 
+        # UPDATE USER PROFILE PIC ID
+        
+        u = update(Faculty_Profile)
+        u = u.values({"profile_pic": profile_default})
+        u = u.where(Faculty_Profile.faculty_account_id == current_user.faculty_account_id)
+        db.session.execute(u)
+        db.session.commit()
+        
+        return redirect(url_for('auth.PDM_BD')) 
 
 @auth.route("/PDM-Personal-Details")
 @login_required
 def PDM_PD():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
-        
-        profile_default='1vWDGtiKcOO89TnO2EpSr7oLOeGXV9h8-'
 
         if username.profile_pic == None:
             profile_pic=profile_default
@@ -279,10 +314,7 @@ def PDM_PD():
 def PDM_CD():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
-        message = 'Welcome! ' f'{username.name}'
        
-        profile_default='1vWDGtiKcOO89TnO2EpSr7oLOeGXV9h8-'
-
         if username.profile_pic == None:
             profile_pic=profile_default
         else:
@@ -300,9 +332,6 @@ def PDM_CD():
 def PDM_FD():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
-        message = 'Welcome! ' f'{username.name}'
-       
-        profile_default='1vWDGtiKcOO89TnO2EpSr7oLOeGXV9h8-'
 
         if username.profile_pic == None:
             profile_pic=profile_default
@@ -321,10 +350,7 @@ def PDM_FD():
 def PDM_E():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
-        message = 'Welcome! ' f'{username.name}'
        
-        profile_default='1vWDGtiKcOO89TnO2EpSr7oLOeGXV9h8-'
-
         if username.profile_pic == None:
             profile_pic=profile_default
         else:
@@ -343,9 +369,6 @@ def PDM_E():
 def PDM_WE():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
-        message = 'Welcome! ' f'{username.name}'
-       
-        profile_default='1vWDGtiKcOO89TnO2EpSr7oLOeGXV9h8-'
 
         if username.profile_pic == None:
             profile_pic=profile_default
@@ -365,9 +388,6 @@ def PDM_WE():
 def PDM_VW():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
-        message = 'Welcome! ' f'{username.name}'
-       
-        profile_default='1vWDGtiKcOO89TnO2EpSr7oLOeGXV9h8-'
 
         if username.profile_pic == None:
             profile_pic=profile_default
@@ -386,9 +406,6 @@ def PDM_VW():
 def PDM_TS():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
-        message = 'Welcome! ' f'{username.name}'
-       
-        profile_default='1vWDGtiKcOO89TnO2EpSr7oLOeGXV9h8-'
 
         if username.profile_pic == None:
             profile_pic=profile_default
@@ -407,10 +424,7 @@ def PDM_TS():
 def PDM_OA():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
-        message = 'Welcome! ' f'{username.name}'
        
-        profile_default='1vWDGtiKcOO89TnO2EpSr7oLOeGXV9h8-'
-
         if username.profile_pic == None:
             profile_pic=profile_default
         else:
@@ -428,10 +442,7 @@ def PDM_OA():
 def PDM_OSM():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
-        message = 'Welcome! ' f'{username.name}'
-       
-        profile_default='1vWDGtiKcOO89TnO2EpSr7oLOeGXV9h8-'
-
+      
         if username.profile_pic == None:
             profile_pic=profile_default
         else:
@@ -449,10 +460,7 @@ def PDM_OSM():
 def PDM_CR():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
-        message = 'Welcome! ' f'{username.name}'
-       
-        profile_default='1vWDGtiKcOO89TnO2EpSr7oLOeGXV9h8-'
-
+      
         if username.profile_pic == None:
             profile_pic=profile_default
         else:
@@ -471,10 +479,7 @@ def PDM_CR():
 def PDM_PDR():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
-        message = 'Welcome! ' f'{username.name}'
-       
-        profile_default='1vWDGtiKcOO89TnO2EpSr7oLOeGXV9h8-'
-
+      
         if username.profile_pic == None:
             profile_pic=profile_default
         else:
@@ -492,10 +497,7 @@ def PDM_PDR():
 def PDM_AQ():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
-        message = 'Welcome! ' f'{username.name}'
        
-        profile_default='1vWDGtiKcOO89TnO2EpSr7oLOeGXV9h8-'
-
         if username.profile_pic == None:
             profile_pic=profile_default
         else:
@@ -513,10 +515,7 @@ def PDM_AQ():
 def PDM_S():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
-        message = 'Welcome! ' f'{username.name}'
-       
-        profile_default='1vWDGtiKcOO89TnO2EpSr7oLOeGXV9h8-'
-
+    
         if username.profile_pic == None:
             profile_pic=profile_default
         else:
@@ -649,66 +648,4 @@ def facultyRP():
 
 
 # -------------------------------------------------------------
-
-# API TEST
-
-API_KEYS = ast.literal_eval(os.environ["API_KEY"])
-
-
-# API ROUTES
-     
-@auth.route("/api/all/faculty_data", methods=['GET'])
-def adminP():
-    key = request.args.get('key')  # Get the API key from the request header
-
-    if not key:
-        return make_response({"message":"No API Key provided"},406)
-    
-    elif not key in API_KEYS.values():
-         return jsonify(message="Invalid key you cant have an access")
-    else:
-        
-        f = '"'
-        faculty = str("Faculty_Profile")
-        postgreSQL_select_Query = "SELECT * FROM" f'{f}'f'{faculty}'f'{f}'
-        # DATABASE CURSOR
-        cursor=session.connection().connection.cursor()
-        cursor.execute(postgreSQL_select_Query)
-
-        faculty_data = cursor.fetchall()
-        
-        jsontable = {'faculty_data':[]}
-        faculty_primary = {'faculty':[]}
-      
-        for data in faculty_data:   
-            jsonprimarydata = {
-            'faculty_account_id': data[0],
-            'name': data[1],
-            'data':[]
-        }
-            jsondata = {
-            'first_name': data[2],
-            'last_name': data[3],
-            'middle_name': data[4],
-            'middle_initial': data[5],
-            'name_extension': data[6],
-            'birth_date': data[7],
-            'date_hired': data[8],
-            'remarks': data[9],
-            'faculty_code': data[10],
-            'honorific': data[11],
-            'age': data[12],
-            'email': data[13],
-            'password': data[14],
-            'gender': data[15]
-            }
-            
-            jsonprimarydata["data"].append(dict(jsondata))
-            faculty_primary["faculty"].append(dict(jsonprimarydata))   
-            
-            cursor.close()
-        jsontable["faculty_data"].append(dict(faculty_primary))
-        
-        return jsonify(jsontable), 200
-    
 

@@ -16,16 +16,24 @@
 
     <section class="section profile">
       <div class="row">
+      
         <div class="col-xl-4">
 
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+              <div class="profile-pic" data-target="#uploadprofile" data-toggle="modal">
+                <label class="-label" for="file">
+                  <span class="bi bi-camera-fill" style="position:relative; top:2px"></span>
+                  <span>Change Photo</span>
+                </label>
+                <img src="http://drive.google.com/uc?export=view&id={{profile_pic}}" alt="Profile" class="rounded-circle" style="width:250px;height:130px;">
+              </div>
 
-              <img src="http://drive.google.com/uc?export=view&id={{profile_pic}}" alt="Profile" class="rounded-circle" style="width:250px;height:130px;">
               <h2>{{User}}</h2>
               <h3>Faculty Member</h3>
               <h3>00064</h3>
             </div>
+         
           </div>
 
         </div>
@@ -41,26 +49,79 @@
               <ul class="nav nav-tabs nav-tabs-bordered">
 
                 <li class="nav-item">
-                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-basic-details">Basic Details</button>
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Basic Details</button>
+                </li>
+
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-basic-details">Edit</button>
                 </li>
 
               </ul>
+
               <div class="tab-content pt-2">
 
-                <div class="tab-pane fade show active profile-edit pt-3" id="profile-basic-details">
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+             
+                  <h5 class="card-title">Basic Details</h5>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                    <div class="col-lg-9 col-md-8">{{User}}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Employee No.</div>
+                    <div class="col-lg-9 col-md-8">00064</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Faculty Code</div>
+                    <div class="col-lg-9 col-md-8">{{faculty_code}}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Honorific</div>
+                    <div class="col-lg-9 col-md-8">{{honorific}}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Middle Name</div>
+                    <div class="col-lg-9 col-md-8">{{middle_name}}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Birth Date</div>
+                    <div class="col-lg-9 col-md-8">{{birth_date}}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Date Hired</div>
+                    <div class="col-lg-9 col-md-8">{{date_hired}}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Remarks</div>
+                    <div class="col-lg-9 col-md-8">{{remarks}}</div>
+                  </div>
+                 
+                  {% include "/Faculty-Home-Page/Personal-Data-Management-Page/Privacy-Notice.html" %}                
+
+                </div>
+
+                <div class="tab-pane fade profile-edit pt-2" id="profile-basic-details">
 
                   <!-- Profile Edit Form -->
-                    <div class="row mb-3">
-                      <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Picture</label>
-                      <div class="col-md-8 col-lg-9">
-                        <img src="http://drive.google.com/uc?export=view&id={{profile_pic}}" alt="Profile">
-                        <div class="pt-2">
-                          <a class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload" data-target="#uploadprofile" data-toggle="modal"></i></a>
-                          <a class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
-                        </div>
-                      </div>
-                    </div>
                   <form method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+                    <h5 class="card-title">Encode the necessary details then click the 
+                      <p class="btn btn-primary btn-sm" style="position:relative; top:6px">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512" style="fill:#ffffff;position:relative; bottom:2px">
+                          <path d="M433.941 129.941l-83.882-83.882A48 48 0 0 0 316.118 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V163.882a48 48 0 0 0-14.059-33.941zM224 416c-35.346 0-64-28.654-64-64 0-35.346 28.654-64 64-64s64 28.654 64 64c0 35.346-28.654 64-64 64zm96-304.52V212c0 6.627-5.373 12-12 12H76c-6.627 0-12-5.373-12-12V108c0-6.627 5.373-12 12-12h228.52c3.183 0 6.235 1.264 8.485 3.515l3.48 3.48A11.996 11.996 0 0 1 320 111.48z"/>
+                        </svg>
+                        Save</p>
+                     button below.</h5>
+                  
+                     <h5 class="card-title">Basic Details</h5>
+
                     <div class="row mb-3">
                       <label for="employee_no" class="col-md-4 col-lg-3 col-form-label">Employee No.</label>
                       <div class="col-md-8 col-lg-9">
@@ -143,10 +204,12 @@
                       </div>
                     </div>
 
-                   
+                    {% include "/Faculty-Home-Page/Personal-Data-Management-Page/Privacy-Notice.html" %}     
 
                     <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Save Changes</button>
+                      <button type="submit" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512" style="fill:#ffffff;position:relative; bottom:2px"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M433.941 129.941l-83.882-83.882A48 48 0 0 0 316.118 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V163.882a48 48 0 0 0-14.059-33.941zM224 416c-35.346 0-64-28.654-64-64 0-35.346 28.654-64 64-64s64 28.654 64 64c0 35.346-28.654 64-64 64zm96-304.52V212c0 6.627-5.373 12-12 12H76c-6.627 0-12-5.373-12-12V108c0-6.627 5.373-12 12-12h228.52c3.183 0 6.235 1.264 8.485 3.515l3.48 3.48A11.996 11.996 0 0 1 320 111.48z"/></svg>
+                        Save</button>
                     </div>
                   </form><!-- End Profile Edit Form -->
 
@@ -160,7 +223,6 @@
 
             </div>
           </div>
-
         </div>
       </div>
     </section>
@@ -197,7 +259,9 @@
                     <p id="namefile">Only images allowed!</p>
                     <p id="filetype">(jpg,jpeg,bmp,png)</p>
                     <!--our custom btn which which stays under the actual one-->
-                    <button type="button" id="btnup" class="btn btn-warning btn-sm" onclick="document.getElementById('fileup').click()">Browse image...</button>
+                    <button type="button" id="btnup" class="btn btn-warning btn-sm" onclick="document.getElementById('fileup').click()">Browse Image</button>
+                    <a href="/PDM-Basic-Details-Clear-Pic" class="link-danger link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover"><i class="bi bi-trash"></i> Clear Photo</a>
+                    <br>
                     <!--this is the actual file input, is set with opacity=0 beacause we wanna see our custom one-->
                     <input type="file" value="" name="fileup" id="fileup" hidden></input>
                     <input type="text" id="base64" name="base64" hidden></input>

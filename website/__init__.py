@@ -15,6 +15,10 @@ def create_app():
     # CONFIGURING POSTGRESQL CONNECTIONS
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"pool_pre_ping": True}  
+    app.config['SQLALCHEMY_POOL_SIZE'] = 10
+    app.config['SQLALCHEMY_MAX_OVERFLOW'] = 20
+    app.config['SQLALCHEMY_POOL_RECYCLE'] = 1800
     
     # SMTP CONFIGURATION
 
@@ -56,7 +60,7 @@ def create_app():
     @app.before_request
     def before_request():
         session.permanent = True
-        app.permanent_session_lifetime = timedelta(minutes=60)
+        app.permanent_session_lifetime = timedelta(minutes=30)
         session.modified = True
     
     return app
