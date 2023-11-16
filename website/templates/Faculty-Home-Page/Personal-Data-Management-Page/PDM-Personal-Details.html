@@ -86,6 +86,11 @@
         <div class="col-lg-9 col-md-8"></div>
       </div>
 
+      <h5 class="card-title">Remarks</h5>
+      <div class="row">
+        <div class="d-grid gap-2 mt-3"></div>
+      </div>
+
       {% include "/Faculty-Home-Page/Personal-Data-Management-Page/Privacy-Notice.html" %}       
 
     </div>
@@ -199,6 +204,13 @@
           <label for="faculty_code" class="col-md-4 col-lg-3 col-form-label">Dual Citizenship</label>
           <div class="col-md-8 col-lg-9">
             <input name="faculty_code" type="text" class="form-control" id="faculty_code" value="">
+          </div>
+        </div>
+
+        <h5 class="card-title">Remarks</h5>
+        <div class="row mb-3">
+          <div class="d-grid gap-2 mt-3">
+            <textarea name="remarks" type="text" class="form-control " id="remarks" value="" style="height: 100px">{{remarks}}</textarea>
           </div>
         </div>
 

@@ -25,19 +25,13 @@
   <link href="https://cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <link href="https://cdn.remixicon.com/releases/v1.2.2/remixicon.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
  
    <!-- Template Main CSS File -->
  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trojanX12388/FIS_js_assets@master/css/homepage/style.css"> {# MAIN HOMEPAGE CSS #}
  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trojanX12388/FIS_js_assets@master/css/homepage/PDM-Basic-Details/uploadprofile.css"> {# UPLOAD PROFILE CSS #}
  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trojanX12388/FIS_js_assets@master/css/homepage/PDM-Basic-Details/uploadprofile2.css"> {# UPLOAD PROFILE SCSS #}
 
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Updated: Aug 30 2023 with Bootstrap v5.3.1
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>
@@ -54,7 +48,7 @@
     </div><!-- End Logo -->
 
     <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
+      <form class="search-form d-flex align-items-center">
         <input type="text" name="query" placeholder="Search" title="Enter search keyword">
         <button type="" title="Search"><i class="bi bi-search"></i></button>
       </form>
@@ -319,6 +313,11 @@
           <li>
             <a href="/PDM-Family-Details" class="{{activate_FD}}">
               <i class="bi bi-circle"></i><span>Family Details</span>
+            </a>
+          </li>
+          <li>
+            <a href="/PDM-Educational-Background" class="{{activate_EB}}">
+              <i class="bi bi-circle"></i><span>Educational Background</span>
             </a>
           </li>
            <li>
@@ -679,7 +678,7 @@
             <img src="{{ url_for('static', filename='images/Default-Images/pupqc-logo.png')}}" alt="PUPFIS LOGO" class="rounded mx-auto d-block" style="width: 80px;height: 80px;"/>
             <br>
             <p style="font-size: small; color: #eeeeff;">Faculty Information System of the Polytechnic University of the Philippines Quezon City Branch</p>
-            <p style="font-size: smaller; color: #0099ff;">#123-456-789/ @pup.gov.ph</p>
+            <p style="font-size: smaller; color: #0099ff;">#123-456-789/ <a href="https://www.pup.edu.ph/">@pup.edu.ph</a></p>
           </div>
         </div>
       </div>
@@ -687,64 +686,14 @@
 
   </aside><!-- End Sidebar-->
 
-{% block content %}
+{% block content %} <!-- PAGE BODY CONTENT -->
 
-  <main id="main" class="main">
+      <main id="main" class="main">
 
-    <div class="pagetitle">
-      <h1>Homepage</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item">Homepage</li>
-          <li class="breadcrumb-item active">Announcements & Newsfeed</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
+      {% include "/Faculty-Home-Page/Announcement/Announcement.html" %}  <!-- Announcement -->
 
-    <section class="section">
-      <div class="row align-items-top">
-        <div class="col-lg-6">
-
-          <!-- Default Card -->
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Announcement!</h5>
-              𝙄𝙉 𝙋𝙃𝙊𝙏𝙊𝙎|| "The First Year and Transferees Orientation," commenced at the Winnie Castelo Sports Complex yesterday, 12th of October. Following Mrs. Demelyn E. Monzon's speech addressing the faculty members, Director Jaime P. Gutierrez Jr. alongside Asst. Prof. Philip Soberano also introduced the PUPQC Officials and its Administrative Staffs.
-              As the program director of each course introduced themselves, the first year students discovered a lot more with the degree they had chosen. Aiming to aid the students with regard their queries, the different offices such as the Student and Affairs Services, Registrar Services, Scholarship Services, Guidance and Counseling Services were introduced. 
-              Brightening up the said programme, the Mag-aaral ng Unibersidad sa Sining at Adhika (MUSA) performed a highly spirited dance routine. On top of that, all academic and non-academic student organizations presented a brief overview of what their organization is all about.
-              The goal of this orientation is to ensure that everyone witnesses the glorious brilliance of the "𝙄𝙨𝙠𝙤𝙡𝙖𝙧𝙨 𝙣𝙜 𝘽𝙖𝙮𝙖𝙣." 
-              𝗖𝗮𝗺𝗲𝗿𝗮 𝗦𝗽𝗼𝘁𝘁𝗲𝗱? 👀 𝘊𝘩𝘦𝘤𝘬 𝘰𝘶𝘵 𝘪𝘧 𝘸𝘦 𝘩𝘢𝘥 𝘤𝘢𝘶𝘨𝘩𝘵 𝘺𝘰𝘶 𝘰𝘯 𝘤𝘢𝘮, 𝘮𝘨𝘢 𝘒𝘢-𝘣𝘰𝘴𝘦𝘴!
-              #WriteToReformPublishToInform
-            </div>
-          </div><!-- End Default Card -->
-
-
-      
-
-        </div>
-
-        <div class="col-lg-6">
-          <!-- Card with an image on left -->
-          <div class="card mb-3">
-            <div class="row g-0">
-              <div class="col-md-4">
-                <img src="http://drive.google.com/uc?export=view&id=160D-XSWWXyiJw-LB-HExTsJl44zMTaji" class="img-fluid rounded-start" alt="Announcement Pic">
-              </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class="card-title">The First Year and Transferees Orientation</h5>
-                  <p class="card-text">The goal of this orientation is to ensure that everyone witnesses the glorious brilliance of the "𝙄𝙨𝙠𝙤𝙡𝙖𝙧𝙨 𝙣𝙜 𝘽𝙖𝙮𝙖𝙣." - Oct 13, 2023</p>
-                </div>
-              </div>
-            </div>
-          </div><!-- End Card with an image on left -->
-        </div>
-
-      </div>
-    </section>
-
-  </main><!-- End #main -->
-
+      </main><!-- End #main -->
+ 
 {% endblock %}
 
   <!-- ======= Footer ======= -->
@@ -767,8 +716,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
   <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
   <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
-
-
+  <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
 
   <!-- Template Main JS File -->
   <script src="https://cdn.jsdelivr.net/gh/trojanX12388/FIS_js_assets@master/javascript/homepage/main.js"></script>

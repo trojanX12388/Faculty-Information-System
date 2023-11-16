@@ -342,6 +342,24 @@ def PDM_FD():
                                activate_FD="active")
   
 
+@auth.route("/PDM-Educational-Background")
+@login_required
+def PDM_EB():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+
+        if username.profile_pic == None:
+            profile_pic=profile_default
+        else:
+            profile_pic=username.profile_pic
+                                
+        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Educational-Background.html", 
+                               User=username.first_name + " " + username.last_name, 
+                               profile_pic=profile_pic,
+                               PDM="show",
+                               activate_EB="active")
+
+
 @auth.route("/PDM-Eligibities")
 @login_required
 def PDM_E():
