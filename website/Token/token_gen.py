@@ -17,7 +17,7 @@ def admin_token_gen():
         'key': ''
         },
             app.config['SECRET_KEY']) 
-        session['key'] = token.decode('utf-8')
+        session['key'] = 'success'
             
              
 

@@ -33,7 +33,7 @@ session=sessionmaker(bind= engine)()
 
 # Access API keys from environment variables
 
-API_KEYS = ast.literal_eval(os.environ["API_KEY"])
+API_KEYS = ast.literal_eval(os.environ["API_KEYS"])
 
 # JSON DATA API
 
@@ -144,26 +144,29 @@ def adminP():
 
 # MAIN API V1
 
-# FACULTY DATA API
+# FACULTY DATA 
      
 @API.route("/api/all/faculty_data", methods=['GET'])
+@admin_token_required # Get the API key from the request header
 def faculty_data():
-    key = request.args.get('key')  # Get the API key from the request header
-
-    if not key:
-        return make_response({"message":"No API Key provided"},406)
     
-    elif not key in API_KEYS.values():
+    token = request.args.get('token')  # Get the API key from the request header
+    
+    key = jwt.decode(token, app.config['SECRET_KEY'])
+    
+    key = key['key']
+    
+    if not key in API_KEYS.values():
          return jsonify(message="Invalid key you cant have an access")
+    
     else:
-        
+         
         f = '"'
         faculty = str("Faculty_Profile")
         postgreSQL_select_Query = "SELECT * FROM" f'{f}'f'{faculty}'f'{f}'
         # DATABASE CURSOR
         
-     
-        cursor = session.begin()
+        session.begin()
         
         cursor=session.connection().connection.cursor()
         cursor.execute(postgreSQL_select_Query)
@@ -172,7 +175,7 @@ def faculty_data():
         
         jsontable = {'faculty_data':[]}
         faculty_primary = {'faculty':[]}
-      
+        
         for data in faculty_data:   
             jsonprimarydata = {
             'faculty_account_id': data[0],
@@ -204,6 +207,6 @@ def faculty_data():
         jsontable["faculty_data"].append(dict(faculty_primary))
         
         return jsonify(jsontable), 200
-    
+        
 
 # ---------------------------------------------------------
