@@ -4,12 +4,12 @@ from dotenv import load_dotenv
 from .authentication import *
 
 
-# DATABASE CONNECTION
+# DATABASE PLUGINS
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import inspect,update, values
 from sqlalchemy.orm.attributes import flag_modified
-# DATABASE CONNECTION
+
 from sqlalchemy import create_engine,inspect,update, values
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.orm import sessionmaker

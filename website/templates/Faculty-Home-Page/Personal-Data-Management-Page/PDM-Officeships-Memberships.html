@@ -1,7 +1,49 @@
 {% extends "/Faculty-Home-Page/Personal-Data-Management-Page/PDM-Basic-Details.html" %}{% block title %}Officeships/Memberships{% endblock %} {% block PDMcontent%}
 
 
+<div class="row">
+    <div class="col-lg-12">
 
+      <div class="card">
+        <div class="card-body">
+         <h6 class="card-title">Officeship/Membership in Professional Organization/s</h6>
+          <h6 class="">Click the button 
+              <button type="button" class="btn btn-sm btn-outline-primary rounded-pill"><i class="bi bi-file-earmark-text" style="position:relative;bottom:3px"></i></button>
+                to edit the record, or  
+                <button type="button" class="btn btn-sm btn-outline-danger rounded-pill"><i class="bi bi-trash" style="position:relative;bottom:3px"></i></button> 
+                to delete the record.
+              </h6>
+              <br>
+              <br>
+              <br>
+          <!-- Table with stripped rows -->
+          <table id="myTable" class="table-striped table-borderless table datatable">
+            <thead>
+              <tr>
+                <th class="w-100" scope="col">Organization</th>
+                <th scope="col">Position</th>
+                <th scope="col">Inclusive Date</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+  
+              <!-- TABLE DATA -->
 
+            </tbody>
+          </table>
+          <!-- End Table with stripped rows -->
+
+          <div class="d-grid gap-2 mt-3">
+              <button class="btn btn-outline-primary" type="button"><i class="bi bi-plus-circle"></i> Add New Record</button>
+            </div>
+
+            {% include "/Faculty-Home-Page/Personal-Data-Management-Page/Privacy-Notice.html" %}   
+
+        </div>
+      </div>
+
+    </div>
+  </div>
 
 {% endblock %}

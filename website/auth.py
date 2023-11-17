@@ -303,6 +303,7 @@ def PDM_PD():
                                User=username.first_name + " " + username.last_name,
                                profile_pic=profile_pic,
                                PDM="show",
+                               useraccount= current_user,
                                activate_PD="active")
 
 
@@ -324,9 +325,9 @@ def PDM_CD():
                                activate_CD="active")
   
 
-@auth.route("/PDM-Family-Details")
+@auth.route("/PDM-Family-Background")
 @login_required
-def PDM_FD():
+def PDM_FB():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
 
@@ -335,11 +336,11 @@ def PDM_FD():
         else:
             profile_pic=username.profile_pic
                                 
-        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Family-Details.html", 
+        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Family-Background.html", 
                                User=username.first_name + " " + username.last_name, 
                                profile_pic=profile_pic,
                                PDM="show",
-                               activate_FD="active")
+                               activate_FB="active")
   
 
 @auth.route("/PDM-Educational-Background")
@@ -468,7 +469,43 @@ def PDM_OSM():
                                profile_pic=profile_pic,
                                PDM="show",
                                activate_OSM="active")
-  
+
+ 
+@auth.route("/PDM-Agency-Membership")
+@login_required
+def PDM_AM():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+      
+        if username.profile_pic == None:
+            profile_pic=profile_default
+        else:
+            profile_pic=username.profile_pic
+                                
+        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Agency-Membership.html", 
+                               User=username.first_name + " " + username.last_name, 
+                               profile_pic=profile_pic,
+                               PDM="show",
+                               activate_AM="active")  
+
+
+@auth.route("/PDM-Teacher-Information")
+@login_required
+def PDM_TI():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+      
+        if username.profile_pic == None:
+            profile_pic=profile_default
+        else:
+            profile_pic=username.profile_pic
+                                
+        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Teacher-Information.html", 
+                               User=username.first_name + " " + username.last_name, 
+                               profile_pic=profile_pic,
+                               PDM="show",
+                               activate_TI="active")  
+
 
 @auth.route("/PDM-Character-Reference")
 @login_required
@@ -486,44 +523,7 @@ def PDM_CR():
                                profile_pic=profile_pic,
                                PDM="show",
                                activate_CR="active")
-  
-  
 
-@auth.route("/PDM-Personal-Data-Reports")
-@login_required
-def PDM_PDR():
-    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
-      
-        if username.profile_pic == None:
-            profile_pic=profile_default
-        else:
-            profile_pic=username.profile_pic
-                                
-        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Personal-Data-Reports.html", 
-                               User=username.first_name + " " + username.last_name, 
-                               profile_pic=profile_pic,
-                               PDM="show",
-                               activate_PDR="active")
-  
-
-@auth.route("/PDM-Additional-Questions")
-@login_required
-def PDM_AQ():
-    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
-       
-        if username.profile_pic == None:
-            profile_pic=profile_default
-        else:
-            profile_pic=username.profile_pic
-                                
-        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Additional-Questions.html", 
-                               User=username.first_name + " " + username.last_name, 
-                               profile_pic=profile_pic,
-                               PDM="show",
-                               activate_AQ="active")
-  
 
 @auth.route("/PDM-Signature")
 @login_required
@@ -541,8 +541,42 @@ def PDM_S():
                                profile_pic=profile_pic,
                                PDM="show",
                                activate_S="active")
+   
   
+@auth.route("/PDM-Additional-Questions")
+@login_required
+def PDM_AQ():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+       
+        if username.profile_pic == None:
+            profile_pic=profile_default
+        else:
+            profile_pic=username.profile_pic
+                                
+        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Additional-Questions.html", 
+                               User=username.first_name + " " + username.last_name, 
+                               profile_pic=profile_pic,
+                               PDM="show",
+                               activate_AQ="active")
   
+@auth.route("/PDM-Personal-Data-Reports")
+@login_required
+def PDM_PDR():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+      
+        if username.profile_pic == None:
+            profile_pic=profile_default
+        else:
+            profile_pic=username.profile_pic
+                                
+        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Personal-Data-Reports.html", 
+                               User=username.first_name + " " + username.last_name, 
+                               profile_pic=profile_pic,
+                               PDM="show",
+                               activate_PDR="active")
+    
 
 # ------------------------------------------------------------- 
       

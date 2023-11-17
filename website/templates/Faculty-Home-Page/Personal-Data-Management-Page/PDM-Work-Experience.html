@@ -1,7 +1,57 @@
 {% extends "/Faculty-Home-Page/Personal-Data-Management-Page/PDM-Basic-Details.html" %}{% block title %}Work Experience{% endblock %} {% block PDMcontent%}
 
 
+<div class="row">
+    <div class="col-lg-12">
 
+      <div class="card">
+        <div class="card-body">
+            <h6 class="card-title">Included designations and private employment. Start from your current work.</h6>
+            <h6 class="">Click the button 
+              <button type="button" class="btn btn-sm btn-outline-primary rounded-pill"><i class="bi bi-file-earmark-text" style="position:relative;bottom:3px"></i></button>
+                to edit the record, or  
+                <button type="button" class="btn btn-sm btn-outline-danger rounded-pill"><i class="bi bi-trash" style="position:relative;bottom:3px"></i></button> 
+                to delete the record.
+              </h6>
+              <br>
+              <br>
+              <br>
+          <!-- Table with stripped rows -->
+          <table id="myTable" class="table-striped table-borderless table datatable">
+            <thead>
+              <tr>
+                <th class="w-100" scope="col">Position Title</th>
+                <th scope="col">Company Name</th>
+                <th scope="col">Inclusive Date</th>
+                <th scope="col">Employment Status</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Assistant Director</th>
+                <td>Polytechnic University of the Philippines Quezon City</td>
+                <td>10/23/2016</td>
+                <td>Continuing</td>
+                <td>
+                  <button type="button" class="btn btn-outline-danger rounded-pill"><i class="bi bi-trash"></i></button>
+                  <button type="button" class="btn btn-outline-primary rounded-pill"><i class="bi bi-file-earmark-text"></i></button>
+              </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- End Table with stripped rows -->
 
+          <div class="d-grid gap-2 mt-3">
+              <button class="btn btn-outline-primary" type="button"><i class="bi bi-plus-circle"></i> Add New Record</button>
+            </div>
+
+            {% include "/Faculty-Home-Page/Personal-Data-Management-Page/Privacy-Notice.html" %}   
+
+        </div>
+      </div>
+
+    </div>
+  </div>
 
 {% endblock %}

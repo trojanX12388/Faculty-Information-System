@@ -1,6 +1,82 @@
 {% extends "/Faculty-Home-Page/Personal-Data-Management-Page/PDM-Basic-Details.html" %}{% block title %}Educational Background{% endblock %} {% block PDMcontent%}
 
+<div class="row">
+    <div class="col-lg-12">
 
+      <div class="card">
+        <div class="card-body">
+            <h6 class="card-title">Educational Background</h6>
+            <h6 class="">Click the button 
+              <button type="button" class="btn btn-sm btn-outline-primary rounded-pill"><i class="bi bi-file-earmark-text" style="position:relative;bottom:3px"></i></button>
+                to edit the record, or  
+                <button type="button" class="btn btn-sm btn-outline-danger rounded-pill"><i class="bi bi-trash" style="position:relative;bottom:3px"></i></button> 
+                to delete the record.
+              </h6>
+              <br>
+              <br>
+              <br>
+          <!-- Table with stripped rows -->
+          <table id="myTable" class="table-striped table-borderless table datatable">
+            <thead>
+              <tr>
+                <th class="w-100" scope="col">School Name</th>
+                <th scope="col">Level</th>
+                <th scope="col">Inclusive Dates of Attendance</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Polytechnic University of the Philippines</th>
+                <td>Doctorate</td>
+                <td>220</td>
+                <td>
+                  <button type="button" class="btn btn-outline-danger rounded-pill"><i class="bi bi-trash"></i></button>
+                  <button type="button" class="btn btn-outline-primary rounded-pill"><i class="bi bi-file-earmark-text"></i></button>
+              </td>
+              </tr>
+              <tr>
+                <th scope="row">Polytechnic University of the Philippines</th>
+                <td>Post Secondary</td>
+                <td>220</td>
+                <td>
+                  <button type="button" class="btn btn-outline-danger rounded-pill"><i class="bi bi-trash"></i></button>
+                  <button type="button" class="btn btn-outline-primary rounded-pill "><i class="bi bi-file-earmark-text"></i></button>
+              </td>
+              </tr>
+              <tr>
+                <th scope="row">Batasan High School</th>
+                <td>Secondary</td>
+                <td>220</td>
+                <td>
+                  <button type="button" class="btn btn-outline-danger rounded-pill"><i class="bi bi-trash"></i></button>
+                  <button type="button" class="btn btn-outline-primary rounded-pill "><i class="bi bi-file-earmark-text"></i></button>
+              </td>
+              </tr>
+              <tr>
+                <th scope="row">El Palacio Elementary</th>
+                <td>Elementary</td>
+                <td>220</td>
+                <td>
+                  <button type="button" class="btn btn-outline-danger rounded-pill"><i class="bi bi-trash"></i></button>
+                  <button type="button" class="btn btn-outline-primary rounded-pill "><i class="bi bi-file-earmark-text"></i></button>
+              </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- End Table with stripped rows -->
+
+          <div class="d-grid gap-2 mt-3">
+              <button class="btn btn-outline-primary" type="button"><i class="bi bi-plus-circle"></i> Add New Record</button>
+            </div>
+
+            {% include "/Faculty-Home-Page/Personal-Data-Management-Page/Privacy-Notice.html" %}   
+
+        </div>
+      </div>
+
+    </div>
+  </div>
 
 
 
