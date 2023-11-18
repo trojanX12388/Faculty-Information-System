@@ -27,18 +27,28 @@
                 <th scope="col">Action</th>
               </tr>
             </thead>
+          <form method="POST" enctype="multipart/form-data" accept-charset="utf-8">
             <tbody>
+              {% for data in user.PDS_Work_Experience %}
+              {% if data.position != None %}
               <tr>
-                <th scope="row">Assistant Director</th>
-                <td>Polytechnic University of the Philippines Quezon City</td>
-                <td>10/23/2016</td>
-                <td>Continuing</td>
+                <th scope="row">{{data.position}}</th>
+                <td>{{data.company_name}}</td>
+                <td>{{"data.from_date"+" - "+"data.to_date"}}</td>
+                <td>{{data.status}}</td>
                 <td>
+                  <input type="hidden" name="id" value="{{data.id}}"></input>
                   <button type="button" class="btn btn-outline-danger rounded-pill"><i class="bi bi-trash"></i></button>
                   <button type="button" class="btn btn-outline-primary rounded-pill"><i class="bi bi-file-earmark-text"></i></button>
               </td>
               </tr>
+            {% else %}
+           
+            {% endif %}
+
+          {% endfor %}  
             </tbody>
+          </form>
           </table>
           <!-- End Table with stripped rows -->
 

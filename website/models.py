@@ -26,7 +26,6 @@ class Faculty_Profile(db.Model, UserMixin):
     age = db.Column(db.Integer, nullable=False)  # Age
     email = db.Column(db.String(50), unique=True, nullable=False)  # Email
     password = db.Column(db.String(128), nullable=False)  # Password
-    gender = db.Column(db.String(10), nullable=False)  # Gender
     profile_pic = db.Column(db.String(50))  # Profile Pic
     is_active = db.Column(db.Boolean, default=True) 
     
@@ -67,10 +66,28 @@ class Faculty_Profile(db.Model, UserMixin):
             'age': self.age,
             'email': self.email,
             'password': self.password,
-            'gender': self.gender,
             'profile_pic': self.profile_pic,
             'is_active': self.is_active,
-            'data': self.PDS_Personal_Details
+    
+            # PDS FOREIGN TABLES
+        
+            'PDS_Personal_Details': self.PDS_Personal_Details,
+            'PDS_Contact_Details': self.PDS_Contact_Details,
+            'PDS_Family_Background': self.PDS_Family_Background,
+            'PDS_Educational_Background': self.PDS_Educational_Background,
+            'PDS_Eligibity': self.PDS_Eligibity,
+            'PDS_Work_Experience': self.PDS_Work_Experience,
+            'PDS_Voluntary_Work': self.PDS_Voluntary_Work,
+            'PDS_Training_Seminars': self.PDS_Training_Seminars,
+            'PDS_Outstanding_Achievements': self.PDS_Outstanding_Achievements,
+            'PDS_OfficeShips_Memberships': self.PDS_OfficeShips_Memberships,
+            'PDS_Agency_Membership': self.PDS_Agency_Membership,
+            'PDS_Teacher_Information': self.PDS_Teacher_Information,
+            'PDS_Additional_Questions': self.PDS_Additional_Questions,
+            'PDS_Character_Reference': self.PDS_Character_Reference,
+            'PDS_Signature': self.PDS_Signature,
+
+            
         }
         
     def get_id(self):
@@ -84,22 +101,21 @@ class PDS_Personal_Details(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'))  # FacultyID
-    sex = db.Column(db.String(50))  
-    gender = db.Column(db.String(50)) 
-    height = db.Column(db.Integer)
-    weight = db.Column(db.Integer)  
-    religion = db.Column(db.String(50))  
-    civil_status = db.Column(db.String(50))  
-    blood_type = db.Column(db.String(50))  
-    pronoun = db.Column(db.String(50))  
-    country = db.Column(db.String(50)) 
-    city = db.Column(db.String(50)) 
-    citizenship = db.Column(db.String(50)) 
-    dual_citizenship = db.Column(db.String(50)) 
-    remarks = db.Column(db.String(50)) 
+    sex = db.Column(db.String(50),default=None)  
+    gender = db.Column(db.String(50),default=None) 
+    height = db.Column(db.Float,default=0)
+    weight = db.Column(db.Float,default=0)  
+    religion = db.Column(db.String(50),default=None)  
+    civil_status = db.Column(db.String(50),default=None)  
+    blood_type = db.Column(db.String(50),default=None)  
+    pronoun = db.Column(db.String(50),default=None)  
+    country = db.Column(db.String(50),default=None) 
+    city = db.Column(db.String(50),default=None) 
+    citizenship = db.Column(db.String(50),default=None) 
+    dual_citizenship = db.Column(db.String(50),default=None) 
+    remarks = db.Column(db.String(50),default=None) 
     is_delete = db.Column(db.Boolean, default=False) 
     
-
     def to_dict(self):
         return {
             'id': self.id,
@@ -132,20 +148,20 @@ class PDS_Contact_Details(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # DataID
     faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'))  # FacultyID
     email = db.Column(db.String(50))  
-    mobile_number = db.Column(db.Integer) 
+    mobile_number = db.Column(db.Integer, default=0) 
     perm_country = db.Column(db.String(50))
     perm_region = db.Column(db.String(50))    
     perm_province = db.Column(db.String(50))  
     perm_city = db.Column(db.String(50))  
     perm_address = db.Column(db.String(50))  
-    perm_zip_code = db.Column(db.Integer)  
+    perm_zip_code = db.Column(db.Integer, default=0)  
     perm_phone_number = db.Column(db.String(50)) 
     res_country = db.Column(db.String(50))
     res_region = db.Column(db.String(50))    
     res_province = db.Column(db.String(50))  
     res_city = db.Column(db.String(50))  
     res_address = db.Column(db.String(50))  
-    res_zip_code = db.Column(db.Integer)  
+    res_zip_code = db.Column(db.Integer, default=0)  
     res_phone_number = db.Column(db.String(50)) 
     remarks = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
@@ -243,7 +259,7 @@ class PDS_Eligibity(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # DataID
     faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'))  # FacultyID
     eligibity = db.Column(db.String(50))  
-    rating = db.Column(db.Float)  
+    rating = db.Column(db.Float, default=0)  
     is_delete = db.Column(db.Boolean, default=False) 
     
 
@@ -271,6 +287,7 @@ class PDS_Work_Experience(db.Model):
     faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'))  # FacultyID
     position = db.Column(db.String(50))  
     company_name = db.Column(db.String(50)) 
+    status = db.Column(db.String(50)) 
     from_date = db.Column(db.Date) 
     to_date = db.Column(db.Date)   
     is_delete = db.Column(db.Boolean, default=False) 
@@ -282,6 +299,7 @@ class PDS_Work_Experience(db.Model):
             'faculty_account_id': self.faculty_account_id,
             'position_title': self.position,
             'company_name': self.company_name,
+            'status': self.status,
             'from_date': self.from_date,
             'to_date': self.to_date,
             'is_delete': self.is_delete,
@@ -418,11 +436,12 @@ class PDS_Agency_Membership(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'))  # FacultyID
-    GSIS = db.Column(db.Integer)  
-    PAGIBIG = db.Column(db.Integer) 
-    PHILHEALTH = db.Column(db.Integer) 
-    SSS = db.Column(db.Integer) 
-    TIN = db.Column(db.Integer) 
+    GSIS = db.Column(db.Integer, default=0)  
+    PAGIBIG = db.Column(db.Integer, default=0) 
+    PHILHEALTH = db.Column(db.Integer, default=0) 
+    SSS = db.Column(db.Integer, default=0) 
+    TIN = db.Column(db.Integer, default=0) 
+    remarks = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
     
 
@@ -435,6 +454,7 @@ class PDS_Agency_Membership(db.Model):
             'PHILHEALTH': self.PHILHEALTH,
             'SSS': self.SSS,
             'TIN': self.TIN,
+            'remarks': self.remarks,
             'is_delete': self.is_delete,
             
         }
@@ -476,18 +496,42 @@ class PDS_Additional_Questions(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'))  # FacultyID
-    q1_a = db.Column(db.Boolean) 
-    q1_b = db.Column(db.Boolean) 
-    q2_a = db.Column(db.Boolean) 
-    q2_b = db.Column(db.Boolean)
-    q3 = db.Column(db.Boolean)
-    q4 = db.Column(db.Boolean)
-    q5_a = db.Column(db.Boolean) 
-    q5_b = db.Column(db.Boolean) 
-    q6 = db.Column(db.Boolean) 
-    q7_a = db.Column(db.Boolean)
-    q7_b = db.Column(db.Boolean)  
-    q7_c = db.Column(db.Boolean) 
+    q1_a = db.Column(db.String(50), default='No') 
+    q1_a_details = db.Column(db.String(50)) 
+    
+    q1_b = db.Column(db.String(50), default='No') 
+    q1_b_details = db.Column(db.String(50)) 
+    
+    q2_a = db.Column(db.String(50), default='No') 
+    q2_a_details = db.Column(db.String(50)) 
+    
+    q2_b = db.Column(db.String(50), default='No')
+    q2_b_details = db.Column(db.String(50)) 
+    
+    q3 = db.Column(db.String(50), default='No')
+    q3_details = db.Column(db.String(50)) 
+    
+    q4 = db.Column(db.String(50), default='No')
+    q4_details = db.Column(db.String(50)) 
+    
+    q5_a = db.Column(db.String(50), default='No') 
+    q5_a_details = db.Column(db.String(50)) 
+    
+    q5_b = db.Column(db.String(50), default='No') 
+    q5_b_details = db.Column(db.String(50)) 
+    
+    q6 = db.Column(db.String(50), default='No') 
+    q6_details = db.Column(db.String(50)) 
+    
+    q7_a = db.Column(db.String(50), default='No')
+    q7_a_details = db.Column(db.String(50)) 
+    
+    q7_b = db.Column(db.String(50), default='No')  
+    q7_b_details = db.Column(db.String(50)) 
+    
+    q7_c = db.Column(db.String(50), default='No') 
+    q7_c_details = db.Column(db.String(50)) 
+    
     is_delete = db.Column(db.Boolean, default=False) 
     
 
@@ -496,17 +540,41 @@ class PDS_Additional_Questions(db.Model):
             'id': self.id,
             'faculty_account_id': self.faculty_account_id,
             'q1_a': self.q1_a,
+            'q1_a_details': self.q1_a_details,
+            
             'q1_b': self.q1_b,
+            'q1_b_details': self.q1_b_details,
+            
             'q2_a': self.q2_a,
+            'q2_a_details': self.q2_a_details,
+            
             'q2_b': self.q2_b,
+            'q2_b_details': self.q2_b_details,
+            
             'q3': self.q3,
+            'q3_details': self.q3_details,
+            
             'q4': self.q4,
+            'q4_details': self.q4_details,
+            
             'q5_a': self.q5_a,
+            'q5_a_details': self.q5_a_details,
+            
             'q5_b': self.q5_b,
+            'q5_b_details': self.q5_b_details,
+            
             'q6': self.q6,
+            'q6_details': self.q6_details,
+            
             'q7_a': self.q7_a,
+            'q7_a_details': self.q7_a_details,
+            
             'q7_b': self.q7_b,
+            'q7_b_details': self.q7_b_details,
+            
             'q7_c': self.q7_c,
+            'q7_c_details': self.q7_c_details,
+            
             'is_delete': self.is_delete,
             
         }
@@ -663,7 +731,6 @@ def create_sample_data():
         age=35,
         email='alma123@gmail.com',
         password=generate_password_hash('alma123'),
-        gender='Female'
         # Add more attributes here
         )
     
@@ -684,7 +751,6 @@ def create_sample_data():
         age=26,
         email='robertandrewb.up@gmail.com',
         password=generate_password_hash('plazma@123'),
-        gender='Male'
         # Add more attributes here
         ) 
     
@@ -705,29 +771,91 @@ def create_sample_data():
         age=29,
         email='sample123@gmail.com',
         password=generate_password_hash('plazma@123'),
-        gender='Male'
         # Add more attributes here
         ) 
     
     # SAMPLE FACULTY DATA
     
-    # faculty_data1 = Faculty_Personal_Data(
-    # faculty_account_id='2020-00072-D-1',
-    # data = 'SAMPLESAMPLESAMPLE'
-    # # Add more attributes here
-    # )
-    # faculty_data2 = Faculty_Personal_Data(
-    # faculty_account_id='2020-00073-D-1',
-    # data = 'QWLKASJLDSA'
-    # # Add more attributes here
-    # )
+    faculty_data1 = PDS_Personal_Details(
+    faculty_account_id='2020-00072-D-1',
+    # Add more attributes here
+    )
+    faculty_data2 = PDS_Contact_Details(
+    faculty_account_id='2020-00072-D-1',
+    # Add more attributes here
+    )
+    faculty_data3 = PDS_Family_Background(
+    faculty_account_id='2020-00072-D-1',
+    # Add more attributes here
+    )
+    faculty_data4 = PDS_Educational_Background(
+    faculty_account_id='2020-00072-D-1',
+    # Add more attributes here
+    )
+    faculty_data5 = PDS_Eligibity(
+    faculty_account_id='2020-00072-D-1',
+    # Add more attributes here
+    )
+    faculty_data6 = PDS_Work_Experience(
+    faculty_account_id='2020-00072-D-1',
+    # Add more attributes here
+    )
+    faculty_data7 = PDS_Voluntary_Work(
+    faculty_account_id='2020-00072-D-1',
+    # Add more attributes here
+    )
+    faculty_data8 = PDS_Training_Seminars(
+    faculty_account_id='2020-00072-D-1',
+    # Add more attributes here
+    )
+    faculty_data9 = PDS_Outstanding_Achievements(
+    faculty_account_id='2020-00072-D-1',
+    # Add more attributes here
+    )
+    faculty_data10 = PDS_OfficeShips_Memberships(
+    faculty_account_id='2020-00072-D-1',
+    # Add more attributes here
+    )
+    faculty_data11 = PDS_Agency_Membership(
+    faculty_account_id='2020-00072-D-1',
+    # Add more attributes here
+    )
+    faculty_data12 = PDS_Teacher_Information(
+    faculty_account_id='2020-00072-D-1',
+    # Add more attributes here
+    )
+    faculty_data13 = PDS_Additional_Questions(
+    faculty_account_id='2020-00072-D-1',
+    # Add more attributes here
+    )
+    faculty_data14 = PDS_Character_Reference(
+    faculty_account_id='2020-00072-D-1',
+    # Add more attributes here
+    )
+    faculty_data14 = PDS_Signature(
+    faculty_account_id='2020-00072-D-1',
+    # Add more attributes here
+    )
+    
     
     db.session.add(faculty_sample1)
     db.session.add(faculty_sample2)
     db.session.add(faculty_sample3)
     
-    # db.session.add(faculty_data1)
-    # db.session.add(faculty_data2)
+    db.session.add(faculty_data1)
+    db.session.add(faculty_data2)
+    db.session.add(faculty_data3)
+    db.session.add(faculty_data4)
+    db.session.add(faculty_data5)
+    db.session.add(faculty_data6)
+    db.session.add(faculty_data7)
+    db.session.add(faculty_data8)
+    db.session.add(faculty_data9)
+    db.session.add(faculty_data10)
+    db.session.add(faculty_data11)
+    db.session.add(faculty_data12)
+    db.session.add(faculty_data13)
+    db.session.add(faculty_data14)
     
     db.session.commit()
 

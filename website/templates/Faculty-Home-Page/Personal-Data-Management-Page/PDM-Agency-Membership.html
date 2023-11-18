@@ -18,37 +18,39 @@
   <div class="tab-pane fade show active profile-overview" id="profile-overview">
 
     <h5 class="card-title">Agency Membership Identification Numbers</h5>
+  {% for data in user.PDS_Agency_Membership %}
+  
     <p class="col-lg-9 col-md-8">Please contact HRMD Records Management Section if you don't know your membership identification number.</p>
     <br>
     <br>
     <div class="row">
       <div class="col-lg-3 col-md-4 label">GSIS</div>
-      <div class="col-lg-9 col-md-8"></div>
+      <div class="col-lg-9 col-md-8">{{data.GSIS}}</div>
     </div>
 
     <div class="row">
       <div class="col-lg-3 col-md-4 label">PAG-IBIG Fund</div>
-      <div class="col-lg-9 col-md-8"></div>
+      <div class="col-lg-9 col-md-8">{{data.PAGIBIG}}</div>
     </div>
 
     <div class="row">
       <div class="col-lg-3 col-md-4 label">PHILHEALTH</div>
-      <div class="col-lg-9 col-md-8"></div>
+      <div class="col-lg-9 col-md-8">{{data.PHILHEALTH}}</div>
     </div>
 
     <div class="row">
       <div class="col-lg-3 col-md-4 label">SSS</div>
-      <div class="col-lg-9 col-md-8"></div>
+      <div class="col-lg-9 col-md-8">{{data.SSS}}</div>
     </div>
 
     <div class="row">
       <div class="col-lg-3 col-md-4 label">TIN</div>
-      <div class="col-lg-9 col-md-8"></div>
+      <div class="col-lg-9 col-md-8">{{data.TIN}}</div>
     </div>
 
     <h5 class="card-title">Remarks</h5>
     <div class="row">
-      <div class="d-grid gap-2 mt-3"></div>
+      <div class="d-grid gap-2 mt-3">{{data.remarks}}</div>
     </div>
 
     {% include "/Faculty-Home-Page/Personal-Data-Management-Page/Privacy-Notice.html" %}       
@@ -75,14 +77,14 @@
       <div class="row mb-3">
         <label for="GSIS" class="col-md-4 col-lg-3 col-form-label">GSIS</label>
         <div class="col-md-8 col-lg-9">
-          <input name="GSIS" type="number" class="form-control" id="GSIS" value="" >
+          <input name="GSIS" type="number" class="form-control" id="GSIS" value="{{data.GSIS}}" >
         </div>
       </div>
 
       <div class="row mb-3">
         <label for="PAGIBIG_FUND" class="col-md-4 col-lg-3 col-form-label">PAG-IBIG Fund</label>
         <div class="col-md-8 col-lg-9">
-          <input name="PAGIBIG_FUND" type="number" class="form-control" id="PAGIBIG_FUND" value="">
+          <input name="PAGIBIG_FUND" type="number" class="form-control" id="PAGIBIG_FUND" value="{{data.PAGIBIG}}">
         </div>
       </div>
 
@@ -90,14 +92,14 @@
       <div class="row mb-3">
         <label for="PHILHEALTH" class="col-md-4 col-lg-3 col-form-label">PHILHEALTH</label>
         <div class="col-md-8 col-lg-9">
-          <input name="PHILHEALTH" type="number" class="form-control" id="PHILHEALTH" value="">
+          <input name="PHILHEALTH" type="number" class="form-control" id="PHILHEALTH" value="{{data.PHILHEALTH}}">
         </div>
       </div>
 
       <div class="row mb-3">
         <label for="SSS" class="col-md-4 col-lg-3 col-form-label">SSS</label>
         <div class="col-md-8 col-lg-9">
-          <input name="SSS" type="number" class="form-control" id="SSS" value="">
+          <input name="SSS" type="number" class="form-control" id="SSS" value="{{data.SSS}}">
         </div>
       </div>
 
@@ -105,18 +107,20 @@
       <div class="row mb-3">
         <label for="TIN" class="col-md-4 col-lg-3 col-form-label">TIN</label>
         <div class="col-md-8 col-lg-9">
-          <input name="TIN" type="number" class="form-control" id="TIN" value="">
+          <input name="TIN" type="number" class="form-control" id="TIN" value="{{data.TIN}}">
         </div>
       </div>
 
       <h5 class="card-title">Remarks</h5>
       <div class="row mb-3">
         <div class="d-grid gap-2 mt-3">
-          <textarea name="remarks" type="text" class="form-control " id="remarks" value="" style="height: 100px">{{remarks}}</textarea>
+          <textarea name="remarks" type="text" class="form-control " id="remarks" value="" style="height: 100px">{{data.remarks}}</textarea>
         </div>
       </div>
 
       {% include "/Faculty-Home-Page/Personal-Data-Management-Page/Privacy-Notice.html" %}       
+
+      {% endfor %}
 
       <div class="text-center">
         <button type="submit" class="btn btn-primary">

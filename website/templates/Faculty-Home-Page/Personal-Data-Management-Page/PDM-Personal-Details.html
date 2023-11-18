@@ -18,44 +18,47 @@
   
       <h5 class="card-title">Personal Details</h5>
 
+      {% for data in user.PDS_Personal_Details %}
+
       <div class="row">
+  
         <div class="col-lg-3 col-md-4 label ">Sex</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.sex}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Gender</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.gender}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Height (M)</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.height}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Weight (KG)</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.weight}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Religion</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.religion}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Civil Status</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.civil_status}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Blood Type</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.blood_type}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">I am a/an</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.pronoun}}</div>
       </div>
 
       <br>
@@ -64,12 +67,12 @@
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label ">Country</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.country}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">City/Municipality</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.city}}</div>
       </div>
 
       <br>
@@ -78,17 +81,17 @@
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label ">Citizenship</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.citizenship}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Dual Citizenship</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.dual_citizenship}}</div>
       </div>
 
       <h5 class="card-title">Remarks</h5>
       <div class="row">
-        <div class="d-grid gap-2 mt-3"></div>
+        <div class="d-grid gap-2 mt-3">{{data.remarks}}</div>
       </div>
 
       {% include "/Faculty-Home-Page/Personal-Data-Management-Page/Privacy-Notice.html" %}       
@@ -111,63 +114,63 @@
       <h5 class="card-title">Personal Details</h5>
 
         <div class="row mb-3">
-          <label for="employee_no" class="col-md-4 col-lg-3 col-form-label">Sex</label>
+          <label for="sex" class="col-md-4 col-lg-3 col-form-label">Sex</label>
           <div class="col-md-8 col-lg-9">
-            <input name="employee_no" type="text" class="form-control" id="employee_no" value="" >
+            <input name="sex" type="text" class="form-control" id="sex" value="{{data.sex}}" >
           </div>
         </div>
 
         <div class="row mb-3">
-          <label for="faculty_code" class="col-md-4 col-lg-3 col-form-label">Gender</label>
+          <label for="gender" class="col-md-4 col-lg-3 col-form-label">Gender</label>
           <div class="col-md-8 col-lg-9">
-            <input name="faculty_code" type="text" class="form-control" id="faculty_code" value="">
-          </div>
-        </div>
-
-        
-        <div class="row mb-3">
-          <label for="honorific" class="col-md-4 col-lg-3 col-form-label">Height (M)</label>
-          <div class="col-md-8 col-lg-9">
-            <input name="honorific" type="text" class="form-control" id="honorific" value="">
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label for="last_name" class="col-md-4 col-lg-3 col-form-label">Weight (KG)</label>
-          <div class="col-md-8 col-lg-9">
-            <input name="last_name" type="text" class="form-control" id="lastname" value="">
+            <input name="gender" type="text" class="form-control" id="gender" value="{{data.gender}}">
           </div>
         </div>
 
         
         <div class="row mb-3">
-          <label for="first_name" class="col-md-4 col-lg-3 col-form-label">Religion</label>
+          <label for="height" class="col-md-4 col-lg-3 col-form-label">Height (M)</label>
           <div class="col-md-8 col-lg-9">
-            <input name="first_name" type="text" class="form-control" id="first_name" value="">
+            <input name="height" type="text" class="form-control" id="height" value="{{data.height}}">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label for="weight" class="col-md-4 col-lg-3 col-form-label">Weight (KG)</label>
+          <div class="col-md-8 col-lg-9">
+            <input name="weight" type="text" class="form-control" id="weight" value="{{data.weight}}">
+          </div>
+        </div>
+
+        
+        <div class="row mb-3">
+          <label for="religion" class="col-md-4 col-lg-3 col-form-label">Religion</label>
+          <div class="col-md-8 col-lg-9">
+            <input name="religion" type="text" class="form-control" id="religion" value="{{data.religion}}">
           </div>
         </div>
 
           
         <div class="row mb-3">
-          <label for="middle_name" class="col-md-4 col-lg-3 col-form-label">Civil Status</label>
+          <label for="civil_status" class="col-md-4 col-lg-3 col-form-label">Civil Status</label>
           <div class="col-md-8 col-lg-9">
-            <input name="middle_name" type="text" class="form-control" id="middle_name" value="">
+            <input name="civil_status" type="text" class="form-control" id="civil_status" value="{{data.civil_status}}">
           </div>
         </div>
 
           
         <div class="row mb-3">
-          <label for="middle_initial" class="col-md-4 col-lg-3 col-form-label">Blood Type</label>
+          <label for="blood_type" class="col-md-4 col-lg-3 col-form-label">Blood Type</label>
           <div class="col-md-8 col-lg-9">
-            <input name="middle_initial" type="text" class="form-control" id="middle_initial" value="">
+            <input name="blood_type" type="text" class="form-control" id="blood_type" value="{{data.blood_type}}">
           </div>
         </div>
 
           
         <div class="row mb-3">
-          <label for="name_extension" class="col-md-4 col-lg-3 col-form-label">I am a/an</label>
+          <label for="pronoun" class="col-md-4 col-lg-3 col-form-label">I am a/an</label>
           <div class="col-md-8 col-lg-9">
-            <input name="name_extension" type="text" class="form-control" id="name_extension" value="">
+            <input name="pronoun" type="text" class="form-control" id="pronoun" value="{{data.pronoun}}">
           </div>
         </div>
 
@@ -176,16 +179,16 @@
         <h5 class="card-title">Birth Place</h5>
 
         <div class="row mb-3">
-          <label for="employee_no" class="col-md-4 col-lg-3 col-form-label">Country</label>
+          <label for="country" class="col-md-4 col-lg-3 col-form-label">Country</label>
           <div class="col-md-8 col-lg-9">
-            <input name="employee_no" type="text" class="form-control" id="employee_no" value="" >
+            <input name="country" type="text" class="form-control" id="country" value="{{data.country}}" >
           </div>
         </div>
 
         <div class="row mb-3">
-          <label for="faculty_code" class="col-md-4 col-lg-3 col-form-label">City/Municipality</label>
+          <label for="city" class="col-md-4 col-lg-3 col-form-label">City/Municipality</label>
           <div class="col-md-8 col-lg-9">
-            <input name="faculty_code" type="text" class="form-control" id="faculty_code" value="">
+            <input name="city" type="text" class="form-control" id="city" value="{{data.city}}">
           </div>
         </div>
 
@@ -194,25 +197,27 @@
         <h5 class="card-title">Citizenship</h5>
 
         <div class="row mb-3">
-          <label for="employee_no" class="col-md-4 col-lg-3 col-form-label">Citizenship</label>
+          <label for="citizenship" class="col-md-4 col-lg-3 col-form-label">Citizenship</label>
           <div class="col-md-8 col-lg-9">
-            <input name="employee_no" type="text" class="form-control" id="employee_no" value="" >
+            <input name="citizenship" type="text" class="form-control" id="citizenship" value="{{data.citizenship}}" >
           </div>
         </div>
 
         <div class="row mb-3">
-          <label for="faculty_code" class="col-md-4 col-lg-3 col-form-label">Dual Citizenship</label>
+          <label for="dual_citizenship" class="col-md-4 col-lg-3 col-form-label">Dual Citizenship</label>
           <div class="col-md-8 col-lg-9">
-            <input name="faculty_code" type="text" class="form-control" id="faculty_code" value="">
+            <input name="dual_citizenship" type="text" class="form-control" id="dual_citizenship" value="{{data.dual_citizenship}}">
           </div>
         </div>
 
         <h5 class="card-title">Remarks</h5>
         <div class="row mb-3">
           <div class="d-grid gap-2 mt-3">
-            <textarea name="remarks" type="text" class="form-control " id="remarks" value="" style="height: 100px">{{remarks}}</textarea>
+            <textarea name="remarks" type="text" class="form-control " id="remarks" value="" style="height: 100px">{{data.remarks}}</textarea>
           </div>
         </div>
+
+    {% endfor %}
 
         {% include "/Faculty-Home-Page/Personal-Data-Management-Page/Privacy-Notice.html" %}       
 

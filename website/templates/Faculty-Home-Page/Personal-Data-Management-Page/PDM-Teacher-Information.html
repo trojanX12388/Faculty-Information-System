@@ -25,11 +25,26 @@
                 <th scope="col">Action</th>
               </tr>
             </thead>
-            <tbody>
+            <form method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+              <tbody>
+                {% for data in user.PDS_Teacher_Information %}
+                {% if data.information != None %}
+                <tr>
+                  <th scope="row">{{data.information}}</th>
+                  <td>{{data.type}}</td>
+                  <td>
+                    <input type="hidden" name="id" value="{{data.id}}"></input>
+                    <button type="button" class="btn btn-outline-danger rounded-pill"><i class="bi bi-trash"></i></button>
+                    <button type="button" class="btn btn-outline-primary rounded-pill"><i class="bi bi-file-earmark-text"></i></button>
+                </td>
+                </tr>
+              {% else %}
+             
+              {% endif %}
   
-              <!-- TABLE DATA -->
-
-            </tbody>
+            {% endfor %}  
+              </tbody>
+            </form>
           </table>
           <!-- End Table with stripped rows -->
 

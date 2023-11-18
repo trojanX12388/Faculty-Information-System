@@ -36,6 +36,10 @@ from sqlalchemy import update
 # LOADING MODEL CLASSES
 from .models import Faculty_Profile
 
+# LOADING MODEL PDS_TABLES
+from .models import PDS_Personal_Details, PDS_Contact_Details, PDS_Family_Background, PDS_Educational_Background, PDS_Eligibity, PDS_Work_Experience, PDS_Voluntary_Work, PDS_Training_Seminars, PDS_Outstanding_Achievements, PDS_OfficeShips_Memberships, PDS_Agency_Membership, PDS_Teacher_Information, PDS_Additional_Questions, PDS_Character_Reference,PDS_Signature
+   
+
 # EXECUTING DATABASE
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
@@ -203,6 +207,8 @@ def PDM_BD():
                                date_hired= username.date_hired,
                                remarks= username.remarks,
                                honorific= username.honorific,
+                               employee_code= username.employee_code,
+                               user= current_user,
                                profile_pic=profile_pic,
                                activate_BD= "active")
 
@@ -287,7 +293,7 @@ def PDM_BDCP():
         
         return redirect(url_for('auth.PDM_BD')) 
 
-@auth.route("/PDM-Personal-Details")
+@auth.route("/PDM-Personal-Details", methods=['GET', 'POST'])
 @login_required
 def PDM_PD():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
@@ -296,18 +302,59 @@ def PDM_PD():
         if username.profile_pic == None:
             profile_pic=profile_default
         else:
-            profile_pic=username.profile_pic
-       
+            profile_pic=username.profile_pic    
+               
+        # UPDATE 
+        
+        if request.method == 'POST':
+         
+            # VALUES
+            sex = request.form.get('sex')
+            gender = request.form.get('gender')
+            height = request.form.get('height')
+            weight = request.form.get('weight')
+            religion = request.form.get('religion')
+            civil_status = request.form.get('civil_status')
+            blood_type = request.form.get('blood_type')
+            pronoun = request.form.get('pronoun')
+            country = request.form.get('country')
+            city = request.form.get('city')
+            citizenship = request.form.get('citizenship')
+            dual_citizenship = request.form.get('dual_citizenship')
+            remarks = request.form.get('remarks')
+            is_delete = request.form.get('is_delete')
+
+            u = update(PDS_Personal_Details)
+            u = u.values({"sex": sex,
+                          "gender": gender,
+                          "height": height,
+                          "weight": weight,
+                          "religion": religion,
+                          "civil_status": civil_status,
+                          "blood_type": blood_type,
+                          "pronoun": pronoun,
+                          "country": country,
+                          "city": city,
+                          "citizenship": citizenship,
+                          "dual_citizenship": dual_citizenship,
+                          "remarks": remarks,
+                          "is_delete": is_delete,
+                          })
+            u = u.where(Faculty_Profile.faculty_account_id == current_user.faculty_account_id)
+            db.session.execute(u)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('auth.PDM_PD'))
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Personal-Details.html", 
                                User=username.first_name + " " + username.last_name,
                                profile_pic=profile_pic,
                                PDM="show",
-                               useraccount= current_user,
+                               user = current_user,
                                activate_PD="active")
 
 
-@auth.route("/PDM-Contact-Details")
+@auth.route("/PDM-Contact-Details", methods=['GET', 'POST'])
 @login_required
 def PDM_CD():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
@@ -317,15 +364,66 @@ def PDM_CD():
             profile_pic=profile_default
         else:
             profile_pic=username.profile_pic
+            
+        
+         # UPDATE 
+        
+        if request.method == 'POST':
+         
+            # VALUES
+            email = request.form.get('email')
+            mobile_number = request.form.get('mobile_number')
+            perm_country = request.form.get('perm_country')
+            perm_region = request.form.get('perm_region')
+            perm_province = request.form.get('perm_province')
+            perm_city = request.form.get('perm_city')
+            perm_address = request.form.get('perm_address')
+            perm_zip_code = request.form.get('perm_zip_code')
+            perm_phone_number = request.form.get('perm_phone_number')
+            res_country = request.form.get('res_country')
+            res_region = request.form.get('res_region')
+            res_province = request.form.get('res_province')
+            res_city = request.form.get('res_city')
+            res_address = request.form.get('res_address')
+            res_zip_code = request.form.get('res_zip_code')
+            res_phone_number = request.form.get('res_phone_number')
+            remarks = request.form.get('remarks')
+
+            u = update(PDS_Contact_Details)
+            u = u.values({"email": email,
+                          "mobile_number": mobile_number,
+                          "perm_country": perm_country,
+                          "perm_region": perm_region,
+                          "perm_province": perm_province,
+                          "perm_city": perm_city,
+                          "perm_address": perm_address,
+                          "perm_zip_code": perm_zip_code,
+                          "perm_phone_number": perm_phone_number,
+                          "res_country": res_country,
+                          "res_region": res_region,
+                          "res_province": res_province,
+                          "res_city": res_city,
+                          "res_address": res_address,
+                          "res_zip_code": res_zip_code,
+                          "res_phone_number": res_phone_number,
+                          "remarks": remarks
+                          })
+            u = u.where(Faculty_Profile.faculty_account_id == current_user.faculty_account_id)
+            db.session.execute(u)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('auth.PDM_CD'))
+        
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Contact-Details.html", 
                                User=username.first_name + " " + username.last_name,
                                profile_pic=profile_pic,
                                PDM="show",
+                               user = current_user,
                                activate_CD="active")
   
 
-@auth.route("/PDM-Family-Background")
+@auth.route("/PDM-Family-Background", methods=['GET', 'POST'])
 @login_required
 def PDM_FB():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
@@ -335,12 +433,78 @@ def PDM_FB():
             profile_pic=profile_default
         else:
             profile_pic=username.profile_pic
+            
+         # UPDATE 
+        
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            full_name = request.form.get('full_name')
+            relationship = request.form.get('relationship')
+            id = request.form.get('id')
+
+            u = update(PDS_Family_Background)
+            u = u.values({"full_name": full_name,
+                          "relationship": relationship
+                          })
+            u = u.where(PDS_Family_Background.id == id)
+            db.session.execute(u)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('auth.PDM_FB'))
+            
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Family-Background.html", 
                                User=username.first_name + " " + username.last_name, 
                                profile_pic=profile_pic,
                                PDM="show",
+                               user = current_user,
                                activate_FB="active")
+ 
+@auth.route("/PDM-Family-Background/add-record", methods=['GET', 'POST'])
+@login_required
+def PDM_FBadd():
+
+         # INSERT RECORD
+        
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            full_name = request.form.get('full_name')
+            relationship = request.form.get('relationship')
+           
+            add_record = PDS_Family_Background(full_name=full_name,relationship=relationship,faculty_account_id = current_user.faculty_account_id)
+            
+            db.session.add(add_record)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('auth.PDM_FB'))
+
+@auth.route("/PDM-Family-Background/delete-record", methods=['GET', 'POST'])
+@login_required
+def PDM_FBdel():
+
+         # DELETE RECORD
+         
+        # def delete(self, item_id):
+        # item = ItemModel.query.get_or_404(item_id)
+        # db.session.delete(item)
+        # db.session.commit()
+        # return {"message": "Item deleted."}
+
+        id = request.form.get('id')
+        
+
+        data = PDS_Family_Background.query.filter_by(id=id).first() 
+        
+        print(data)
+        if data:
+            db.session.delete(data)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('auth.PDM_FB'))
   
 
 @auth.route("/PDM-Educational-Background")
@@ -358,6 +522,7 @@ def PDM_EB():
                                User=username.first_name + " " + username.last_name, 
                                profile_pic=profile_pic,
                                PDM="show",
+                               user = current_user,
                                activate_EB="active")
 
 
@@ -376,6 +541,7 @@ def PDM_E():
                                User=username.first_name + " " + username.last_name, 
                                profile_pic=profile_pic,
                                PDM="show",
+                               user = current_user,
                                activate_E="active")
   
 
@@ -395,6 +561,7 @@ def PDM_WE():
                                User=username.first_name + " " + username.last_name, 
                                profile_pic=profile_pic,
                                PDM="show",
+                               user = current_user,
                                activate_WE="active")
   
   
@@ -414,6 +581,7 @@ def PDM_VW():
                                User=username.first_name + " " + username.last_name, 
                                profile_pic=profile_pic,
                                PDM="show",
+                               user = current_user,
                                activate_VW="active")
   
 
@@ -432,6 +600,7 @@ def PDM_TS():
                                User=username.first_name + " " + username.last_name, 
                                profile_pic=profile_pic,
                                PDM="show",
+                               user = current_user,
                                activate_TS="active")
   
 
@@ -450,6 +619,7 @@ def PDM_OA():
                                User=username.first_name + " " + username.last_name, 
                                profile_pic=profile_pic,
                                PDM="show",
+                               user = current_user,
                                activate_OA="active")
 
  
@@ -468,6 +638,7 @@ def PDM_OSM():
                                User=username.first_name + " " + username.last_name, 
                                profile_pic=profile_pic,
                                PDM="show",
+                               user = current_user,
                                activate_OSM="active")
 
  
@@ -486,6 +657,7 @@ def PDM_AM():
                                User=username.first_name + " " + username.last_name, 
                                profile_pic=profile_pic,
                                PDM="show",
+                               user = current_user,
                                activate_AM="active")  
 
 
@@ -504,6 +676,7 @@ def PDM_TI():
                                User=username.first_name + " " + username.last_name, 
                                profile_pic=profile_pic,
                                PDM="show",
+                               user = current_user,
                                activate_TI="active")  
 
 
@@ -522,6 +695,7 @@ def PDM_CR():
                                User=username.first_name + " " + username.last_name, 
                                profile_pic=profile_pic,
                                PDM="show",
+                               user = current_user,
                                activate_CR="active")
 
 
@@ -540,6 +714,7 @@ def PDM_S():
                                User=username.first_name + " " + username.last_name, 
                                profile_pic=profile_pic,
                                PDM="show",
+                               user = current_user,
                                activate_S="active")
    
   
@@ -558,6 +733,7 @@ def PDM_AQ():
                                User=username.first_name + " " + username.last_name, 
                                profile_pic=profile_pic,
                                PDM="show",
+                               user = current_user,
                                activate_AQ="active")
   
 @auth.route("/PDM-Personal-Data-Reports")
@@ -575,6 +751,7 @@ def PDM_PDR():
                                User=username.first_name + " " + username.last_name, 
                                profile_pic=profile_pic,
                                PDM="show",
+                               user = current_user,
                                activate_PDR="active")
     
 

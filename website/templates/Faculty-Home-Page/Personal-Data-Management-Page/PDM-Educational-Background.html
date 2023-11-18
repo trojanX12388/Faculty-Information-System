@@ -26,42 +26,23 @@
               </tr>
             </thead>
             <tbody>
+          {% for data in user.PDS_Educational_Background %}
+              {% if data.school_name != None %}
               <tr>
-                <th scope="row">Polytechnic University of the Philippines</th>
-                <td>Doctorate</td>
-                <td>220</td>
+                <th scope="row">{{data.school_name}}</th>
+                <td>{{data.level}}</td>
+                <td>{{"data.from_date)"+"(data.to_date)"}}</td>
                 <td>
+                  <input type="hidden" name="id" value="{{data.id}}"></input>
                   <button type="button" class="btn btn-outline-danger rounded-pill"><i class="bi bi-trash"></i></button>
                   <button type="button" class="btn btn-outline-primary rounded-pill"><i class="bi bi-file-earmark-text"></i></button>
               </td>
               </tr>
-              <tr>
-                <th scope="row">Polytechnic University of the Philippines</th>
-                <td>Post Secondary</td>
-                <td>220</td>
-                <td>
-                  <button type="button" class="btn btn-outline-danger rounded-pill"><i class="bi bi-trash"></i></button>
-                  <button type="button" class="btn btn-outline-primary rounded-pill "><i class="bi bi-file-earmark-text"></i></button>
-              </td>
-              </tr>
-              <tr>
-                <th scope="row">Batasan High School</th>
-                <td>Secondary</td>
-                <td>220</td>
-                <td>
-                  <button type="button" class="btn btn-outline-danger rounded-pill"><i class="bi bi-trash"></i></button>
-                  <button type="button" class="btn btn-outline-primary rounded-pill "><i class="bi bi-file-earmark-text"></i></button>
-              </td>
-              </tr>
-              <tr>
-                <th scope="row">El Palacio Elementary</th>
-                <td>Elementary</td>
-                <td>220</td>
-                <td>
-                  <button type="button" class="btn btn-outline-danger rounded-pill"><i class="bi bi-trash"></i></button>
-                  <button type="button" class="btn btn-outline-primary rounded-pill "><i class="bi bi-file-earmark-text"></i></button>
-              </td>
-              </tr>
+            {% else %}
+           
+            {% endif %}
+
+          {% endfor %}  
             </tbody>
           </table>
           <!-- End Table with stripped rows -->

@@ -19,51 +19,53 @@
   
       <h5 class="card-title">Contact Details</h5>
 
+    {% for data in user.PDS_Contact_Details %}
+
       <div class="row">
         <div class="col-lg-3 col-md-4 label ">Email Address</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.email}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Mobile Number</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.mobile_number}}</div>
       </div>
 
       <h5 class="card-title">Permanent Address</h5>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label ">Country</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.perm_country}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Region</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.perm_region}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Province</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.perm_province}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">City/Municipality</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.perm_city}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Address</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.perm_address}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Zip Code</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.perm_zip_code}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Phone Number</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.perm_phone_number}}</div>
       </div>
 
       <h5 class="card-title">Residential Address</h5>
@@ -71,42 +73,42 @@
      
       <div class="row">
         <div class="col-lg-3 col-md-4 label ">Country</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.res_country}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Region</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.res_region}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Province</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.res_province}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">City/Municipality</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.res_city}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Address</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.res_address}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Zip Code</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.res_zip_code}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Phone Number</div>
-        <div class="col-lg-9 col-md-8"></div>
+        <div class="col-lg-9 col-md-8">{{data.res_phone_number}}</div>
       </div>
 
       <h5 class="card-title">Remarks</h5>
       <div class="row">
-        <div class="d-grid gap-2 mt-3"></div>
+        <div class="d-grid gap-2 mt-3">{{data.remarks}}</div>
       </div>
 
       {% include "/Faculty-Home-Page/Personal-Data-Management-Page/Privacy-Notice.html" %}       
@@ -129,16 +131,16 @@
       <h5 class="card-title">Contact Details</h5>
 
         <div class="row mb-3">
-          <label for="employee_no" class="col-md-4 col-lg-3 col-form-label">Email Address</label>
+          <label for="email" class="col-md-4 col-lg-3 col-form-label">Email Address</label>
           <div class="col-md-8 col-lg-9">
-            <input name="employee_no" type="text" class="form-control" id="employee_no" value="" >
+            <input name="email" type="text" class="form-control" id="email" value="{{data.email}}" >
           </div>
         </div>
 
         <div class="row mb-3">
-          <label for="faculty_code" class="col-md-4 col-lg-3 col-form-label">Mobile Number</label>
+          <label for="mobile_number" class="col-md-4 col-lg-3 col-form-label">Mobile Number</label>
           <div class="col-md-8 col-lg-9">
-            <input name="faculty_code" type="text" class="form-control" id="faculty_code" value="">
+            <input name="mobile_number" type="text" class="form-control" id="mobile_number" value="{{data.mobile_number}}">
           </div>
         </div>
 
@@ -146,51 +148,51 @@
         <h5 class="card-title">Permanent Address</h5>
 
         <div class="row mb-3">
-          <label for="employee_no" class="col-md-4 col-lg-3 col-form-label">Country</label>
+          <label for="perm_country" class="col-md-4 col-lg-3 col-form-label">Country</label>
           <div class="col-md-8 col-lg-9">
-            <input name="employee_no" type="text" class="form-control" id="employee_no" value="" >
+            <input name="perm_country" type="text" class="form-control" id="perm_country" value="{{data.perm_country}}">
           </div>
         </div>
 
         <div class="row mb-3">
-            <label for="employee_no" class="col-md-4 col-lg-3 col-form-label">Region</label>
+            <label for="perm_region" class="col-md-4 col-lg-3 col-form-label">Region</label>
             <div class="col-md-8 col-lg-9">
-              <input name="employee_no" type="text" class="form-control" id="employee_no" value="" >
+              <input name="perm_region" type="text" class="form-control" id="perm_region" value="{{data.perm_region}}">
             </div>
           </div>
 
           <div class="row mb-3">
-            <label for="employee_no" class="col-md-4 col-lg-3 col-form-label">Province</label>
+            <label for="perm_province" class="col-md-4 col-lg-3 col-form-label">Province</label>
             <div class="col-md-8 col-lg-9">
-              <input name="employee_no" type="text" class="form-control" id="employee_no" value="" >
+              <input name="perm_province" type="text" class="form-control" id="perm_province" value="{{data.perm_province}}">
             </div>
           </div>
 
         <div class="row mb-3">
-          <label for="faculty_code" class="col-md-4 col-lg-3 col-form-label">City/Municipality</label>
+          <label for="perm_city" class="col-md-4 col-lg-3 col-form-label">City/Municipality</label>
           <div class="col-md-8 col-lg-9">
-            <input name="faculty_code" type="text" class="form-control" id="faculty_code" value="">
+            <input name="perm_city" type="text" class="form-control" id="perm_city" value="{{data.perm_city}}">
           </div>
         </div>
 
         <div class="row mb-3">
-            <label for="employee_no" class="col-md-4 col-lg-3 col-form-label">Address</label>
+            <label for="perm_address" class="col-md-4 col-lg-3 col-form-label">Address</label>
             <div class="col-md-8 col-lg-9">
-              <input name="employee_no" type="text" class="form-control" id="employee_no" value="" >
+              <input name="perm_address" type="text" class="form-control" id="perm_address" value="{{data.perm_address}}">
             </div>
           </div>
 
           <div class="row mb-3">
-            <label for="employee_no" class="col-md-4 col-lg-3 col-form-label">Zip Code</label>
+            <label for="perm_zip_code" class="col-md-4 col-lg-3 col-form-label">Zip Code</label>
             <div class="col-md-8 col-lg-9">
-              <input name="employee_no" type="text" class="form-control" id="employee_no" value="" >
+              <input name="perm_zip_code" type="text" class="form-control" id="perm_zip_code" value="{{data.perm_zip_code}}">
             </div>
           </div>
 
           <div class="row mb-3">
-            <label for="employee_no" class="col-md-4 col-lg-3 col-form-label">Phone Number</label>
+            <label for="{{data.perm_zip_code}}" class="col-md-4 col-lg-3 col-form-label">Phone Number</label>
             <div class="col-md-8 col-lg-9">
-              <input name="employee_no" type="text" class="form-control" id="employee_no" value="" >
+              <input name="{{data.perm_zip_code}}" type="text" class="form-control" id="{{data.perm_zip_code}}" value="{{data.perm_zip_code}}">
             </div>
           </div>
 
@@ -212,58 +214,58 @@
 
 
           <div class="row mb-3">
-            <label for="employee_no" class="col-md-4 col-lg-3 col-form-label">Country</label>
+            <label for="res_country" class="col-md-4 col-lg-3 col-form-label">Country</label>
             <div class="col-md-8 col-lg-9">
-              <input name="employee_no" type="text" class="form-control" id="employee_no" value="" >
+              <input name="res_country" type="text" class="form-control" id="res_country" value="{{data.res_country}}">
             </div>
           </div>
   
           <div class="row mb-3">
-              <label for="employee_no" class="col-md-4 col-lg-3 col-form-label">Region</label>
+              <label for="res_region" class="col-md-4 col-lg-3 col-form-label">Region</label>
               <div class="col-md-8 col-lg-9">
-                <input name="employee_no" type="text" class="form-control" id="employee_no" value="" >
+                <input name="res_region" type="text" class="form-control" id="res_region" value="{{data.res_region}}">
               </div>
             </div>
   
             <div class="row mb-3">
-              <label for="employee_no" class="col-md-4 col-lg-3 col-form-label">Province</label>
+              <label for="res_province" class="col-md-4 col-lg-3 col-form-label">Province</label>
               <div class="col-md-8 col-lg-9">
-                <input name="employee_no" type="text" class="form-control" id="employee_no" value="" >
+                <input name="res_province" type="text" class="form-control" id="res_province" value="{{data.res_province}}" >
               </div>
             </div>
   
           <div class="row mb-3">
-            <label for="faculty_code" class="col-md-4 col-lg-3 col-form-label">City/Municipality</label>
+            <label for="res_city" class="col-md-4 col-lg-3 col-form-label">City/Municipality</label>
             <div class="col-md-8 col-lg-9">
-              <input name="faculty_code" type="text" class="form-control" id="faculty_code" value="">
+              <input name="res_city" type="text" class="form-control" id="res_city" value="{{data.res_city}}">
             </div>
           </div>
   
           <div class="row mb-3">
-              <label for="employee_no" class="col-md-4 col-lg-3 col-form-label">Address</label>
+              <label for="res_address" class="col-md-4 col-lg-3 col-form-label">Address</label>
               <div class="col-md-8 col-lg-9">
-                <input name="employee_no" type="text" class="form-control" id="employee_no" value="" >
+                <input name="res_address" type="text" class="form-control" id="res_address" value="{{data.res_address}}" >
               </div>
             </div>
   
             <div class="row mb-3">
-              <label for="employee_no" class="col-md-4 col-lg-3 col-form-label">Zip Code</label>
+              <label for="res_zip_code" class="col-md-4 col-lg-3 col-form-label">Zip Code</label>
               <div class="col-md-8 col-lg-9">
-                <input name="employee_no" type="text" class="form-control" id="employee_no" value="" >
+                <input name="res_zip_code" type="text" class="form-control" id="res_zip_code" value="{{data.res_zip_code}}" >
               </div>
             </div>
   
             <div class="row mb-3">
-              <label for="employee_no" class="col-md-4 col-lg-3 col-form-label">Phone Number</label>
+              <label for="res_phone_number" class="col-md-4 col-lg-3 col-form-label">Phone Number</label>
               <div class="col-md-8 col-lg-9">
-                <input name="employee_no" type="text" class="form-control" id="employee_no" value="" >
+                <input name="res_phone_number" type="text" class="form-control" id="res_phone_number" value="{{data.res_phone_number}}" >
               </div>
             </div>
 
         <h5 class="card-title">Remarks</h5>
         <div class="row mb-3">
           <div class="d-grid gap-2 mt-3">
-            <textarea name="remarks" type="text" class="form-control " id="remarks" value="" style="height: 100px">{{remarks}}</textarea>
+            <textarea name="remarks" type="text" class="form-control " id="remarks" value="" style="height: 100px">{{data.remarks}}</textarea>
           </div>
         </div>
 
@@ -281,7 +283,7 @@
   </div>
 
 
-
+  {% endfor %}
 
 
 {% endblock %}

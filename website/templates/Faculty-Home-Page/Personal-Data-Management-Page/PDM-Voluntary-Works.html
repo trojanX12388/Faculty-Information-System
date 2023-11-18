@@ -26,35 +26,27 @@
                 <th scope="col">Action</th>
               </tr>
             </thead>
+            <form method="POST" enctype="multipart/form-data" accept-charset="utf-8">
             <tbody>
+              {% for data in user.PDS_Voluntary_Work %}
+              {% if data.organization != None %}
               <tr>
-                <th scope="row">Team Payaman</th>
-                <td>09/15/2018</td>
-                <td>Sanitation Engineer</td>
+                <th scope="row">{{data.organization}}</th>
+                <td>{{"data.from_date"+" - "+"data.to_date"}}</td>
+                <td>{{data.position}}</td>
                 <td>
+                  <input type="hidden" name="id" value="{{data.id}}"></input>
                   <button type="button" class="btn btn-outline-danger rounded-pill"><i class="bi bi-trash"></i></button>
                   <button type="button" class="btn btn-outline-primary rounded-pill"><i class="bi bi-file-earmark-text"></i></button>
               </td>
               </tr>
-              <tr>
-                <th scope="row">PUPQC COMMITS</th>
-                <td>11/05/2016</td>
-                <td>Program Director</td>
-                <td>
-                  <button type="button" class="btn btn-outline-danger rounded-pill"><i class="bi bi-trash"></i></button>
-                  <button type="button" class="btn btn-outline-primary rounded-pill"><i class="bi bi-file-earmark-text"></i></button>
-              </td>
-              </tr>
-              <tr>
-                <th scope="row">PUPQC MUSA</th>
-                <td>07/25/2021</td>
-                <td>Vocal Coordinator</td>
-                <td>
-                  <button type="button" class="btn btn-outline-danger rounded-pill"><i class="bi bi-trash"></i></button>
-                  <button type="button" class="btn btn-outline-primary rounded-pill"><i class="bi bi-file-earmark-text"></i></button>
-              </td>
-              </tr>
+            {% else %}
+           
+            {% endif %}
+
+          {% endfor %}  
             </tbody>
+          </form>
           </table>
           <!-- End Table with stripped rows -->
 

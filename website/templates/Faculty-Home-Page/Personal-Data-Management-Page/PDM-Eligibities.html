@@ -25,8 +25,22 @@
               </tr>
             </thead>
             <tbody>
-  
-              <!-- TABLE DATA -->
+            {% for data in user.PDS_Eligibity %}
+              {% if data.eligibity != None %}
+              <tr>
+                <th scope="row">{{data.eligibity}}</th>
+                <td>{{data.rating}}</td>
+                <td>
+                  <input type="hidden" name="id" value="{{data.id}}"></input>
+                  <button type="button" class="btn btn-outline-danger rounded-pill"><i class="bi bi-trash"></i></button>
+                  <button type="button" class="btn btn-outline-primary rounded-pill"><i class="bi bi-file-earmark-text"></i></button>
+              </td>
+              </tr>
+            {% else %}
+           
+            {% endif %}
+
+          {% endfor %}  
 
             </tbody>
           </table>

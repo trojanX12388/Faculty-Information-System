@@ -25,26 +25,27 @@
                 <th scope="col">Action</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <th scope="row">Think Deep: Cyber Security</th>
-                <td>02/15/2014</td>
-                <td>International</td>
-                <td>
-                  <button type="button" class="btn btn-outline-danger rounded-pill"><i class="bi bi-trash"></i></button>
-                  <button type="button" class="btn btn-outline-primary rounded-pill"><i class="bi bi-file-earmark-text"></i></button>
-              </td>
-              </tr>
-              <tr>
-                <th scope="row">Network Topologies</th>
-                <td>07/25/2021</td>
-                <td>Local</td>
-                <td>
-                  <button type="button" class="btn btn-outline-danger rounded-pill"><i class="bi bi-trash"></i></button>
-                  <button type="button" class="btn btn-outline-primary rounded-pill"><i class="bi bi-file-earmark-text"></i></button>
-              </td>
-              </tr>
-            </tbody>
+            <form method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+              <tbody>
+                {% for data in user.PDS_Training_Seminars %}
+                {% if data.title != None %}
+                <tr>
+                  <th scope="row">{{data.title}}</th>
+                  <td>{{"(data.from_date)"+" - "+"(data.to_date)"}}</td>
+                  <td>{{data.level}}</td>
+                  <td>
+                    <input type="hidden" name="id" value="{{data.id}}"></input>
+                    <button type="button" class="btn btn-outline-danger rounded-pill"><i class="bi bi-trash"></i></button>
+                    <button type="button" class="btn btn-outline-primary rounded-pill"><i class="bi bi-file-earmark-text"></i></button>
+                </td>
+                </tr>
+              {% else %}
+             
+              {% endif %}
+  
+            {% endfor %}  
+              </tbody>
+            </form>
           </table>
           <!-- End Table with stripped rows -->
 

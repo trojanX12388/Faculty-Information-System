@@ -39,9 +39,6 @@ def create_app():
     # LOADING MODEL CLASSES
     from .models import Faculty_Profile
     
-        # LOADING MODEL PDS_TABLES
-    from .models import PDS_Personal_Details, PDS_Contact_Details, PDS_Family_Background, PDS_Educational_Background, PDS_Eligibity, PDS_Work_Experience, PDS_Voluntary_Work, PDS_Training_Seminars, PDS_Outstanding_Achievements, PDS_OfficeShips_Memberships, PDS_Agency_Membership, PDS_Teacher_Information, PDS_Additional_Questions, PDS_Character_Reference,PDS_Signature
-    
     # IMPORTING ROUTES
     from .views import views
     from .auth import auth
