@@ -421,7 +421,12 @@ def PDM_CD():
                                PDM="show",
                                user = current_user,
                                activate_CD="active")
-  
+        
+        
+# ------------------------------- END PDM CONTACT DETAILS ----------------------------  
+
+
+# ------------------------------- PDM FAMILY BACKGROUNDS ----------------------------  
 
 @auth.route("/PDM-Family-Background", methods=['GET', 'POST'])
 @login_required
@@ -505,9 +510,13 @@ def PDM_FBdel():
             db.session.commit()
             db.session.close()
             return redirect(url_for('auth.PDM_FB'))
-  
+ 
+# ------------------------------- END OF PDM FAMILY BACKGROUNDS ---------------------------- 
 
-@auth.route("/PDM-Educational-Background")
+ 
+# ------------------------------- PDM EDUCATIONAL BACKGROUNDS ----------------------------  
+
+@auth.route("/PDM-Educational-Background", methods=['GET', 'POST'])
 @login_required
 def PDM_EB():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
@@ -517,6 +526,31 @@ def PDM_EB():
             profile_pic=profile_default
         else:
             profile_pic=username.profile_pic
+            
+         # UPDATE 
+        
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            school_name = request.form.get('school_name')
+            level = request.form.get('level')
+            from_date = request.form.get('from_date')
+            to_date = request.form.get('to_date')
+            id = request.form.get('id')
+
+            u = update(PDS_Educational_Background)
+            u = u.values({"school_name": school_name,
+                          "level": level,
+                          "from_date": from_date,
+                          "to_date": to_date
+                          })
+            
+            u = u.where(PDS_Educational_Background.id == id)
+            db.session.execute(u)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('auth.PDM_EB'))    
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Educational-Background.html", 
                                User=username.first_name + " " + username.last_name, 
@@ -524,6 +558,60 @@ def PDM_EB():
                                PDM="show",
                                user = current_user,
                                activate_EB="active")
+
+
+@auth.route("/PDM-Educational-Background/add-record", methods=['GET', 'POST'])
+@login_required
+def PDM_EBadd():
+
+         # INSERT RECORD
+        
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            school_name = request.form.get('school_name')
+            level = request.form.get('level')
+            from_date = request.form.get('from_date')
+            to_date = request.form.get('to_date')
+           
+            add_record = PDS_Educational_Background(school_name=school_name,
+                                                    level=level,
+                                                    from_date=from_date,
+                                                    to_date=to_date,
+                                                    faculty_account_id = current_user.faculty_account_id)
+            
+            db.session.add(add_record)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('auth.PDM_EB'))
+
+@auth.route("/PDM-Educational-Background/delete-record", methods=['GET', 'POST'])
+@login_required
+def PDM_EBdel():
+
+         # DELETE RECORD
+         
+        # def delete(self, item_id):
+        # item = ItemModel.query.get_or_404(item_id)
+        # db.session.delete(item)
+        # db.session.commit()
+        # return {"message": "Item deleted."}
+
+        id = request.form.get('id')
+        
+
+        data = PDS_Educational_Background.query.filter_by(id=id).first() 
+        
+        print(data)
+        if data:
+            db.session.delete(data)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('auth.PDM_EB'))
+
+
+# ------------------------------- END OF PDM EDUCATIONAL BACKGROUNDS ----------------------------
 
 
 @auth.route("/PDM-Eligibities")

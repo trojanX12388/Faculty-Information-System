@@ -31,13 +31,96 @@
               <tr>
                 <th scope="row">{{data.school_name}}</th>
                 <td>{{data.level}}</td>
-                <td>{{"data.from_date)"+"(data.to_date)"}}</td>
+                <td>{{data.from_date }} - {{data.to_date}} </td>
                 <td>
-                  <input type="hidden" name="id" value="{{data.id}}"></input>
-                  <button type="button" class="btn btn-outline-danger rounded-pill"><i class="bi bi-trash"></i></button>
-                  <button type="button" class="btn btn-outline-primary rounded-pill"><i class="bi bi-file-earmark-text"></i></button>
+                  <button type="submit" class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#d{{data.id}}"><i class="bi bi-trash"></i></button>
+                  <button type="button" class="btn btn-outline-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#{{data.id}}"><i class="bi bi-file-earmark-text"></i></button>
               </td>
               </tr>
+
+                 <!-- Edit Record Modal-->
+
+                 <div class="modal fade" id="{{data.id}}" tabindex="-1">
+                  <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Edit Record</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+
+                <form action="/PDM-Educational-Background" method="POST" enctype="multipart/form-data" accept-charset="utf-8" class="row g-3">
+                        <br>
+                        <div class="col-md-10">
+                          <div class="form-floating">
+                            <input type="text" name="school_name" class="form-control" id="floatingschool_name" placeholder="School Name" value="{{data.school_name}}" required>
+                            <label for="floatingschool_name">School Name</label>
+                          </div>
+                        </div>
+                        <br>
+                        <div class="col-md-10">
+                          <div class="form-floating">
+                            <select class="form-select" name="level" aria-label="Level">
+                              <option selected="">{{data.level}}</option>
+                              <option value="Tertiary">Tertiary</option>
+                              <option value="Secondary">Secondary</option>
+                              <option value="Elementary">Elementary</option>
+                            </select>
+                            <label for="floatingschool_name">Level</label>
+                          </div>
+                      </div> 
+                      <br>
+                      <h5 class="modal-title">Date</h5>
+                      <br>
+                      <div class="col-md-10">
+                        <div class="form-floating">
+                          <input type="date" name="from_date"  class="form-control" id="floating_from" placeholder="From" value="{{data.from_date}}" required>
+                          <label for="floating_level">From</label>
+                        </div>
+                    </div> 
+                    <br>
+                    <div class="col-md-10">
+                      <div class="form-floating">
+                        <input type="date" name="to_date"  class="form-control" id="floating_to" placeholder="To" value="{{data.to_date}}" required>
+                        <label for="floating_level">To</label>
+                      </div>
+                  </div>
+                  <br> 
+                      </div>
+                      <div class="modal-footer">
+                        <input type="hidden" name="id" value="{{data.id}}"></input>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Update</button>
+                      </div>
+                </form>
+                    </div>
+                  </div>
+                </div><!-- End Edit Record Modal-->
+              
+
+                <!-- Delete Record Modal-->
+              
+                <div class="modal fade" id="d{{data.id}}" tabindex="-1">
+                  <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Delete Record</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                      <form action="/PDM-Educational-Background/delete-record" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+                          <input type="hidden" name="id" value="{{data.id}}"></input>
+                        <h5 class="modal-title">Are you sure you want to delete this record?</h5>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
+                          <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Confirm</button>
+                        </div>
+                    </form>
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- End Delete Record Modal-->
+
             {% else %}
            
             {% endif %}
@@ -48,8 +131,60 @@
           <!-- End Table with stripped rows -->
 
           <div class="d-grid gap-2 mt-3">
-              <button class="btn btn-outline-primary" type="button"><i class="bi bi-plus-circle"></i> Add New Record</button>
-            </div>
+            <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#addrecord"><i class="bi bi-plus-circle"></i> Add New Record</button>
+          </div>
+
+               <!-- Add Record Modal-->
+
+               <div class="modal fade" id="addrecord" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Add Family Record</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+              <form action="/PDM-Educational-Background/add-record" method="POST" enctype="multipart/form-data" accept-charset="utf-8" class="row g-3">
+
+                        <div class="col-md-6">
+                          <div class="form-floating">
+                            <input type="text" name="school_name" class="form-control" id="floatingschool_name" placeholder="School Name" required>
+                            <label for="floatingschool_name">School Name</label>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-floating">
+                            <select class="form-select" name="level" aria-label="Level">
+                              <option value="Tertiary">Tertiary</option>
+                              <option value="Secondary">Secondary</option>
+                              <option value="Elementary">Elementary</option>
+                            </select>
+                            <label for="floatingschool_name">Level</label>
+                          </div>
+                      </div> 
+                      <h5 class="modal-title">Date</h5>
+                      <div class="col-md-6">
+                        <div class="form-floating">
+                          <input type="date" name="from_date"  class="form-control" id="floating_from" placeholder="From" required>
+                          <label for="floating_level">From</label>
+                        </div>
+                    </div> 
+                    <div class="col-md-6">
+                      <div class="form-floating">
+                        <input type="date" name="to_date"  class="form-control" id="floating_to" placeholder="To" required>
+                        <label for="floating_level">To</label>
+                      </div>
+                  </div> 
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
+                      <button type="submit" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add</button>
+              </form>
+                    </div>
+                  </div>
+                </div>
+              </div><!-- End Add Record Modal-->
 
             {% include "/Faculty-Home-Page/Personal-Data-Management-Page/Privacy-Notice.html" %}   
 
