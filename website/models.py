@@ -26,7 +26,7 @@ class Faculty_Profile(db.Model, UserMixin):
     age = db.Column(db.Integer, nullable=False)  # Age
     email = db.Column(db.String(50), unique=True, nullable=False)  # Email
     password = db.Column(db.String(128), nullable=False)  # Password
-    profile_pic = db.Column(db.String(50))  # Profile Pic
+    profile_pic = db.Column(db.String(50),default="14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08")  # Profile Pic
     is_active = db.Column(db.Boolean, default=True) 
     
     # PDS FOREIGN TABLES

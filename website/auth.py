@@ -54,8 +54,8 @@ app.config["MAIL_PORT"]=os.getenv("MAILPORT")
 app.config["MAIL_USERNAME"] = os.getenv("FISGMAIL")     
 app.config['MAIL_PASSWORD'] = os.getenv("FISGMAILPASS")       
 app.config['MAIL_DEFAULT_SENDER'] = 'PUPQC FIS'     
-app.config['MAIL_USE_TLS']=False
-app.config['MAIL_USE_SSL']=True
+app.config['MAIL_USE_TLS']=os.getenv("TLS") 
+app.config['MAIL_USE_SSL']=os.getenv("SSL") 
 
 mail=Mail(app)
 

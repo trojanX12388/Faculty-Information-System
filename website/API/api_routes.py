@@ -157,7 +157,7 @@ def faculty_data():
     key = key['key']
     
     if not key in API_KEYS.values():
-         return jsonify(message="Invalid key you cant have an access")
+         return jsonify(message="Invalid key you cant have an access"), 403
     
     else:
          
@@ -173,38 +173,35 @@ def faculty_data():
 
         faculty_data = cursor.fetchall()
         
-        jsontable = {'faculty_data':[]}
+        jsontable = {'FIS_data':[]}
         faculty_primary = {'faculty':[]}
         
-        for data in faculty_data:   
+        for data in faculty_data:
             jsonprimarydata = {
-            'faculty_account_id': data[0],
-            'name': data[1],
-            'data':[]
+            str(data[0]):[]
         }
             jsondata = {
-            'first_name': data[2],
-            'last_name': data[3],
-            'middle_name': data[4],
-            'middle_initial': data[5],
-            'name_extension': data[6],
-            'birth_date': data[7],
-            'date_hired': data[8],
-            'remarks': data[9],
-            'faculty_code': data[10],
-            'honorific': data[11],
-            'age': data[12],
-            'email': data[13],
-            'password': data[14],
-            'gender': data[15]
+            'first_name': data[3],
+            'last_name': data[4],
+            'middle_name': data[5],
+            'middle_initial': data[6],
+            'name_extension': data[7],
+            'birth_date': data[8],
+            'date_hired': data[9],
+            'remarks': data[10],
+            'employee_code': data[1],
+            'honorific': data[12],
+            'age': data[13],
+            'email': data[14],
+            'profile_pic': data[2]
             }
             
-            jsonprimarydata["data"].append(dict(jsondata))
+            jsonprimarydata[""+str(data[0])].append(dict(jsondata))
             faculty_primary["faculty"].append(dict(jsonprimarydata))   
             
             cursor.close()
             session.close()
-        jsontable["faculty_data"].append(dict(faculty_primary))
+        jsontable["FIS_data"].append(dict(faculty_primary))
         
         return jsonify(jsontable), 200
         
