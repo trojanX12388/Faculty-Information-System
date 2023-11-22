@@ -193,7 +193,7 @@ def faculty_data():
             'honorific': data[12],
             'age': data[13],
             'email': data[14],
-            'profile_pic': data[2]
+            'profile_pic': 'https://drive.google.com/file/d/'+str(data[16])+'/view'
             }
             
             jsonprimarydata[""+str(data[0])].append(dict(jsondata))
