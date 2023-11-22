@@ -33,7 +33,7 @@ def create_app():
     mail=Mail(app)
         
     # LOADING DATABASE 
-    from website.models import init_db
+    from models import init_db
     init_db(app)
     
     # LOADING MODEL CLASSES
