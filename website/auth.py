@@ -175,6 +175,7 @@ def PDM_BD():
             birth_date = request.form.get('birth_date')
             date_hired = request.form.get('date_hired')
             remarks = request.form.get('remarks')
+            name = first_name + " " + last_name
 
             u = update(Faculty_Profile)
             u = u.values({"faculty_code": faculty_code,
@@ -187,6 +188,7 @@ def PDM_BD():
                           "birth_date": birth_date,
                           "date_hired": date_hired,
                           "remarks": remarks,
+                          "name": name
                           })
             u = u.where(Faculty_Profile.faculty_account_id == current_user.faculty_account_id)
             db.session.execute(u)
@@ -299,11 +301,33 @@ def PDM_PD():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
 
+        # CHECKING IF PROFILE PIC EXIST
         if username.profile_pic == None:
             profile_pic=profile_default
         else:
-            profile_pic=username.profile_pic    
-               
+            profile_pic=username.profile_pic   
+             
+        # VERIFYING IF DATA OF CURRENT USER EXISTS
+        if current_user.PDS_Personal_Details:
+            data = current_user
+        else:
+            data =  {'PDS_Personal_Details':
+                    {'sex':"",
+                    'gender':"",
+                    'height':"",
+                    'weight':"",
+                    'religion':"",
+                    'civil_status':"",
+                    'blood_type':"",
+                    'pronoun':"",
+                    'country':"",
+                    'city':"",
+                    'citizenship':"",
+                    'dual_citizenship':"",
+                    'remarks':"",
+                    }
+                    }
+        
         # UPDATE 
         
         if request.method == 'POST':
@@ -322,35 +346,58 @@ def PDM_PD():
             citizenship = request.form.get('citizenship')
             dual_citizenship = request.form.get('dual_citizenship')
             remarks = request.form.get('remarks')
-            is_delete = request.form.get('is_delete')
+           
 
-            u = update(PDS_Personal_Details)
-            u = u.values({"sex": sex,
-                          "gender": gender,
-                          "height": height,
-                          "weight": weight,
-                          "religion": religion,
-                          "civil_status": civil_status,
-                          "blood_type": blood_type,
-                          "pronoun": pronoun,
-                          "country": country,
-                          "city": city,
-                          "citizenship": citizenship,
-                          "dual_citizenship": dual_citizenship,
-                          "remarks": remarks,
-                          "is_delete": is_delete,
-                          })
-            u = u.where(Faculty_Profile.faculty_account_id == current_user.faculty_account_id)
-            db.session.execute(u)
-            db.session.commit()
-            db.session.close()
-            return redirect(url_for('auth.PDM_PD'))
+            if PDS_Personal_Details.query.filter_by(faculty_account_id=current_user.faculty_account_id).first():
+                u = update(PDS_Personal_Details)
+                u = u.values({"sex": sex,
+                            "gender": gender,
+                            "height": height,
+                            "weight": weight,
+                            "religion": religion,
+                            "civil_status": civil_status,
+                            "blood_type": blood_type,
+                            "pronoun": pronoun,
+                            "country": country,
+                            "city": city,
+                            "citizenship": citizenship,
+                            "dual_citizenship": dual_citizenship,
+                            "remarks": remarks,
+                            })
+                u = u.where(PDS_Personal_Details.faculty_account_id == current_user.faculty_account_id)
+                db.session.execute(u)
+                db.session.commit()
+                db.session.close()
+                return redirect(url_for('auth.PDM_PD'))
+            
+            else:
+                add_record = PDS_Personal_Details(  sex = sex,
+                                                    gender = gender,
+                                                    height = height,
+                                                    weight = weight,
+                                                    religion = religion,
+                                                    civil_status = civil_status,
+                                                    blood_type = blood_type,
+                                                    pronoun = pronoun,
+                                                    country = country,
+                                                    city = city,
+                                                    citizenship = citizenship,
+                                                    dual_citizenship = dual_citizenship,
+                                                    remarks = remarks,
+                                                    faculty_account_id = current_user.faculty_account_id)
+            
+                db.session.add(add_record)
+                db.session.commit()
+                db.session.close()
+                return redirect(url_for('auth.PDM_PD'))
+            
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Personal-Details.html", 
                                User=username.first_name + " " + username.last_name,
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
+                               data = data,
                                activate_PD="active")
 
 
@@ -360,11 +407,36 @@ def PDM_CD():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
        
+        # CHECKING IF PROFILE PIC EXIST
         if username.profile_pic == None:
             profile_pic=profile_default
         else:
-            profile_pic=username.profile_pic
-            
+            profile_pic=username.profile_pic   
+             
+        # VERIFYING IF DATA OF CURRENT USER EXISTS
+        if current_user.PDS_Contact_Details:
+            data = current_user
+        else:
+            data =  {'PDS_Contact_Details':
+                    {'email':"",
+                     'mobile_number':"",
+                     'perm_country':"",
+                     'perm_region':"",
+                     'perm_province':"",
+                     'perm_city':"",
+                     'perm_address':"",
+                     'perm_zip_code':"",
+                     'perm_phone_number':"",
+                     'res_country':"",
+                     'res_region':"",
+                     'res_province':"",
+                     'res_city':"",
+                     'res_address':"",
+                     'res_zip_code':"",
+                     'res_phone_number':"",
+                    'remarks':"",
+                    }
+                    }
         
          # UPDATE 
         
@@ -389,30 +461,56 @@ def PDM_CD():
             res_phone_number = request.form.get('res_phone_number')
             remarks = request.form.get('remarks')
 
-            u = update(PDS_Contact_Details)
-            u = u.values({"email": email,
-                          "mobile_number": mobile_number,
-                          "perm_country": perm_country,
-                          "perm_region": perm_region,
-                          "perm_province": perm_province,
-                          "perm_city": perm_city,
-                          "perm_address": perm_address,
-                          "perm_zip_code": perm_zip_code,
-                          "perm_phone_number": perm_phone_number,
-                          "res_country": res_country,
-                          "res_region": res_region,
-                          "res_province": res_province,
-                          "res_city": res_city,
-                          "res_address": res_address,
-                          "res_zip_code": res_zip_code,
-                          "res_phone_number": res_phone_number,
-                          "remarks": remarks
-                          })
-            u = u.where(Faculty_Profile.faculty_account_id == current_user.faculty_account_id)
-            db.session.execute(u)
-            db.session.commit()
-            db.session.close()
-            return redirect(url_for('auth.PDM_CD'))
+            if PDS_Contact_Details.query.filter_by(faculty_account_id=current_user.faculty_account_id).first():
+                u = update(PDS_Contact_Details)
+                u = u.values({"email": email,
+                            "mobile_number": mobile_number,
+                            "perm_country": perm_country,
+                            "perm_region": perm_region,
+                            "perm_province": perm_province,
+                            "perm_city": perm_city,
+                            "perm_address": perm_address,
+                            "perm_zip_code": perm_zip_code,
+                            "perm_phone_number": perm_phone_number,
+                            "res_country": res_country,
+                            "res_region": res_region,
+                            "res_province": res_province,
+                            "res_city": res_city,
+                            "res_address": res_address,
+                            "res_zip_code": res_zip_code,
+                            "res_phone_number": res_phone_number,
+                            "remarks": remarks
+                            })
+                u = u.where(PDS_Contact_Details.faculty_account_id == current_user.faculty_account_id)
+                db.session.execute(u)
+                db.session.commit()
+                db.session.close()
+                return redirect(url_for('auth.PDM_CD'))
+            
+            else:
+                
+                add_record = PDS_Contact_Details(  email = email,
+                                                    mobile_number = mobile_number,
+                                                    perm_country = perm_country,
+                                                    perm_region = perm_region,
+                                                    perm_province = perm_province,
+                                                    perm_city = perm_city,
+                                                    perm_address = perm_address,
+                                                    perm_zip_code = perm_zip_code,
+                                                    perm_phone_number = perm_phone_number,
+                                                    res_country = res_country,
+                                                    res_region = res_region,
+                                                    res_province = res_province,
+                                                    res_city = res_city,
+                                                    res_address = res_address,
+                                                    res_zip_code = res_zip_code,
+                                                    res_phone_number = res_phone_number,
+                                                    remarks = remarks,
+                                                    faculty_account_id = current_user.faculty_account_id)
+                db.session.add(add_record)
+                db.session.commit()
+                db.session.close()
+                return redirect(url_for('auth.PDM_CD'))
         
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Contact-Details.html", 
@@ -420,6 +518,7 @@ def PDM_CD():
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
+                               data = data,
                                activate_CD="active")
         
         

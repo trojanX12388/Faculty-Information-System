@@ -23,7 +23,7 @@ class Faculty_Profile(db.Model, UserMixin):
     remarks = db.Column(db.String)  # Remarks
     faculty_code = db.Column(db.Integer, nullable=False)  # Faculty Code
     honorific = db.Column(db.String(50))  # Honorific
-    age = db.Column(db.Integer, nullable=False)  # Age
+    age = db.Column(db.Numeric, nullable=False)  # Age
     email = db.Column(db.String(50), unique=True, nullable=False)  # Email
     password = db.Column(db.String(128), nullable=False)  # Password
     profile_pic = db.Column(db.String(50),default="14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08")  # Profile Pic
@@ -101,19 +101,19 @@ class PDS_Personal_Details(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'))  # FacultyID
-    sex = db.Column(db.String(50),default=None)  
-    gender = db.Column(db.String(50),default=None) 
-    height = db.Column(db.Float,default=0)
-    weight = db.Column(db.Float,default=0)  
-    religion = db.Column(db.String(50),default=None)  
-    civil_status = db.Column(db.String(50),default=None)  
-    blood_type = db.Column(db.String(50),default=None)  
-    pronoun = db.Column(db.String(50),default=None)  
-    country = db.Column(db.String(50),default=None) 
-    city = db.Column(db.String(50),default=None) 
-    citizenship = db.Column(db.String(50),default=None) 
-    dual_citizenship = db.Column(db.String(50),default=None) 
-    remarks = db.Column(db.String(50),default=None) 
+    sex = db.Column(db.String(50))  
+    gender = db.Column(db.String(50)) 
+    height = db.Column(db.Float)
+    weight = db.Column(db.Float)  
+    religion = db.Column(db.String(50))  
+    civil_status = db.Column(db.String(50))  
+    blood_type = db.Column(db.String(50))  
+    pronoun = db.Column(db.String(50))  
+    country = db.Column(db.String(50)) 
+    city = db.Column(db.String(50)) 
+    citizenship = db.Column(db.String(50)) 
+    dual_citizenship = db.Column(db.String(50)) 
+    remarks = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
     
     def to_dict(self):
@@ -148,21 +148,21 @@ class PDS_Contact_Details(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # DataID
     faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'))  # FacultyID
     email = db.Column(db.String(50))  
-    mobile_number = db.Column(db.Integer, default=0) 
+    mobile_number = db.Column(db.Numeric) 
     perm_country = db.Column(db.String(50))
     perm_region = db.Column(db.String(50))    
     perm_province = db.Column(db.String(50))  
     perm_city = db.Column(db.String(50))  
     perm_address = db.Column(db.String(50))  
-    perm_zip_code = db.Column(db.Integer, default=0)  
-    perm_phone_number = db.Column(db.String(50)) 
+    perm_zip_code = db.Column(db.Numeric)  
+    perm_phone_number = db.Column(db.Numeric) 
     res_country = db.Column(db.String(50))
     res_region = db.Column(db.String(50))    
     res_province = db.Column(db.String(50))  
     res_city = db.Column(db.String(50))  
     res_address = db.Column(db.String(50))  
-    res_zip_code = db.Column(db.Integer, default=0)  
-    res_phone_number = db.Column(db.String(50)) 
+    res_zip_code = db.Column(db.Numeric)  
+    res_phone_number = db.Column(db.Numeric) 
     remarks = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
     

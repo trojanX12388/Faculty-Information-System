@@ -166,8 +166,6 @@ def faculty_data():
         postgreSQL_select_Query = "SELECT * FROM" f'{f}'f'{faculty}'f'{f}'
         # DATABASE CURSOR
         
-        session.begin()
-        
         cursor=session.connection().connection.cursor()
         cursor.execute(postgreSQL_select_Query)
 
@@ -177,9 +175,14 @@ def faculty_data():
         faculty_primary = {'faculty':[]}
         
         for data in faculty_data:
+            
+            # FACULTY DATA
+            
             jsonprimarydata = {
+            'name': data[2],
             str(data[0]):[]
         }
+            # BASIC DATA
             jsondata = {
             'first_name': data[3],
             'last_name': data[4],
@@ -189,18 +192,88 @@ def faculty_data():
             'birth_date': data[8],
             'date_hired': data[9],
             'remarks': data[10],
+            'faculty_code': data[11],
             'employee_code': data[1],
             'honorific': data[12],
             'age': data[13],
             'email': data[14],
-            'profile_pic': 'https://drive.google.com/file/d/'+str(data[16])+'/view'
+            'profile_pic': 'https://drive.google.com/file/d/'+str(data[16])+'/view',
+            # PDS DATA
+            'PDS_Data':{
+                'PDS_Personal_Details':[],
+                'PDS_Contact_Details':[],
+                }
             }
+            jsonprimarydata[str(data[0])].append(dict(jsondata))
+            faculty_primary["faculty"].append(dict(jsonprimarydata)) 
             
-            jsonprimarydata[""+str(data[0])].append(dict(jsondata))
-            faculty_primary["faculty"].append(dict(jsonprimarydata))   
+            # FETCHIN PDS PERSONAL DETAILS DATA
             
+            faculty1 = str("PDS_Personal_Details")
+            postgreSQL_select_Query1 = "SELECT * FROM" f'{f}'f'{faculty1}'f'{f}'"WHERE faculty_account_id = '{}';".format(data[0])
+            
+            # DATABASE CURSOR
+        
+            cursor1=session.connection().connection.cursor()
+            cursor1.execute(postgreSQL_select_Query1)
+
+            PDS_Personal_Details = cursor1.fetchall()
+            for data1 in PDS_Personal_Details:
+                json_pds_PD_data = {
+                    'sex': data1[2],
+                    'gender': data1[3],
+                    'height': data1[4],
+                    'weight': data1[5],
+                    'religion': data1[6],
+                    'civil_status': data1[7],
+                    'blood_type': data1[8],
+                    'pronoun': data1[9],
+                    'country': data1[10],
+                    'city': data1[11],
+                    'citizenship': data1[12],
+                    'dual_citizenship': data1[13],
+                    'remarks': data1[14],
+                }
+                jsonprimarydata[str(data[0])][0]["PDS_Data"]["PDS_Personal_Details"].append(dict(json_pds_PD_data))
+                cursor1.close()
+                
+            # FETCHIN PDS CONTACT DETAILS DATA
+        
+            faculty1 = str("PDS_Contact_Details")
+            postgreSQL_select_Query1 = "SELECT * FROM" f'{f}'f'{faculty1}'f'{f}'"WHERE faculty_account_id = '{}';".format(data[0])
+            
+            # DATABASE CURSOR
+        
+            cursor1=session.connection().connection.cursor()
+            cursor1.execute(postgreSQL_select_Query1)
+
+            PDS_Personal_Details = cursor1.fetchall()
+            for data1 in PDS_Personal_Details:
+                json_pds_PD_data = {
+                    'email': data1[2],
+                    'mobile_number': data1[3],
+                    'perm_country': data1[4],
+                    'perm_region': data1[5],
+                    'perm_province': data1[6],
+                    'perm_city': data1[7],
+                    'perm_address': data1[8],
+                    'perm_zip_code': data1[9],
+                    'perm_phone_number': data1[10],
+                    'res_country': data1[11],
+                    'res_region': data1[12],
+                    'res_province': data1[13],
+                    'res_city': data1[14],
+                    'res_address': data1[15],
+                    'res_zip_code': data1[16],
+                    'res_phone_number': data1[17],
+                    'remarks': data1[18]
+                }
+                jsonprimarydata[str(data[0])][0]["PDS_Data"]["PDS_Contact_Details"].append(dict(json_pds_PD_data))
+                cursor1.close()
+
             cursor.close()
             session.close()
+            
         jsontable["FIS_data"].append(dict(faculty_primary))
         
         return jsonify(jsontable), 200

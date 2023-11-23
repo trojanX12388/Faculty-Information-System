@@ -19,7 +19,8 @@
   
       <h5 class="card-title">Contact Details</h5>
 
-    {% for data in user.PDS_Contact_Details %}
+    {% for data in data.PDS_Contact_Details %}
+    {% if loop.first %}
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label ">Email Address</div>
@@ -140,7 +141,7 @@
         <div class="row mb-3">
           <label for="mobile_number" class="col-md-4 col-lg-3 col-form-label">Mobile Number</label>
           <div class="col-md-8 col-lg-9">
-            <input name="mobile_number" type="text" class="form-control" id="mobile_number" value="{{data.mobile_number}}">
+            <input name="mobile_number" type="number" class="form-control" id="mobile_number" value="{{data.mobile_number}}">
           </div>
         </div>
 
@@ -185,14 +186,14 @@
           <div class="row mb-3">
             <label for="perm_zip_code" class="col-md-4 col-lg-3 col-form-label">Zip Code</label>
             <div class="col-md-8 col-lg-9">
-              <input name="perm_zip_code" type="text" class="form-control" id="perm_zip_code" value="{{data.perm_zip_code}}">
+              <input name="perm_zip_code" type="number" class="form-control" id="perm_zip_code" value="{{data.perm_zip_code}}">
             </div>
           </div>
 
           <div class="row mb-3">
-            <label for="{{data.perm_zip_code}}" class="col-md-4 col-lg-3 col-form-label">Phone Number</label>
+            <label for="perm_phone_number" class="col-md-4 col-lg-3 col-form-label">Phone Number</label>
             <div class="col-md-8 col-lg-9">
-              <input name="{{data.perm_zip_code}}" type="text" class="form-control" id="{{data.perm_zip_code}}" value="{{data.perm_zip_code}}">
+              <input name="perm_phone_number" type="number" class="form-control" id="perm_phone_number" value="{{data.perm_phone_number}}">
             </div>
           </div>
 
@@ -251,14 +252,14 @@
             <div class="row mb-3">
               <label for="res_zip_code" class="col-md-4 col-lg-3 col-form-label">Zip Code</label>
               <div class="col-md-8 col-lg-9">
-                <input name="res_zip_code" type="text" class="form-control" id="res_zip_code" value="{{data.res_zip_code}}" >
+                <input name="res_zip_code" type="number" class="form-control" id="res_zip_code" value="{{data.res_zip_code}}" >
               </div>
             </div>
   
             <div class="row mb-3">
               <label for="res_phone_number" class="col-md-4 col-lg-3 col-form-label">Phone Number</label>
               <div class="col-md-8 col-lg-9">
-                <input name="res_phone_number" type="text" class="form-control" id="res_phone_number" value="{{data.res_phone_number}}" >
+                <input name="res_phone_number" type="number" class="form-control" id="res_phone_number" value="{{data.res_phone_number}}" >
               </div>
             </div>
 
@@ -282,7 +283,7 @@
 
   </div>
 
-
+  {% endif %}
   {% endfor %}
 
 
