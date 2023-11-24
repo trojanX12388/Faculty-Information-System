@@ -1321,6 +1321,24 @@ def PDM_CR():
             profile_pic=profile_default
         else:
             profile_pic=username.profile_pic
+        
+        # UPDATE 
+        
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            full_name = request.form.get('full_name')
+            id = request.form.get('id')
+
+            u = update(PDS_Character_Reference)
+            u = u.values({"full_name": full_name})
+            
+            u = u.where(PDS_Character_Reference.id == id)
+            db.session.execute(u)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_CR')) 
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Character-Reference.html", 
                                User=username.first_name + " " + username.last_name, 
@@ -1328,6 +1346,41 @@ def PDM_CR():
                                PDM="show",
                                user = current_user,
                                activate_CR="active")
+
+@PDM.route("/PDM-Character-Reference/add-record", methods=['GET', 'POST'])
+@login_required
+def PDM_CRadd():
+
+         # INSERT RECORD
+        
+        if request.method == 'POST':
+         
+            # VALUES
+            full_name = request.form.get('full_name')
+
+            add_record = PDS_Character_Reference(full_name=full_name,
+                                                faculty_account_id = current_user.faculty_account_id)
+            
+            db.session.add(add_record)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_CR'))
+
+@PDM.route("/PDM-Character-Reference/delete-record", methods=['GET', 'POST'])
+@login_required
+def PDM_CRdel():
+
+        # DELETE RECORD
+         
+        id = request.form.get('id')
+        
+        data = PDS_Character_Reference.query.filter_by(id=id).first() 
+        
+        if data:
+            db.session.delete(data)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_CR'))
 
 # ------------------------------- END OF PDM CHARACTER REFERENCE  ---------------------------- 
  
