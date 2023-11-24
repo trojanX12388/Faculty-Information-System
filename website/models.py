@@ -376,8 +376,7 @@ class PDS_Outstanding_Achievements(db.Model):
     faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'))  # FacultyID
     achievement = db.Column(db.String(50))  
     level = db.Column(db.String(50)) 
-    from_date = db.Column(db.Date) 
-    to_date = db.Column(db.Date)   
+    date = db.Column(db.Date) 
     is_delete = db.Column(db.Boolean, default=False) 
     
 
@@ -434,11 +433,11 @@ class PDS_Agency_Membership(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'))  # FacultyID
-    GSIS = db.Column(db.Integer, default=0)  
-    PAGIBIG = db.Column(db.Integer, default=0) 
-    PHILHEALTH = db.Column(db.Integer, default=0) 
-    SSS = db.Column(db.Integer, default=0) 
-    TIN = db.Column(db.Integer, default=0) 
+    GSIS = db.Column(db.String(20))  
+    PAGIBIG = db.Column(db.String(20)) 
+    PHILHEALTH = db.Column(db.String(20)) 
+    SSS = db.Column(db.String(20)) 
+    TIN = db.Column(db.String(20)) 
     remarks = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
     
@@ -494,40 +493,41 @@ class PDS_Additional_Questions(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'))  # FacultyID
-    q1_a = db.Column(db.String(50), default='No') 
+    
+    q1_a = db.Column(db.String(50)) 
     q1_a_details = db.Column(db.String(50)) 
     
-    q1_b = db.Column(db.String(50), default='No') 
+    q1_b = db.Column(db.String(50)) 
     q1_b_details = db.Column(db.String(50)) 
     
-    q2_a = db.Column(db.String(50), default='No') 
+    q2_a = db.Column(db.String(50)) 
     q2_a_details = db.Column(db.String(50)) 
     
-    q2_b = db.Column(db.String(50), default='No')
+    q2_b = db.Column(db.String(50))
     q2_b_details = db.Column(db.String(50)) 
     
-    q3 = db.Column(db.String(50), default='No')
+    q3 = db.Column(db.String(50))
     q3_details = db.Column(db.String(50)) 
     
-    q4 = db.Column(db.String(50), default='No')
+    q4 = db.Column(db.String(50))
     q4_details = db.Column(db.String(50)) 
     
-    q5_a = db.Column(db.String(50), default='No') 
+    q5_a = db.Column(db.String(50)) 
     q5_a_details = db.Column(db.String(50)) 
     
-    q5_b = db.Column(db.String(50), default='No') 
+    q5_b = db.Column(db.String(50)) 
     q5_b_details = db.Column(db.String(50)) 
     
-    q6 = db.Column(db.String(50), default='No') 
+    q6 = db.Column(db.String(50)) 
     q6_details = db.Column(db.String(50)) 
     
-    q7_a = db.Column(db.String(50), default='No')
+    q7_a = db.Column(db.String(50))
     q7_a_details = db.Column(db.String(50)) 
     
-    q7_b = db.Column(db.String(50), default='No')  
+    q7_b = db.Column(db.String(50))  
     q7_b_details = db.Column(db.String(50)) 
     
-    q7_c = db.Column(db.String(50), default='No') 
+    q7_c = db.Column(db.String(50)) 
     q7_c_details = db.Column(db.String(50)) 
     
     is_delete = db.Column(db.Boolean, default=False) 
@@ -771,12 +771,12 @@ def create_sample_data():
     
     # ADD FACULTY DATA
     
-    db.session.add(faculty_sample1)
-    db.session.add(faculty_sample2)
-    db.session.add(faculty_sample3)
+    # db.session.add(faculty_sample1)
+    # db.session.add(faculty_sample2)
+    # db.session.add(faculty_sample3)
     
-    # COMMIT 
+    # # COMMIT 
     
-    db.session.commit()
+    # db.session.commit()
 
-    db.session.close()
+    # db.session.close()

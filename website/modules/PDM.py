@@ -35,6 +35,8 @@ profile_default='14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08'
 
 # FACULTY PERSONAL DATA MANAGEMENT ROUTE
 
+# ------------------------------- PDM BASIC DETAILS ----------------------------  
+
 @PDM.route("/PDM-Basic-Details", methods=['GET', 'POST'])
 @login_required
 def PDM_BD():
@@ -103,6 +105,7 @@ def PDM_BD():
                                activate_BD= "active")
 
 
+# UPDATE PIC
 
 @PDM.route("/PDM-Basic-Details-Update-Pic", methods=['POST'])
 @login_required
@@ -151,7 +154,10 @@ def PDM_BDUP():
         db.session.close()
         
         return redirect(url_for('PDM.PDM_BD')) 
-        
+    
+    
+# CLEAR PIC
+    
 @PDM.route("/PDM-Basic-Details-Clear-Pic")
 @login_required
 def PDM_BDCP():
@@ -181,6 +187,12 @@ def PDM_BDCP():
         db.session.close()
         
         return redirect(url_for('PDM.PDM_BD')) 
+
+
+# ------------------------------- END PDM BASIC DETAILS ----------------------------  
+
+
+# ------------------------------- PDM PERSONAL DETAILS ----------------------------  
 
 @PDM.route("/PDM-Personal-Details", methods=['GET', 'POST'])
 @login_required
@@ -287,6 +299,10 @@ def PDM_PD():
                                data = data,
                                activate_PD="active")
 
+# ------------------------------- END PDM PERSONAL DETAILS ----------------------------  
+
+
+# ------------------------------- PDM CONTACT DETAILS ----------------------------  
 
 @PDM.route("/PDM-Contact-Details", methods=['GET', 'POST'])
 @login_required
@@ -490,7 +506,6 @@ def PDM_FBdel():
 
         data = PDS_Family_Background.query.filter_by(id=id).first() 
         
-        print(data)
         if data:
             db.session.delete(data)
             db.session.commit()
@@ -500,7 +515,7 @@ def PDM_FBdel():
 # ------------------------------- END OF PDM FAMILY BACKGROUNDS ---------------------------- 
 
  
-# ------------------------------- PDM EDUCATIONAL BACKGROUNDS ----------------------------  
+# ------------------------------- PDM EDUCATIONAL BACKGROUNDS ------------------------------  
 
 @PDM.route("/PDM-Educational-Background", methods=['GET', 'POST'])
 @login_required
@@ -513,7 +528,7 @@ def PDM_EB():
         else:
             profile_pic=username.profile_pic
             
-         # UPDATE 
+        # UPDATE 
         
         if request.method == 'POST':
          
@@ -576,20 +591,13 @@ def PDM_EBadd():
 @login_required
 def PDM_EBdel():
 
-         # DELETE RECORD
+        # DELETE RECORD
          
-        # def delete(self, item_id):
-        # item = ItemModel.query.get_or_404(item_id)
-        # db.session.delete(item)
-        # db.session.commit()
-        # return {"message": "Item deleted."}
-
         id = request.form.get('id')
         
 
         data = PDS_Educational_Background.query.filter_by(id=id).first() 
         
-        print(data)
         if data:
             db.session.delete(data)
             db.session.commit()
@@ -598,9 +606,10 @@ def PDM_EBdel():
 
 
 # ------------------------------- END OF PDM EDUCATIONAL BACKGROUNDS ----------------------------
+ 
+# ------------------------------- PDM ELIGIBITIES -----------------------------------------------
 
-
-@PDM.route("/PDM-Eligibities")
+@PDM.route("/PDM-Eligibities", methods=['GET', 'POST'])
 @login_required
 def PDM_E():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
@@ -610,6 +619,29 @@ def PDM_E():
             profile_pic=profile_default
         else:
             profile_pic=username.profile_pic
+            
+        # UPDATE 
+        
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            eligibity = request.form.get('eligibity')
+            rating = request.form.get('rating')
+            id = request.form.get('id')
+
+            u = update(PDS_Eligibity)
+            u = u.values({"eligibity": eligibity,
+                          "rating": rating
+                          })
+            
+            u = u.where(PDS_Eligibity.id == id)
+            db.session.execute(u)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_E'))    
+            
+            
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Eligibities.html", 
                                User=username.first_name + " " + username.last_name, 
@@ -617,10 +649,52 @@ def PDM_E():
                                PDM="show",
                                user = current_user,
                                activate_E="active")
+
+@PDM.route("/PDM-Eligibities/add-record", methods=['GET', 'POST'])
+@login_required
+def PDM_Eadd():
+
+         # INSERT RECORD
+        
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            eligibity = request.form.get('eligibity')
+            rating = request.form.get('rating')
+           
+            add_record = PDS_Eligibity(eligibity=eligibity,rating=rating,faculty_account_id = current_user.faculty_account_id)
+            
+            db.session.add(add_record)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_E'))
+
+@PDM.route("/PDM-Eligibities/delete-record", methods=['GET', 'POST'])
+@login_required
+def PDM_Edel():
+
+        # DELETE RECORD
+         
+        id = request.form.get('id')
+        
+        data = PDS_Eligibity.query.filter_by(id=id).first() 
+        
+        if data:
+            db.session.delete(data)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_E'))
   
 
+# ------------------------------- END OF PDM ELIGIBITIES  ---------------------------- 
 
-@PDM.route("/PDM-Work-Experience")
+ 
+# ------------------------------- PDM WORK EXPERIENCE ------------------------------
+
+
+
+@PDM.route("/PDM-Work-Experience", methods=['GET', 'POST'])
 @login_required
 def PDM_WE():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
@@ -630,6 +704,33 @@ def PDM_WE():
             profile_pic=profile_default
         else:
             profile_pic=username.profile_pic 
+        
+        # UPDATE 
+        
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            position = request.form.get('position')
+            company_name = request.form.get('company_name')
+            status = request.form.get('status')
+            from_date = request.form.get('from_date')
+            to_date = request.form.get('to_date')
+            id = request.form.get('id')
+
+            u = update(PDS_Work_Experience)
+            u = u.values({"position": position,
+                          "company_name": company_name,
+                          "status": status,
+                          "from_date": from_date,
+                          "to_date": to_date
+                          })
+            
+            u = u.where(PDS_Work_Experience.id == id)
+            db.session.execute(u)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_WE'))
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Work-Experience.html", 
                                User=username.first_name + " " + username.last_name, 
@@ -638,9 +739,56 @@ def PDM_WE():
                                user = current_user,
                                activate_WE="active")
   
-  
+@PDM.route("/PDM-Work-Experience/add-record", methods=['GET', 'POST'])
+@login_required
+def PDM_WEadd():
 
-@PDM.route("/PDM-Voluntary-Works")
+         # INSERT RECORD
+        
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            position = request.form.get('position')
+            company_name = request.form.get('company_name')
+            status = request.form.get('status')
+            from_date = request.form.get('from_date')
+            to_date = request.form.get('to_date')
+           
+            add_record = PDS_Work_Experience(position=position,
+                                             company_name=company_name,
+                                             status=status,
+                                             from_date=from_date,
+                                             to_date=to_date,
+                                             faculty_account_id = current_user.faculty_account_id)
+            
+            db.session.add(add_record)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_WE'))
+
+@PDM.route("/PDM-Work-Experience/delete-record", methods=['GET', 'POST'])
+@login_required
+def PDM_WEdel():
+
+        # DELETE RECORD
+         
+        id = request.form.get('id')
+        
+        data = PDS_Work_Experience.query.filter_by(id=id).first() 
+        
+        if data:
+            db.session.delete(data)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_WE'))
+    
+# ------------------------------- END OF PDM WORK EXPERIENCE  ---------------------------- 
+
+ 
+# ------------------------------- PDM VOLUNTARY WORKS ------------------------------
+  
+@PDM.route("/PDM-Voluntary-Works", methods=['GET', 'POST'])
 @login_required
 def PDM_VW():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
@@ -650,6 +798,31 @@ def PDM_VW():
             profile_pic=profile_default
         else:
             profile_pic=username.profile_pic
+        
+        # UPDATE 
+        
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            organization = request.form.get('organization')
+            position = request.form.get('position')
+            from_date = request.form.get('from_date')
+            to_date = request.form.get('to_date')
+            id = request.form.get('id')
+
+            u = update(PDS_Voluntary_Work)
+            u = u.values({"position": position,
+                          "organization": organization,
+                          "from_date": from_date,
+                          "to_date": to_date
+                          })
+            
+            u = u.where(PDS_Voluntary_Work.id == id)
+            db.session.execute(u)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_VW'))
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Voluntary-Works.html", 
                                User=username.first_name + " " + username.last_name, 
@@ -657,9 +830,57 @@ def PDM_VW():
                                PDM="show",
                                user = current_user,
                                activate_VW="active")
-  
 
-@PDM.route("/PDM-Training-Seminars")
+
+@PDM.route("/PDM-Voluntary-Works/add-record", methods=['GET', 'POST'])
+@login_required
+def PDM_VWadd():
+
+         # INSERT RECORD
+        
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            organization = request.form.get('organization')
+            position = request.form.get('position')
+            from_date = request.form.get('from_date')
+            to_date = request.form.get('to_date')
+           
+            add_record = PDS_Voluntary_Work(organization=organization,
+                                            position=position,
+                                            from_date=from_date,
+                                            to_date=to_date,
+                                            faculty_account_id = current_user.faculty_account_id)
+            
+            db.session.add(add_record)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_VW'))
+
+@PDM.route("/PDM-Voluntary-Works/delete-record", methods=['GET', 'POST'])
+@login_required
+def PDM_VWdel():
+
+        # DELETE RECORD
+         
+        id = request.form.get('id')
+        
+        data = PDS_Voluntary_Work.query.filter_by(id=id).first() 
+        
+        if data:
+            db.session.delete(data)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_VW'))
+  
+    
+# ------------------------------- END OF PDM VOLUNTARY WORKS  ---------------------------- 
+
+ 
+# ------------------------------- PDM TRAINING SEMINARS ------------------------------
+
+@PDM.route("/PDM-Training-Seminars", methods=['GET', 'POST'])
 @login_required
 def PDM_TS():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
@@ -669,6 +890,31 @@ def PDM_TS():
             profile_pic=profile_default
         else:
             profile_pic=username.profile_pic
+        
+        # UPDATE 
+        
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            title = request.form.get('title')
+            level = request.form.get('level')
+            from_date = request.form.get('from_date')
+            to_date = request.form.get('to_date')
+            id = request.form.get('id')
+
+            u = update(PDS_Training_Seminars)
+            u = u.values({"title": title,
+                          "level": level,
+                          "from_date": from_date,
+                          "to_date": to_date
+                          })
+            
+            u = u.where(PDS_Training_Seminars.id == id)
+            db.session.execute(u)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_TS'))
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Training-Seminars.html", 
                                User=username.first_name + " " + username.last_name, 
@@ -676,9 +922,58 @@ def PDM_TS():
                                PDM="show",
                                user = current_user,
                                activate_TS="active")
-  
+        
 
-@PDM.route("/PDM-Outstanding-Achievements")
+@PDM.route("/PDM-Training-Seminars/add-record", methods=['GET', 'POST'])
+@login_required
+def PDM_TSadd():
+
+         # INSERT RECORD
+        
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            title = request.form.get('title')
+            level = request.form.get('level')
+            from_date = request.form.get('from_date')
+            to_date = request.form.get('to_date')
+           
+            add_record = PDS_Training_Seminars(title=title,
+                                                level=level,
+                                                from_date=from_date,
+                                                to_date=to_date,
+                                                faculty_account_id = current_user.faculty_account_id)
+            
+            db.session.add(add_record)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_TS'))
+
+@PDM.route("/PDM-Training-Seminars/delete-record", methods=['GET', 'POST'])
+@login_required
+def PDM_TSdel():
+
+        # DELETE RECORD
+         
+        id = request.form.get('id')
+        
+        data = PDS_Training_Seminars.query.filter_by(id=id).first() 
+        
+        if data:
+            db.session.delete(data)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_TS'))
+       
+  
+# ------------------------------- END OF PDM TRAINING SEMINARS  ---------------------------- 
+
+ 
+# ------------------------------- PDM OUTSTANDING ACHIEVEMENTS ------------------------------
+
+
+@PDM.route("/PDM-Outstanding-Achievements", methods=['GET', 'POST'])
 @login_required
 def PDM_OA():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
@@ -688,6 +983,29 @@ def PDM_OA():
             profile_pic=profile_default
         else:
             profile_pic=username.profile_pic
+            
+        # UPDATE 
+        
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            achievement = request.form.get('achievement')
+            level = request.form.get('level')
+            date = request.form.get('date')
+            id = request.form.get('id')
+
+            u = update(PDS_Outstanding_Achievements)
+            u = u.values({"achievement": achievement,
+                          "level": level,
+                          "date": date
+                          })
+            
+            u = u.where(PDS_Outstanding_Achievements.id == id)
+            db.session.execute(u)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_OA'))
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Outstanding-Achievements.html", 
                                User=username.first_name + " " + username.last_name, 
@@ -696,8 +1014,53 @@ def PDM_OA():
                                user = current_user,
                                activate_OA="active")
 
+
+@PDM.route("/PDM-Outstanding-Achievements/add-record", methods=['GET', 'POST'])
+@login_required
+def PDM_OAadd():
+
+         # INSERT RECORD
+        
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            achievement = request.form.get('achievement')
+            level = request.form.get('level')
+            date = request.form.get('date')
+           
+            add_record = PDS_Outstanding_Achievements(achievement=achievement,
+                                                    level=level,
+                                                    date=date,
+                                                    faculty_account_id = current_user.faculty_account_id)
+            
+            db.session.add(add_record)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_OA'))
+
+@PDM.route("/PDM-Outstanding-Achievements/delete-record", methods=['GET', 'POST'])
+@login_required
+def PDM_OAdel():
+
+        # DELETE RECORD
+         
+        id = request.form.get('id')
+        
+        data = PDS_Outstanding_Achievements.query.filter_by(id=id).first() 
+        
+        if data:
+            db.session.delete(data)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_OA'))
+
+# ------------------------------- END OF PDM OUTSTANDING ACHIEVEMENTS  ---------------------------- 
+
  
-@PDM.route("/PDM-Officeships-Memberships")
+# ------------------------------- PDM OFFICESHIPS MEMBERSHIPS ------------------------------
+ 
+@PDM.route("/PDM-Officeships-Memberships", methods=['GET', 'POST'])
 @login_required
 def PDM_OSM():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
@@ -707,6 +1070,31 @@ def PDM_OSM():
             profile_pic=profile_default
         else:
             profile_pic=username.profile_pic
+        
+        # UPDATE 
+        
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            organization = request.form.get('organization')
+            position = request.form.get('position')
+            from_date = request.form.get('from_date')
+            to_date = request.form.get('to_date')
+            id = request.form.get('id')
+
+            u = update(PDS_OfficeShips_Memberships)
+            u = u.values({"position": position,
+                          "organization": organization,
+                          "from_date": from_date,
+                          "to_date": to_date
+                          })
+            
+            u = u.where(PDS_OfficeShips_Memberships.id == id)
+            db.session.execute(u)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_OSM')) 
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Officeships-Memberships.html", 
                                User=username.first_name + " " + username.last_name, 
@@ -715,27 +1103,135 @@ def PDM_OSM():
                                user = current_user,
                                activate_OSM="active")
 
+@PDM.route("/PDM-Officeships-Memberships/add-record", methods=['GET', 'POST'])
+@login_required
+def PDM_OSMadd():
+
+         # INSERT RECORD
+        
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            organization = request.form.get('organization')
+            position = request.form.get('position')
+            from_date = request.form.get('from_date')
+            to_date = request.form.get('to_date')
+           
+            add_record = PDS_OfficeShips_Memberships(organization=organization,
+                                            position=position,
+                                            from_date=from_date,
+                                            to_date=to_date,
+                                            faculty_account_id = current_user.faculty_account_id)
+            
+            db.session.add(add_record)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_OSM'))
+
+@PDM.route("/PDM-Officeships-Memberships/delete-record", methods=['GET', 'POST'])
+@login_required
+def PDM_OSMdel():
+
+        # DELETE RECORD
+         
+        id = request.form.get('id')
+        
+        data = PDS_OfficeShips_Memberships.query.filter_by(id=id).first() 
+        
+        if data:
+            db.session.delete(data)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_OSM'))
+  
+    
+# ------------------------------- END OF PDM OFFICESHIPS MEMBERSHIPS  ---------------------------- 
+
  
-@PDM.route("/PDM-Agency-Membership")
+# ------------------------------- PDM AGENCY MEMBERSHIP ------------------------------
+ 
+@PDM.route("/PDM-Agency-Membership", methods=['GET', 'POST'])
 @login_required
 def PDM_AM():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
       
+        # CHECKING IF PROFILE PIC EXIST
         if username.profile_pic == None:
             profile_pic=profile_default
         else:
-            profile_pic=username.profile_pic
+            profile_pic=username.profile_pic   
+             
+        # VERIFYING IF DATA OF CURRENT USER EXISTS
+        if current_user.PDS_Agency_Membership:
+            data = current_user
+        else:
+            data =  {'PDS_Agency_Membership':
+                    {'GSIS':"",
+                    'PAGIBIG':"",
+                    'PHILHEALTH':"",
+                    'SSS':"",
+                    'TIN':"",
+                    'remarks':""
+                    }
+                    }
+        
+        # UPDATE 
+        
+        if request.method == 'POST':
+         
+            # VALUES
+            GSIS = request.form.get('GSIS')
+            PAGIBIG = request.form.get('PAGIBIG')
+            PHILHEALTH = request.form.get('PHILHEALTH')
+            SSS = request.form.get('SSS')
+            TIN = request.form.get('TIN')
+            remarks = request.form.get('remarks')
+           
+
+            if PDS_Agency_Membership.query.filter_by(faculty_account_id=current_user.faculty_account_id).first():
+                u = update(PDS_Agency_Membership)
+                u = u.values({  "GSIS": GSIS,
+                                "PAGIBIG": PAGIBIG,
+                                "PHILHEALTH": PHILHEALTH,
+                                "SSS": SSS,
+                                "TIN": TIN,
+                                "remarks": remarks,
+                            })
+                u = u.where(PDS_Agency_Membership.faculty_account_id == current_user.faculty_account_id)
+                db.session.execute(u)
+                db.session.commit()
+                db.session.close()
+                return redirect(url_for('PDM.PDM_AM'))
+            
+            else:
+                add_record = PDS_Agency_Membership( GSIS = GSIS,
+                                                    PAGIBIG = PAGIBIG,
+                                                    PHILHEALTH = PHILHEALTH,
+                                                    SSS = SSS,
+                                                    TIN = TIN,
+                                                    remarks = remarks,
+                                                    faculty_account_id = current_user.faculty_account_id)
+            
+                db.session.add(add_record)
+                db.session.commit()
+                db.session.close()
+                return redirect(url_for('PDM.PDM_AM'))
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Agency-Membership.html", 
                                User=username.first_name + " " + username.last_name, 
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
+                               data = data,
                                activate_AM="active")  
 
+# ------------------------------- END OF PDM AGENCY MEMBERSHIP  ---------------------------- 
+ 
+# ------------------------------- PDM TEACHER INFORMATION ------------------------------
 
-@PDM.route("/PDM-Teacher-Information")
+@PDM.route("/PDM-Teacher-Information", methods=['GET', 'POST'])
 @login_required
 def PDM_TI():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
@@ -745,6 +1241,27 @@ def PDM_TI():
             profile_pic=profile_default
         else:
             profile_pic=username.profile_pic
+        
+        # UPDATE 
+        
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            information = request.form.get('information')
+            type = request.form.get('type')
+            id = request.form.get('id')
+
+            u = update(PDS_Teacher_Information)
+            u = u.values({"information": information,
+                          "type": type
+                          })
+            
+            u = u.where(PDS_Teacher_Information.id == id)
+            db.session.execute(u)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_TI'))
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Teacher-Information.html", 
                                User=username.first_name + " " + username.last_name, 
@@ -753,8 +1270,48 @@ def PDM_TI():
                                user = current_user,
                                activate_TI="active")  
 
+@PDM.route("/PDM-Teacher-Information/add-record", methods=['GET', 'POST'])
+@login_required
+def PDM_TIadd():
 
-@PDM.route("/PDM-Character-Reference")
+         # INSERT RECORD
+        
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            information = request.form.get('information')
+            type = request.form.get('type')
+           
+            add_record = PDS_Teacher_Information(information=information,
+                                                type=type,
+                                                faculty_account_id = current_user.faculty_account_id)
+            db.session.add(add_record)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_TI'))
+
+@PDM.route("/PDM-Teacher-Information/delete-record", methods=['GET', 'POST'])
+@login_required
+def PDM_TIdel():
+
+        # DELETE RECORD
+         
+        id = request.form.get('id')
+        
+        data = PDS_Teacher_Information.query.filter_by(id=id).first() 
+        
+        if data:
+            db.session.delete(data)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_TI'))
+
+# ------------------------------- END OF PDM TEACHER INFORMATION  ---------------------------- 
+ 
+# ------------------------------- PDM CHARACTER REFERENCE ------------------------------
+
+@PDM.route("/PDM-Character-Reference", methods=['GET', 'POST'])
 @login_required
 def PDM_CR():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
@@ -772,8 +1329,11 @@ def PDM_CR():
                                user = current_user,
                                activate_CR="active")
 
+# ------------------------------- END OF PDM CHARACTER REFERENCE  ---------------------------- 
+ 
+# ------------------------------- PDM SIGNATURE ------------------------------
 
-@PDM.route("/PDM-Signature")
+@PDM.route("/PDM-Signature", methods=['GET', 'POST'])
 @login_required
 def PDM_S():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
@@ -790,25 +1350,209 @@ def PDM_S():
                                PDM="show",
                                user = current_user,
                                activate_S="active")
-   
+
+# ------------------------------- END OF PDM SIGNATURE  ---------------------------- 
+ 
+# ------------------------------- PDM ADDITIONAL QUESTIONS ------------------------------
   
-@PDM.route("/PDM-Additional-Questions")
+@PDM.route("/PDM-Additional-Questions", methods=['GET', 'POST'])
 @login_required
 def PDM_AQ():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
        
+        # CHECKING IF PROFILE PIC EXIST
         if username.profile_pic == None:
             profile_pic=profile_default
         else:
-            profile_pic=username.profile_pic
+            profile_pic=username.profile_pic   
+             
+        # VERIFYING IF DATA OF CURRENT USER EXISTS
+        if current_user.PDS_Additional_Questions:
+            data = current_user
+        else:
+            data =  {'PDS_Additional_Questions':
+                    {'q1_a':"",
+                    'q1_a_details':"",
+                    
+                    'q1_b':"",
+                    'q1_b_details':"",
+                    
+                    'q2_a':"",
+                    'q2_a_details':"",
+                    
+                    'q2_b':"",
+                    'q2_b_details':"",
+                    
+                    'q3':"",
+                    'q3_details':"",
+                    
+                    'q4':"",
+                    'q4_details':"",
+                    
+                    'q5_a':"",
+                    'q5_a_details':"",
+                    
+                    'q5_b':"",
+                    'q5_b_details':"",
+                    
+                    'q6':"",
+                    'q6_details':"",
+                    
+                    'q7_a':"",
+                    'q7_a_details':"",
+                    
+                    'q7_b':"",
+                    'q7_b_details':"",
+                    
+                    'q7_c':"",
+                    'q7_c_details':""
+                    }
+                    }
+        
+        # UPDATE 
+        
+        if request.method == 'POST':
+         
+            # VALUES
+            q1_a = request.form.get('q1_a')
+            q1_a_details = request.form.get('q1_a_details')
+            
+            q1_b = request.form.get('q1_b')
+            q1_b_details = request.form.get('q1_b_details')
+            
+            q2_a = request.form.get('q2_a')
+            q2_a_details = request.form.get('q2_a_details')
+            
+            q2_b = request.form.get('q2_b')
+            q2_b_details = request.form.get('q2_b_details')
+            
+            q3 = request.form.get('q3')
+            q3_details = request.form.get('q3_details')
+            
+            q4 = request.form.get('q4')
+            q4_details = request.form.get('q4_details')
+            
+            q5_a = request.form.get('q5_a')
+            q5_a_details = request.form.get('q5_a_details')
+            
+            q5_b = request.form.get('q5_b')
+            q5_b_details = request.form.get('q5_b_details')
+            
+            q6 = request.form.get('q6')
+            q6_details = request.form.get('q6_details')
+            
+            q7_a = request.form.get('q7_a')
+            q7_a_details = request.form.get('q7_a_details')
+            
+            q7_b = request.form.get('q7_b')
+            q7_b_details = request.form.get('q7_b_details')
+            
+            q7_c = request.form.get('q7_c')
+            q7_c_details = request.form.get('q7_c_details')
+           
+
+            if PDS_Additional_Questions.query.filter_by(faculty_account_id=current_user.faculty_account_id).first():
+                u = update(PDS_Additional_Questions)
+                u = u.values({
+                            "q1_a": q1_a,
+                            "q1_a_details": q1_a_details,
+                            
+                            "q1_b": q1_b,
+                            "q1_b_details": q1_b_details,
+                            
+                            "q2_a": q2_a,
+                            "q2_a_details": q2_a_details,
+                            
+                            "q2_b": q2_b,
+                            "q2_b_details": q2_b_details,
+                            
+                            "q3": q3,
+                            "q3_details": q3_details,
+                            
+                            "q4": q4,
+                            "q4_details": q4_details,
+                            
+                            "q5_a": q5_a,
+                            "q5_a_details": q5_a_details,
+                            
+                            "q5_b": q5_b,
+                            "q5_b_details": q5_b_details,
+                            
+                            "q6": q6,
+                            "q6_details": q6_details,
+                            
+                            "q7_a": q7_a,
+                            "q7_a_details": q7_a_details,
+                            
+                            "q7_b": q7_b,
+                            "q7_b_details": q7_b_details,
+                            
+                            "q7_c": q7_c,
+                            "q7_c_details": q7_c_details
+                            })
+                u = u.where(PDS_Additional_Questions.faculty_account_id == current_user.faculty_account_id)
+                db.session.execute(u)
+                db.session.commit()
+                db.session.close()
+                return redirect(url_for('PDM.PDM_AQ'))
+            
+            else:
+                add_record = PDS_Additional_Questions(  
+                                                    q1_a = q1_a,
+                                                    q1_a_details= q1_a_details,
+                                                    
+                                                    q1_b = q1_b,
+                                                    q1_b_details = q1_b_details,
+                                                    
+                                                    q2_a = q2_a,
+                                                    q2_a_details = q2_a_details,
+                                                    
+                                                    q2_b = q2_b,
+                                                    q2_b_details = q2_b_details,
+                                                    
+                                                    q3 = q3,
+                                                    q3_details = q3_details,
+                                                    
+                                                    q4 = q4,
+                                                    q4_details = q4_details,
+                                                    
+                                                    q5_a = q5_a,
+                                                    q5_a_details = q5_a_details,
+                                                    
+                                                    q5_b = q5_b,
+                                                    q5_b_details = q5_b_details,
+                                                    
+                                                    q6 = q6,
+                                                    q6_details = q6_details,
+                                                    
+                                                    q7_a = q7_a,
+                                                    q7_a_details = q7_a_details,
+                                                    
+                                                    q7_b = q7_b,
+                                                    q7_b_details = q7_b_details,
+                                                    
+                                                    q7_c = q7_c,
+                                                    q7_c_details= q7_c_details,
+                                                    faculty_account_id = current_user.faculty_account_id)
+            
+                db.session.add(add_record)
+                db.session.commit()
+                db.session.close()
+                return redirect(url_for('PDM.PDM_AQ'))
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Additional-Questions.html", 
                                User=username.first_name + " " + username.last_name, 
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
+                               data = data,
                                activate_AQ="active")
+  
+# ------------------------------- END OF PDM ADDITIONAL QUESTIONS  ---------------------------- 
+ 
+# ------------------------------- PDM PERSONAL DATA REPORTS ------------------------------
+   
   
 @PDM.route("/PDM-Personal-Data-Reports")
 @login_required
@@ -828,5 +1572,6 @@ def PDM_PDR():
                                user = current_user,
                                activate_PDR="active")
     
-
+# ------------------------------- END OF PDM PERSONAL DATA REPORTS  ---------------------------- 
+ 
 # ------------------------------------------------------------- 

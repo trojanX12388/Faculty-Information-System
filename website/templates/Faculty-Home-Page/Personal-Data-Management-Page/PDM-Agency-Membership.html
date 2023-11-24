@@ -18,7 +18,8 @@
   <div class="tab-pane fade show active profile-overview" id="profile-overview">
 
     <h5 class="card-title">Agency Membership Identification Numbers</h5>
-  {% for data in user.PDS_Agency_Membership %}
+  {% for data in data.PDS_Agency_Membership %}
+  {% if loop.first %}
   
     <p class="col-lg-9 col-md-8">Please contact HRMD Records Management Section if you don't know your membership identification number.</p>
     <br>
@@ -77,14 +78,14 @@
       <div class="row mb-3">
         <label for="GSIS" class="col-md-4 col-lg-3 col-form-label">GSIS</label>
         <div class="col-md-8 col-lg-9">
-          <input name="GSIS" type="number" class="form-control" id="GSIS" value="{{data.GSIS}}" >
+          <input name="GSIS" type="text" class="form-control" id="GSIS" value="{{data.GSIS}}" required>
         </div>
       </div>
 
       <div class="row mb-3">
         <label for="PAGIBIG_FUND" class="col-md-4 col-lg-3 col-form-label">PAG-IBIG Fund</label>
         <div class="col-md-8 col-lg-9">
-          <input name="PAGIBIG_FUND" type="number" class="form-control" id="PAGIBIG_FUND" value="{{data.PAGIBIG}}">
+          <input name="PAGIBIG" type="text" class="form-control" id="PAGIBIG_FUND" value="{{data.PAGIBIG}}" required>
         </div>
       </div>
 
@@ -92,14 +93,14 @@
       <div class="row mb-3">
         <label for="PHILHEALTH" class="col-md-4 col-lg-3 col-form-label">PHILHEALTH</label>
         <div class="col-md-8 col-lg-9">
-          <input name="PHILHEALTH" type="number" class="form-control" id="PHILHEALTH" value="{{data.PHILHEALTH}}">
+          <input name="PHILHEALTH" type="text" class="form-control" id="PHILHEALTH" value="{{data.PHILHEALTH}}" required>
         </div>
       </div>
 
       <div class="row mb-3">
         <label for="SSS" class="col-md-4 col-lg-3 col-form-label">SSS</label>
         <div class="col-md-8 col-lg-9">
-          <input name="SSS" type="number" class="form-control" id="SSS" value="{{data.SSS}}">
+          <input name="SSS" type="text" class="form-control" id="SSS" value="{{data.SSS}}" required>
         </div>
       </div>
 
@@ -107,7 +108,7 @@
       <div class="row mb-3">
         <label for="TIN" class="col-md-4 col-lg-3 col-form-label">TIN</label>
         <div class="col-md-8 col-lg-9">
-          <input name="TIN" type="number" class="form-control" id="TIN" value="{{data.TIN}}">
+          <input name="TIN" type="text" class="form-control" id="TIN" value="{{data.TIN}}" required>
         </div>
       </div>
 
@@ -120,8 +121,6 @@
 
       {% include "/Faculty-Home-Page/Personal-Data-Management-Page/Privacy-Notice.html" %}       
 
-      {% endfor %}
-
       <div class="text-center">
         <button type="submit" class="btn btn-primary">
           <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512" style="fill:#ffffff;position:relative; bottom:2px"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M433.941 129.941l-83.882-83.882A48 48 0 0 0 316.118 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V163.882a48 48 0 0 0-14.059-33.941zM224 416c-35.346 0-64-28.654-64-64 0-35.346 28.654-64 64-64s64 28.654 64 64c0 35.346-28.654 64-64 64zm96-304.52V212c0 6.627-5.373 12-12 12H76c-6.627 0-12-5.373-12-12V108c0-6.627 5.373-12 12-12h228.52c3.183 0 6.235 1.264 8.485 3.515l3.48 3.48A11.996 11.996 0 0 1 320 111.48z"/></svg>
@@ -132,5 +131,8 @@
   </div>
 
 </div>
+
+  {% endif %}
+  {% endfor %}
 
 {% endblock %}

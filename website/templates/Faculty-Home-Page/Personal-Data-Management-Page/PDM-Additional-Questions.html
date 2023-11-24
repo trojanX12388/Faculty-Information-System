@@ -17,7 +17,8 @@
     <div class="tab-pane fade show active profile-overview" id="profile-overview">
   
       <h5 class="card-title">Additional Questions</h5>
-      {% for data in user.PDS_Additional_Questions %}
+      {% for data in data.PDS_Additional_Questions %}
+      {% if loop.first %}
       <br>
       <table class="table table">
         <thead>
@@ -589,7 +590,9 @@
             </div>
           </div>
           
+          {% endif %}
           {% endfor %}
+
         {% include "/Faculty-Home-Page/Personal-Data-Management-Page/Privacy-Notice.html" %}       
         
         <div class="text-center">
