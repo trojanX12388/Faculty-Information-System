@@ -11,7 +11,6 @@ db = SQLAlchemy()
 class Faculty_Profile(db.Model, UserMixin):
     __tablename__ = 'Faculty_Profile'
     faculty_account_id = db.Column(db.String(50), primary_key=True)  # UserID
-    employee_code = db.Column(db.String(50), nullable=False)  # Employee Code
     name = db.Column(db.String(50), nullable=False)  # Name
     first_name = db.Column(db.String(50), nullable=False)  # First Name
     last_name = db.Column(db.String(50), nullable=False)  # Last Name
@@ -51,7 +50,6 @@ class Faculty_Profile(db.Model, UserMixin):
     def to_dict(self):
         return {
             'faculty_account_id': self.faculty_account_id,
-            'employee_code': self.employee_code,
             'name': self.name,
             'first_name': self.first_name,
             'last_name': self.last_name,
@@ -716,7 +714,6 @@ def create_sample_data():
  # Create and insert Faculty_Profile
     faculty_sample1 = Faculty_Profile(
         faculty_account_id='2020-00072-D-1',
-        employee_code='00063',
         name='Alma Matter',
         first_name='Palma',
         last_name='Matter',
@@ -736,7 +733,6 @@ def create_sample_data():
     
     faculty_sample2 = Faculty_Profile(
         faculty_account_id='2020-00073-D-1',
-        employee_code='00013',
         name='Andrew Bardoquillo',
         first_name='Andrew',
         last_name='Bardoquillo',
@@ -756,7 +752,6 @@ def create_sample_data():
     
     faculty_sample3 = Faculty_Profile(
         faculty_account_id='2020-00076-D-4',
-        employee_code='00154',
         name='Jason Derbis',
         first_name='Jason',
         last_name='Derbis',
@@ -774,88 +769,13 @@ def create_sample_data():
         # Add more attributes here
         ) 
     
-    # SAMPLE FACULTY DATA
-    
-    faculty_data1 = PDS_Personal_Details(
-    faculty_account_id='2020-00072-D-1',
-    # Add more attributes here
-    )
-    faculty_data2 = PDS_Contact_Details(
-    faculty_account_id='2020-00072-D-1',
-    # Add more attributes here
-    )
-    faculty_data3 = PDS_Family_Background(
-    faculty_account_id='2020-00072-D-1',
-    # Add more attributes here
-    )
-    faculty_data4 = PDS_Educational_Background(
-    faculty_account_id='2020-00072-D-1',
-    # Add more attributes here
-    )
-    faculty_data5 = PDS_Eligibity(
-    faculty_account_id='2020-00072-D-1',
-    # Add more attributes here
-    )
-    faculty_data6 = PDS_Work_Experience(
-    faculty_account_id='2020-00072-D-1',
-    # Add more attributes here
-    )
-    faculty_data7 = PDS_Voluntary_Work(
-    faculty_account_id='2020-00072-D-1',
-    # Add more attributes here
-    )
-    faculty_data8 = PDS_Training_Seminars(
-    faculty_account_id='2020-00072-D-1',
-    # Add more attributes here
-    )
-    faculty_data9 = PDS_Outstanding_Achievements(
-    faculty_account_id='2020-00072-D-1',
-    # Add more attributes here
-    )
-    faculty_data10 = PDS_OfficeShips_Memberships(
-    faculty_account_id='2020-00072-D-1',
-    # Add more attributes here
-    )
-    faculty_data11 = PDS_Agency_Membership(
-    faculty_account_id='2020-00072-D-1',
-    # Add more attributes here
-    )
-    faculty_data12 = PDS_Teacher_Information(
-    faculty_account_id='2020-00072-D-1',
-    # Add more attributes here
-    )
-    faculty_data13 = PDS_Additional_Questions(
-    faculty_account_id='2020-00072-D-1',
-    # Add more attributes here
-    )
-    faculty_data14 = PDS_Character_Reference(
-    faculty_account_id='2020-00072-D-1',
-    # Add more attributes here
-    )
-    faculty_data14 = PDS_Signature(
-    faculty_account_id='2020-00072-D-1',
-    # Add more attributes here
-    )
-    
+    # ADD FACULTY DATA
     
     db.session.add(faculty_sample1)
     db.session.add(faculty_sample2)
     db.session.add(faculty_sample3)
     
-    db.session.add(faculty_data1)
-    db.session.add(faculty_data2)
-    db.session.add(faculty_data3)
-    db.session.add(faculty_data4)
-    db.session.add(faculty_data5)
-    db.session.add(faculty_data6)
-    db.session.add(faculty_data7)
-    db.session.add(faculty_data8)
-    db.session.add(faculty_data9)
-    db.session.add(faculty_data10)
-    db.session.add(faculty_data11)
-    db.session.add(faculty_data12)
-    db.session.add(faculty_data13)
-    db.session.add(faculty_data14)
+    # COMMIT 
     
     db.session.commit()
 

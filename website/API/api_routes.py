@@ -179,25 +179,25 @@ def faculty_data():
             # FACULTY DATA
             
             jsonprimarydata = {
-            'name': data[2],
+            'name': data[1],
             str(data[0]):[]
         }
             # BASIC DATA
             jsondata = {
-            'first_name': data[3],
-            'last_name': data[4],
-            'middle_name': data[5],
-            'middle_initial': data[6],
-            'name_extension': data[7],
-            'birth_date': data[8],
-            'date_hired': data[9],
-            'remarks': data[10],
-            'faculty_code': data[11],
-            'employee_code': data[1],
-            'honorific': data[12],
-            'age': data[13],
-            'email': data[14],
-            'profile_pic': 'https://drive.google.com/file/d/'+str(data[16])+'/view',
+            'first_name': data[2],
+            'last_name': data[3],
+            'middle_name': data[4],
+            'middle_initial': data[5],
+            'name_extension': data[6],
+            'birth_date': data[7],
+            'date_hired': data[8],
+            'remarks': data[9],
+            'faculty_code': data[10],
+            'employee_no': data[0],
+            'honorific': data[11],
+            'age': data[12],
+            'email': data[13],
+            'profile_pic': 'https://drive.google.com/file/d/'+str(data[15])+'/view',
             # PDS DATA
             'PDS_Data':{
                 'PDS_Personal_Details':[],

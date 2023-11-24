@@ -30,6 +30,10 @@ def create_app():
     app.config['MAIL_USE_TLS']=os.getenv("TLS") 
     app.config['MAIL_USE_SSL']=os.getenv("SSL") 
     
+    
+    # UPLOAD CONFIGURATION
+    app.config['IMAGE_UPLOADS']='temp/'
+    
     mail=Mail(app)
         
     # LOADING DATABASE 
@@ -47,6 +51,10 @@ def create_app():
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(API, url_prefix='/')
+    
+     # IMPORTING MODULES
+    from .modules.PDM import PDM
+    app.register_blueprint(PDM, url_prefix='/')
     
     # LOADING LOGIN MANAGER CACHE
     login_manager = LoginManager()
