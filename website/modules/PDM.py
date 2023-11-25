@@ -4,6 +4,11 @@ from flask_login import login_required, current_user
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 from urllib.request import urlretrieve
+from cryptography.fernet import Fernet
+import rsa
+
+import os
+import os.path
 
 load_dotenv()
 
@@ -29,11 +34,32 @@ drive = GoogleDrive(gauth)
 
 # -------------------------------------------------------------
 
+# ENCRYPTION / DECRYPTION
+
+private_key = rsa.PrivateKey.load_pkcs1(os.getenv('PRIVATE_KEY'))
+
+with open(os.path.dirname(__file__) + '/../key/filekey.key', "rb") as f:
+    enckey = f.read()
+
+key = rsa.decrypt(enckey,private_key)
+
+# using the generated key
+fernet = Fernet(key)
+
+# -------------------------------------------------------------
+
 # Default Profile Pic
 profile_default='14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08'
 
 
-# FACULTY PERSONAL DATA MANAGEMENT ROUTE
+
+# -------------------------------------------------------------
+
+
+
+
+#                                                    FACULTY PERSONAL DATA MANAGEMENT ROUTE
+
 
 # ------------------------------- PDM BASIC DETAILS ----------------------------  
 
@@ -1391,17 +1417,103 @@ def PDM_CRdel():
 def PDM_S():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
-    
+        id = username.faculty_account_id
+        
+        # CHECKING IF PROFILE PIC EXIST
         if username.profile_pic == None:
             profile_pic=profile_default
         else:
-            profile_pic=username.profile_pic
+            profile_pic=username.profile_pic   
+             
+        # VERIFYING IF DATA OF CURRENT USER EXISTS
+        if current_user.PDS_Signature:
+            data = current_user
+        else:
+            data =  {'PDS_Signature':
+                    {'wet_signature':"",
+                    'dict_certificate':""
+                    }
+                    }
+            
+        # FACULTY FIS SIGNATURE FOLDER ID
+        folder = '1oLWdZCvLVTbhRc5XcXBqlw5H5wkqnBLu'
+        
+        fetch = PDS_Signature.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+        wet_signature = fetch.wet_signature
+        
+        file7 = drive.CreateFile(metadata={"parents": [{"id": folder}],'id': ''+ str(wet_signature)})
+        
+        signature_StringData = file7.GetContentString(''+ str(wet_signature))
+        
+        decrypted = fernet.decrypt(signature_StringData[2:-1])
+        
+        print(decrypted.decode('utf-8'))
+        # UPDATE 
+        
+        if request.method == 'POST':
+            file =  request.form.get('base64')
+            
+            encrypted = fernet.encrypt(file.encode('utf-8'))
+            
+            data = """{}""".format(encrypted)
+            
+            
+ 
+            if PDS_Signature.query.filter_by(faculty_account_id=current_user.faculty_account_id).first():
+                
+                file_list = drive.ListFile({'q': "'%s' in parents and trashed=false"%(folder)}).GetList()
+                try:
+                    for file1 in file_list:
+                        if file1['title'] == str(id):
+                            file1.Delete()                
+                except:
+                    pass
+                # CONFIGURE FILE FORMAT AND NAME
+                file1 = drive.CreateFile(metadata={
+                    "title": ""+ str(id),
+                    "parents": [{"id": folder}],
+                    "mimeType": "text/plain"
+                    })
+                
+                # GENERATE FILE AND UPLOAD
+                file1.SetContentString(data)
+                file1.Upload()
+                
+                u = update(PDS_Signature)
+                u = u.values({"wet_signature": '%s'%(file1['id'])})
+                u = u.where(PDS_Signature.faculty_account_id == current_user.faculty_account_id)
+                db.session.execute(u)
+                db.session.commit()
+                db.session.close()
+                
+                return redirect(url_for('PDM.PDM_S')) 
+            
+            else:
+                # CONFIGURE FILE FORMAT AND NAME
+                file1 = drive.CreateFile(metadata={
+                    "title": ""+ str(id),
+                    "parents": [{"id": folder}],
+                    "mimeType": "text/plain"
+                    })
+                
+                # GENERATE FILE AND UPLOAD
+                file1.SetContentString(data)
+                file1.Upload()
+                
+                add_record = PDS_Signature( wet_signature = '%s'%(file1['id']),
+                                            faculty_account_id = current_user.faculty_account_id)
+                db.session.add(add_record)
+                db.session.commit()
+                db.session.close()
+                return redirect(url_for('PDM.PDM_S'))
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Signature.html", 
                                User=username.first_name + " " + username.last_name, 
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
+                               data = data,
+                               signature = decrypted.decode('utf-8'),
                                activate_S="active")
 
 # ------------------------------- END OF PDM SIGNATURE  ---------------------------- 

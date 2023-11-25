@@ -612,9 +612,7 @@ class PDS_Signature(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # DataID
     faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'))  # FacultyID
     wet_signature = db.Column(db.String(50)) 
-    personnel_signature = db.Column(db.String(50)) 
     dict_certificate = db.Column(db.String(50)) 
-    dict_personnel_certificate = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
     
 
@@ -623,11 +621,8 @@ class PDS_Signature(db.Model):
             'id': self.id,
             'faculty_account_id': self.faculty_account_id,
             'wet_signature': self.wet_signature,
-            'personnel_signature': self.personnel_signature,
             'dict_certificate': self.dict_certificate,
-            'dict_personnel_certificate': self.dict_personnel_certificate,
-            'is_delete': self.is_delete,
-            
+            'is_delete': self.is_delete
         }
         
     def get_id(self):
