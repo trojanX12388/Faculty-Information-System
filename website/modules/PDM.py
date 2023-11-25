@@ -1437,6 +1437,8 @@ def PDM_S():
             
         # FACULTY FIS SIGNATURE FOLDER ID
         folder = '1oLWdZCvLVTbhRc5XcXBqlw5H5wkqnBLu'
+    
+        # FETCHING USER ENCRYPTED SIGNATURE DATA
         
         fetch = PDS_Signature.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
         wet_signature = fetch.wet_signature
@@ -1445,19 +1447,19 @@ def PDM_S():
         
         signature_StringData = file7.GetContentString(''+ str(wet_signature))
         
+        # DECRYPTING DATA TO CONVERT INTO IMAGE
         decrypted = fernet.decrypt(signature_StringData[2:-1])
         
-        print(decrypted.decode('utf-8'))
+        
         # UPDATE 
         
         if request.method == 'POST':
             file =  request.form.get('base64')
             
+            # ENCRYPTING IMAGE DATA
             encrypted = fernet.encrypt(file.encode('utf-8'))
             
             data = """{}""".format(encrypted)
-            
-            
  
             if PDS_Signature.query.filter_by(faculty_account_id=current_user.faculty_account_id).first():
                 
