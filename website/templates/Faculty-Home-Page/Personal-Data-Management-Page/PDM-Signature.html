@@ -10,13 +10,7 @@
                 <div class="d-grid gap-1 mt-1 badge bg-warning text-dark">
                     <h5 class="label ">Guidelines for Scanned Wet Signature</h5>
                 </div>
-                <h5 class="card-title">Encode the necessary details then click the 
-                    <p class="btn btn-primary btn-sm" style="position:relative; top:6px">
-                      <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512" style="fill:#ffffff;position:relative; bottom:2px">
-                        <path d="M433.941 129.941l-83.882-83.882A48 48 0 0 0 316.118 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V163.882a48 48 0 0 0-14.059-33.941zM224 416c-35.346 0-64-28.654-64-64 0-35.346 28.654-64 64-64s64 28.654 64 64c0 35.346-28.654 64-64 64zm96-304.52V212c0 6.627-5.373 12-12 12H76c-6.627 0-12-5.373-12-12V108c0-6.627 5.373-12 12-12h228.52c3.183 0 6.235 1.264 8.485 3.515l3.48 3.48A11.996 11.996 0 0 1 320 111.48z"/>
-                      </svg>
-                      Save</p>
-                   button below.</h5>
+                <h5 class="card-title">Input the required details/file then click the submit button below.</h5>
                    <br>
                    <br>
 
@@ -31,6 +25,8 @@
                 <br>
 
                 <h6 class="card-title" style="font-size:18px">DICT PNPKI Digital Certificate</h6>
+
+                <img src="{{dict_cert}}" class="img-fluid rounded-start" alt="wet_signature" style="height:200px;width:500px;">
 
                 <br>
                 <br>
@@ -82,41 +78,64 @@
                 <br>
                 <h6 class="card-title" style="font-size:18px">Upload Signature</h6>
                 <h6 class="label">Select the correct signature of the personnel. Accepts JPEG files and PNG files with 100kb max file size only.</h6>
+                <form method="POST" enctype="multipart/form-data" accept-charset="utf-8">
                   <div class="col-sm-10">
-                    <input class="form-control" type="file" id="formFile">
-                  </div>
-                <br>
-                <br>
-                <br>
-                <br>
+                      <input class="form-control" name="image_file" type="file" id="file-upload" accept=".png, .jpg, .jpeg" required >
+                      <input name="base64" type="text" id="base64_value" hidden>
+                        <div id="is_valid" style="display:none;" class="valid-feedback">
+                        
+                            Valid Image
 
-                <h6 class="card-title" style="font-size:18px">Upload Digital Certificate</h6>
-                <h6 class="label">Select the digital certificate of the personnel.</h6>
-                  <div class="col-sm-10">
-                    <input class="form-control" type="file" id="formFile">
+                            <div class="col-sm-10">
+                              <button type="submit" class="btn btn-primary" onclick="return VerifyUploadSizeIsOK()">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512" style="fill:#ffffff;position:relative; bottom:2px"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M433.941 129.941l-83.882-83.882A48 48 0 0 0 316.118 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V163.882a48 48 0 0 0-14.059-33.941zM224 416c-35.346 0-64-28.654-64-64 0-35.346 28.654-64 64-64s64 28.654 64 64c0 35.346-28.654 64-64 64zm96-304.52V212c0 6.627-5.373 12-12 12H76c-6.627 0-12-5.373-12-12V108c0-6.627 5.373-12 12-12h228.52c3.183 0 6.235 1.264 8.485 3.515l3.48 3.48A11.996 11.996 0 0 1 320 111.48z"/></svg>
+                                Upload Signature</button>
+                            </div>
+
+                        
+                        </div>
+                </form>
+
+                        <div id="is_invalid" style="display:none;" class="invalid-feedback">
+                          Invalid File. It must be PNG, JPG, or JPEG.
+                        </div>
+                        <div id="size_exceed" style="display:none;" class="invalid-feedback">
+                          File size must not exceed in 100kb
+                        </div>
+  
+  
+                   
                   </div>
-              
+                <br>
+                <br>
+                <br>
+                <br>
+                <form action="/PDM-Signature/Submit_DICT" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+                  <h6 class="card-title" style="font-size:18px">Upload Digital Certificate</h6>
+                    <h6 class="label">Select the digital certificate of the personnel.</h6>
+                      <div class="col-sm-10">
+                        <input class="form-control" type="file" id="dict_certificate" name="dict_certificate" required>
+                        <input name="base64_dict" type="text" id="base64_dict_value" hidden>
+                      </div>
+                      <br>
+                      <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary" onclick="return VerifyUploadSizeIsOK()">
+                          <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512" style="fill:#ffffff;position:relative; bottom:2px"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M433.941 129.941l-83.882-83.882A48 48 0 0 0 316.118 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V163.882a48 48 0 0 0-14.059-33.941zM224 416c-35.346 0-64-28.654-64-64 0-35.346 28.654-64 64-64s64 28.654 64 64c0 35.346-28.654 64-64 64zm96-304.52V212c0 6.627-5.373 12-12 12H76c-6.627 0-12-5.373-12-12V108c0-6.627 5.373-12 12-12h228.52c3.183 0 6.235 1.264 8.485 3.515l3.48 3.48A11.996 11.996 0 0 1 320 111.48z"/></svg>
+                          Upload DICT</button>
+                      </div>
+                </form>
                   <br>
                   <br>
                   <br>
             </div>
           </div><!-- End Border Badges -->
 
-        </div>
-
-        <div class="d-grid gap-2 mt-3">
-            <button type="submit" class="btn btn-primary">
-              <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512" style="fill:#ffffff;position:relative; bottom:2px"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M433.941 129.941l-83.882-83.882A48 48 0 0 0 316.118 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V163.882a48 48 0 0 0-14.059-33.941zM224 416c-35.346 0-64-28.654-64-64 0-35.346 28.654-64 64-64s64 28.654 64 64c0 35.346-28.654 64-64 64zm96-304.52V212c0 6.627-5.373 12-12 12H76c-6.627 0-12-5.373-12-12V108c0-6.627 5.373-12 12-12h228.52c3.183 0 6.235 1.264 8.485 3.515l3.48 3.48A11.996 11.996 0 0 1 320 111.48z"/></svg>
-              Save</button>
-              
-              <a href="/PDM-Signature" class="btn btn-secondary">
-                <i class="bi bi-arrow-counterclockwise"></i> Cancel</a>
-        </div>  
+          </div>  
         </div>
       </div>
 
    <!-- Signature JS File -->
 <script src="https://cdn.jsdelivr.net/gh/trojanX12388/FIS_js_assets@master/javascript/homepage/PDM-Signature/signature_pad.umd.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/trojanX12388/FIS_js_assets@main/javascript/homepage/PDM-Signature/signature_final.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/trojanX12388/FIS_js_assets@master/javascript/homepage/PDM-Signature/final_signature14.js"></script>
 
 {% endblock %}

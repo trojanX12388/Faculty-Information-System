@@ -1424,32 +1424,47 @@ def PDM_S():
             profile_pic=profile_default
         else:
             profile_pic=username.profile_pic   
+        
+        
              
-        # VERIFYING IF DATA OF CURRENT USER EXISTS
+         # VERIFYING IF DATA OF CURRENT USER EXISTS
         if current_user.PDS_Signature:
             data = current_user
-        else:
-            data =  {'PDS_Signature':
-                    {'wet_signature':"",
-                    'dict_certificate':""
-                    }
-                    }
             
-        # FACULTY FIS SIGNATURE FOLDER ID
+            # FETCHING USER ENCRYPTED SIGNATURE DATA
+            fetch = PDS_Signature.query.filter_by(faculty_account_id=current_user.faculty_account_id).first()
+            
+            # FETCHING USER ENCRYPTED SIGNATURE DATA
+            wet_signature = fetch.wet_signature
+            
+            if fetch.dict_certificate:
+                dict_cert = fetch.dict_certificate
+            else:
+                dict_cert = "1bQcZE3rlJWhNXkMy7yjdWLNTxaKSDArL"
+        else:
+            # FETCHING DEFAULT BLANK IMAGE
+            wet_signature = "1JIS5J0SPU_V5aOPAHACBxZ5hjhkHFfY4"
+            dict_cert = "1bQcZE3rlJWhNXkMy7yjdWLNTxaKSDArL"
+            
+        # FETCHING STRING DATA FROM CLOUD    
+        
+        # FACULTY FIS WET SIGNATURE FOLDER ID
         folder = '1oLWdZCvLVTbhRc5XcXBqlw5H5wkqnBLu'
-    
-        # FETCHING USER ENCRYPTED SIGNATURE DATA
-        
-        fetch = PDS_Signature.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
-        wet_signature = fetch.wet_signature
-        
         file7 = drive.CreateFile(metadata={"parents": [{"id": folder}],'id': ''+ str(wet_signature)})
         
         signature_StringData = file7.GetContentString(''+ str(wet_signature))
         
         # DECRYPTING DATA TO CONVERT INTO IMAGE
-        decrypted = fernet.decrypt(signature_StringData[2:-1])
+        decrypted_signature = fernet.decrypt(signature_StringData[2:-1])
         
+         # FACULTY FIS DICT CERTIFICATE FOLDER ID
+        folder1 = '1KrXqzGYLm9ET4D6bPLwrP_QJGtCufkly'
+        file7 = drive.CreateFile(metadata={"parents": [{"id": folder1}],'id': ''+ str(dict_cert)})
+        
+        dict_cert_StringData = file7.GetContentString(''+ str(dict_cert))
+        
+        # DECRYPTING DATA TO CONVERT INTO IMAGE
+        decrypted_dict_cert = fernet.decrypt(dict_cert_StringData[2:-1])
         
         # UPDATE 
         
@@ -1514,9 +1529,77 @@ def PDM_S():
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
-                               data = data,
-                               signature = decrypted.decode('utf-8'),
+                               signature = decrypted_signature.decode('utf-8'),
+                               dict_cert = decrypted_dict_cert.decode('utf-8'),
                                activate_S="active")
+        
+@PDM.route("/PDM-Signature/Submit_DICT", methods=['GET', 'POST'])
+@login_required
+def PDM_SS():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+        id = username.faculty_account_id
+
+        # FACULTY FIS DICT CERTIFICATE FOLDER ID
+        folder = '1KrXqzGYLm9ET4D6bPLwrP_QJGtCufkly'
+        
+        # UPDATE 
+        
+        if request.method == 'POST':
+            file =  request.form.get('base64_dict')
+            
+            # ENCRYPTING IMAGE DATA
+            encrypted = fernet.encrypt(file.encode('utf-8'))
+            
+            data = """{}""".format(encrypted)
+ 
+            if PDS_Signature.query.filter_by(faculty_account_id=current_user.faculty_account_id).first():
+                
+                file_list = drive.ListFile({'q': "'%s' in parents and trashed=false"%(folder)}).GetList()
+                try:
+                    for file1 in file_list:
+                        if file1['title'] == str(id):
+                            file1.Delete()                
+                except:
+                    pass
+                # CONFIGURE FILE FORMAT AND NAME
+                file1 = drive.CreateFile(metadata={
+                    "title": ""+ str(id),
+                    "parents": [{"id": folder}],
+                    "mimeType": "text/plain"
+                    })
+                
+                # GENERATE FILE AND UPLOAD
+                file1.SetContentString(data)
+                file1.Upload()
+                
+                u = update(PDS_Signature)
+                u = u.values({"dict_certificate": '%s'%(file1['id'])})
+                u = u.where(PDS_Signature.faculty_account_id == current_user.faculty_account_id)
+                db.session.execute(u)
+                db.session.commit()
+                db.session.close()
+                
+                return redirect(url_for('PDM.PDM_S')) 
+            
+            else:
+                # CONFIGURE FILE FORMAT AND NAME
+                file1 = drive.CreateFile(metadata={
+                    "title": ""+ str(id),
+                    "parents": [{"id": folder}],
+                    "mimeType": "text/plain"
+                    })
+                
+                # GENERATE FILE AND UPLOAD
+                file1.SetContentString(data)
+                file1.Upload()
+                
+                add_record = PDS_Signature( dict_certificate = '%s'%(file1['id']),
+                                            faculty_account_id = current_user.faculty_account_id)
+                db.session.add(add_record)
+                db.session.commit()
+                db.session.close()
+                return redirect(url_for('PDM.PDM_S'))
 
 # ------------------------------- END OF PDM SIGNATURE  ---------------------------- 
  
