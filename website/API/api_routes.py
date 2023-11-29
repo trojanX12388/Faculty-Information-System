@@ -198,16 +198,30 @@ def faculty_data():
             'age': data[12],
             'email': data[13],
             'profile_pic': 'https://drive.google.com/file/d/'+str(data[15])+'/view',
+            'is_active': data[16],
             # PDS DATA
             'PDS_Data':{
                 'PDS_Personal_Details':[],
                 'PDS_Contact_Details':[],
+                'PDS_Family_Background':[],
+                'PDS_Educational_Background':[],
+                'PDS_Eligibity':[],
+                'PDS_Work_Experience':[],
+                'PDS_Voluntary_Work':[],
+                'PDS_Training_Seminars':[],
+                'PDS_Outstanding_Achievements':[],
+                'PDS_OfficeShips_Memberships':[],
+                'PDS_Agency_Membership':[],
+                'PDS_Teacher_Information':[],
+                'PDS_Additional_Questions':[],
+                'PDS_Character_Reference':[],
+                'PDS_Signature':[],
                 }
             }
             jsonprimarydata[str(data[0])].append(dict(jsondata))
             faculty_primary["faculty"].append(dict(jsonprimarydata)) 
             
-            # FETCHIN PDS PERSONAL DETAILS DATA
+            # FETCHING PDS PERSONAL DETAILS DATA
             
             faculty1 = str("PDS_Personal_Details")
             postgreSQL_select_Query1 = "SELECT * FROM" f'{f}'f'{faculty1}'f'{f}'"WHERE faculty_account_id = '{}';".format(data[0])
@@ -233,21 +247,22 @@ def faculty_data():
                     'citizenship': data1[12],
                     'dual_citizenship': data1[13],
                     'remarks': data1[14],
+                    'is_active': data1[15],
                 }
                 jsonprimarydata[str(data[0])][0]["PDS_Data"]["PDS_Personal_Details"].append(dict(json_pds_PD_data))
                 cursor1.close()
                 
-            # FETCHIN PDS CONTACT DETAILS DATA
+            # FETCHING PDS CONTACT DETAILS DATA
         
             faculty1 = str("PDS_Contact_Details")
             postgreSQL_select_Query1 = "SELECT * FROM" f'{f}'f'{faculty1}'f'{f}'"WHERE faculty_account_id = '{}';".format(data[0])
             
             # DATABASE CURSOR
         
-            cursor1=session.connection().connection.cursor()
-            cursor1.execute(postgreSQL_select_Query1)
+            cursor2=session.connection().connection.cursor()
+            cursor2.execute(postgreSQL_select_Query1)
 
-            PDS_Personal_Details = cursor1.fetchall()
+            PDS_Personal_Details = cursor2.fetchall()
             for data1 in PDS_Personal_Details:
                 json_pds_PD_data = {
                     'email': data1[2],
@@ -266,11 +281,322 @@ def faculty_data():
                     'res_address': data1[15],
                     'res_zip_code': data1[16],
                     'res_phone_number': data1[17],
-                    'remarks': data1[18]
+                    'remarks': data1[18],
+                    'is_active': data1[19]
                 }
                 jsonprimarydata[str(data[0])][0]["PDS_Data"]["PDS_Contact_Details"].append(dict(json_pds_PD_data))
-                cursor1.close()
+                cursor2.close()
+            
+            # FETCHING PDS FAMILY BACKGROUND
+        
+            faculty1 = str("PDS_Family_Background")
+            postgreSQL_select_Query2 = "SELECT * FROM" f'{f}'f'{faculty1}'f'{f}'"WHERE faculty_account_id = '{}';".format(data[0])
+            
+            # DATABASE CURSOR
+        
+            cursor3=session.connection().connection.cursor()
+            cursor3.execute(postgreSQL_select_Query2)
 
+            PDS_Family_Background = cursor3.fetchall()
+            for data1 in PDS_Family_Background:
+                json_pds_PD_data = {
+                    'full_name': data1[2],
+                    'relationship': data1[3],
+                    'is_delete': data1[4]
+                }
+                jsonprimarydata[str(data[0])][0]["PDS_Data"]["PDS_Family_Background"].append(dict(json_pds_PD_data))
+                cursor3.close()
+            
+            # FETCHING PDS Educational Background  
+        
+            faculty1 = str("PDS_Educational_Background")
+            postgreSQL_select_Query2 = "SELECT * FROM" f'{f}'f'{faculty1}'f'{f}'"WHERE faculty_account_id = '{}';".format(data[0])
+            
+            # DATABASE CURSOR
+        
+            cursor4=session.connection().connection.cursor()
+            cursor4.execute(postgreSQL_select_Query2)
+
+            PDS_Educational_Background = cursor4.fetchall()
+            for data1 in PDS_Educational_Background:
+                json_pds_PD_data = {
+                    'school_name': data1[2],
+                    'level': data1[3],
+                    'from_date': data1[4],
+                    'to_date': data1[5],
+                    'is_delete': data1[6],
+                }
+                jsonprimarydata[str(data[0])][0]["PDS_Data"]["PDS_Educational_Background"].append(dict(json_pds_PD_data))
+                cursor4.close()
+            
+            # FETCHING PDS Eligibity   
+        
+            faculty1 = str("PDS_Eligibity")
+            postgreSQL_select_Query2 = "SELECT * FROM" f'{f}'f'{faculty1}'f'{f}'"WHERE faculty_account_id = '{}';".format(data[0])
+            
+            # DATABASE CURSOR
+        
+            cursor5=session.connection().connection.cursor()
+            cursor5.execute(postgreSQL_select_Query2)
+
+            PDS_Eligibity = cursor5.fetchall()
+            for data1 in PDS_Eligibity:
+                json_pds_PD_data = {
+                    'eligibity': data1[2],
+                    'rating': data1[3],
+                    'is_delete': data1[4],
+                }
+                jsonprimarydata[str(data[0])][0]["PDS_Data"]["PDS_Eligibity"].append(dict(json_pds_PD_data))
+                cursor5.close()
+            
+            # FETCHING PDS Work Experience  
+        
+            faculty1 = str("PDS_Work_Experience")
+            postgreSQL_select_Query2 = "SELECT * FROM" f'{f}'f'{faculty1}'f'{f}'"WHERE faculty_account_id = '{}';".format(data[0])
+            
+            # DATABASE CURSOR
+        
+            cursor6=session.connection().connection.cursor()
+            cursor6.execute(postgreSQL_select_Query2)
+
+            PDS_Work_Experience = cursor6.fetchall()
+            for data1 in PDS_Work_Experience:
+                json_pds_PD_data = {
+                    'position': data1[2],
+                    'company_name': data1[3],
+                    'status': data1[4],
+                    'from_date': data1[5],
+                    'to_date': data1[6],
+                    'is_delete': data1[7],
+                }
+                jsonprimarydata[str(data[0])][0]["PDS_Data"]["PDS_Eligibity"].append(dict(json_pds_PD_data))
+                cursor6.close()
+            
+            # FETCHING PDS Voluntary Work 
+        
+            faculty1 = str("PDS_Voluntary_Work")
+            postgreSQL_select_Query2 = "SELECT * FROM" f'{f}'f'{faculty1}'f'{f}'"WHERE faculty_account_id = '{}';".format(data[0])
+            
+            # DATABASE CURSOR
+        
+            cursor7=session.connection().connection.cursor()
+            cursor7.execute(postgreSQL_select_Query2)
+
+            PDS_Voluntary_Work = cursor7.fetchall()
+            for data1 in PDS_Voluntary_Work:
+                json_pds_PD_data = {
+                    'organization': data1[2],
+                    'position': data1[3],
+                    'status': data1[4],
+                    'from_date': data1[5],
+                    'to_date': data1[6],
+                    'is_delete': data1[7],
+                }
+                jsonprimarydata[str(data[0])][0]["PDS_Data"]["PDS_Voluntary_Work"].append(dict(json_pds_PD_data))
+                cursor7.close()
+            
+            # FETCHING PDS Training & Seminars 
+        
+            faculty1 = str("PDS_Training_Seminars")
+            postgreSQL_select_Query2 = "SELECT * FROM" f'{f}'f'{faculty1}'f'{f}'"WHERE faculty_account_id = '{}';".format(data[0])
+            
+            # DATABASE CURSOR
+        
+            cursor8=session.connection().connection.cursor()
+            cursor8.execute(postgreSQL_select_Query2)
+
+            PDS_Training_Seminars = cursor8.fetchall()
+            for data1 in PDS_Training_Seminars:
+                json_pds_PD_data = {
+                    'title': data1[2],
+                    'level': data1[3],
+                    'from_date': data1[4],
+                    'to_date': data1[5],
+                    'is_delete': data1[6],
+                }
+                jsonprimarydata[str(data[0])][0]["PDS_Data"]["PDS_Training_Seminars"].append(dict(json_pds_PD_data))
+                cursor8.close()
+            
+            # FETCHING PDS Outstanding Achievements
+            
+            faculty1 = str("PDS_Outstanding_Achievements")
+            postgreSQL_select_Query2 = "SELECT * FROM" f'{f}'f'{faculty1}'f'{f}'"WHERE faculty_account_id = '{}';".format(data[0])
+            
+            # DATABASE CURSOR
+        
+            cursor9=session.connection().connection.cursor()
+            cursor9.execute(postgreSQL_select_Query2)
+
+            PDS_Outstanding_Achievements = cursor9.fetchall()
+            for data1 in PDS_Outstanding_Achievements:
+                json_pds_PD_data = {
+                    'achievement': data1[2],
+                    'level': data1[3],
+                    'date': data1[4],
+                    'is_delete': data1[5],
+                }
+                jsonprimarydata[str(data[0])][0]["PDS_Data"]["PDS_Outstanding_Achievements"].append(dict(json_pds_PD_data))
+                cursor9.close()
+            
+            # FETCHING PDS OfficeShips/Memberships
+            
+            faculty1 = str("PDS_OfficeShips_Memberships")
+            postgreSQL_select_Query2 = "SELECT * FROM" f'{f}'f'{faculty1}'f'{f}'"WHERE faculty_account_id = '{}';".format(data[0])
+            
+            # DATABASE CURSOR
+        
+            cursor10=session.connection().connection.cursor()
+            cursor10.execute(postgreSQL_select_Query2)
+
+            PDS_OfficeShips_Memberships = cursor10.fetchall()
+            for data1 in PDS_OfficeShips_Memberships:
+                json_pds_PD_data = {
+                    'organization': data1[2],
+                    'position': data1[3],
+                    'from_date': data1[4],
+                    'to_date': data1[5],
+                    'is_delete': data1[6],
+                }
+                jsonprimarydata[str(data[0])][0]["PDS_Data"]["PDS_OfficeShips_Memberships"].append(dict(json_pds_PD_data))
+                cursor10.close()
+            
+            # FETCHING PDS Agency Membership
+            
+            faculty1 = str("PDS_Agency_Membership")
+            postgreSQL_select_Query2 = "SELECT * FROM" f'{f}'f'{faculty1}'f'{f}'"WHERE faculty_account_id = '{}';".format(data[0])
+            
+            # DATABASE CURSOR
+        
+            cursor11=session.connection().connection.cursor()
+            cursor11.execute(postgreSQL_select_Query2)
+
+            PDS_Agency_Membership = cursor11.fetchall()
+            for data1 in PDS_Agency_Membership:
+                json_pds_PD_data = {
+                    'GSIS': data1[2],
+                    'PAGIBIG': data1[3],
+                    'PHILHEALTH': data1[4],
+                    'SSS': data1[5],
+                    'TIN': data1[6],
+                    'remarks': data1[7],
+                    'is_delete': data1[8],
+                }
+                jsonprimarydata[str(data[0])][0]["PDS_Data"]["PDS_Agency_Membership"].append(dict(json_pds_PD_data))
+                cursor11.close()
+                
+            # FETCHING PDS Teacher Information
+            
+            faculty1 = str("PDS_Teacher_Information")
+            postgreSQL_select_Query2 = "SELECT * FROM" f'{f}'f'{faculty1}'f'{f}'"WHERE faculty_account_id = '{}';".format(data[0])
+            
+            # DATABASE CURSOR
+        
+            cursor12=session.connection().connection.cursor()
+            cursor12.execute(postgreSQL_select_Query2)
+
+            PDS_Teacher_Information = cursor12.fetchall()
+            for data1 in PDS_Teacher_Information:
+                json_pds_PD_data = {
+                    'information': data1[2],
+                    'type': data1[3],
+                    'is_delete': data1[4],
+                }
+                jsonprimarydata[str(data[0])][0]["PDS_Data"]["PDS_Teacher_Information"].append(dict(json_pds_PD_data))
+                cursor12.close()
+                
+            # FETCHING PDS Additional Questions
+            
+            faculty1 = str("PDS_Additional_Questions")
+            postgreSQL_select_Query2 = "SELECT * FROM" f'{f}'f'{faculty1}'f'{f}'"WHERE faculty_account_id = '{}';".format(data[0])
+            
+            # DATABASE CURSOR
+        
+            cursor13=session.connection().connection.cursor()
+            cursor13.execute(postgreSQL_select_Query2)
+
+            PDS_Additional_Questions = cursor13.fetchall()
+            for data1 in PDS_Additional_Questions:
+                json_pds_PD_data = {
+                    'q1_a': data1[2],
+                    'q1_a_details': data1[3],
+                    
+                    'q1_b': data1[4],
+                    'q1_b_details': data1[5],
+                    
+                    'q2_a': data1[6],
+                    'q2_a_details': data1[7],
+                    
+                    'q2_b': data1[8],
+                    'q2_b_details': data1[9],
+                    
+                    'q3': data1[10],
+                    'q3_details': data1[11],
+                    
+                    'q4': data1[12],
+                    'q4_details': data1[13],
+                    
+                    'q5_a': data1[14],
+                    'q5_a_details': data1[15],
+                    
+                    'q5_b': data1[16],
+                    'q5_b_details': data1[17],
+                    
+                    'q6': data1[18],
+                    'q6_details': data1[19],
+                    
+                    'q7_a': data1[20],
+                    'q7_a_details': data1[21],
+                    
+                    'q7_b': data1[22],
+                    'q7_b_details': data1[23],
+                    
+                    'q7_c': data1[24],
+                    'q7_c_details': data1[25],
+                    
+                    'is_delete': data1[26],
+                }
+                jsonprimarydata[str(data[0])][0]["PDS_Data"]["PDS_Additional_Questions"].append(dict(json_pds_PD_data))
+                cursor13.close()
+            
+            # FETCHING PDS Character Reference
+            
+            faculty1 = str("PDS_Character_Reference")
+            postgreSQL_select_Query2 = "SELECT * FROM" f'{f}'f'{faculty1}'f'{f}'"WHERE faculty_account_id = '{}';".format(data[0])
+            
+            # DATABASE CURSOR
+        
+            cursor14=session.connection().connection.cursor()
+            cursor14.execute(postgreSQL_select_Query2)
+
+            PDS_Character_Reference = cursor14.fetchall()
+            for data1 in PDS_Character_Reference:
+                json_pds_PD_data = {
+                    'full_name': data1[2],
+                    'is_delete': data1[3],
+                }
+                jsonprimarydata[str(data[0])][0]["PDS_Data"]["PDS_Character_Reference"].append(dict(json_pds_PD_data))
+                cursor14.close()
+                
+             # FETCHING PDS Signature
+            
+            faculty1 = str("PDS_Signature")
+            postgreSQL_select_Query2 = "SELECT * FROM" f'{f}'f'{faculty1}'f'{f}'"WHERE faculty_account_id = '{}';".format(data[0])
+            
+            # DATABASE CURSOR
+        
+            cursor15=session.connection().connection.cursor()
+            cursor15.execute(postgreSQL_select_Query2)
+
+            PDS_Signature = cursor15.fetchall()
+            for data1 in PDS_Signature:
+                json_pds_PD_data = {
+                    'wet_signature': data1[2],
+                    'dict_certificate': data1[3],
+                    'is_delete': data1[4],
+                }
+                jsonprimarydata[str(data[0])][0]["PDS_Data"]["PDS_Signature"].append(dict(json_pds_PD_data))
+                cursor15.close()
+            
             cursor.close()
             session.close()
             
