@@ -7,6 +7,9 @@ from urllib.request import urlretrieve
 from cryptography.fernet import Fernet
 import rsa
 
+import requests
+import base64
+
 import os
 import os.path
 
@@ -1425,8 +1428,6 @@ def PDM_S():
         else:
             profile_pic=username.profile_pic   
         
-        
-             
          # VERIFYING IF DATA OF CURRENT USER EXISTS
         if current_user.PDS_Signature:
             data = current_user
@@ -1471,8 +1472,23 @@ def PDM_S():
         if request.method == 'POST':
             file =  request.form.get('base64')
             
+            # API BACKGROUND REMOVER 
+            api_key = os.getenv('BGR_api_key')
+            
+            # Convert the base64 string to bytes
+            image_data = base64.b64decode(file[22:])
+
+            response = requests.post(
+            'https://api.remove.bg/v1.0/removebg',
+            files={'image_file': image_data},
+            data={'size': 'auto'},
+            headers={'X-Api-Key': api_key}
+            )
+
+            base64_data = base64.b64encode(response.content)
+            
             # ENCRYPTING IMAGE DATA
-            encrypted = fernet.encrypt(file.encode('utf-8'))
+            encrypted = fernet.encrypt(base64_data)
             
             data = """{}""".format(encrypted)
  
@@ -1529,7 +1545,7 @@ def PDM_S():
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
-                               signature = decrypted_signature.decode('utf-8'),
+                               signature = "data:image/png;base64," + decrypted_signature.decode('utf-8'),
                                dict_cert = decrypted_dict_cert.decode('utf-8'),
                                activate_S="active")
         
