@@ -21,12 +21,7 @@ from website.models import Faculty_Profile
 
 # LOADING MODEL PDS_TABLES
 from website.models import PDS_Personal_Details, PDS_Contact_Details, PDS_Family_Background, PDS_Educational_Background, PDS_Eligibity, PDS_Work_Experience, PDS_Voluntary_Work, PDS_Training_Seminars, PDS_Outstanding_Achievements, PDS_OfficeShips_Memberships, PDS_Agency_Membership, PDS_Teacher_Information, PDS_Additional_Questions, PDS_Character_Reference,PDS_Signature
-
-# IMPORT BACKGROUND REMOVE MODULE 
-from rembg import remove 
-from PIL import Image  
-import io  
-import base64
+   
 
 PDM = Blueprint('PDM', __name__)
 
@@ -35,6 +30,7 @@ PDM = Blueprint('PDM', __name__)
 # PYDRIVE AUTH CONFIGURATION
 gauth = GoogleAuth()
 drive = GoogleDrive(gauth)
+
 
 # -------------------------------------------------------------
 
@@ -1460,7 +1456,6 @@ def PDM_S():
         
         # DECRYPTING DATA TO CONVERT INTO IMAGE
         decrypted_signature = fernet.decrypt(signature_StringData[2:-1])
-        decrypted_signature = base64.b64encode(decrypted_signature)
         
          # FACULTY FIS DICT CERTIFICATE FOLDER ID
         folder1 = '1KrXqzGYLm9ET4D6bPLwrP_QJGtCufkly'
@@ -1474,30 +1469,10 @@ def PDM_S():
         # UPDATE 
         
         if request.method == 'POST':
-            # GETTING THE BASE 64 DATA FROM INPUT
             file =  request.form.get('base64')
             
-            # REMOVING BACKGROUND IMAGE OF SIGNATURE
-            
-            # Decode base64 string into bytes
-            image_bytes = base64.b64decode(file[22:])
-            
-            # Convert bytes to PIL Image object
-            image = Image.open(io.BytesIO(image_bytes))
-
-            # Removing the background from the given image
-            output_image = remove(image)
-
-            # Save the output image to a bytes buffer
-            output_buffer = io.BytesIO()
-            output_image.save(output_buffer, format='PNG')  # You can choose the desired format here
-
-            # Get the bytes content of the output image
-            output_bytes = output_buffer.getvalue()
-
-            
             # ENCRYPTING IMAGE DATA
-            encrypted = fernet.encrypt(output_bytes)
+            encrypted = fernet.encrypt(file.encode('utf-8'))
             
             data = """{}""".format(encrypted)
  
@@ -1554,7 +1529,7 @@ def PDM_S():
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
-                               signature = "data:image/png;base64," + decrypted_signature.decode('utf-8'),
+                               signature = decrypted_signature.decode('utf-8'),
                                dict_cert = decrypted_dict_cert.decode('utf-8'),
                                activate_S="active")
         

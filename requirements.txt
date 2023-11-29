@@ -69,6 +69,3 @@ email-validator==2.0.0
 # VERSION 2.1
 
 PyMuPDF
-rembg 
-Pillow 
-
