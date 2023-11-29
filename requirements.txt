@@ -68,7 +68,7 @@ email-validator==2.0.0
 
 # VERSION 2.1
 
-PyMuPDFb == <desired_version>
+PyMuPDF == 1.20.0
 rembg == <desired_version>
 Pillow == <desired_version>
 
