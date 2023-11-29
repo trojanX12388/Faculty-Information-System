@@ -65,3 +65,10 @@ Flask-Mail==0.9.1
 flask_wtf==1.1.1
 dnspython==2.3.0
 email-validator==2.0.0
+
+# VERSION 2.1
+
+PyMuPDFb == <desired_version>
+rembg == <desired_version>
+Pillow == <desired_version>
+
