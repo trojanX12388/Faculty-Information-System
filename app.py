@@ -10,7 +10,7 @@ if __name__ == '__main__':
 
     # Start Flask in a separate thread
     def start_flask():
-        app.run(host='0.0.0.0', port=8000)
+        app.run(host='127.0.0.1', port=8000)
 
     flask_thread = Thread(target=start_flask)
     flask_thread.start()
