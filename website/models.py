@@ -4,6 +4,7 @@ from sqlalchemy import inspect
 from werkzeug.security import generate_password_hash
 from flask_login import UserMixin
 
+
 db = SQLAlchemy()
 
  # Faculty Profile 

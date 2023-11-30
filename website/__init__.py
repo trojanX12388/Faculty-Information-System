@@ -46,7 +46,7 @@ def create_app():
     # IMPORTING ROUTES
     from .views import views
     from .auth import auth
-    from .API.api_routes import API
+    from .API.api_app import API
     
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
