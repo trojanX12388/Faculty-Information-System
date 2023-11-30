@@ -3,7 +3,6 @@ from flask_restx import Api, Resource
 from dotenv import load_dotenv
 from .authentication import *
 
-
 # DATABASE PLUGINS
 
 from flask_sqlalchemy import SQLAlchemy
