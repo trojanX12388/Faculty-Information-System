@@ -12,6 +12,8 @@ db = SQLAlchemy()
 class Faculty_Profile(db.Model, UserMixin):
     __tablename__ = 'Faculty_Profile'
     faculty_account_id = db.Column(db.String(50), primary_key=True)  # UserID
+    faculty_type = db.Column(db.String(50), nullable=False)  # Faculty Type
+    units = db.Column(db.Numeric, nullable=False)  # Faculty Unit
     name = db.Column(db.String(50), nullable=False)  # Name
     first_name = db.Column(db.String(50), nullable=False)  # First Name
     last_name = db.Column(db.String(50), nullable=False)  # Last Name
@@ -51,6 +53,8 @@ class Faculty_Profile(db.Model, UserMixin):
     def to_dict(self):
         return {
             'faculty_account_id': self.faculty_account_id,
+            'faculty_type': self.faculty_type,
+            'units': self.units,
             'name': self.name,
             'first_name': self.first_name,
             'last_name': self.last_name,
@@ -710,6 +714,8 @@ def create_sample_data():
  # Create and insert Faculty_Profile
     faculty_sample1 = Faculty_Profile(
         faculty_account_id='2020-00072-D-1',
+        faculty_type='Full Time',
+        units = 8,
         name='Alma Matter',
         first_name='Palma',
         last_name='Matter',
@@ -729,6 +735,8 @@ def create_sample_data():
     
     faculty_sample2 = Faculty_Profile(
         faculty_account_id='2020-00073-D-1',
+        faculty_type='Part Time',
+        units = 6,
         name='Andrew Bardoquillo',
         first_name='Andrew',
         last_name='Bardoquillo',
@@ -748,6 +756,8 @@ def create_sample_data():
     
     faculty_sample3 = Faculty_Profile(
         faculty_account_id='2020-00076-D-4',
+        faculty_type='Full Time',
+        units = 12,
         name='Jason Derbis',
         first_name='Jason',
         last_name='Derbis',

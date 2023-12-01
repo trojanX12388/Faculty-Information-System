@@ -16,6 +16,8 @@ class Faculty_Profile(Base):
     __tablename__ = 'Faculty_Profile'
 
     faculty_account_id = Column(String, primary_key=True, index=True)
+    faculty_type = Column(String)
+    units = Column(Integer)
     name = Column(String)
     first_name = Column(String)
     last_name = Column(String)
@@ -35,18 +37,20 @@ class Faculty_Profile(Base):
 # Pydantic model for data validation
 class Faculty_Profile_Model(BaseModel):
     faculty_account_id: str
+    faculty_type: str
+    units: int
     name: str
     first_name: str  = "" 
     last_name: str = ""
-    middle_name: str = ""
-    middle_initial: str = ""
+    middle_name: Optional[str]
+    middle_initial: Optional[str]
     name_extension: Optional[str]
     birth_date: datetime.date 
     date_hired: datetime.date 
     remarks: Optional[str]
     faculty_code: int
-    honorific: str = ""
-    age: int = ""
+    honorific: Optional[str]
+    age: int
     email: str = ""
     profile_pic: str = ""
     is_active: bool 
@@ -55,7 +59,4 @@ class Faculty_Profile_Model(BaseModel):
         orm_mode = True
         from_attributes=True
 
-# --------------------------------------------------------------
-
-# PERSONAL DETAILS
 # --------------------------------------------------------------
