@@ -100,8 +100,8 @@ def facultyL():
             else:
                 if check_password_hash(User.password,password):
                         login_user(User, remember=False)
-                        access_token = generate_access_token(User.faculty_account_id)
-                        refresh_token = generate_refresh_token(User.faculty_account_id)
+                        access_token = generate_access_token(User.faculty_account_id).decode('UTF-8')
+                        refresh_token = generate_refresh_token(User.faculty_account_id).decode('UTF-8')
                         
                         u = update(Faculty_Profile)
                         u = u.values({"access_token": access_token,
