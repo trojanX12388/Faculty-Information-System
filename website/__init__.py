@@ -37,7 +37,8 @@ def create_app():
     app.config['IMAGE_UPLOADS']='temp/'
     
     mail=Mail(app)
-  
+    jwt = JWTManager(app)    
+    
     # LOADING DATABASE 
     from .models import init_db
     init_db(app)

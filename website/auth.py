@@ -51,6 +51,7 @@ app.config['MAIL_DEFAULT_SENDER'] = 'PUPQC FIS'
 app.config['MAIL_USE_TLS']=False
 app.config['MAIL_USE_SSL']=True
 
+jwt = JWTManager(app)  
 
 mail=Mail(app)
 
