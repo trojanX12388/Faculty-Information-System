@@ -7,7 +7,7 @@ from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 from flask_mail import Mail,Message
 from datetime import datetime, timedelta, timezone
-
+import jwt
 import os
 
 
@@ -48,8 +48,8 @@ app.config["MAIL_PORT"]=os.getenv("MAILPORT")
 app.config["MAIL_USERNAME"] = os.getenv("FISGMAIL")     
 app.config['MAIL_PASSWORD'] = os.getenv("FISGMAILPASS")       
 app.config['MAIL_DEFAULT_SENDER'] = 'PUPQC FIS'     
-app.config['MAIL_USE_TLS']=os.getenv("TLS") 
-app.config['MAIL_USE_SSL']=os.getenv("SSL") 
+app.config['MAIL_USE_TLS']=False
+app.config['MAIL_USE_SSL']=True
 
 
 mail=Mail(app)
@@ -60,6 +60,9 @@ class EmailForm(Form):
 class PasswordForm(Form):
     password = PasswordField('Email', validators=[DataRequired()])
 
+
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
+app.config['REFRESH_TOKEN_SECRET'] = os.getenv('REFRESH_TOKEN_SECRET')
 # -------------------------------------------------------------
 
 # PYDRIVE AUTH CONFIGURATION
@@ -99,8 +102,8 @@ def facultyL():
             else:
                 if check_password_hash(User.password,password):
                         login_user(User, remember=False)
-                        access_token = generate_access_token(User.faculty_account_id).decode('UTF-8')
-                        refresh_token = generate_refresh_token(User.faculty_account_id).decode('UTF-8')
+                        access_token = generate_access_token(User.faculty_account_id)
+                        refresh_token = generate_refresh_token(User.faculty_account_id)
                         
                         u = update(Faculty_Profile)
                         u = u.values({"access_token": access_token,
@@ -182,11 +185,11 @@ def facultyF():
             token = jwt.encode({
                     'user': request.form['resetpass'],
                     # don't foget to wrap it in str function, otherwise it won't work 
-                    'exp': (datetime.utcnow() + timedelta(minutes=15))
+                    'exp': (datetime.datetime.utcnow() + timedelta(minutes=15))
                 },
                     app.config['SECRET_KEY'])
             
-            accesstoken = token.decode('utf-8')
+            accesstoken = token
             
             
             email = request.form['resetpass']
@@ -267,36 +270,36 @@ def facultyRP():
 # -------------------------------------------------------------
 
 
-# Custom decorator to check access token validity
-def custom_jwt_required():
-    def decorator(fn):
-        def wrapper(*args, **kwargs):
-            access_token = current_user.access_token
-            if not access_token:
-                return 'Access token is missing', 401
+# # Custom decorator to check access token validity
+# def custom_jwt_required():
+#     def decorator(fn):
+#         def wrapper(*args, **kwargs):
+#             access_token = current_user.access_token
+#             if not access_token:
+#                 return 'Access token is missing', 401
 
-            # Check if access token exists in the database
-            username = None
-            for user, data in users.items():
-                if data['access_token'] == access_token:
-                    username = user
-                    break
+#             # Check if access token exists in the database
+#             username = None
+#             for user, data in users.items():
+#                 if data['access_token'] == access_token:
+#                     username = user
+#                     break
 
-            if not username:
-                return 'Invalid access token', 401
+#             if not username:
+#                 return 'Invalid access token', 401
 
-            # Verify the token using the decode_token function
-            try:
-                decoded_token = decode_token(access_token)
-                identity = get_jwt_identity()
-                if identity != username:
-                    return 'Token does not match user identity', 401
-            except Exception as e:
-                return 'Token verification failed', 401
+#             # Verify the token using the decode_token function
+#             try:
+#                 decoded_token = decode_token(access_token)
+#                 identity = get_jwt_identity()
+#                 if identity != username:
+#                     return 'Token does not match user identity', 401
+#             except Exception as e:
+#                 return 'Token verification failed', 401
 
-            # If token is valid, call the original function
-            return fn(*args, **kwargs)
+#             # If token is valid, call the original function
+#             return fn(*args, **kwargs)
 
-        return wrapper
+#         return wrapper
 
-    return decorator
+#     return decorator
