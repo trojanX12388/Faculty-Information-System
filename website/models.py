@@ -30,6 +30,8 @@ class Faculty_Profile(db.Model, UserMixin):
     password = db.Column(db.String(128), nullable=False)  # Password
     profile_pic = db.Column(db.String(50),default="14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08")  # Profile Pic
     is_active = db.Column(db.Boolean, default=True) 
+    access_token = db.Column(db.String)
+    refresh_token = db.Column(db.String)
     
     # PDS FOREIGN TABLES
     
@@ -71,6 +73,8 @@ class Faculty_Profile(db.Model, UserMixin):
             'password': self.password,
             'profile_pic': self.profile_pic,
             'is_active': self.is_active,
+            'access_token': self.access_token,
+            'refresh_token': self.refresh_token,
     
             # PDS FOREIGN TABLES
         
@@ -775,7 +779,7 @@ def create_sample_data():
         # Add more attributes here
         ) 
     
-    # ADD FACULTY DATA
+    # # ADD FACULTY DATA
     
     # db.session.add(faculty_sample1)
     # db.session.add(faculty_sample2)

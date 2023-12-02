@@ -3,6 +3,7 @@ from flask_login import LoginManager
 from dotenv import load_dotenv
 from flask_mail import Mail
 from datetime import timedelta
+from flask_jwt_extended import JWTManager
 
 import os
 load_dotenv()
@@ -11,6 +12,7 @@ def create_app():
     app = Flask(__name__)
     app.json.sort_keys = False
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+    app.config['REFRESH_TOKEN_SECRET'] = os.getenv('REFRESH_TOKEN_SECRET')
     
     # CONFIGURING POSTGRESQL CONNECTIONS
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
@@ -35,7 +37,8 @@ def create_app():
     app.config['IMAGE_UPLOADS']='temp/'
     
     mail=Mail(app)
-        
+    jwt = JWTManager(app)    
+    
     # LOADING DATABASE 
     from .models import init_db
     init_db(app)

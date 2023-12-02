@@ -31,6 +31,9 @@ from sqlalchemy import update
 from .models import Faculty_Profile
 
 
+# LOAD JWT MODULE
+from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, decode_token
+
 # EXECUTING DATABASE
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
@@ -47,6 +50,8 @@ app.config['MAIL_PASSWORD'] = os.getenv("FISGMAILPASS")
 app.config['MAIL_DEFAULT_SENDER'] = 'PUPQC FIS'     
 app.config['MAIL_USE_TLS']=os.getenv("TLS") 
 app.config['MAIL_USE_SSL']=os.getenv("SSL") 
+
+jwt = JWTManager(app)
 
 mail=Mail(app)
 
@@ -94,8 +99,19 @@ def facultyL():
             # USER ACCOUNT VERIFICATION
             else:
                 if check_password_hash(User.password,password):
-                    
                         login_user(User, remember=False)
+                        access_token = generate_access_token(User.faculty_account_id)
+                        refresh_token = generate_refresh_token(User.faculty_account_id)
+                        
+                        u = update(Faculty_Profile)
+                        u = u.values({"access_token": access_token,
+                                    "refresh_token": refresh_token
+                                    })
+                        u = u.where(Faculty_Profile.faculty_account_id == User.faculty_account_id)
+                        db.session.execute(u)
+                        db.session.commit()
+                        db.session.close()
+                        
                         return redirect(url_for('auth.facultyH'))   
                         
                 else:
@@ -251,3 +267,37 @@ def facultyRP():
 
 # -------------------------------------------------------------
 
+
+# Custom decorator to check access token validity
+def custom_jwt_required():
+    def decorator(fn):
+        def wrapper(*args, **kwargs):
+            access_token = current_user.access_token
+            if not access_token:
+                return 'Access token is missing', 401
+
+            # Check if access token exists in the database
+            username = None
+            for user, data in users.items():
+                if data['access_token'] == access_token:
+                    username = user
+                    break
+
+            if not username:
+                return 'Invalid access token', 401
+
+            # Verify the token using the decode_token function
+            try:
+                decoded_token = decode_token(access_token)
+                identity = get_jwt_identity()
+                if identity != username:
+                    return 'Token does not match user identity', 401
+            except Exception as e:
+                return 'Token verification failed', 401
+
+            # If token is valid, call the original function
+            return fn(*args, **kwargs)
+
+        return wrapper
+
+    return decorator

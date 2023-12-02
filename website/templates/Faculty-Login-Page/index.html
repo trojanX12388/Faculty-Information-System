@@ -5,7 +5,7 @@
       <div class="container-login100">
         <div class="wrap-login100">
  
-          <form method="POST" class="login100-form validate-form" autocomplete="off"> 
+          <form method="POST" action"/faculty-login" class="login100-form validate-form" autocomplete="off"> 
             <input autocomplete="false" name="hidden" type="text" style="display:none;">
             <img src="{{ url_for('static', filename='images/Default-Images/pupqc-logo.png')}}" alt="PUPFIS LOGO" class="rounded mx-auto d-block"  style="width:220px;height:220px"  />
             <h1 class="text-center">
@@ -18,14 +18,14 @@
             <br>
             <br>
             <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@webmail.com">
-              <input class="input100" type="text" name="email" autocomplete="off">
+              <input class="input100" type="text" id="email" name="email" autocomplete="off">
               <span class="focus-input100"></span>
               <span class="label-input100">Email</span>
             </div>
             
             
             <div class="wrap-input100 validate-input" data-validate="Password is required">
-              <input class="input100" type="password" name="password" autocomplete="off"> 
+              <input class="input100" type="password" id="password" name="password" autocomplete="off"> 
               <span class="focus-input100"></span>
               <span class="label-input100">Password</span>
             </div>
