@@ -4,15 +4,13 @@ import datetime
 
 import jwt
 import os,ast,random
-from flask_jwt_extended import JWTManager
-
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 app.config['REFRESH_TOKEN_SECRET'] = os.getenv('REFRESH_TOKEN_SECRET')
 
 API_KEYS = ast.literal_eval(os.environ["API_KEYS"])
-jwt = JWTManager(app)  
+
 # TOKEN VERIFICATION FUNCTION
 
 def admin_token_required(func):
@@ -25,7 +23,7 @@ def admin_token_required(func):
 
         try:
 
-            data = jwt.decode(token, app.config['SECRET_KEY'])
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
         # You can use the JWT errors in exception
         # except jwt.InvalidTokenError:
         #     return 'Invalid token. Please log in again.'

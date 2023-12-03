@@ -7,7 +7,7 @@ from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 from flask_mail import Mail,Message
 from datetime import datetime, timedelta, timezone
-import jwt
+
 import os
 
 
@@ -28,7 +28,7 @@ from .models import db
 from sqlalchemy import update
 
 # LOADING MODEL CLASSES
-from .models import Faculty_Profile
+from .models import Faculty_Profile, Login_Token
 
 
 # LOAD JWT MODULE
@@ -51,7 +51,6 @@ app.config['MAIL_DEFAULT_SENDER'] = 'PUPQC FIS'
 app.config['MAIL_USE_TLS']=False
 app.config['MAIL_USE_SSL']=True
 
-jwt = JWTManager(app)  
 
 mail=Mail(app)
 
@@ -61,9 +60,6 @@ class EmailForm(Form):
 class PasswordForm(Form):
     password = PasswordField('Email', validators=[DataRequired()])
 
-
-app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
-app.config['REFRESH_TOKEN_SECRET'] = os.getenv('REFRESH_TOKEN_SECRET')
 # -------------------------------------------------------------
 
 # PYDRIVE AUTH CONFIGURATION
@@ -106,15 +102,25 @@ def facultyL():
                         access_token = generate_access_token(User.faculty_account_id)
                         refresh_token = generate_refresh_token(User.faculty_account_id)
                         
-                        u = update(Faculty_Profile)
-                        u = u.values({"access_token": access_token,
-                                    "refresh_token": refresh_token
-                                    })
-                        u = u.where(Faculty_Profile.faculty_account_id == User.faculty_account_id)
-                        db.session.execute(u)
-                        db.session.commit()
-                        db.session.close()
+                        if Login_Token.query.filter_by(faculty_account_id=current_user.faculty_account_id).first():
+                            u = update(Login_Token)
+                            u = u.values({"access_token": access_token,
+                                        "refresh_token": refresh_token
+                                        })
+                            u = u.where(Login_Token.faculty_account_id == User.faculty_account_id)
+                            db.session.execute(u)
+                            db.session.commit()
+                            db.session.close()
+                          
+                        else:
+                            add_record = Login_Token(   access_token = access_token,
+                                                        refresh_token = refresh_token,
+                                                        faculty_account_id = current_user.faculty_account_id)
                         
+                            db.session.add(add_record)
+                            db.session.commit()
+                            db.session.close()
+            
                         return redirect(url_for('auth.facultyH'))   
                         
                 else:
@@ -203,7 +209,6 @@ def facultyF():
             
             recover_url = url_for(
                     'auth.facultyRP',
-                    email=email,
                     token=accesstoken,
                     _external=True)
 
@@ -236,7 +241,7 @@ def token_required(func):
 
         try:
 
-            data = jwt.decode(token, app.config['SECRET_KEY'])
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
         # You can use the JWT errors in exception
         # except jwt.InvalidTokenError:
         #     return 'Invalid token. Please log in again.'
@@ -248,10 +253,13 @@ def token_required(func):
 @auth.route('/reset-pass', methods=['GET', 'POST'])
 @token_required
 def facultyRP():
+    token = request.args.get('token')
+    user = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
+    
     password1 = request.form.get('password1')
     password2 = request.form.get('password2')
 
-    email = request.args.get('email')
+    email = user['user']
 
     # UPDATE NEW PASSWORD TO THE FACULTY ACCOUNT
     if request.method == 'POST':

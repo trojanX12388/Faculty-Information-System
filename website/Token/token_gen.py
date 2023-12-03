@@ -9,8 +9,7 @@ app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 app.config['REFRESH_TOKEN_SECRET'] = os.getenv('REFRESH_TOKEN_SECRET')
 
 API_KEYS = ast.literal_eval(os.environ["API_KEYS"])
-from flask_jwt_extended import JWTManager
-jwt = JWTManager(app)  
+
 # TOKEN REFRESH AND GENERATE FUNCTION
 
 # Function to generate access token
@@ -28,7 +27,7 @@ def generate_access_token(user_id):
         'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)  # Token expiration time (30 minutes)
     }
     access_token = jwt.encode(access_token_payload, app.config['SECRET_KEY'], algorithm='HS256')
-    return access_token.decode('UTF-8')
+    return access_token
 
 # Function to generate refresh token
 def generate_refresh_token(user_id):
@@ -45,6 +44,6 @@ def generate_refresh_token(user_id):
         'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)  # Refresh token expiration time (1 day)
     }
     refresh_token = jwt.encode(refresh_token_payload, app.config['REFRESH_TOKEN_SECRET'], algorithm='HS256')
-    return refresh_token.decode('UTF-8')
+    return refresh_token
 
 

@@ -30,8 +30,6 @@ class Faculty_Profile(db.Model, UserMixin):
     password = db.Column(db.String(128), nullable=False)  # Password
     profile_pic = db.Column(db.String(50),default="14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08")  # Profile Pic
     is_active = db.Column(db.Boolean, default=True) 
-    access_token = db.Column(db.String)
-    refresh_token = db.Column(db.String)
     
     # PDS FOREIGN TABLES
     
@@ -50,6 +48,7 @@ class Faculty_Profile(db.Model, UserMixin):
     PDS_Additional_Questions = db.relationship('PDS_Additional_Questions')
     PDS_Character_Reference = db.relationship('PDS_Character_Reference')
     PDS_Signature = db.relationship('PDS_Signature')
+    Login_Token = db.relationship('Login_Token')
 
 
     def to_dict(self):
@@ -73,8 +72,6 @@ class Faculty_Profile(db.Model, UserMixin):
             'password': self.password,
             'profile_pic': self.profile_pic,
             'is_active': self.is_active,
-            'access_token': self.access_token,
-            'refresh_token': self.refresh_token,
     
             # PDS FOREIGN TABLES
         
@@ -636,6 +633,30 @@ class PDS_Signature(db.Model):
         
     def get_id(self):
         return str(self.id)  # Convert to string to ensure compatibility     
+   
+   
+# PDS Signature
+  
+class Login_Token(db.Model):
+    __tablename__ = 'Login_Token'
+
+    id = db.Column(db.Integer, primary_key=True)  # DataID
+    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'))  # FacultyID
+    access_token = db.Column(db.String)
+    refresh_token = db.Column(db.String)
+    is_delete = db.Column(db.Boolean, default=False) 
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'faculty_account_id': self.faculty_account_id,
+            'access_token': self.access_token,
+            'refresh_token': self.refresh_token,
+            'is_delete': self.is_delete
+        }
+        
+    def get_id(self):
+        return str(self.id)  # Convert to string to ensure compatibility    
     
  # ADMIN DATA   
     
