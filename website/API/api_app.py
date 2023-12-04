@@ -55,10 +55,61 @@ from .model_class.pds_model import PDS_Personal_Details_Model,PDS_Contact_Detail
 
 API = Blueprint('API', __name__)
 
+
+from sqlalchemy.orm import aliased
+
+@API.route('/api/all/Faculty_Profile', methods=['GET'])
+@admin_token_required  # Get the API key from the request header
+def get_combined_profile():
+    token = request.headers.get('token')  # Get the API key from the request header
+    key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
+    key = key['key']
+
+    if key not in API_KEYS.values():
+        return jsonify(message="access denied!"), 403
+
+    else:
+        db = SessionLocal()
+        try:
+            # Perform outer joins with Faculty_Profile, PDS_Personal_Details, and PDS_Contact_Details
+            faculty_alias = aliased(Faculty_Profile)
+            personal_details_alias = aliased(PDS_Personal_Details)
+            contact_details_alias = aliased(PDS_Contact_Details)
+
+            combined_data = db.query(Faculty_Profile, personal_details_alias, contact_details_alias).outerjoin(
+                personal_details_alias, Faculty_Profile.faculty_account_id == personal_details_alias.faculty_account_id
+            ).outerjoin(
+                contact_details_alias, Faculty_Profile.faculty_account_id == contact_details_alias.faculty_account_id
+            ).all()
+
+            # Create a dictionary to store combined data
+            combined_profile = []
+            for faculty, pds_personal_details, pds_contact_details in combined_data:
+                faculty_dict = Faculty_Profile_Model.from_orm(faculty).dict()
+
+                if pds_personal_details:
+                    faculty_dict['PDS_Personal_Details'] = PDS_Personal_Details_Model.from_orm(pds_personal_details).dict()
+                else:
+                    faculty_dict['PDS_Personal_Details'] = None
+
+                if pds_contact_details:
+                    faculty_dict['PDS_Contact_Details'] = PDS_Contact_Details_Model.from_orm(pds_contact_details).dict()
+                else:
+                    faculty_dict['PDS_Contact_Details'] = None
+
+                combined_profile.append(faculty_dict)
+
+            return jsonify({'Faculties': combined_profile})
+
+        except ValidationError as e:
+            return jsonify({'error': f'Validation error: {e}'})
+        finally:
+            db.close()
+
 # FACULTY DATA 
 # -------------------------------------------------------------------------
 
-@API.route('/api/all/Faculty_Profile', methods=['GET'])
+@API.route('/api/Faculty_Profile', methods=['GET'])
 @admin_token_required # Get the API key from the request header
 def get_all_faculty():
     token = request.headers.get('token') # Get the API key from the request header
@@ -75,12 +126,16 @@ def get_all_faculty():
         try:
             profile = [Faculty_Profile_Model.from_orm(faculty).dict() for faculty in faculty_profile]
             return jsonify({'Faculty_Profile': profile})
+        
+        
+        
+        
         except ValidationError as e:
             return jsonify({'error': f'Validation error: {e}'})
 
 
 
-@API.route('/api/all/Faculty_Profile/<faculty_account_id>',  methods=['GET', 'POST', 'PUT', 'DELETE'])
+@API.route('/api/Faculty_Profile/<faculty_account_id>',  methods=['GET', 'POST', 'PUT', 'DELETE'])
 @admin_token_required # Get the API key from the request header
 def get_task(faculty_account_id):
     token = request.headers.get('token')  # Get the API key from the request header
@@ -156,7 +211,7 @@ def get_task(faculty_account_id):
 # PERSONAL DETAILS
 # -------------------------------------------------------------------------
 
-@API.route('/api/all/Faculty_Profile/PDS_Personal_Details', methods=['GET'])
+@API.route('/api/Faculty_Profile/PDS_Personal_Details', methods=['GET'])
 @admin_token_required # Get the API key from the request header
 def get_all_pds_personal_details():
     token = request.headers.get('token')  # Get the API key from the request header
@@ -178,7 +233,7 @@ def get_all_pds_personal_details():
 
 
 
-@API.route('/api/all/Faculty_Profile/PDS_Personal_Details/<faculty_account_id>',  methods=['GET', 'POST', 'PUT', 'DELETE'])
+@API.route('/api/Faculty_Profile/PDS_Personal_Details/<faculty_account_id>',  methods=['GET', 'POST', 'PUT', 'DELETE'])
 @admin_token_required # Get the API key from the request header
 def get_pds_personal_details(faculty_account_id):
     token = request.headers.get('token')  # Get the API key from the request header
@@ -252,7 +307,7 @@ def get_pds_personal_details(faculty_account_id):
  # PDS Contact Details  
 # -------------------------------------------------------------------------
 
-@API.route('/api/all/Faculty_Profile/PDS_Contact_Details', methods=['GET'])
+@API.route('/api/Faculty_Profile/PDS_Contact_Details', methods=['GET'])
 @admin_token_required # Get the API key from the request header
 def get_all_pds_contact_details():
     token = request.headers.get('token') # Get the API key from the request header
@@ -274,7 +329,7 @@ def get_all_pds_contact_details():
 
 
 
-@API.route('/api/all/Faculty_Profile/PDS_Contact_Details/<faculty_account_id>',  methods=['GET', 'POST', 'PUT', 'DELETE'])
+@API.route('/api/Faculty_Profile/PDS_Contact_Details/<faculty_account_id>',  methods=['GET', 'POST', 'PUT', 'DELETE'])
 @admin_token_required # Get the API key from the request header
 def get_pds_contact_details(faculty_account_id):
     token = request.headers.get('token')  # Get the API key from the request header
