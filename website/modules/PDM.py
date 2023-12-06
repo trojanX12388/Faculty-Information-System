@@ -26,7 +26,7 @@ from website.models import Faculty_Profile
 from website.models import PDS_Personal_Details, PDS_Contact_Details, PDS_Family_Background, PDS_Educational_Background, PDS_Eligibity, PDS_Work_Experience, PDS_Voluntary_Work, PDS_Training_Seminars, PDS_Outstanding_Achievements, PDS_OfficeShips_Memberships, PDS_Agency_Membership, PDS_Teacher_Information, PDS_Additional_Questions, PDS_Character_Reference,PDS_Signature
    
 # LOADING FUNCTION CHECK TOKEN
-from website.Token.token_check import is_token_notExpired
+from website.Token.token_check import Check_Token
 
 PDM = Blueprint('PDM', __name__)
 
@@ -70,7 +70,7 @@ profile_default='14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08'
 
 @PDM.route("/PDM-Basic-Details", methods=['GET', 'POST'])
 @login_required
-@is_token_notExpired
+@Check_Token
 def PDM_BD():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
@@ -228,7 +228,7 @@ def PDM_BDCP():
 
 @PDM.route("/PDM-Personal-Details", methods=['GET', 'POST'])
 @login_required
-@is_token_notExpired
+@Check_Token
 def PDM_PD():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
@@ -339,7 +339,7 @@ def PDM_PD():
 
 @PDM.route("/PDM-Contact-Details", methods=['GET', 'POST'])
 @login_required
-@is_token_notExpired
+@Check_Token
 def PDM_CD():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
@@ -466,7 +466,7 @@ def PDM_CD():
 
 @PDM.route("/PDM-Family-Background", methods=['GET', 'POST'])
 @login_required
-@is_token_notExpired
+@Check_Token
 def PDM_FB():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
@@ -554,7 +554,7 @@ def PDM_FBdel():
 
 @PDM.route("/PDM-Educational-Background", methods=['GET', 'POST'])
 @login_required
-@is_token_notExpired
+@Check_Token
 def PDM_EB():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
@@ -647,7 +647,7 @@ def PDM_EBdel():
 
 @PDM.route("/PDM-Eligibities", methods=['GET', 'POST'])
 @login_required
-@is_token_notExpired
+@Check_Token
 def PDM_E():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
@@ -733,7 +733,7 @@ def PDM_Edel():
 
 @PDM.route("/PDM-Work-Experience", methods=['GET', 'POST'])
 @login_required
-@is_token_notExpired
+@Check_Token
 def PDM_WE():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
@@ -828,7 +828,7 @@ def PDM_WEdel():
   
 @PDM.route("/PDM-Voluntary-Works", methods=['GET', 'POST'])
 @login_required
-@is_token_notExpired
+@Check_Token
 def PDM_VW():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
@@ -921,7 +921,7 @@ def PDM_VWdel():
 
 @PDM.route("/PDM-Training-Seminars", methods=['GET', 'POST'])
 @login_required
-@is_token_notExpired
+@Check_Token
 def PDM_TS():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
@@ -1015,7 +1015,7 @@ def PDM_TSdel():
 
 @PDM.route("/PDM-Outstanding-Achievements", methods=['GET', 'POST'])
 @login_required
-@is_token_notExpired
+@Check_Token
 def PDM_OA():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
@@ -1103,7 +1103,7 @@ def PDM_OAdel():
  
 @PDM.route("/PDM-Officeships-Memberships", methods=['GET', 'POST'])
 @login_required
-@is_token_notExpired
+@Check_Token
 def PDM_OSM():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
@@ -1195,7 +1195,7 @@ def PDM_OSMdel():
  
 @PDM.route("/PDM-Agency-Membership", methods=['GET', 'POST'])
 @login_required
-@is_token_notExpired
+@Check_Token
 def PDM_AM():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
@@ -1276,7 +1276,7 @@ def PDM_AM():
 
 @PDM.route("/PDM-Teacher-Information", methods=['GET', 'POST'])
 @login_required
-@is_token_notExpired
+@Check_Token
 def PDM_TI():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
@@ -1357,7 +1357,7 @@ def PDM_TIdel():
 
 @PDM.route("/PDM-Character-Reference", methods=['GET', 'POST'])
 @login_required
-@is_token_notExpired
+@Check_Token
 def PDM_CR():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
@@ -1433,7 +1433,7 @@ def PDM_CRdel():
 
 @PDM.route("/PDM-Signature", methods=['GET', 'POST'])
 @login_required
-@is_token_notExpired
+@Check_Token
 def PDM_S():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
@@ -1640,7 +1640,7 @@ def PDM_SS():
   
 @PDM.route("/PDM-Additional-Questions", methods=['GET', 'POST'])
 @login_required
-@is_token_notExpired
+@Check_Token
 def PDM_AQ():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
@@ -1840,7 +1840,7 @@ def PDM_AQ():
   
 @PDM.route("/PDM-Personal-Data-Reports")
 @login_required
-@is_token_notExpired
+@Check_Token
 def PDM_PDR():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 

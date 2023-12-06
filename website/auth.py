@@ -16,7 +16,7 @@ load_dotenv()
 # IMPORT LOCAL FUNCTIONS
 from .API.authentication import *
 from .Token.token_gen import *
-from .Token.token_check import is_token_notExpired
+from .Token.token_check import Check_Token
 
 # IMPORT SMTP EMAILING FUNCTIONS
 
@@ -138,7 +138,7 @@ def facultyL():
 
 @auth.route("/faculty-home-page")
 @login_required
-@is_token_notExpired
+@Check_Token
 def facultyH():
         
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    

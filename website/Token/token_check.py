@@ -1,7 +1,7 @@
 from flask import Flask, redirect, url_for, flash, session, request
-from datetime import datetime, timedelta
+from datetime import datetime
 import jwt
-import os,sys
+import os
 from functools import wraps
 
 app = Flask(__name__)
@@ -10,15 +10,16 @@ app.config['REFRESH_TOKEN_SECRET'] = os.getenv('REFRESH_TOKEN_SECRET')
 
 from website.models import Login_Token
 from .token_gen import generate_access_token
-from flask_login import current_user,logout_user
+from flask_login import current_user
 
 # DATABASE CONNECTION
 from website.models import db
 from sqlalchemy import update
 
-# Check token expiration
 
-def is_token_notExpired(func):
+# CHECK TOKEN EXPIRATION
+
+def Check_Token(func):
     @wraps(func)
     def decorated(*args, **kwargs):
         session['previous_url'] = request.url
@@ -62,6 +63,8 @@ def is_token_notExpired(func):
                 return redirect(url_for('auth.Logout'))
     return decorated
 
+
+# REFRESH TOKEN
 def refresh_token(user_token):
     refresh_token = user_token.refresh_token
     try:
