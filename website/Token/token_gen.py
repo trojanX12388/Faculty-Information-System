@@ -41,7 +41,7 @@ def generate_refresh_token(user_id):
         'user_id'  : user_id,
         'token_name': token_key,
         'key': token_value,
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)  # Refresh token expiration time (1 day)
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=15)  # Refresh token expiration time (1 day)
     }
     refresh_token = jwt.encode(refresh_token_payload, app.config['REFRESH_TOKEN_SECRET'], algorithm='HS256')
     return refresh_token

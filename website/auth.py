@@ -16,6 +16,7 @@ load_dotenv()
 # IMPORT LOCAL FUNCTIONS
 from .API.authentication import *
 from .Token.token_gen import *
+from .Token.token_check import is_token_notExpired
 
 # IMPORT SMTP EMAILING FUNCTIONS
 
@@ -137,7 +138,9 @@ def facultyL():
 
 @auth.route("/faculty-home-page")
 @login_required
+@is_token_notExpired
 def facultyH():
+        
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
         
@@ -149,9 +152,6 @@ def facultyH():
         return render_template("Faculty-Home-Page/base.html", 
                                User= username.first_name + " " + username.last_name,
                                profile_pic=profile_pic)
-
-
-
 
 
 
