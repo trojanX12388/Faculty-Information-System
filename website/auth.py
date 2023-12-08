@@ -151,6 +151,7 @@ def facultyH():
                                 
         return render_template("Faculty-Home-Page/base.html", 
                                User= username.first_name + " " + username.last_name,
+                               user= current_user,
                                profile_pic=profile_pic)
 
 

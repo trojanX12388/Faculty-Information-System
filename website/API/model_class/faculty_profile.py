@@ -17,6 +17,7 @@ class Faculty_Profile(Base):
 
     faculty_account_id = Column(String, primary_key=True, index=True)
     faculty_type = Column(String)
+    rank = Column(String)
     units = Column(Integer)
     name = Column(String)
     first_name = Column(String)
@@ -26,6 +27,7 @@ class Faculty_Profile(Base):
     name_extension = Column(String)
     birth_date = Column(String)
     date_hired = Column(String)
+    degree = Column(String)
     remarks = Column(String)
     faculty_code = Column(String)
     honorific = Column(String)
@@ -38,6 +40,7 @@ class Faculty_Profile(Base):
 class Faculty_Profile_Model(BaseModel):
     faculty_account_id: str
     faculty_type: str
+    rank: str
     units: int
     name: str
     first_name: str  = "" 
@@ -47,6 +50,7 @@ class Faculty_Profile_Model(BaseModel):
     name_extension: Optional[str]
     birth_date: datetime.date 
     date_hired: datetime.date 
+    degree: Optional[str]
     remarks: Optional[str]
     faculty_code: int
     honorific: Optional[str]

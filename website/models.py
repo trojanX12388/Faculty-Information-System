@@ -13,6 +13,7 @@ class Faculty_Profile(db.Model, UserMixin):
     __tablename__ = 'Faculty_Profile'
     faculty_account_id = db.Column(db.String(50), primary_key=True)  # UserID
     faculty_type = db.Column(db.String(50), nullable=False)  # Faculty Type
+    rank = db.Column(db.String(50))  # Faculty Rank
     units = db.Column(db.Numeric, nullable=False)  # Faculty Unit
     name = db.Column(db.String(50), nullable=False)  # Name
     first_name = db.Column(db.String(50), nullable=False)  # First Name
@@ -22,6 +23,7 @@ class Faculty_Profile(db.Model, UserMixin):
     name_extension = db.Column(db.String(50))  # Name Extension
     birth_date = db.Column(db.Date, nullable=False)  # Birthdate
     date_hired = db.Column(db.Date, nullable=False)  # Date Hired
+    degree = db.Column(db.String)  # Degree
     remarks = db.Column(db.String)  # Remarks
     faculty_code = db.Column(db.Integer, nullable=False)  # Faculty Code
     honorific = db.Column(db.String(50))  # Honorific
@@ -55,6 +57,7 @@ class Faculty_Profile(db.Model, UserMixin):
         return {
             'faculty_account_id': self.faculty_account_id,
             'faculty_type': self.faculty_type,
+            'rank': self.rank,
             'units': self.units,
             'name': self.name,
             'first_name': self.first_name,
@@ -64,6 +67,7 @@ class Faculty_Profile(db.Model, UserMixin):
             'name_extension': self.name_extension,
             'birth_date': self.birth_date,
             'date_hired': self.date_hired,
+            'degree': self.degree,
             'remarks': self.remarks,
             'faculty_code': self.faculty_code,
             'honorific': self.honorific,
@@ -740,6 +744,7 @@ def create_sample_data():
     faculty_sample1 = Faculty_Profile(
         faculty_account_id='2020-00072-D-1',
         faculty_type='Full Time',
+        rank='Associate Professor II',
         units = 8,
         name='Alma Matter',
         first_name='Palma',
@@ -749,6 +754,7 @@ def create_sample_data():
         name_extension='',
         birth_date= datetime.now(timezone.utc),
         date_hired= datetime.now(timezone.utc),
+        degree='Bachelor of Science in Computer Science',
         remarks='',
         faculty_code=91801,
         honorific='N/A',
@@ -761,6 +767,7 @@ def create_sample_data():
     faculty_sample2 = Faculty_Profile(
         faculty_account_id='2020-00073-D-1',
         faculty_type='Part Time',
+        rank='Instructor I',
         units = 6,
         name='Andrew Bardoquillo',
         first_name='Andrew',
@@ -770,6 +777,7 @@ def create_sample_data():
         name_extension='',
         birth_date= datetime.now(timezone.utc),
         date_hired= datetime.now(timezone.utc),
+        degree='Master in Business Administration',
         remarks='',
         faculty_code=51295,
         honorific='N/A',
@@ -782,6 +790,7 @@ def create_sample_data():
     faculty_sample3 = Faculty_Profile(
         faculty_account_id='2020-00076-D-4',
         faculty_type='Full Time',
+        rank='Instructor III',
         units = 12,
         name='Jason Derbis',
         first_name='Jason',
@@ -791,6 +800,7 @@ def create_sample_data():
         name_extension='Jr.',
         birth_date= datetime.now(timezone.utc),
         date_hired= datetime.now(timezone.utc),
+        degree='Master In Information Technology',
         remarks='N/A',
         faculty_code=81214,
         honorific='N/A',
