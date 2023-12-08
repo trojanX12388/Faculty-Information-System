@@ -1,0 +1,95 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Committee & Administrative Roles{% endblock %} {% block content%}
+
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Committee & Administrative Roles</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Committee & Administrative Roles</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+       <!-- Card with an image on left -->
+       <div class="row">
+        <div class="row g-3">
+          
+          <div class="col-xl-6">
+            <div class="card">
+            <div class="card-body">
+              <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                <h2>COMMITTEE ROLES</h2>
+          </div>
+          
+          <div class="row d-flex text-left pt-3">
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-left">
+              <h4 class="card-title"> 
+                Curriculum Development Committee
+              </h4>
+        </div>
+        </div>
+          <div class="row d-flex text-left pt-3">
+            <h5 class="font-weight-bolder">
+              {{User}} is a member of a committee responsible for reviewing and refining the literature curriculum.
+            </h5>
+        </div>
+
+
+        <br>
+        <br>
+        <br>
+
+        <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+          <h2>ADMINISTRATIVE ROLES</h2>
+      </div>
+
+      <div class="row d-flex text-left pt-1">
+        <div class="card-body profile-card pt-4 d-flex flex-column align-items-left">
+          <h4 class="card-title"> 
+            Department Chair's Advisory Group
+          </h4>
+    </div>
+    </div>
+      <div class="row d-flex text-left pt-3">
+        <h5 class="font-weight-bolder">
+          {{User}} is a member of a group that advises the department chair on matters related to faculty development.
+        </h5>
+    </div>
+
+    <div class="row d-flex text-left pt-3">
+      <div class="card-body profile-card pt-4 d-flex flex-column align-items-left">
+        <h4 class="card-title"> 
+          Campus Inclusivity Task Force
+        </h4>
+  </div>
+  </div>
+    <div class="row d-flex text-left pt-3">
+      <h5 class="font-weight-bolder">
+        {{User}} is a co-chair of a subcommittee within a task force focused on promoting inclusivity.
+      </h5>
+  </div>
+</div>
+        </div>
+          
+
+          
+        </div>
+        <div class="col-xl-6">
+          <img src="{{ url_for('static', filename='images/Default-Images/sideview-image.png')}}" alt="side image" style="width: 100%; height: 100%">
+        </div> 
+      </div>
+     
+    </div><!-- End Card with an image on left -->
+
+    </section>
+
+  </main><!-- End #main -->
+
+{% endblock %}
+
+      

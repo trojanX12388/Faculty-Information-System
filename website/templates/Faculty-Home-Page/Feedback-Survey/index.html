@@ -1,0 +1,92 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Feedback & Surveys{% endblock %} {% block content%}
+
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Faculty Feedback & Surveys</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Faculty Feedback & Surveys</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+       <!-- Card with an image on left -->
+       <div class="row">
+        <div class="row g-3">
+          
+          <div class="col-xl-6">
+            <div class="card">
+            <div class="card-body">
+              <div class="card-body profile-card pt-4 d-flex flex-column align-items-left">
+                <h3>FACULTY SURVEYS</h3>
+          </div>
+          
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Faculty Feedback and Development Survey</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Dear Faculty Members,</h6>
+              <p class="card-text">Your input is essential in our commitment to continuously improve our institution's educational programs and support for our valued faculty. We invite you to participate in the Faculty Feedback and Development Survey. This survey aims to gather your insights, experiences, and suggestions to help us enhance teaching, research, and professional development opportunities.</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Faculty Feedback and Professional Development Survey</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Dear Faculty Members,</h6>
+              <p class="card-text">Your expertise and dedication are vital to our institution's success. We value your contributions and are committed to providing you with the support and resources needed to excel in your roles as educators and scholars. We invite you to participate in the Faculty Feedback and Professional Development Survey.</p>
+            </div>
+          </div>
+
+
+
+        <br>
+        <br>
+        <br>
+
+        <div class="card-body profile-card pt-4 d-flex flex-column align-items-left">
+          <h3>FEEDBACKS</h3>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Faculty Feedback and Development Review (FFDR)</h5>
+          <p class="card-text">Welcome to the Faculty Feedback and Development Review (FFDR) process. This process is designed to provide faculty members with constructive feedback on their performance and to support their ongoing professional development. Through this collaborative effort, we aim to recognize achievements, address challenges, and create a roadmap for growth that aligns with both individual and institutional goals.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Faculty Empowerment and Reflection (FER)</h5>
+          <p class="card-text">Welcome to the Faculty Empowerment and Reflection (FER) program, a platform for fostering professional growth and creating a supportive environment for our esteemed faculty members. The FER program is dedicated to providing valuable feedback, recognizing accomplishments, and encouraging continuous development.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Academic Excellence Review and Development (AERD)</h5>
+          <p class="card-text">Welcome to the Academic Excellence Review and Development (AERD) process, a comprehensive initiative designed to support our faculty in achieving their highest potential. Through self-assessment, constructive feedback, and growth planning, the AERD process aims to facilitate continuous improvement, recognize achievements, and provide a roadmap for professional development.</p>
+        </div>
+      </div>
+      
+        </div>
+      </div>
+    </div>
+
+          <div class="col-xl-6">
+            <img src="{{ url_for('static', filename='images/Default-Images/sideview-image.png')}}" alt="side image" style="width: 100%; height: 100%">
+          </div> 
+      </div>
+    </div><!-- End Card with an image on left -->
+
+    </section>
+
+  </main><!-- End #main -->
+
+{% endblock %}
+
+      

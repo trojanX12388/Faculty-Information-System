@@ -1,0 +1,215 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Teaching Assignments{% endblock %} {% block content%}
+
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Teaching Assignments</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Teaching Instructions</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+     
+         <!-- Card with an image on left -->
+          <div class="row">
+            <div class="row g-3">
+              <div class="col-md-2">
+                <img src="http://drive.google.com/uc?export=view&id={{profile_pic}}" alt="Profile" class="rounded-circle" style="width: 20vh; height: 20vh" >
+              </div>
+       
+        <div class="col-md-4">
+          <div class="card-body">
+            <h2>{{user.first_name}} {{user.middle_initial}} {{user.last_name}}</h2>
+            <h5 class="card-title">RESEARCH PROFESSOR</h5>
+            <h5 class="card-title">STATISTICS PROFESSOR</h5>
+            <h5 class="card-title">ETHICS PROFESSOR</h5>
+          </div>
+        </div>
+            </div>
+          </div><!-- End Card with an image on left -->
+         
+        
+
+          <div class="card">
+            <div class="card-body">
+              <div class="card-body profile-card pt-4 d-flex flex-column align-items-end">
+                <h2>Teaching Activities</h2>
+              </div>
+            
+              <!-- Table with stripped rows -->
+              <table class="table datatable "> 
+                <thead>
+                  <tr>
+                    <th scope="col">Subject Code</th>
+                    <th scope="col">Course</th>
+                    <th scope="col">Section</th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">BSIT323</th>
+                    <td>BSIT</td>
+                    <td>3-1</td>
+                    <td>ETHICS</td>
+                    <td>SUBJECT TEACHER</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">Schedule</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">BSIT166</th>
+                    <td>BSBM</td>
+                    <td>1-1</td>
+                    <td>STATISTICS</td>
+                    <td>SUBJECT TEACHER</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">Schedule</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">BSBM321</th>
+                    <td>BSBM</td>
+                    <td>3-1</td>
+                    <td>RESEARCH</td>
+                    <td>SUBJECT TEACHER</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">Schedule</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">BSBM267</th>
+                    <td>BSBM</td>
+                    <td>2-2</td>
+                    <td>RESEARCH</td>
+                    <td>SUBJECT TEACHER</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">Schedule</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">BSHM199</th>
+                    <td>BSHM</td>
+                    <td>1-1</td>
+                    <td>STATISTICS</td>
+                    <td>SUBJECT TEACHER</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">Schedule</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>
+
+        
+
+          <div class="card">
+            <div class="card-body">
+              <div class="card-body profile-card pt-4 d-flex flex-column align-items-end">
+                <h2>Assignment Types</h2>
+              </div>
+
+              <!-- Table with stripped rows -->
+              <table class="table datatable "> 
+                <thead>
+                  <tr>
+                    <th scope="col">Course</th>
+                    <th scope="col">Section</th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Activities</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">BSIT</th>
+                    <td>3-1</td>
+                    <td>ETHICS</td>
+                    <td>ESSAY</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">BSBM</th>
+                    <td>1-1</td>
+                    <td>STATISTICS</td>
+                    <td>PROJECT</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">BSBM</th>
+                    <td>3-1</td>
+                    <td>RESEARCH</td>
+                    <td>RESEARCH PAPER</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">BSBM</th>
+                    <td>2-2</td>
+                    <td>RESEARCH</td>
+                    <td>RESEARCH PAPER</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">BSHM</th>
+                    <td>1-1</td>
+                    <td>STATISTICS</td>
+                    <td>ANALYTICS</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+{% endblock %}
+
+      

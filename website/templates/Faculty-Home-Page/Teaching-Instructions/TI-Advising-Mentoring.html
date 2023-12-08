@@ -1,0 +1,170 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Advising and Mentoring{% endblock %} {% block content%}
+
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Advising and Mentoring</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Teaching Instructions</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+        <div class="col-md-11">
+          <h4 class="d-flex flex-column align-items-center">This section covers the general information of the students you are mentoring and advising. The table consist of the general class information and their schedules when they visit the Polytechnic University of the Philippines of Quezon City branch.</h4>
+        </div>
+    </div>
+
+          <div class="card">
+            <div class="card-body">
+
+              <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                <h2>ADVISING</h2>
+          </div>
+    
+              <!-- Table with stripped rows -->
+              <table class="table datatable "> 
+                <thead>
+                  <tr>
+                    <th scope="col">Subject Code</th>
+                    <th scope="col">Year</th>
+                    <th scope="col">Course</th>
+                    <th scope="col">Section</th>
+                    <th scope="col">No. Of Students</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">BSIT323</th>
+                    <td>2022-2023</td>
+                    <td>BSIT</td>
+                    <td>3-1</td>
+                    <td>35</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">Schedule</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">BSIT166</th>
+                    <td>2022-2023</td>
+                    <td>BSBM</td>
+                    <td>1-1</td>
+                    <td>30</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">Schedule</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">BSBM321</th>
+                    <td>2022-2023</td>
+                    <td>BSBM</td>
+                    <td>3-1</td>
+                    <td>42</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">Schedule</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">BSBM267</th>
+                    <td>2022-2023</td>
+                    <td>BSBM</td>
+                    <td>2-2</td>
+                    <td>25</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">Schedule</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">BSHM199</th>
+                    <td>2022-2023</td>
+                    <td>BSHM</td>
+                    <td>1-1</td>
+                    <td>60</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">Schedule</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+
+              <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                <h2>MENTORING</h2>
+              </div>
+
+              <!-- Table with stripped rows -->
+              <table class="table datatable "> 
+                <thead>
+                  <tr>
+                    <th scope="col">Year</th>
+                    <th scope="col">Course</th>
+                    <th scope="col">Section</th>
+                    <th scope="col">No. Of Students</th>
+                    <th scope="col">Individual/Group</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">2022-2023</th>
+                    <td>BSIT</td>
+                    <td>3-1</td>
+                    <td>35</td>
+                    <td>GROUP</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2022-2023</th>
+                    <td>BSHM</td>
+                    <td>2-1</td>
+                    <td>40</td>
+                    <td>INDIVIDUAL</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+{% endblock %}
+
+      

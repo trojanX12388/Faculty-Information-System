@@ -1,0 +1,248 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Records{% endblock %} {% block content%}
+
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Records of Faculty Member's Teaching Assignments</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Records</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row align-items-top">
+        <div class="col-12">
+          <div class="card d-flex p-1 ">
+            <div class="row d-flex flex-column">
+                <div class="row d-flex text-center pt-3">
+                    <h5 class="font-weight-bolder">
+                      The RECORDS section captures, organizes, and maintains essential information and data pertaining to various aspects of faculty members' academic and professional activities. It serves as a comprehensive repository for managing records related to faculty profiles, teaching assignments, research endeavors, administrative roles, performance evaluations, professional development, awards, and other relevant interactions. 
+                    </h5>
+                </div>
+                </div>
+              </div>
+            </div>
+        
+          </div>
+   
+                  <h5 class="card-title">Faculty Member's Name: <span style="font-size:20px; color:#3E4647;">{{user.first_name}} {{user.middle_initial}} {{user.last_name}} </span></h5>
+                  <h5 class="card-title">Employee ID: <span style="font-size:20px; color:#3E4647;">{{user.faculty_account_id}}</span></h5>
+                  <h5 class="card-title">Department Affiliation:<span style="font-size:20px; color:#3E4647;"> Department of Environmental Science</span></h5>
+          
+          <br>
+          <br>
+
+        
+
+          <div class="card">
+            <div class="card-body">
+              <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                <h2>Teaching Assignments</h2>
+              </div>
+              <div class="col-md-2">
+                <button type="button" style="border:none;width:50px;height:50px; background-color:#FFFFFF;"><i class="bi bi-printer-fill"></i></button>
+            </div>
+              <!-- Table with stripped rows -->
+              <table class="table datatable "> 
+                <thead>
+                  <tr>
+                    <th scope="col">Semester</th>
+                    <th scope="col">Code</th>
+                    <th scope="col">Course</th>
+                    <th scope="col">Section</th>
+                    <th scope="col">No. Of Students</th>
+                    <th scope="col">Course Load</th>
+                    <th scope="col">Course Type</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1st 2022-2023</th>
+                    <td>BSIT323</td>
+                    <td>BSIT</td>
+                    <td>3-1</td>
+                    <td>35</td>
+                    <td>Research Professor</td>
+                    <td>Undergraduate</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">1st 2022-2023</th>
+                    <td>MATH101</td>
+                    <td>ITM</td>
+                    <td>1-A</td>
+                    <td>25</td>
+                    <td>Lecturer</td>
+                    <td>Undergraduate</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">1st 2022-2023</th>
+                    <td>CHEM201</td>
+                    <td>OC</td>
+                    <td>2-2</td>
+                    <td>30</td>
+                    <td>Associate Professor</td>
+                    <td>Undergraduate</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">1st 2022-2023</th>
+                    <td>ECON301</td>
+                    <td>Mcro-E</td>
+                    <td>3-3</td>
+                    <td>40</td>
+                    <td>Professor</td>
+                    <td>Undergraduate</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">1st 2022-2023</th>
+                    <td>BSHM333</td>
+                    <td>BSHM</td>
+                    <td>1-1</td>
+                    <td>60</td>
+                    <td>Professor</td>
+                    <td>Undergraduate</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">1st 2022-2023</th>
+                    <td>ECON301</td>
+                    <td>Mcro-E</td>
+                    <td>2-1</td>
+                    <td>36</td>
+                    <td>Lecturer</td>
+                    <td>Undergraduate</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">1st 2022-2023</th>
+                    <td>BSIT323</td>
+                    <td>BSIT</td>
+                    <td>3-3</td>
+                    <td>35</td>
+                    <td>Research Professor</td>
+                    <td>Undergraduate</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">1st 2022-2023</th>
+                    <td>BSMM393</td>
+                    <td>BSMM</td>
+                    <td>3-1</td>
+                    <td>35</td>
+                    <td>Research Professor</td>
+                    <td>Undergraduate</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">1st 2022-2023</th>
+                    <td>BSMM393</td>
+                    <td>BSMM</td>
+                    <td>3-3</td>
+                    <td>35</td>
+                    <td>Research Professor</td>
+                    <td>Undergraduate</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">1st 2022-2023</th>
+                    <td>BSMM303</td>
+                    <td>BSMM</td>
+                    <td>3-3</td>
+                    <td>35</td>
+                    <td>Research Professor</td>
+                    <td>Undergraduate</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">1st 2022-2023</th>
+                    <td>ENGL401</td>
+                    <td>ENG</td>
+                    <td>1-1</td>
+                    <td>45</td>
+                    <td>Associate Professor</td>
+                    <td>Undergraduate</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">1st 2022-2023</th>
+                    <td>ENGL401</td>
+                    <td>ENG</td>
+                    <td>1-2</td>
+                    <td>55</td>
+                    <td>Professor</td>
+                    <td>Undergraduate</td>
+                    <td>
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>
+
+
+
+    </section>
+
+  </main><!-- End #main -->
+
+{% endblock %}
+
+      

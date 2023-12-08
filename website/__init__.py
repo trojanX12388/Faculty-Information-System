@@ -59,6 +59,21 @@ def create_app():
     from .modules.PDM import PDM
     app.register_blueprint(PDM, url_prefix='/')
     
+    from .modules.Awards import awards
+    app.register_blueprint(awards, url_prefix='/')
+    
+    from .modules.Teaching_Instructions import TI
+    app.register_blueprint(TI, url_prefix='/')
+    
+    from .modules.Records import records
+    app.register_blueprint(records, url_prefix='/')
+    
+    from .modules.Committee_Administrative_Role import CAR
+    app.register_blueprint(CAR, url_prefix='/')
+    
+    from .modules.Feedback_Surveys import FS
+    app.register_blueprint(FS, url_prefix='/')
+    
     # LOADING LOGIN MANAGER CACHE
     login_manager = LoginManager()
     login_manager.login_view = 'auth.faculty_denied'
