@@ -60,7 +60,26 @@ profile_default='14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08'
 
 # -------------------------------------------------------------
 
-
+# calculate age in years
+from datetime import date
+ 
+def calculateAge(born):
+    today = date.today()
+    try: 
+        birthday = born.replace(year = today.year)
+ 
+    # raised when birth date is February 29
+    # and the current year is not a leap year
+    except ValueError: 
+        birthday = born.replace(year = today.year,
+                  month = born.month + 1, day = 1)
+ 
+    if birthday > today:
+        return today.year - born.year - 1
+    else:
+        return today.year - born.year
+         
+# -------------------------------------------------------------
 
 
 #                                                    FACULTY PERSONAL DATA MANAGEMENT ROUTE
@@ -133,6 +152,7 @@ def PDM_BD():
                                remarks= username.remarks,
                                honorific= username.honorific,
                                user= current_user,
+                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
                                profile_pic=profile_pic,
                                activate_BD= "active")
 
@@ -330,6 +350,7 @@ def PDM_PD():
                                PDM="show",
                                user = current_user,
                                data = data,
+                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
                                activate_PD="active")
 
 # ------------------------------- END PDM PERSONAL DETAILS ----------------------------  
@@ -455,6 +476,7 @@ def PDM_CD():
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
+                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
                                data = data,
                                activate_CD="active")
         
@@ -502,6 +524,7 @@ def PDM_FB():
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
+                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
                                activate_FB="active")
  
 @PDM.route("/PDM-Family-Background/add-record", methods=['GET', 'POST'])
@@ -594,6 +617,7 @@ def PDM_EB():
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
+                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
                                activate_EB="active")
 
 
@@ -685,6 +709,7 @@ def PDM_E():
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
+                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
                                activate_E="active")
 
 @PDM.route("/PDM-Eligibities/add-record", methods=['GET', 'POST'])
@@ -775,6 +800,7 @@ def PDM_WE():
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
+                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
                                activate_WE="active")
   
 @PDM.route("/PDM-Work-Experience/add-record", methods=['GET', 'POST'])
@@ -868,6 +894,7 @@ def PDM_VW():
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
+                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
                                activate_VW="active")
 
 
@@ -961,6 +988,7 @@ def PDM_TS():
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
+                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
                                activate_TS="active")
         
 
@@ -1053,6 +1081,7 @@ def PDM_OA():
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
+                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
                                activate_OA="active")
 
 
@@ -1143,6 +1172,7 @@ def PDM_OSM():
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
+                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
                                activate_OSM="active")
 
 @PDM.route("/PDM-Officeships-Memberships/add-record", methods=['GET', 'POST'])
@@ -1267,6 +1297,7 @@ def PDM_AM():
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
+                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
                                data = data,
                                activate_AM="active")  
 
@@ -1312,6 +1343,7 @@ def PDM_TI():
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
+                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
                                activate_TI="active")  
 
 @PDM.route("/PDM-Teacher-Information/add-record", methods=['GET', 'POST'])
@@ -1390,6 +1422,7 @@ def PDM_CR():
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
+                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
                                activate_CR="active")
 
 @PDM.route("/PDM-Character-Reference/add-record", methods=['GET', 'POST'])
@@ -1562,6 +1595,7 @@ def PDM_S():
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
+                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
                                signature = "data:image/png;base64," + decrypted_signature.decode('utf-8'),
                                dict_cert = decrypted_dict_cert.decode('utf-8'),
                                activate_S="active")
@@ -1830,6 +1864,7 @@ def PDM_AQ():
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
+                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
                                data = data,
                                activate_AQ="active")
   
@@ -1855,6 +1890,7 @@ def PDM_PDR():
                                profile_pic=profile_pic,
                                PDM="show",
                                user = current_user,
+                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
                                activate_PDR="active")
     
 # ------------------------------- END OF PDM PERSONAL DATA REPORTS  ---------------------------- 
