@@ -1061,13 +1061,13 @@ def PDM_OA():
            
             achievement = request.form.get('achievement')
             level = request.form.get('level')
-            date = request.form.get('date')
+            from_date = request.form.get('date')
             id = request.form.get('id')
 
             u = update(PDS_Outstanding_Achievements)
             u = u.values({"achievement": achievement,
                           "level": level,
-                          "date": date
+                          "date": from_date
                           })
             
             u = u.where(PDS_Outstanding_Achievements.id == id)
