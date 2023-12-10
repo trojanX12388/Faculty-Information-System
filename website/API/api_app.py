@@ -82,10 +82,12 @@ def get_combined_profile():
                 contact_details_alias, Faculty_Profile.faculty_account_id == contact_details_alias.faculty_account_id
             ).all()
 
-            # Create a dictionary to store combined data
-            combined_profile = []
+            # Create a dictionary to store combined data with faculty_account_id as keys
+            combined_profile_by_id = {}
+
             for faculty, pds_personal_details, pds_contact_details in combined_data:
                 faculty_dict = Faculty_Profile_Model.from_orm(faculty).dict()
+                faculty_id = faculty.faculty_account_id
 
                 if pds_personal_details:
                     faculty_dict['PDS_Personal_Details'] = PDS_Personal_Details_Model.from_orm(pds_personal_details).dict()
@@ -97,9 +99,10 @@ def get_combined_profile():
                 else:
                     faculty_dict['PDS_Contact_Details'] = None
 
-                combined_profile.append(faculty_dict)
+                # Store combined data with faculty_account_id as keys in the dictionary
+                combined_profile_by_id[faculty_id] = faculty_dict
 
-            return jsonify({'Faculties': combined_profile})
+            return jsonify({'Faculties': combined_profile_by_id})
 
         except ValidationError as e:
             return jsonify({'error': f'Validation error: {e}'})
