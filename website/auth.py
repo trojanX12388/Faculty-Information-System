@@ -172,6 +172,21 @@ def faculty_denied():
 @auth.route("/logout")
 @login_required
 def Logout():
+    
+    # REVOKE USER TOKEN FROM ALL BROWSERS
+    token_list = current_user.Login_Token  # This returns a list of Login_Token objects
+    if token_list:
+        # Access the first token from the list
+        token_id = token_list[0].id  # Assuming you want the first token
+        user_token = Login_Token.query.filter_by(id=token_id, faculty_account_id=current_user.faculty_account_id).first()
+        # Now 'user_token' should contain the specific Login_Token object
+        if user_token:
+            db.session.delete(user_token)
+            db.session.commit()
+            db.session.close()
+    else:
+        pass
+    
     logout_user()
     flash('Logged Out Successfully!', category='success')
     return redirect(url_for('auth.facultyL')) 

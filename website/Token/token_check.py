@@ -61,6 +61,10 @@ def Check_Token(func):
                 # Invalid refresh token
                 flash('Invalid Token. Please Login again.', category='error')
                 return redirect(url_for('auth.Logout'))
+        except:
+            # flash('Tokens Expired. Please Login again.', category='error')
+            flash('Logged out of all session.', category='error')
+            return redirect(url_for('auth.Logout'))
     return decorated
 
 
