@@ -33,7 +33,7 @@ class Faculty_Profile(db.Model, UserMixin):
     profile_pic = db.Column(db.String(50),default="14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08")  # Profile Pic
     is_active = db.Column(db.Boolean, default=True) 
     
-    # PDS FOREIGN TABLES
+    # FOREIGN TABLES
     
     PDS_Personal_Details = db.relationship('PDS_Personal_Details')
     PDS_Contact_Details = db.relationship('PDS_Contact_Details')
@@ -50,6 +50,7 @@ class Faculty_Profile(db.Model, UserMixin):
     PDS_Additional_Questions = db.relationship('PDS_Additional_Questions')
     PDS_Character_Reference = db.relationship('PDS_Character_Reference')
     PDS_Signature = db.relationship('PDS_Signature')
+    
     Login_Token = db.relationship('Login_Token')
 
 
@@ -94,6 +95,8 @@ class Faculty_Profile(db.Model, UserMixin):
             'PDS_Additional_Questions': self.PDS_Additional_Questions,
             'PDS_Character_Reference': self.PDS_Character_Reference,
             'PDS_Signature': self.PDS_Signature,
+            
+            'Login_Token': self.Login_Token,
 
             
         }
@@ -639,13 +642,14 @@ class PDS_Signature(db.Model):
         return str(self.id)  # Convert to string to ensure compatibility     
    
    
-# PDS Signature
+# LOGIN TOKEN
   
 class Login_Token(db.Model):
     __tablename__ = 'Login_Token'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'))  # FacultyID
+    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
+    admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
     access_token = db.Column(db.String)
     refresh_token = db.Column(db.String)
     is_delete = db.Column(db.Boolean, default=False) 
@@ -654,46 +658,78 @@ class Login_Token(db.Model):
         return {
             'id': self.id,
             'faculty_account_id': self.faculty_account_id,
+            'admin_account_id': self.admin_account_id,
             'access_token': self.access_token,
             'refresh_token': self.refresh_token,
             'is_delete': self.is_delete
         }
         
     def get_id(self):
-        return str(self.id)  # Convert to string to ensure compatibility    
+        return str(self.id)  # Convert to string to ensure compatibility
+    
+
     
  # ADMIN DATA   
-    
-    
-    
-class Admin(db.Model, UserMixin):
-    __tablename__ = 'Admins'
 
-    id = db.Column(db.String(30), primary_key=True)  # UserID
+# Admin Profile 
+
+class Admin_Profile(db.Model, UserMixin):
+    __tablename__ = 'Admin_Profile'
+    admin_account_id = db.Column(db.String(50), primary_key=True)  # UserID
+    admin_type = db.Column(db.String(50), nullable=False)  # Faculty Type
+    rank = db.Column(db.String(50))  # Faculty Rank
+    units = db.Column(db.Numeric, nullable=False)  # Faculty Unit
     name = db.Column(db.String(50), nullable=False)  # Name
+    first_name = db.Column(db.String(50), nullable=False)  # First Name
+    last_name = db.Column(db.String(50), nullable=False)  # Last Name
+    middle_name = db.Column(db.String(50))  # Middle Name
+    middle_initial = db.Column(db.String(50))  # Middle Initial
+    name_extension = db.Column(db.String(50))  # Name Extension
+    birth_date = db.Column(db.Date, nullable=False)  # Birthdate
+    date_hired = db.Column(db.Date, nullable=False)  # Date Hired
+    degree = db.Column(db.String)  # Degree
+    remarks = db.Column(db.String)  # Remarks
+    faculty_code = db.Column(db.Integer, nullable=False)  # Faculty Code
+    honorific = db.Column(db.String(50))  # Honorific
+    age = db.Column(db.Numeric, nullable=False)  # Age
     email = db.Column(db.String(50), unique=True, nullable=False)  # Email
     password = db.Column(db.String(128), nullable=False)  # Password
-    gender = db.Column(db.Integer)  # Gender
-    date_of_birth = db.Column(db.Date)  # DateOfBirth
-    place_of_birth = db.Column(db.String(50))  # PlaceOfBirth
-    mobile_number = db.Column(db.String(11))  # MobileNumber
-    is_active = db.Column(db.Boolean, default=True)
-
+    profile_pic = db.Column(db.String(50),default="14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08")  # Profile Pic
+    is_active = db.Column(db.Boolean, default=True)    
+    
+    # FOREIGN TABLES
+    
+    Login_Token = db.relationship('Login_Token')
+    
     def to_dict(self):
         return {
-            'id': self.id,
+            'admin_account_id': self.admin_account_id,
+            'admin_type': self.admin_type,
+            'rank': self.rank,
+            'units': self.units,
             'name': self.name,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'middle_name': self.middle_name,
+            'middle_initial': self.middle_initial,
+            'name_extension': self.name_extension,
+            'birth_date': self.birth_date,
+            'date_hired': self.date_hired,
+            'degree': self.degree,
+            'remarks': self.remarks,
+            'faculty_code': self.faculty_code,
+            'honorific': self.honorific,
+            'age': self.age,
             'email': self.email,
             'password': self.password,
-            'gender': self.gender,
-            'date_of_birth': self.date_of_birth,
-            'place_of_birth': self.place_of_birth,
-            'mobile_number': self.mobile_number,
-            'is_active': self.is_active
+            'profile_pic': self.profile_pic,
+            'is_active': self.is_active,
+            'Login_Token': self.Login_Token,
         }
+        
     def get_id(self):
-        return str(self.id)  # Convert to string to ensure compatibility
-
+        return str(self.admin_account_id)  # Convert to string to ensure compatibility
+ 
 def init_db(app):
     db.init_app(app)
     with app.app_context():
@@ -706,48 +742,87 @@ def init_db(app):
 # INSERTING DATA
 def create_sample_data():
         
-    # Create and insert Admin Data
-    admin_data = [
-        {
-            'id': '2020-00001-AD-0',
-            'name': 'Admin 1',
-            'email': 'admin1@example.com',
-            'password': generate_password_hash('password1'),
-            'gender': 2,
-            'date_of_birth': '1995-03-10',
-            'place_of_birth': 'City 3',
-            'mobile_number': '09123123222',
-            'is_active': True
-            # Add more attributes here
-        },
-        {
-            'id': '2020-00002-AD-0',
-            'name': 'Admin 2',
-            'email': 'admin2@example.com',
-            'password': generate_password_hash('password2'),
-            'gender': 1,
-            'date_of_birth': '1980-09-18',
-            'place_of_birth': 'City 4',
-            'mobile_number': '09123123223',
-            'is_active': True
-            # Add more attributes here
-        },
-        # Add more admin data as needed
-    ]
-    
-    for data in admin_data:
-        admin = Admin(**data)
-        db.session.add(admin)
-        
-           
  # Create and insert Faculty_Profile
-    faculty_sample1 = Faculty_Profile(
-        faculty_account_id='2020-00072-D-1',
-        faculty_type='Full Time',
+ 
+#     faculty_sample1 = Faculty_Profile(
+#         faculty_account_id='2020-00072-D-1',
+#         faculty_type='Full Time',
+#         rank='Associate Professor II',
+#         units = 8,
+#         name='Alma Matter',
+#         first_name='Palma',
+#         last_name='Matter',
+#         middle_name='Bryant',
+#         middle_initial='B',
+#         name_extension='',
+#         birth_date= datetime.now(timezone.utc),
+#         date_hired= datetime.now(timezone.utc),
+#         degree='Bachelor of Science in Computer Science',
+#         remarks='',
+#         faculty_code=91801,
+#         honorific='N/A',
+#         age=35,
+#         email='alma123@gmail.com',
+#         password=generate_password_hash('alma123'),
+#         # Add more attributes here
+#         )
+    
+#     faculty_sample2 = Faculty_Profile(
+#         faculty_account_id='2020-00073-D-1',
+#         faculty_type='Part Time',
+#         rank='Instructor I',
+#         units = 6,
+#         name='Andrew Bardoquillo',
+#         first_name='Andrew',
+#         last_name='Bardoquillo',
+#         middle_name='Lucero',
+#         middle_initial='L',
+#         name_extension='',
+#         birth_date= datetime.now(timezone.utc),
+#         date_hired= datetime.now(timezone.utc),
+#         degree='Master in Business Administration',
+#         remarks='',
+#         faculty_code=51295,
+#         honorific='N/A',
+#         age=26,
+#         email='robertandrewb.up@gmail.com',
+#         password=generate_password_hash('plazma@123'),
+#         # Add more attributes here
+#         ) 
+    
+#     faculty_sample3 = Faculty_Profile(
+#         faculty_account_id='2020-00076-D-4',
+#         faculty_type='Full Time',
+#         rank='Instructor III',
+#         units = 12,
+#         name='Jason Derbis',
+#         first_name='Jason',
+#         last_name='Derbis',
+#         middle_name='Lucero',
+#         middle_initial='L',
+#         name_extension='Jr.',
+#         birth_date= datetime.now(timezone.utc),
+#         date_hired= datetime.now(timezone.utc),
+#         degree='Master In Information Technology',
+#         remarks='N/A',
+#         faculty_code=81214,
+#         honorific='N/A',
+#         age=29,
+#         email='sample123@gmail.com',
+#         password=generate_password_hash('plazma@123'),
+#         # Add more attributes here
+#         ) 
+
+
+# Create and insert Admin_Profile
+
+    admin_sample1 = Admin_Profile(
+        admin_account_id='100-302-D-005',
+        admin_type='Full Time',
         rank='Associate Professor II',
         units = 8,
-        name='Alma Matter',
-        first_name='Palma',
+        name='Jonathan Matter',
+        first_name='Jonathan',
         last_name='Matter',
         middle_name='Bryant',
         middle_initial='B',
@@ -759,19 +834,19 @@ def create_sample_data():
         faculty_code=91801,
         honorific='N/A',
         age=35,
-        email='alma123@gmail.com',
-        password=generate_password_hash('alma123'),
+        email='matter123@gmail.com',
+        password=generate_password_hash('matter123'),
         # Add more attributes here
         )
     
-    faculty_sample2 = Faculty_Profile(
-        faculty_account_id='2020-00073-D-1',
-        faculty_type='Part Time',
+    admin_sample2 = Admin_Profile(
+        admin_account_id='100-302-D-010',
+        admin_type='Full Time',
         rank='Instructor I',
         units = 6,
-        name='Andrew Bardoquillo',
-        first_name='Andrew',
-        last_name='Bardoquillo',
+        name='Gracia Garcia',
+        first_name='Gracia',
+        last_name='Garcia',
         middle_name='Lucero',
         middle_initial='L',
         name_extension='',
@@ -782,42 +857,18 @@ def create_sample_data():
         faculty_code=51295,
         honorific='N/A',
         age=26,
-        email='robertandrewb.up@gmail.com',
-        password=generate_password_hash('plazma@123'),
+        email='gracia123@gmail.com',
+        password=generate_password_hash('gracia123'),
         # Add more attributes here
         ) 
     
-    faculty_sample3 = Faculty_Profile(
-        faculty_account_id='2020-00076-D-4',
-        faculty_type='Full Time',
-        rank='Instructor III',
-        units = 12,
-        name='Jason Derbis',
-        first_name='Jason',
-        last_name='Derbis',
-        middle_name='Lucero',
-        middle_initial='L',
-        name_extension='Jr.',
-        birth_date= datetime.now(timezone.utc),
-        date_hired= datetime.now(timezone.utc),
-        degree='Master In Information Technology',
-        remarks='N/A',
-        faculty_code=81214,
-        honorific='N/A',
-        age=29,
-        email='sample123@gmail.com',
-        password=generate_password_hash('plazma@123'),
-        # Add more attributes here
-        ) 
     
-    # # ADD FACULTY DATA
+    # ADD ADMIN DATA
     
-    # db.session.add(faculty_sample1)
-    # db.session.add(faculty_sample2)
-    # db.session.add(faculty_sample3)
+    db.session.add(admin_sample1)
+    db.session.add(admin_sample2)
+ 
+    # COMMIT 
     
-    # # COMMIT 
-    
-    # db.session.commit()
-
-    # db.session.close()
+    db.session.commit()
+    db.session.close()

@@ -44,7 +44,7 @@ def create_app():
     init_db(app)
     
     # LOADING MODEL CLASSES
-    from .models import Faculty_Profile
+    from .models import Faculty_Profile,Admin_Profile
     
     # IMPORTING ROUTES
     from .views import views
@@ -76,12 +76,21 @@ def create_app():
     
     # LOADING LOGIN MANAGER CACHE
     login_manager = LoginManager()
-    login_manager.login_view = 'auth.faculty_denied'
+    login_manager.login_view = 'auth.login_denied'
     login_manager.init_app(app)
     
     @login_manager.user_loader
     def load_user(user_id):
-        return Faculty_Profile.query.get(str(user_id))
+        # Assuming the user ID is unique across both Faculty and Admin tables
+        faculty_user = Faculty_Profile.query.get(str(user_id))
+        if faculty_user:
+            return faculty_user
+
+        admin_user = Admin_Profile.query.get(str(user_id))
+        if admin_user:
+            return admin_user
+
+        return None  # Return None if user not found
     
     @app.before_request
     def before_request():

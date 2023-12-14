@@ -43,6 +43,7 @@ $('#fileup').change(function(){
             reader.onload = () => resolve(reader.result);
             reader.onerror = reject;
           });
+            
           async function Main() {
         
           const file = document.querySelector('#fileup').files[0];
@@ -96,4 +97,3 @@ $('#fileup').change(function(){
         }
       });
     }
-  

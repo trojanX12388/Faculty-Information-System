@@ -6,11 +6,14 @@ views = Blueprint('views', __name__)
 
 
 # MAIN PAGE
-@views.route("/", methods=['GET', 'POST'])
+@views.route("/")
 def home():
     # CHECKING ACTIVE SESSIONS
     if current_user.__class__.__name__ == "Faculty_Profile":     
         return redirect(url_for('auth.facultyH'))
+    
+    elif current_user.__class__.__name__ == "Admin_Profile":     
+        return redirect(url_for('auth.adminH'))
     
     # IF NO ACTIVE SESSION, REDIRECT TO MAIN PAGE
     else:
@@ -23,12 +26,25 @@ def facultyL():
     if current_user.__class__.__name__ == "Faculty_Profile":     
         return redirect(url_for('auth.facultyH'))
     
+    elif current_user.__class__.__name__ == "Admin_Profile":     
+        return redirect(url_for('auth.adminH'))
+    
     # IF NO ACTIVE SESSION, REDIRECT TO MAIN PAGE
     else:
         return render_template("Faculty-Login-Page/index.html")
 
 # ADMIN PAGE
 
-@views.route("/admin-login", methods=['GET', 'POST'])
+@views.route("/admin-login")
 def adminL():
-    return render_template("Admin-Login-Page/index.html")
+    # CHECKING ACTIVE SESSIONS
+    if current_user.__class__.__name__ == "Faculty_Profile":     
+        return redirect(url_for('auth.facultyH'))
+    
+    elif current_user.__class__.__name__ == "Admin_Profile":     
+        return redirect(url_for('auth.adminH'))
+    
+    # IF NO ACTIVE SESSION, REDIRECT TO MAIN PAGE
+    else:
+        return render_template("Admin-Login-Page/index.html")
+    

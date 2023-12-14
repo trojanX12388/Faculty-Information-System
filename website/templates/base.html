@@ -6,8 +6,8 @@
 
      {# INTERNAL MAIN CSS #}  
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trojanX12388/FIS_js_assets@main/css/util.css">	{# UTIL CSS #}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trojanX12388/FIS_js_assets@main/css/main.css"> {# MAIN CSS #}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/util.css')}}">	{# UTIL CSS #}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}"> {# MAIN CSS #}
 
     {# EXTERNAL CSS #}  
 
@@ -32,7 +32,7 @@
 {% block content %}
 
 <body style="background-color: #666666;">
-	
+
 	<div class="limiter">
 		<div class="container-login100">
 		  <div class="wrap-login100">
@@ -70,7 +70,6 @@
 		</div>
 	  </div>
 	
-
 </body>
 
 {% endblock %}
@@ -90,8 +89,8 @@
 
   {# INTERNAL CSS #}  
 
-	<script src="https://cdn.jsdelivr.net/gh/trojanX12388/FIS_js_assets@main/javascript/welcome.js"></script>
+	<script src="{{url_for('static', filename='javascript/welcome.js')}}"></script>
+	<script src="{{ url_for('static', filename='javascript/login_attempt.js')}}"></script>
 	{# <script src="{{ url_for('static', filename='javascript/login.js')}}"></script> REFRESH TOKEN JS #}
 
-  </body>
 </html>

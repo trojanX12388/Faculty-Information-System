@@ -28,9 +28,9 @@
   <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
  
    <!-- Template Main CSS File -->
- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trojanX12388/FIS_js_assets@main/css/homepage/style.css"> {# MAIN HOMEPAGE CSS #}
- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trojanX12388/FIS_js_assets@main/css/homepage/PDM-Basic-Details/uploadprofile.css"> {# UPLOAD PROFILE CSS #}
- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trojanX12388/FIS_js_assets@main/css/homepage/PDM-Basic-Details/uploadprofile2.css"> {# UPLOAD PROFILE SCSS #}
+ <link rel="stylesheet" href="{{url_for('static', filename='css/homepage/style.css')}}"> {# MAIN HOMEPAGE CSS #}
+ <link rel="stylesheet" href="{{url_for('static', filename='css/homepage/PDM-Basic-Details/uploadprofile.css')}}"> {# UPLOAD PROFILE CSS #}
+ <link rel="stylesheet" href="{{url_for('static', filename='css/homepage/PDM-Basic-Details/uploadprofile2.css')}}"> {# UPLOAD PROFILE SCSS #}
 
 </head>
 
@@ -42,7 +42,7 @@
     <div class="d-flex align-items-center justify-content-between">
       <a href="/faculty-home-page" class="logo d-flex align-items-center">
         <img src="{{ url_for('static', filename='images/Default-Images/pupqc-logo.png')}}" alt="PUPQC LOGO">
-        <span class="d-none d-lg-block">Faculty Admin Page</span>
+        <span class="d-none d-lg-block">Faculty Page</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -694,7 +694,7 @@
   <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
 
   <!-- Template Main JS File -->
-  <script src="https://cdn.jsdelivr.net/gh/trojanX12388/FIS_js_assets@main/javascript/homepage/main.js"></script>
+  <script src="{{ url_for('static', filename='javascript/homepage/main.js')}}"></script>
   <script src="{{ url_for('static', filename='javascript/homepage/PDM-Basic-Details/uploadprofile.js')}}"></script> {# UPLOAD PROFILE JS #}
  {#  <script src="{{ url_for('static', filename='javascript/homepage/refresh_token.js')}}"></script> REFRESH TOKEN JS #}
 

@@ -2,7 +2,7 @@ from flask import Flask, Blueprint, abort, flash, json, make_response, redirect,
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from dotenv import load_dotenv
-from flask_login import login_user,login_required, logout_user, current_user
+from flask_login import login_user,login_required, logout_user, current_user, LoginManager
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 from flask_mail import Mail,Message
@@ -29,7 +29,7 @@ from .models import db
 from sqlalchemy import update
 
 # LOADING MODEL CLASSES
-from .models import Faculty_Profile, Login_Token
+from .models import Faculty_Profile, Admin_Profile, Login_Token
 
 
 # LOAD JWT MODULE
@@ -67,70 +67,88 @@ class PasswordForm(Form):
 gauth = GoogleAuth()
 drive = GoogleDrive(gauth)
 
+# Default Profile Pic
+profile_default='14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08'
+
 # -------------------------------------------------------------
 # WEB AUTH ROUTES URL
 auth = Blueprint('auth', __name__)
 
 # -------------------------------------------------------------
 
+
+
+# -------------------------------------------------------------
+
 # FACULTY PAGE ROUTE
-entry = 2
-
-# Default Profile Pic
-profile_default='14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08'
-
 
 @auth.route('/faculty-login', methods=['GET', 'POST'])
 def facultyL():
+    if 'entry' not in session:
+        session['entry'] = 3  # Set the maximum number of allowed attempts initially
 
-    email = request.form.get('email')
-    password = request.form.get('password')
-    
-    global entry
-    
-    # CHECKING IF ENTERED EMAIL IS NOT IN THE DATABASE
-    if entry != 0:
-        if request.method == 'POST':
-            User = Faculty_Profile.query.filter_by(email=email).first()
-            if not User:
-                entry -= 1
-                flash('Incorrect email or password!', category='error')  
+    if request.method == 'POST':
+        email = request.form.get('email')
+        year = request.form.get('year')
+        month = request.form.get('month')
+        day = request.form.get('day')
+        password = request.form.get('password')
 
-            # USER ACCOUNT VERIFICATION
+        entry = session['entry']
+        User = Faculty_Profile.query.filter_by(email=email).first()
+
+        if not User:
+            flash('Incorrect email or password!', category='error')
+        else:
+            year = int(year)
+            month = int(month)
+            day = int(day)
+                
+            if check_password_hash(User.password,password) and User.birth_date.year == year and User.birth_date.month == month and User.birth_date.day == day:
+                    login_user(User, remember=False)
+                    access_token = generate_access_token(User.faculty_account_id)
+                    refresh_token = generate_refresh_token(User.faculty_account_id)
+                    
+                    if Login_Token.query.filter_by(faculty_account_id=current_user.faculty_account_id).first():
+                        u = update(Login_Token)
+                        u = u.values({"access_token": access_token,
+                                    "refresh_token": refresh_token
+                                    })
+                        u = u.where(Login_Token.faculty_account_id == User.faculty_account_id)
+                        db.session.execute(u)
+                        db.session.commit()
+                        db.session.close()
+                        
+                    else:
+                        add_record = Login_Token(   access_token = access_token,
+                                                    refresh_token = refresh_token,
+                                                    faculty_account_id = current_user.faculty_account_id)
+                    
+                        db.session.add(add_record)
+                        db.session.commit()
+                        db.session.close()
+                    session['entry'] = 3
+                    return redirect(url_for('auth.facultyH'))   
+                    
             else:
-                if check_password_hash(User.password,password):
-                        login_user(User, remember=False)
-                        access_token = generate_access_token(User.faculty_account_id)
-                        refresh_token = generate_refresh_token(User.faculty_account_id)
-                        
-                        if Login_Token.query.filter_by(faculty_account_id=current_user.faculty_account_id).first():
-                            u = update(Login_Token)
-                            u = u.values({"access_token": access_token,
-                                        "refresh_token": refresh_token
-                                        })
-                            u = u.where(Login_Token.faculty_account_id == User.faculty_account_id)
-                            db.session.execute(u)
-                            db.session.commit()
-                            db.session.close()
-                          
-                        else:
-                            add_record = Login_Token(   access_token = access_token,
-                                                        refresh_token = refresh_token,
-                                                        faculty_account_id = current_user.faculty_account_id)
-                        
-                            db.session.add(add_record)
-                            db.session.commit()
-                            db.session.close()
-            
-                        return redirect(url_for('auth.facultyH'))   
-                        
+                entry -= 1
+                if entry == 0:
+                    flash('Invalid Credentials! Please Try again...', category='error')
                 else:
-                    entry -= 1
-                    flash('Incorrect email or password!', category='error')
+                    session['entry'] = entry
+                    flash('Invalid Credentials! Please Try again...', category='error')
     else:
-        flash('Incorrect attempt... wait 3 minutes to try again.', category='error')   
-        entry = 2                 
+        flash('Invalid Credentials! Please Try again...', category='error')                 
     return render_template("Faculty-Login-Page/index.html")
+
+
+
+# FACULTY RESET ENTRY FOR LOGIN
+
+@app.route('/reset-entry', methods=['POST'])
+def reset_entry():
+    session['entry'] = 3  # Reset the entry session variable
+    return jsonify({'message': 'Entry reset successfully'})
 
 # -------------------------------------------------------------
  
@@ -160,32 +178,35 @@ def facultyH():
 
 # IF USER SESSION IS NULL
 
-@auth.route("/faculty-login-denied")
-def faculty_denied():
-     flash('Session Expired. Please Login again.', category='error')
-     return redirect(url_for('auth.facultyL')) 
+@auth.route("/login-denied")
+def login_denied():
+    return redirect(url_for('auth.login_error_modal'))
+
+@auth.route("/access-denied")
+def login_error_modal():
+    return render_template('404/error_modal.html')  # Render the template containing your modal
 
 
 # -------------------------------------------------------------
 
-# LOGOUT ROUTE
+# FACULTY LOGOUT ROUTE
 @auth.route("/logout")
 @login_required
 def Logout():
     
-    # REVOKE USER TOKEN FROM ALL BROWSERS
-    token_list = current_user.Login_Token  # This returns a list of Login_Token objects
-    if token_list:
-        # Access the first token from the list
-        token_id = token_list[0].id  # Assuming you want the first token
-        user_token = Login_Token.query.filter_by(id=token_id, faculty_account_id=current_user.faculty_account_id).first()
-        # Now 'user_token' should contain the specific Login_Token object
-        if user_token:
-            db.session.delete(user_token)
-            db.session.commit()
-            db.session.close()
-    else:
-        pass
+    # # REVOKE USER TOKEN FROM ALL BROWSERS
+    # token_list = current_user.Login_Token  # This returns a list of Login_Token objects
+    # if token_list:
+    #     # Access the first token from the list
+    #     token_id = token_list[0].id  # Assuming you want the first token
+    #     user_token = Login_Token.query.filter_by(id=token_id, faculty_account_id=current_user.faculty_account_id).first()
+    #     # Now 'user_token' should contain the specific Login_Token object
+    #     if user_token:
+    #         db.session.delete(user_token)
+    #         db.session.commit()
+    #         db.session.close()
+    # else:
+    #     pass
     
     logout_user()
     flash('Logged Out Successfully!', category='success')
@@ -243,7 +264,7 @@ def facultyF():
 
 # -------------------------------------------------------------
 
-# RESET PASSWORD ROUTE
+# FACULTY RESET PASSWORD ROUTE
 
 # AUTHENTICATION FUNCTION WITH TOKEN KEY TO RESET PASSWORD
 
@@ -294,37 +315,186 @@ def facultyRP():
 
 # -------------------------------------------------------------
 
+# -------------------------------------------------------------
 
-# # Custom decorator to check access token validity
-# def custom_jwt_required():
-#     def decorator(fn):
-#         def wrapper(*args, **kwargs):
-#             access_token = current_user.access_token
-#             if not access_token:
-#                 return 'Access token is missing', 401
+# ADMIN PAGE ROUTE
 
-#             # Check if access token exists in the database
-#             username = None
-#             for user, data in users.items():
-#                 if data['access_token'] == access_token:
-#                     username = user
-#                     break
+@auth.route('/admin-login', methods=['GET', 'POST'])
+def adminL():
+    if 'entry' not in session:
+        session['entry'] = 3  # Set the maximum number of allowed attempts initially
 
-#             if not username:
-#                 return 'Invalid access token', 401
+    if request.method == 'POST':
+        email = request.form.get('email')
+        year = request.form.get('year')
+        month = request.form.get('month')
+        day = request.form.get('day')
+        password = request.form.get('password')
 
-#             # Verify the token using the decode_token function
-#             try:
-#                 decoded_token = decode_token(access_token)
-#                 identity = get_jwt_identity()
-#                 if identity != username:
-#                     return 'Token does not match user identity', 401
-#             except Exception as e:
-#                 return 'Token verification failed', 401
+        entry = session['entry']
+        User = Admin_Profile.query.filter_by(email=email).first()
 
-#             # If token is valid, call the original function
-#             return fn(*args, **kwargs)
+        if not User:
+            flash('Incorrect email or password!', category='error')
+        else:
+            year = int(year)
+            month = int(month)
+            day = int(day)
+                
+            if check_password_hash(User.password,password) and User.birth_date.year == year and User.birth_date.month == month and User.birth_date.day == day:
+                    login_user(User, remember=False)
+                    access_token = generate_access_token(User.admin_account_id)
+                    refresh_token = generate_refresh_token(User.admin_account_id)
+                    
+                    if Login_Token.query.filter_by(admin_account_id=current_user.admin_account_id).first():
+                        u = update(Login_Token)
+                        u = u.values({"access_token": access_token,
+                                    "refresh_token": refresh_token
+                                    })
+                        u = u.where(Login_Token.admin_account_id == User.admin_account_id)
+                        db.session.execute(u)
+                        db.session.commit()
+                        db.session.close()
+                        
+                    else:
+                        add_record = Login_Token(   access_token = access_token,
+                                                    refresh_token = refresh_token,
+                                                    admin_account_id = current_user.admin_account_id)
+                    
+                        db.session.add(add_record)
+                        db.session.commit()
+                        db.session.close()
+                    session['entry'] = 3
+                    return redirect(url_for('auth.adminH'))   
+                    
+            else:
+                entry -= 1
+                if entry == 0:
+                    flash('Invalid Credentials! Please Try again...', category='error')
+                else:
+                    session['entry'] = entry
+                    flash('Invalid Credentials! Please Try again...', category='error')
+    else:
+        flash('Invalid Credentials! Please Try again...', category='error')                 
+    return render_template("Admin-Login-Page/index.html")
 
-#         return wrapper
 
-#     return decorator
+# ADMIN HOME PAGE ROUTE
+
+@auth.route("/admin-home-page")
+@login_required
+@Check_Token
+def adminH():
+        
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = Admin_Profile.query.filter_by(admin_account_id=current_user.admin_account_id).first() 
+        
+        if username.profile_pic == None:
+            profile_pic=profile_default
+        else:
+            profile_pic=username.profile_pic
+                                
+        return render_template("Admin-Home-Page/base.html", 
+                               User= username.first_name + " " + username.last_name,
+                               user= current_user,
+                               profile_pic=profile_pic)
+
+# -------------------------------------------------------------
+
+# FORGOT PASSWORD ROUTE
+@auth.route('/admin-request-reset-pass', methods=["POST"])
+def adminF():
+    email = request.form['resetpass']
+    User = Admin_Profile.query.filter_by(email=email).first()
+    
+    # CHECKING IF ENTERED EMAIL IS NOT IN THE DATABASE
+    if request.method == 'POST':
+        if not User:
+            return render_template("Admin-Login-Page/emailnotfound.html", email=email) 
+        else:
+            token = jwt.encode({
+                    'user': request.form['resetpass'],
+                    # don't foget to wrap it in str function, otherwise it won't work 
+                    'exp': (datetime.datetime.utcnow() + timedelta(minutes=15))
+                },
+                    app.config['SECRET_KEY'])
+            
+            accesstoken = token
+            
+            
+            email = request.form['resetpass']
+            msg = Message( 
+                            'Reset Admin Password', 
+                            sender=("PUPQC FIS", "fis.pupqc2023@gmail.com"),
+                            recipients = [email] 
+                        ) 
+            assert msg.sender == "PUPQC FIS <fis.pupqc2023@gmail.com>"
+            
+            recover_url = url_for(
+                    'auth.adminRP',
+                    token=accesstoken,
+                    _external=True)
+
+            
+            msg.html = render_template(
+                    'Email/Recover.html',
+                    recover_url=recover_url)
+            
+            msg.body = (accesstoken)
+            mail.send(msg)
+            return render_template("Admin-Login-Page/index.html", sentreset=1) 
+
+# -------------------------------------------------------------
+
+# ADMIN RESET PASSWORD ROUTE
+
+@auth.route('/admin-reset-pass', methods=['GET', 'POST'])
+@token_required
+def adminRP():
+    token = request.args.get('token')
+    user = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
+    
+    password1 = request.form.get('password1')
+    password2 = request.form.get('password2')
+
+    email = user['user']
+
+    # UPDATE NEW PASSWORD TO THE FACULTY ACCOUNT
+    if request.method == 'POST':
+        if password1 == password2:
+            # Update
+            u = update(Admin_Profile)
+            u = u.values({"password": generate_password_hash(password1)})
+            u = u.where(Admin_Profile.email == email)
+            db.session.execute(u)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('auth.adminL')) 
+    
+    return render_template("Admin-Login-Page/resetpass.html", email=email) 
+
+
+# -------------------------------------------------------------
+
+# FACULTY LOGOUT ROUTE
+@auth.route("/admin-logout")
+@login_required
+def adminLogout():
+    
+    # # REVOKE USER TOKEN FROM ALL BROWSERS
+    # token_list = current_user.Login_Token  # This returns a list of Login_Token objects
+    # if token_list:
+    #     # Access the first token from the list
+    #     token_id = token_list[0].id  # Assuming you want the first token
+    #     user_token = Login_Token.query.filter_by(id=token_id, faculty_account_id=current_user.faculty_account_id).first()
+    #     # Now 'user_token' should contain the specific Login_Token object
+    #     if user_token:
+    #         db.session.delete(user_token)
+    #         db.session.commit()
+    #         db.session.close()
+    # else:
+    #     pass
+    
+    logout_user()
+    flash('Logged Out Successfully!', category='success')
+    return redirect(url_for('auth.adminL')) 

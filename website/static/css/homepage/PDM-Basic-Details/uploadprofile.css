@@ -1,0 +1,40 @@
+
+    .imgupload{
+    color:#1E2832;
+    padding-top:40px;
+    font-size:3em;
+    }
+
+    
+    /*these two are set to not display at start*/
+    .imgupload.ok{
+    display:none;
+    color:green;
+    }
+    .imgupload.stop{
+    display:none;
+    color:red;
+    }
+    
+    
+    /*this sets the actual file input to overlay our button*/ 
+    #fileup{
+    opacity: 0;
+    -moz-opacity: 0;
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    width:50%;
+    cursor: pointer;
+    
+    transform: translateX(-50%);
+    bottom: 40px;
+    height: 50px;
+    }
+    
+    /*switch between input and not active input*/
+    #submitbtn{
+      padding:5px 50px;
+      display:none;
+    }
+    #fakebtn{
+      padding:5px 40px;
+    }
