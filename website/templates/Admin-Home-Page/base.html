@@ -283,7 +283,7 @@
  
   <ul class="sidebar-nav" id="sidebar-nav">
     <li class="nav-item">
-      <a class="nav-link " href="index.html">
+      <a class="nav-link " href="/admin-home-page">
         <i class="bi bi-grid"></i>
         <span>Faculties</span>
       </a>
@@ -516,7 +516,7 @@
               <div class="card-body pb-0">
                 <h5 class="card-title">Faculty Rank</h5>
     
-                <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
+                <div id="trafficChart" style="min-height: 550px;" class="echart"></div>
     
                 <script>
                   document.addEventListener("DOMContentLoaded", () => {
@@ -525,7 +525,7 @@
                         trigger: 'item'
                       },
                       legend: {
-                        top: '5%',
+                        top: '0%',
                         left: 'center'
                       },
                       series: [{
@@ -533,6 +533,11 @@
                         type: 'pie',
                         radius: ['40%', '70%'],
                         avoidLabelOverlap: false,
+                        itemStyle: {
+                          borderRadius: 10,
+                          borderColor: '#fff',
+                          borderWidth: 2
+                        },
                         label: {
                           show: false,
                           position: 'center'
@@ -587,6 +592,26 @@
                             value: {{total_assocProf_IV}},
                             name: 'Associate Professor IV'
                           },
+                          {
+                            value: {{total_assistProf_I}},
+                            name: 'Assistant Professor I'
+                          },
+                          {
+                            value: {{total_assistProf_II}},
+                            name: 'Assistant Professor II'
+                          },
+                          {
+                            value: {{total_assistProf_III}},
+                            name: 'Assistant Professor III'
+                          },
+                          {
+                            value: {{total_assistProf_IV}},
+                            name: 'Assistant Professor IV'
+                          },
+                          {
+                            value: {{total_assistProf_V}},
+                            name: 'Assistant Professor V'
+                          },
                         ]
                       }]
                     });
@@ -611,9 +636,10 @@
                       <th scope="col">ID</th>
                       <th scope="col">Profile Pic</th>
                       <th scope="col">Name</th>
+                      <th scope="col">Type</th>
                       <th scope="col">Rank</th>
                       <th scope="col">Units</th>
-                      <th scope="col">Status</th>
+                      <th scope="col">Account Status</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -623,6 +649,7 @@
                       <td><a href="/faculty-member/{{ faculty_id }}">{{ faculty_id }}</a></td>
                       <td><img src="http://drive.google.com/uc?export=view&id={{ faculty_info['profile_pic'] }}" alt="Profile Pic" style="width:60px;height:50px; border-radius: 50%"></td>
                       <td>{{ faculty_info['name'] }}</td>
+                      <td>{{ faculty_info['type'] }}</td>
                       <td>{{ faculty_info['rank'] }}</td>
                       <td class="fw-bold">{{ faculty_info['units'] }}</td>
                       {% if faculty_info['is_active'] == True %}

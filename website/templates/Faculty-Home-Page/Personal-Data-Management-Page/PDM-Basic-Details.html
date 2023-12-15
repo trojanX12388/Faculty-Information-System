@@ -33,29 +33,41 @@
               <h3>{{user.rank}}</h3>
         
             </div>
-            <div class="card-body profile-card pt-4 d-flex flex-column align-items-left">
-           
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label "><h6>ID:</h6></div>
-                <div class="col-lg-9 col-md-8"><h6>{{user.faculty_account_id}}</h6></div>
-              </div>
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label "><h6>Age:</h6></div>
-                <div class="col-lg-9 col-md-8"><h6>{{age}} yrs old</h6></div>
-              </div>
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label "><h6>Faculty Type:</h6></div>
-                <div class="col-lg-9 col-md-8"><h6>{{user.faculty_type}}<h4></div>
-              </div>
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label "><h6>Units:</h6></div>
-                <div class="col-lg-9 col-md-8"><h6>{{user.units}}</h6></div>
-              </div>
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label "><h6>Degree:</h6></div>
-                <div class="col-lg-9 col-md-8"><h6>{{user.degree}}</h6></div>
-              </div>
+            <div class="section profile">
+              <div class="card-body profile-card pt-4 d-flex flex-column align-items-left">
+                <div class="tab-content pt-3">
 
+                  <div class="tab-pane fade show active profile-overview">
+    
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label ">Faculty ID</div>
+                      <div class="col-lg-9 col-md-8">{{user.faculty_account_id}}</div>
+                    </div>
+    
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label">Age</div>
+                      <div class="col-lg-9 col-md-8">{{age}}</div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Faculty Type</div>
+                        <div class="col-lg-9 col-md-8">{{user.faculty_type}}</div>
+                      </div>
+    
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label">Units</div>
+                      <div class="col-lg-9 col-md-8">{{user.units}}</div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Degree</div>
+                        <div class="col-lg-9 col-md-8">{{user.degree}}</div>
+                    </div>
+    
+                  </div>
+                </div>
+               
+              </div>
             </div>
 
           </div>

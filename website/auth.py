@@ -434,6 +434,11 @@ def adminH():
         total_assocProf_III = 0
         total_assocProf_IV = 0
         total_assocProf_V = 0
+        total_assistProf_I = 0
+        total_assistProf_II = 0
+        total_assistProf_III = 0
+        total_assistProf_IV = 0
+        total_assistProf_V = 0
         
         if response.status_code == 200:
             # Process the API response data
@@ -457,6 +462,7 @@ def adminH():
                     total_instructor_IV += 1
                 elif faculty_rank == 'Instructor V':
                     total_instructor_V += 1
+                    
                 elif faculty_rank == 'Associate Professor I':
                     total_assocProf_I += 1
                 elif faculty_rank == 'Associate Professor II':
@@ -465,8 +471,19 @@ def adminH():
                     total_assocProf_III += 1
                 elif faculty_rank == 'Associate Professor IV':
                     total_assocProf_IV += 1
-                else:
+                elif faculty_rank == 'Associate Professor V':
                     total_assocProf_V += 1
+                    
+                elif faculty_rank == 'Assistant Professor I':
+                    total_assistProf_I += 1
+                elif faculty_rank == 'Assistant Professor II':
+                    total_assistProf_II += 1
+                elif faculty_rank == 'Assistant Professor III':
+                    total_assistProf_III += 1
+                elif faculty_rank == 'Assistant Professor IV':
+                    total_assistProf_IV += 1
+                elif faculty_rank == 'Assistant Professor V':
+                    total_assistProf_V += 1
      
         def count_faculty_tokens_with_account_ids(session: Session):
             # Counting Login_Token entries where faculty_account_id is not null
@@ -493,6 +510,11 @@ def adminH():
                                total_assocProf_III = total_assocProf_III,
                                total_assocProf_IV = total_assocProf_IV,
                                total_assocProf_V = total_assocProf_V,
+                               total_assistProf_I = total_assistProf_I,
+                               total_assistProf_II = total_assistProf_II,
+                               total_assistProf_III = total_assistProf_III,
+                               total_assistProf_IV = total_assistProf_IV,
+                               total_assistProf_V = total_assistProf_V,
                                faculty_active = faculty_active,
                                profile_pic=profile_pic)
 
