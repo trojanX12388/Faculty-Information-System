@@ -8,7 +8,7 @@ from pydrive.drive import GoogleDrive
 from flask_mail import Mail,Message
 from datetime import datetime, timedelta, timezone
 
-import os
+import os,requests
 
 
 load_dotenv()
@@ -39,6 +39,14 @@ from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, decod
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session
+from sqlalchemy.sql import func
+
+engine=create_engine(os.getenv('DATABASE_URI'), pool_pre_ping=True, pool_size=10, max_overflow=20, pool_recycle=1800)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # -------------------------------------------------------------
 
@@ -393,14 +401,153 @@ def adminH():
             profile_pic=profile_default
         else:
             profile_pic=username.profile_pic
-                                
+            
+        API_TOKENS = ast.literal_eval(os.environ["API_TOKENS"])
+        selected_token = API_TOKENS.get('WEBSITE1_API_TOKEN')
+        
+        if os.getenv('FLASK_ENV') == 'production':
+            base_url = 'https://pupqcfis-com.onrender.com'
+        else:
+            base_url = 'http://127.0.0.1:8000' 
+
+        endpoint = '/api/all/Faculty_Profile'
+        url = f'{base_url}{endpoint}'
+        
+        api_key = selected_token
+
+        headers = {
+            'Authorization': 'API Key',
+            'token': api_key,  # 'token' key with the API key value
+            'Content-Type': 'application/json'  # Adjust content type as needed
+        }
+
+        # Make a GET request to the API with the API key in the headers
+        response = requests.get(url, headers=headers)
+        
+        total_instructor_I = 0
+        total_instructor_II = 0
+        total_instructor_III = 0
+        total_instructor_IV = 0
+        total_instructor_V = 0
+        total_assocProf_I = 0
+        total_assocProf_II = 0
+        total_assocProf_III = 0
+        total_assocProf_IV = 0
+        total_assocProf_V = 0
+        
+        if response.status_code == 200:
+            # Process the API response data
+            api_data = response.json()
+            faculty_account_ids = list(api_data['Faculties'].keys())
+            
+            total_faculty = len(faculty_account_ids)
+            
+            # Fetching Specific data for each faculty
+            for faculty_id in faculty_account_ids:
+                faculty_info = api_data['Faculties'][faculty_id]
+                faculty_rank = faculty_info['rank']
+
+                if faculty_rank == 'Instructor I':
+                    total_instructor_I += 1
+                elif faculty_rank == 'Instructor II':
+                    total_instructor_II += 1
+                elif faculty_rank == 'Instructor III':
+                    total_instructor_III += 1
+                elif faculty_rank == 'Instructor IV':
+                    total_instructor_IV += 1
+                elif faculty_rank == 'Instructor V':
+                    total_instructor_V += 1
+                elif faculty_rank == 'Associate Professor I':
+                    total_assocProf_I += 1
+                elif faculty_rank == 'Associate Professor II':
+                    total_assocProf_II += 1
+                elif faculty_rank == 'Associate Professor III':
+                    total_assocProf_III += 1
+                elif faculty_rank == 'Associate Professor IV':
+                    total_assocProf_IV += 1
+                else:
+                    total_assocProf_V += 1
+     
+        def count_faculty_tokens_with_account_ids(session: Session):
+            # Counting Login_Token entries where faculty_account_id is not null
+            count = session.query(func.count()).filter(Login_Token.faculty_account_id.isnot(None)).scalar()
+            return count
+        
+        db = SessionLocal()  # Assuming you have your session initialized
+        faculty_active = count_faculty_tokens_with_account_ids(db)
+        db.close()  # Remember to close the session when you're done
+                              
         return render_template("Admin-Home-Page/base.html", 
                                User= username.first_name + " " + username.last_name,
                                user= current_user,
+                               api_data = api_data,
+                               total_faculty = total_faculty,
+                               faculty_account_ids = faculty_account_ids,
+                               total_instructor_I = total_instructor_I,
+                               total_instructor_II = total_instructor_II,
+                               total_instructor_III = total_instructor_III,
+                               total_instructor_IV = total_instructor_IV,
+                               total_instructor_V = total_instructor_V,
+                               total_assocProf_I = total_assocProf_I,
+                               total_assocProf_II = total_assocProf_II,
+                               total_assocProf_III = total_assocProf_III,
+                               total_assocProf_IV = total_assocProf_IV,
+                               total_assocProf_V = total_assocProf_V,
+                               faculty_active = faculty_active,
                                profile_pic=profile_pic)
 
 # -------------------------------------------------------------
 
+# ADMIN HOME PAGE ROUTE
+
+@auth.route("/faculty-member/<faculty_id>")
+@login_required
+@Check_Token
+def admin_viewFM(faculty_id):
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+    username = Admin_Profile.query.filter_by(admin_account_id=current_user.admin_account_id).first() 
+    
+    if username.profile_pic == None:
+        profile_pic=profile_default
+    else:
+        profile_pic=username.profile_pic
+        
+    API_TOKENS = ast.literal_eval(os.environ["API_TOKENS"])
+    selected_token = API_TOKENS.get('WEBSITE1_API_TOKEN')
+    
+    if os.getenv('FLASK_ENV') == 'production':
+        base_url = 'https://pupqcfis-com.onrender.com'
+    else:
+        base_url = 'http://127.0.0.1:8000' 
+
+    endpoint = '/api/Faculty_Profile/'+faculty_id
+    url = f'{base_url}{endpoint}'
+    
+    api_key = selected_token
+
+    headers = {
+        'Authorization': 'API Key',
+        'token': api_key,  # 'token' key with the API key value
+        'Content-Type': 'application/json'  # Adjust content type as needed
+    }
+
+    # Make a GET request to the API with the API key in the headers
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        # Process the API response data
+        api_data = response.json()
+
+    print(api_data)
+    
+    return render_template("Admin-Home-Page/Faculty/faculty-view.html", 
+                           User= username.first_name + " " + username.last_name,
+                           user= current_user,
+                           faculty_data = api_data['Faculty_Profile'],
+                           profile_pic=profile_pic)
+
+
+# -----------------------------------------------------------------
 # FORGOT PASSWORD ROUTE
 @auth.route('/admin-request-reset-pass', methods=["POST"])
 def adminF():

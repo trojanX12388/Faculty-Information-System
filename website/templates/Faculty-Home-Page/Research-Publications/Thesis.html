@@ -1,0 +1,134 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Thesis{% endblock %} {% block content%}
+
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Thesis</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Research and Publication</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+                  <div class="d-flex flex-column align-items-center">
+                          <div class="input-group d-flex  mb-2 w-75">
+                              <input type="search" class="form-control d-flex justify-content-center" placeholder="Search..." aria-label="Search ">
+                              <i class="bi bi-search" style="position: absolute; top: 50%; transform: translateY(-50%); right: 10px;"></i>
+                              
+                          </div>
+                          <!-- End Search Bar -->
+                          <div class="col-sm-10 d-flex flex-row justify-content-center">
+                              <div class="form-check">
+                                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked="">
+                                <label class="form-check-label" for="gridRadios1">
+                                  Completed
+                                </label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+                                <label class="form-check-label" for="gridRadios2">
+                                  On-going
+                                </label>
+                              </div>
+                              <div class="form-check">
+                                  <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+                                  <label class="form-check-label" for="gridRadios2">
+                                    Upcoming
+                                  </label>
+                                </div>
+                            </div>                      
+                              <!-- end adios -->
+                              <div class="col d-flex flex-row mb-4">
+                                  <label for="sort">YEAR:</label>
+                                  <select class="form-control d-flex w-" id="sortDropdown" onchange="sortData()">
+                                  </select>
+                                  <label for="sort">TO:</label>
+                                  <select class="form-control d-flex w-50" id="sortDropdown" onchange="sortData()">
+                                  </select>
+                              </div>  
+                              <!-- end sort -->
+  
+                      <div class="card">
+                          <div class="card d-flex border border-dark m-3">
+                              <div class="card-body">
+                                  <h5 class="card-title">An Exploration of Quantum Entanglement and Its Implications for Teleportation</h5>
+                                  <div class="row d-inline-flex">
+                                      <div class="col">
+                                          <p class="fw-bold">Author: <span class="fw-normal">{{user.name}}</span></p>
+                                      </div>
+                                      <div class="col-auto">
+                                          <p class="fw-bold">Year: <span class="fw-normal">2015</span></p>
+                                      </div>
+                                  </div>
+                                  <div class="card-subtitle d-flex mb-2 text-muted">
+                                      <h6 class="date col-md-2 bi bi-dot">Published</h6> 
+                                      <h6 class="due col-md-2 bi bi-dot">Completed</h6> 
+                                  </div>
+                                      <p>  In this research paper, Prof. Jane Doe, PhD, delves into the fascinating world of quantum entanglement, examining the underlying principles and 
+                                          potential applications of this quantum phenomenon. The study investigates the intricate correlations between entangled particles and 
+                                          their relevance in the development of teleportation technology. By analyzing cutting-edge research and conducting thought experiments, 
+                                          the paper offers fresh insights into the possibilities and challenges of harnessing quantum entanglement for teleportation, 
+                                          opening new avenues for exploration in the realm of quantum physics and fut...</p>
+                              </div>
+                          </div>
+                          <div class="card d-flex border border-dark m-3">
+                              <div class="card-body">
+                                  <h5 class="card-title">An Exploration of Quantum Entanglement and Its Implications for Teleportation</h5>
+                                  <div class="row d-inline-flex">
+                                      <div class="col">
+                                          <p class="fw-bold">Author: <span class="fw-normal">{{user.name}}</span></p>
+                                      </div>
+                                      <div class="col-auto">
+                                          <p class="fw-bold">Year: <span class="fw-normal">2018</span></p>
+                                      </div>
+                                  </div>
+                                  <div class="card-subtitle d-flex mb-2 text-muted">
+                                      <h6 class="date col-md-2 bi bi-dot">Published</h6> 
+                                      <h6 class="due col-md-2 bi bi-dot">Completed</h6> 
+                                  </div>
+                                      <p> In this comprehensive research paper, Prof. Jane Doe, PhD, presents an in-depth exploration of the neuroscience behind decision-making processes. 
+                                          The study utilizes advanced functional Magnetic Resonance Imaging (fMRI) techniques to investigate the neural mechanisms involved in decision-making, 
+                                          shedding light on the intricate interplay between cognitive functions and brain activity. By analyzing a series of controlled experiments and 
+                                          real-life scenarios, the paper offers valuable insights into the neural underpinnings of decision-making and their potential 
+                                          implications for fields such as psychology, economics, and neuroscience.</p>
+                              </div>
+                          </div>
+                          <div class="card d-flex border border-dark m-3">
+                              <div class="card-body">
+                                  <h5 class="card-title">An Exploration of Quantum Entanglement and Its Implications for Teleportation</h5>
+                                  <div class="row d-inline-flex">
+                                      <div class="col">
+                                          <p class="fw-bold">Author: <span class="fw-normal">{{user.name}}</span></p>
+                                      </div>
+                                      <div class="col-auto">
+                                          <p class="fw-bold">Year: <span class="fw-normal">2021</span></p>
+                                      </div>
+                                  </div>
+                                  <div class="card-subtitle d-flex mb-2 text-muted">
+                                      <h6 class="date col-md-2 bi bi-dot">Published</h6> 
+                                      <h6 class="due col-md-2 bi bi-dot">Completed</h6> 
+                                  </div>
+                                      <p> In this comprehensive research paper, Prof. Jane Doe, PhD, presents an in-depth exploration of the neuroscience behind decision-making processes. 
+                                          The study utilizes advanced functional Magnetic Resonance Imaging (fMRI) techniques to investigate the neural mechanisms involved in decision-making, 
+                                          shedding light on the intricate interplay between cognitive functions and brain activity. By analyzing a series of controlled experiments and 
+                                          real-life scenarios, the paper offers valuable insights into the neural underpinnings of decision-making and their potential 
+                                          implications for fields such as psychology, economics, and neuroscience.</p>
+                              </div>
+                          </div>
+                      </div>        
+                  </div>
+              </div>
+        
+      </section>
+
+  </main><!-- End #main -->
+
+{% endblock %}
+
+      

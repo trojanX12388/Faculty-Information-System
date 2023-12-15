@@ -1,0 +1,106 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Self Assessment Tests{% endblock %} {% block content%}
+
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Self Assessment Tests</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Professional Development</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <!-- Card with an image on left -->
+        <div class="row">
+         <div class="row g-3">
+           
+           <div class="col-xl-6">
+             <div class="card">
+             <div class="card-body">
+               <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                 <h2>SELF ASSESSMENT TEST</h2>
+           </div>
+           
+         <div class="row d-flex text-left pt-3">
+             <h5 class="font-weight-bolder">
+               Taking self-assessment tests plays a crucial role in your professional growth and development within an academic institution. 
+               Self-assessment tests provide a structured framework to assess professional journey, set goals, and refine their practices..
+             </h5>
+         </div>
+         <div class="card">
+             <div class="card d-flex border border-dark m-3">
+                 <div class="card-body">
+                     <h5 class="card-title">Faculty Self-Assessment and Growth Enhancement Tool (F-SAGE)</h5>
+                         <p> Welcome to the Faculty Self-Assessment and Growth Enhancement (F-SAGE) tool! This self-assessment is designed to help faculty members reflect on their professional journey, 
+                             identify strengths, recognize areas for growth, and set goals for their continued development. Your participation in F-SAGE will contribute to fostering 
+                             a culture of continuous improvement within our academic community.</p>
+                 </div>
+             </div>
+             <div class="card d-flex border border-dark m-3">
+                 <div class="card-body">
+                     <h5 class="card-title">Faculty Excellence and Growth Assessment (FEGA)</h5>
+                         <p> Welcome to the Faculty Excellence and Growth Assessment (FEGA) tool! This assessment is designed to help you explore your strengths as a faculty member and 
+                             identify areas where further development could lead to even greater impact. By participating in FEGA, you are taking an active step towards 
+                             enhancing your teaching, research, and overall contribution to our academic community.</p>
+                 </div>
+             </div>
+         </div>
+         <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+           <h2>TRAINING &amp; WORKSHOPS</h2>
+         </div>
+             <!-- contents -->
+             <div class="card mb-3">
+                 <div class="row g-0">
+                     <div class="col-md-4">
+                         <img src="http://drive.google.com/uc?export=view&id=1ITUST_AW8ezUHgeDznX4TyIWnDWAqmdU" class="img-fluid rounded-start" alt="...">
+                     </div>
+                     <div class="col-md-8">
+                         <div class="card-body">
+                             <h5 class="card-title">FACULTY DEVELOPMENT PROGRAM</h5>
+                             <p class="card-text">The "Enhancing Teaching Excellence" Faculty Development Program is designed to empower faculty members with the knowledge, skills, and 
+                                 resources to excel in their teaching roles. This program focuses on pedagogical strategies, technology integration, and professional growth to 
+                                 ensure faculty are well-prepared to meet the evolving needs of students and higher education.</p>
+                         </div>
+                     </div>
+                 </div>   
+           </div>
+           <div class="card mb-3">
+             <div class="row g-0">
+                 <div class="col-md-4">
+                     <img src="http://drive.google.com/uc?export=view&id=1mU4FcMRnGM-NGF_rpZSqDNwxneAbMznq" class="img-fluid rounded-start" alt="...">
+                 </div>
+                 <div class="col-md-8">
+                     <div class="card-body">
+                         <h5 class="card-title">ADVANCING TEACHING EXCELLENCE</h5>
+                         <p class="card-text">The Advancing Teaching Excellence program is designed to support faculty members in their professional growth and enhance their teaching and 
+                             leadership skills. This program offers a series of workshops, seminars, and resources aimed at empowering faculty to excel in their roles as educators,
+                             mentors, and scholars.</p>
+                     </div>
+                 </div>
+             </div>   
+       </div>
+     </div>
+ </div>
+           
+ 
+           
+         </div>
+         <div class="col-xl-6">
+           <img src="{{ url_for('static', filename='images/Default-Images/sideview-image.png')}}" alt="side image" style="width: 100%; height: 100%">
+         </div> 
+       </div>
+      
+     </div><!-- End Card with an image on left -->
+ 
+     </section>
+
+  </main><!-- End #main -->
+
+{% endblock %}
+
+      

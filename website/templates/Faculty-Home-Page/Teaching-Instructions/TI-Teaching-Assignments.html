@@ -17,12 +17,15 @@
     <section class="section">
      
          <!-- Card with an image on left -->
+        <div class="card">
           <div class="row">
             <div class="row g-3">
+      
               <div class="col-md-2">
-                <img src="http://drive.google.com/uc?export=view&id={{profile_pic}}" alt="Profile" class="rounded-circle" style="width: 20vh; height: 20vh" >
+                <img src="http://drive.google.com/uc?export=view&id={{profile_pic}}" alt="Profile" class="rounded-circle" style="width: 20vh; height: 20vh; position:relative; left:25px;" >
               </div>
        
+      
         <div class="col-md-4">
           <div class="card-body">
             <h2>{{user.first_name}} {{user.middle_initial}} {{user.last_name}}</h2>
@@ -32,7 +35,8 @@
           </div>
         </div>
             </div>
-          </div><!-- End Card with an image on left -->
+          </div>
+        </div>
          
         
 

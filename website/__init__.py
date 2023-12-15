@@ -74,6 +74,15 @@ def create_app():
     from .modules.Feedback_Surveys import FS
     app.register_blueprint(FS, url_prefix='/')
     
+    from .modules.Research_Publications import RP
+    app.register_blueprint(RP, url_prefix='/')
+    
+    from .modules.Forum import Forum
+    app.register_blueprint(Forum, url_prefix='/')
+    
+    from .modules.Professional_Development import PD
+    app.register_blueprint(PD, url_prefix='/')
+    
     # LOADING LOGIN MANAGER CACHE
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login_denied'
