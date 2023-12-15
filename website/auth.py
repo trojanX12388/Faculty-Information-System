@@ -538,12 +538,24 @@ def admin_viewFM(faculty_id):
         # Process the API response data
         api_data = response.json()
 
-    print(api_data)
+    date_string = api_data['Faculty_Profile']['birth_date']
+
+    # Parse the string into a datetime object
+    date_object = datetime.datetime.strptime(date_string, '%a, %d %b %Y %H:%M:%S %Z')
+    birth_date = date_object.strftime('%b %d %Y')
+    
+    date_string = api_data['Faculty_Profile']['date_hired']
+
+    # Parse the string into a datetime object
+    date_object = datetime.datetime.strptime(date_string, '%a, %d %b %Y %H:%M:%S %Z')
+    date_hired = date_object.strftime('%b %d %Y')
     
     return render_template("Admin-Home-Page/Faculty/faculty-view.html", 
                            User= username.first_name + " " + username.last_name,
                            user= current_user,
                            faculty_data = api_data['Faculty_Profile'],
+                           birth_date = birth_date,
+                           date_hired = date_hired,
                            profile_pic=profile_pic)
 
 

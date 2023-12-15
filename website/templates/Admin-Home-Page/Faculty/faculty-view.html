@@ -24,7 +24,7 @@
             <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
 
               <li class="nav-item" role="presentation">
-                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview" aria-selected="true" role="tab">Overview</button>
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview" aria-selected="true" role="tab">Basic Info</button>
               </li>
 
               <li class="nav-item" role="presentation">
@@ -47,37 +47,52 @@
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                  <div class="col-lg-9 col-md-8">Kevin Anderson</div>
+                  <div class="col-lg-9 col-md-8">{{faculty_data.name}}</div>
                 </div>
 
                 <div class="row">
-                  <div class="col-lg-3 col-md-4 label">Company</div>
-                  <div class="col-lg-9 col-md-8">Lueilwitz, Wisoky and Leuschke</div>
+                  <div class="col-lg-3 col-md-4 label">Employee ID</div>
+                  <div class="col-lg-9 col-md-8">{{faculty_data.faculty_account_id}}</div>
                 </div>
 
                 <div class="row">
-                  <div class="col-lg-3 col-md-4 label">Job</div>
-                  <div class="col-lg-9 col-md-8">Web Designer</div>
+                    <div class="col-lg-3 col-md-4 label">Email</div>
+                    <div class="col-lg-9 col-md-8">{{faculty_data.email}}</div>
+                  </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Faculty Type</div>
+                  <div class="col-lg-9 col-md-8">{{faculty_data.faculty_type}}</div>
                 </div>
 
                 <div class="row">
-                  <div class="col-lg-3 col-md-4 label">Country</div>
-                  <div class="col-lg-9 col-md-8">USA</div>
+                    <div class="col-lg-3 col-md-4 label">Faculty Code</div>
+                    <div class="col-lg-9 col-md-8">{{faculty_data.faculty_code}}</div>
                 </div>
 
                 <div class="row">
-                  <div class="col-lg-3 col-md-4 label">Address</div>
-                  <div class="col-lg-9 col-md-8">A108 Adam Street, New York, NY 535022</div>
+                    <div class="col-lg-3 col-md-4 label">Birth Date</div>
+                    <div class="col-lg-9 col-md-8">{{birth_date}}</div>
+                  </div>
+  
+                  <div class="row">
+                      <div class="col-lg-3 col-md-4 label">Date Hired</div>
+                      <div class="col-lg-9 col-md-8">{{date_hired}}</div>
+                  </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Rank</div>
+                  <div class="col-lg-9 col-md-8">{{faculty_data.rank}}</div>
                 </div>
 
                 <div class="row">
-                  <div class="col-lg-3 col-md-4 label">Phone</div>
-                  <div class="col-lg-9 col-md-8">(436) 486-3538 x29071</div>
+                  <div class="col-lg-3 col-md-4 label">Units</div>
+                  <div class="col-lg-9 col-md-8">{{faculty_data.units}}</div>
                 </div>
 
                 <div class="row">
-                  <div class="col-lg-3 col-md-4 label">Email</div>
-                  <div class="col-lg-9 col-md-8">k.anderson@example.com</div>
+                  <div class="col-lg-3 col-md-4 label">Degree</div>
+                  <div class="col-lg-9 col-md-8">{{faculty_data.degree}}</div>
                 </div>
 
               </div>
