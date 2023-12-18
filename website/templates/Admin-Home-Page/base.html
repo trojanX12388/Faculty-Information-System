@@ -509,18 +509,30 @@
 
           </div><!-- End Customers Card -->
 
-          <div class="col-lg-12">
-
-            <!-- Faculty Rank -->
-            <div class="card">
-              <div class="card-body pb-0">
-                <h5 class="card-title">Faculty Rank</h5>
-    
-                <div id="trafficChart" style="min-height: 550px;" class="echart"></div>
+          <div class="card">
+            <div class="card-body pb-0">
+              <div class="row">
+                <div class="col-lg-4">
+                  <h5 class="card-title">Instructors ({{total_instructors}})</h5>
+                  <div id="Rank1" style="min-height: 550px;" class="echart"></div>
+                </div>
+          
+                <div class="col-lg-4">
+                  <h5 class="card-title">Assistant Professors ({{total_assistProfs}})</h5>
+                  <div id="Rank2" style="min-height: 550px;" class="echart"></div>
+                </div>
+          
+                <div class="col-lg-4">
+                  <h5 class="card-title">Associate Professors ({{total_assocProfs}})</h5>
+                  <div id="Rank3" style="min-height: 550px;" class="echart"></div>
+                </div>
+              </div>
+            </div>
+          </div>
     
                 <script>
                   document.addEventListener("DOMContentLoaded", () => {
-                    echarts.init(document.querySelector("#trafficChart")).setOption({
+                    echarts.init(document.querySelector("#Rank1")).setOption({
                       tooltip: {
                         trigger: 'item'
                       },
@@ -571,27 +583,48 @@
                           {
                             value: {{total_instructor_V}},
                             name: 'Instructor V'
-                          },
-                          {
-                            value: {{total_assocProf_I}},
-                            name: 'Associate Professor I'
-                          },
-                          {
-                            value: {{total_assocProf_II}},
-                            name: 'Associate Professor II'
-                          },
-                          {
-                            value: {{total_assocProf_III}},
-                            name: 'Associate Professor III'
-                          },
-                          {
-                            value: {{total_assocProf_V}},
-                            name: 'Associate Professor V'
-                          },
-                          {
-                            value: {{total_assocProf_IV}},
-                            name: 'Associate Professor IV'
-                          },
+                          }
+                        ]
+                      }]
+                    });
+                  });
+                </script>
+
+                <script>
+                  document.addEventListener("DOMContentLoaded", () => {
+                    echarts.init(document.querySelector("#Rank2")).setOption({
+                      tooltip: {
+                        trigger: 'item'
+                      },
+                      legend: {
+                        top: '0%',
+                        left: 'center'
+                      },
+                      series: [{
+                        name: 'Access From',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        avoidLabelOverlap: false,
+                        itemStyle: {
+                          borderRadius: 10,
+                          borderColor: '#fff',
+                          borderWidth: 2
+                        },
+                        label: {
+                          show: false,
+                          position: 'center'
+                        },
+                        emphasis: {
+                          label: {
+                            show: true,
+                            fontSize: '18',
+                            fontWeight: 'bold'
+                          }
+                        },
+                        labelLine: {
+                          show: false
+                        },
+                        data: [
                           {
                             value: {{total_assistProf_I}},
                             name: 'Assistant Professor I'
@@ -611,18 +644,238 @@
                           {
                             value: {{total_assistProf_V}},
                             name: 'Assistant Professor V'
-                          },
+                          }
                         ]
                       }]
                     });
                   });
                 </script>
     
-              </div>
-            </div><!-- End Website Traffic -->
-    
-          </div><!-- End Right side columns -->
+                <script>
+                  document.addEventListener("DOMContentLoaded", () => {
+                    echarts.init(document.querySelector("#Rank3")).setOption({
+                      tooltip: {
+                        trigger: 'item'
+                      },
+                      legend: {
+                        top: '0%',
+                        left: 'center'
+                      },
+                      series: [{
+                        name: 'Access From',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        avoidLabelOverlap: false,
+                        itemStyle: {
+                          borderRadius: 10,
+                          borderColor: '#fff',
+                          borderWidth: 2
+                        },
+                        label: {
+                          show: false,
+                          position: 'center'
+                        },
+                        emphasis: {
+                          label: {
+                            show: true,
+                            fontSize: '18',
+                            fontWeight: 'bold'
+                          }
+                        },
+                        labelLine: {
+                          show: false
+                        },
+                        data: [
+                          {
+                            value: {{total_assocProf_I}},
+                            name: 'Associate Professor I'
+                          },
+                          {
+                            value: {{total_assocProf_II}},
+                            name: 'Associate Professor II'
+                          },
+                          {
+                            value: {{total_assocProf_III}},
+                            name: 'Associate Professor III'
+                          },
+                          {
+                            value: {{total_assocProf_V}},
+                            name: 'Associate Professor V'
+                          },
+                          {
+                            value: {{total_assocProf_IV}},
+                            name: 'Associate Professor IV'
+                          }
+                        ]
+                      }]
+                    });
+                  });
+                </script>
+          
+           <!-- Faculty Members -->
+           <div class="col-8">
+            <div class="card recent-sales overflow-auto">
 
+              <div class="card-body">
+                <h5 class="card-title">Quantity of New Hired Faculty</h5>
+
+                <div id="container" style="height: 400px"></div>
+
+  
+            <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+            
+            <script type="text/javascript">
+              var dom = document.getElementById('container');
+              var myChart = echarts.init(dom, null, {
+                renderer: 'canvas',
+                useDirtyRect: false
+              });
+              var app = {};
+              
+              var option;
+
+              option = {
+            tooltip: {
+              trigger: 'axis',
+              axisPointer: {
+                type: 'cross',
+                crossStyle: {
+                  color: '#999'
+                }
+              }
+            },
+            toolbox: {
+              feature: {
+                dataView: { show: true, readOnly: true },
+                magicType: { show: true, type: ['line', 'bar'] },
+                restore: { show: true },
+                saveAsImage: { show: true }
+              }
+            },
+            legend: {
+              data: ['Full Time', 'Part Time']
+            },
+            xAxis: [
+              {
+                type: 'category',
+                data: ['2017', '2018', '2019', '2020', '2021', '2022', '2023'],
+                axisPointer: {
+                  type: 'shadow'
+                }
+              }
+            ],
+            yAxis: [
+              {
+                type: 'value',
+                name: 'Quantity',
+                min: 0,
+                max: 120,
+                interval: 15,
+                axisLabel: {
+                  formatter: '{value}'
+                }
+              }
+            ],
+            series: [
+              {
+                name: 'Full Time',
+                type: 'bar',
+                tooltip: {
+                  valueFormatter: function (value) {
+                    return value + '';
+                  }
+                },
+                data: [
+                  3, 4, 7, 23, 25, 76, 110, 16, 32, 20, 6, 3
+                ]
+              },
+              {
+                name: 'Part Time',
+                type: 'bar',
+                tooltip: {
+                  valueFormatter: function (value) {
+                    return value + '';
+                  }
+                },
+                data: [
+                  2, 5, 9, 26, 28, 70, 17, 18, 48, 18, 6, 2
+                ]
+              }
+            ]
+          };
+
+              if (option && typeof option === 'object') {
+                myChart.setOption(option);
+              }
+
+              window.addEventListener('resize', myChart.resize);
+            </script>
+              
+
+              </div>
+
+            </div>
+          </div><!-- End -->
+
+          <!-- Faculty Members -->
+          <div class="col-4">
+            <div class="card recent-sales overflow-auto">
+
+              <div class="card-body">
+                <h5 class="card-title">Faculty Type</h5>
+
+                <div id="container2" style="height: 400px"></div>
+
+  
+            <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+            
+            <script type="text/javascript">
+              var dom = document.getElementById('container2');
+              var myChart = echarts.init(dom, null, {
+                renderer: 'canvas',
+                useDirtyRect: false
+              });
+              var app = {};
+              
+              var option;
+          
+              option = {
+              tooltip: {
+                  trigger: 'axis',
+                  axisPointer: {
+                    type: 'shadow'
+                  }
+                },
+            xAxis: {
+              type: 'category',
+              data: ['Full Time', 'Part Time']
+            },
+            yAxis: {
+              type: 'value',
+              min: 0,
+              max: {{total_faculty}}+5,
+            },
+            series: [
+              {
+                data: [{{full_time}}, {{part_time}}],
+                type: 'bar'
+              }
+            ]
+          };
+          
+              if (option && typeof option === 'object') {
+                myChart.setOption(option);
+              }
+          
+              window.addEventListener('resize', myChart.resize);
+            </script>
+              
+
+              </div>
+
+            </div>
+          </div><!-- End -->
+    
           <!-- Faculty Members -->
           <div class="col-12">
             <div class="card recent-sales overflow-auto">
@@ -647,9 +900,9 @@
                     {% set faculty_info = api_data['Faculties'][faculty_id] %}
                     <tr>
                       <td><a href="/faculty-member/{{ faculty_id }}">{{ faculty_id }}</a></td>
-                      <td><img src="http://drive.google.com/uc?export=view&id={{ faculty_info['profile_pic'] }}" alt="Profile Pic" style="width:60px;height:50px; border-radius: 50%"></td>
+                      <td><img src="http://drive.google.com/uc?export=view&id={{ faculty_info['profile_pic'] }}" alt="Profile Pic" style="width:90px;height:80px; border-radius: 10px 10px 10px 10px"></td>
                       <td>{{ faculty_info['name'] }}</td>
-                      <td>{{ faculty_info['type'] }}</td>
+                      <td>{{ faculty_info['faculty_type'] }}</td>
                       <td>{{ faculty_info['rank'] }}</td>
                       <td class="fw-bold">{{ faculty_info['units'] }}</td>
                       {% if faculty_info['is_active'] == True %}

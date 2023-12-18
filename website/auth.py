@@ -440,6 +440,9 @@ def adminH():
         total_assistProf_IV = 0
         total_assistProf_V = 0
         
+        full_time = 0
+        part_time = 0
+        
         if response.status_code == 200:
             # Process the API response data
             api_data = response.json()
@@ -451,7 +454,12 @@ def adminH():
             for faculty_id in faculty_account_ids:
                 faculty_info = api_data['Faculties'][faculty_id]
                 faculty_rank = faculty_info['rank']
-
+                faculty_type = faculty_info['faculty_type']
+                if faculty_type == 'Full Time':
+                    full_time += 1
+                else:
+                    part_time += 1
+                    
                 if faculty_rank == 'Instructor I':
                     total_instructor_I += 1
                 elif faculty_rank == 'Instructor II':
@@ -484,6 +492,10 @@ def adminH():
                     total_assistProf_IV += 1
                 elif faculty_rank == 'Assistant Professor V':
                     total_assistProf_V += 1
+        
+        total_instructors = total_instructor_I+total_instructor_II+total_instructor_III+total_instructor_IV+total_instructor_V
+        total_assistProfs = total_assistProf_I+total_assistProf_II+total_assistProf_III+total_assistProf_IV+total_assistProf_V
+        total_assocProfs  = total_assocProf_I+total_assocProf_II+total_assocProf_III+total_assocProf_IV+total_assocProf_V
      
         def count_faculty_tokens_with_account_ids(session: Session):
             # Counting Login_Token entries where faculty_account_id is not null
@@ -498,23 +510,35 @@ def adminH():
                                User= username.first_name + " " + username.last_name,
                                user= current_user,
                                api_data = api_data,
+                               
                                total_faculty = total_faculty,
                                faculty_account_ids = faculty_account_ids,
+                               
                                total_instructor_I = total_instructor_I,
                                total_instructor_II = total_instructor_II,
                                total_instructor_III = total_instructor_III,
                                total_instructor_IV = total_instructor_IV,
                                total_instructor_V = total_instructor_V,
+                               
                                total_assocProf_I = total_assocProf_I,
                                total_assocProf_II = total_assocProf_II,
                                total_assocProf_III = total_assocProf_III,
                                total_assocProf_IV = total_assocProf_IV,
                                total_assocProf_V = total_assocProf_V,
+                               
                                total_assistProf_I = total_assistProf_I,
                                total_assistProf_II = total_assistProf_II,
                                total_assistProf_III = total_assistProf_III,
                                total_assistProf_IV = total_assistProf_IV,
                                total_assistProf_V = total_assistProf_V,
+                               
+                               total_instructors = total_instructors,
+                               total_assistProfs = total_assistProfs,
+                               total_assocProfs = total_assocProfs,
+                               
+                               full_time = full_time,
+                               part_time = part_time,
+                               
                                faculty_active = faculty_active,
                                profile_pic=profile_pic)
 
