@@ -443,6 +443,13 @@ def adminH():
         full_time = 0
         part_time = 0
         
+        # Initialize dictionaries to store counts of part-time and full-time faculty hired each year
+        from collections import defaultdict
+        from datetime import datetime
+        
+        part_time_counts = defaultdict(int)
+        full_time_counts = defaultdict(int)
+        
         if response.status_code == 200:
             # Process the API response data
             api_data = response.json()
@@ -450,11 +457,25 @@ def adminH():
             
             total_faculty = len(faculty_account_ids)
             
-            # Fetching Specific data for each faculty
             for faculty_id in faculty_account_ids:
                 faculty_info = api_data['Faculties'][faculty_id]
                 faculty_rank = faculty_info['rank']
                 faculty_type = faculty_info['faculty_type']
+                faculty_hired_date = faculty_info['date_hired']
+
+                if faculty_hired_date:
+                    # Convert the date string to a datetime object and extract the year
+                    hired_date = datetime.strptime(faculty_hired_date, '%a, %d %b %Y %H:%M:%S %Z')
+                    hired_year = hired_date.year
+
+                    # Increment the counts for the respective employment type and year
+                    if faculty_type == 'Part Time':
+                        part_time_counts[hired_year] += 1
+                    elif faculty_type == 'Full Time':
+                        full_time_counts[hired_year] += 1
+
+                
+                        
                 if faculty_type == 'Full Time':
                     full_time += 1
                 else:
@@ -492,6 +513,20 @@ def adminH():
                     total_assistProf_IV += 1
                 elif faculty_rank == 'Assistant Professor V':
                     total_assistProf_V += 1
+        
+        
+        # Determine the recent year dynamically
+        current_year = datetime.now().year
+
+        # Create columns for the recent year and the last six years
+        years_range = range(current_year, current_year - 7, -1)
+        years_range1 = years_range[0]
+        years_range2 = years_range[1]
+        years_range3 = years_range[2]
+        years_range4 = years_range[3]
+        years_range5 = years_range[4]
+        years_range6 = years_range[5]
+        years_range7 = years_range[6]
         
         total_instructors = total_instructor_I+total_instructor_II+total_instructor_III+total_instructor_IV+total_instructor_V
         total_assistProfs = total_assistProf_I+total_assistProf_II+total_assistProf_III+total_assistProf_IV+total_assistProf_V
@@ -538,6 +573,25 @@ def adminH():
                                
                                full_time = full_time,
                                part_time = part_time,
+                               
+                               years_range1 = years_range1,
+                               years_range2 = years_range2,
+                               years_range3 = years_range3,
+                               years_range4 = years_range4,
+                               years_range5 = years_range5,
+                               years_range6 = years_range6,
+                               years_range7 = years_range7,
+                               
+                               years_range = years_range,
+                               part_time_counts = part_time_counts,
+                               full_time_counts = full_time_counts,
+                               
+                               full_time_percentage = "{:.2f}".format((full_time / total_faculty)*100),
+                               part_time_percentage = "{:.2f}".format((part_time / total_faculty)*100),
+                               
+                               total_instructors_percentage = "{:.2f}".format((total_instructors / total_faculty)*100),
+                               total_assistProfs_percentage = "{:.2f}".format((total_assistProfs / total_faculty)*100),
+                               total_assocProfs_percentage = "{:.2f}".format((total_assocProfs / total_faculty)*100),
                                
                                faculty_active = faculty_active,
                                profile_pic=profile_pic)

@@ -285,7 +285,7 @@
     <li class="nav-item">
       <a class="nav-link " href="/admin-home-page">
         <i class="bi bi-grid"></i>
-        <span>Faculties</span>
+        <span>Dashboard</span>
       </a>
     </li>
 
@@ -513,18 +513,21 @@
             <div class="card-body pb-0">
               <div class="row">
                 <div class="col-lg-4">
-                  <h5 class="card-title">Instructors ({{total_instructors}})</h5>
-                  <div id="Rank1" style="min-height: 550px;" class="echart"></div>
+                  <h5 class="card-title">Assistant Professors ({{total_instructors}})</h5>
+                  <div id="Rank1" style="min-height: 500px;" class="echart"></div>
+                  <h5 class="d-flex align-items-center justify-content-center">{{total_instructors_percentage}}%</h5>
                 </div>
           
                 <div class="col-lg-4">
                   <h5 class="card-title">Assistant Professors ({{total_assistProfs}})</h5>
-                  <div id="Rank2" style="min-height: 550px;" class="echart"></div>
+                  <div id="Rank2" style="min-height: 500px;" class="echart"></div>
+                  <h5 class="d-flex align-items-center justify-content-center">{{total_assistProfs_percentage}}%</h5>
                 </div>
           
                 <div class="col-lg-4">
-                  <h5 class="card-title">Associate Professors ({{total_assocProfs}})</h5>
-                  <div id="Rank3" style="min-height: 550px;" class="echart"></div>
+                  <h5 class="card-title">Assistant Professors ({{total_assocProfs}})</h5>
+                  <div id="Rank3" style="min-height: 500px;" class="echart"></div>
+                  <h5 class="d-flex align-items-center justify-content-center">{{total_assocProfs_percentage}}%</h5>
                 </div>
               </div>
             </div>
@@ -717,7 +720,7 @@
             <div class="card recent-sales overflow-auto">
 
               <div class="card-body">
-                <h5 class="card-title">Quantity of New Hired Faculty</h5>
+                <h5 class="card-title">Quantity of New Hired Faculty (Year: {{years_range7}} to {{years_range1}})</h5>
 
                 <div id="container" style="height: 400px"></div>
 
@@ -738,10 +741,7 @@
             tooltip: {
               trigger: 'axis',
               axisPointer: {
-                type: 'cross',
-                crossStyle: {
-                  color: '#999'
-                }
+                type: 'shadow'
               }
             },
             toolbox: {
@@ -758,7 +758,7 @@
             xAxis: [
               {
                 type: 'category',
-                data: ['2017', '2018', '2019', '2020', '2021', '2022', '2023'],
+                data: ['{{years_range7}}', '{{years_range6}}', '{{years_range5}}', '{{years_range4}}', '{{years_range3}}', '{{years_range2}}', '{{years_range1}}'],
                 axisPointer: {
                   type: 'shadow'
                 }
@@ -769,39 +769,44 @@
                 type: 'value',
                 name: 'Quantity',
                 min: 0,
-                max: 120,
-                interval: 15,
+                max: 25,
                 axisLabel: {
                   formatter: '{value}'
                 }
               }
             ],
             series: [
-              {
-                name: 'Full Time',
-                type: 'bar',
-                tooltip: {
-                  valueFormatter: function (value) {
-                    return value + '';
-                  }
-                },
-                data: [
-                  3, 4, 7, 23, 25, 76, 110, 16, 32, 20, 6, 3
-                ]
+            {
+              name: 'Full Time',
+              type: 'bar',
+              tooltip: {
+                valueFormatter: function (value) {
+                  return value + '';
+                }
               },
-              {
-                name: 'Part Time',
-                type: 'bar',
-                tooltip: {
-                  valueFormatter: function (value) {
-                    return value + '';
-                  }
-                },
-                data: [
-                  2, 5, 9, 26, 28, 70, 17, 18, 48, 18, 6, 2
-                ]
-              }
-            ]
+              data: [
+                {% for year in years_range %}
+                  {% set full_time_count = full_time_counts[year] %}
+                  {{ full_time_count }},
+                {% endfor %}
+              ]
+            },
+            {
+              name: 'Part Time',
+              type: 'bar',
+              tooltip: {
+                valueFormatter: function (value) {
+                  return value + '';
+                }
+              },
+              data: [
+                {% for year in years_range %}
+                  {% set part_time_count = part_time_counts[year] %}
+                  {{ part_time_count }},
+                {% endfor %}
+              ]
+            }
+          ]
           };
 
               if (option && typeof option === 'object') {
@@ -825,8 +830,7 @@
                 <h5 class="card-title">Faculty Type</h5>
 
                 <div id="container2" style="height: 400px"></div>
-
-  
+          
             <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
             
             <script type="text/javascript">
@@ -848,9 +852,10 @@
                 },
             xAxis: {
               type: 'category',
-              data: ['Full Time', 'Part Time']
+              data: ['Full Time: {{full_time_percentage}}%', 'Part Time: {{part_time_percentage}}%']
             },
             yAxis: {
+              name: 'Quantity',
               type: 'value',
               min: 0,
               max: {{total_faculty}}+5,
@@ -882,11 +887,12 @@
 
               <div class="card-body">
                 <h5 class="card-title">Faculty Members</h5>
+                <h6 class="card-title">Click the ID of a faculty member to view more information.</h6>
 
                 <table class="table table-borderless datatable">
                   <thead>
                     <tr>
-                      <th scope="col">ID</th>
+                      <th scope="col">Faculty ID</th>
                       <th scope="col">Profile Pic</th>
                       <th scope="col">Name</th>
                       <th scope="col">Type</th>
