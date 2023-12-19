@@ -188,7 +188,7 @@ def facultyH():
 
 @auth.route("/login-denied")
 def login_denied():
-    return redirect(url_for('auth.login_error_modal'))
+    return redirect(url_for('views.home'))
 
 @auth.route("/access-denied")
 def login_error_modal():
@@ -217,6 +217,7 @@ def Logout():
     #     pass
     
     logout_user()
+    session['entry'] = 3
     flash('Logged Out Successfully!', category='success')
     return redirect(url_for('auth.facultyL')) 
 
@@ -755,5 +756,6 @@ def adminLogout():
     #     pass
     
     logout_user()
+    session['entry'] = 3
     flash('Logged Out Successfully!', category='success')
     return redirect(url_for('auth.adminL')) 

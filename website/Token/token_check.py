@@ -86,11 +86,10 @@ def Check_Token(func):
         
         except Exception as e:
             print(f'Error: {str(e)}')
-            flash('Session Expired. Please Login again.', category='error')
             if current_user.__class__.__name__ == "Faculty_Profile":
-                return redirect(url_for('auth.Logout'))
+                return redirect(url_for('views.home'))
             else:
-                return redirect(url_for('auth.adminLogout'))
+                return redirect(url_for('views.home'))
     
     return decorated
 
