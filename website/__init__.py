@@ -4,6 +4,9 @@ from dotenv import load_dotenv
 from flask_mail import Mail
 from datetime import timedelta
 from flask_jwt_extended import JWTManager
+from flask_migrate import Migrate 
+
+from .extensions import db
 
 import os
 load_dotenv()
@@ -21,6 +24,9 @@ def create_app():
     app.config['SQLALCHEMY_POOL_SIZE'] = 10
     app.config['SQLALCHEMY_MAX_OVERFLOW'] = 20
     app.config['SQLALCHEMY_POOL_RECYCLE'] = 1800
+    
+    migrate = Migrate()  # Define migrate instance
+    migrate.init_app(app, db)  # Initialize migrate with the Flask app and db instance
     
     # SMTP CONFIGURATION
 

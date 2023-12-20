@@ -714,6 +714,128 @@
                     });
                   });
                 </script>
+
+                <script>
+                  const facultyAccountIds = {{ faculty_info | tojson | safe }};
+                  // This will create a JavaScript object containing your fetched faculty data
+                  
+                  // Function to display modal with faculty information
+                  function showModal(title, quantity, content) {
+                    $('#modalTitle').text(title);
+                    $('#modalQuantity').text(`${quantity}`);
+                  
+                    const modalBody = $('#modalContent');
+                    modalBody.empty(); // Clear modal content
+                  
+                    if (Array.isArray(content) && content.length > 0) {
+                      const table = $('<table>').addClass('table'); // Create table with Bootstrap styling
+                  
+                      // Create table header
+                      const tableHeader = $('<thead>').html(`
+                        <tr>
+                          <th>ID</th>
+                          <th>Profile Pic</th>
+                          <th>Full Name</th>
+                          <th>Units</th>
+                        </tr>
+                      `);
+                      table.append(tableHeader);
+                  
+                      // Create table body
+                      const tableBody = $('<tbody>');
+                  
+                      // Ensure content is an array of objects and iterate through faculty data to create table rows
+                      if (content.every(faculty => typeof faculty === 'object')) {
+                        content.forEach(faculty => {
+                          const row = $('<tr>').html(`
+                            <td><a href="/faculty-member/${faculty.faculty_account_id}">${faculty.faculty_account_id}</a></td>
+                            <td><img src="http://drive.google.com/uc?export=view&id=${faculty.profile_pic}" alt="Profile Pic" style="width:90px;height:80px; border-radius: 10px 10px 10px 10px"></td>
+                            <td>${faculty.name}</td>
+                            <td>${faculty.units}</td>
+                          `);
+                          tableBody.append(row);
+                        });
+                  
+                        table.append(tableBody);
+                        modalBody.append(table); // Append table to modal body
+                      } else {
+                        modalBody.text('Invalid faculty information format.');
+                      }
+                    } else {
+                      modalBody.text('No faculty information available for this category.');
+                    }
+                  
+                    $('#myModal').modal('show');
+                  }
+                  
+                  // Pie chart click event listeners
+                  document.addEventListener("DOMContentLoaded", () => {
+                    const chart1 = echarts.init(document.querySelector("#Rank1"));
+                    const chart2 = echarts.init(document.querySelector("#Rank2"));
+                    const chart3 = echarts.init(document.querySelector("#Rank3"));
+                  
+                    function createChartClickHandler(chart, rankName) {
+                      chart.on('click', function(params) {
+                        if (params.componentType === 'series') {
+                          const clickedCategory = params.name;
+                          const facultyInCategory = Object.values(facultyAccountIds).filter(faculty => faculty.rank === rankName && faculty.rank === clickedCategory);
+                  
+                          if (facultyInCategory.length > 0) {
+                            // Display faculty information in the modal
+                            showModal(clickedCategory, facultyInCategory.length, facultyInCategory);
+                          }
+                        }
+                      });
+                    }
+                  
+                    createChartClickHandler(chart1, 'Instructor I');
+                    createChartClickHandler(chart1, 'Instructor II');
+                    createChartClickHandler(chart1, 'Instructor III');
+                    createChartClickHandler(chart1, 'Instructor IV');
+                    createChartClickHandler(chart1, 'Instructor V');
+                    createChartClickHandler(chart2, 'Assistant Professor I');
+                    createChartClickHandler(chart2, 'Assistant Professor II');
+                    createChartClickHandler(chart2, 'Assistant Professor III');
+                    createChartClickHandler(chart2, 'Assistant Professor IV');
+                    createChartClickHandler(chart2, 'Assistant Professor V');
+                    createChartClickHandler(chart3, 'Associate Professor I');
+                    createChartClickHandler(chart3, 'Associate Professor II');
+                    createChartClickHandler(chart3, 'Associate Professor III');
+                    createChartClickHandler(chart3, 'Associate Professor IV');
+                    createChartClickHandler(chart3, 'Associate Professor V');
+                    // Add similar handlers for other ranks and charts as needed
+                  });
+                </script>
+
+           <!-- DISPLAY FACULTIES MODAL BASED ON CATEGORY -->
+           <style>
+            .modal-body {
+              max-height: calc(100vh - 200px); /* Adjust the height as needed */
+              overflow-y: auto;
+            }
+          </style>
+
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="card-title" id="modalTitle"></h5>&nbsp &nbsp<h6 id="modalQuantity" style="color:#ff0000;"></h6>
+                    <button type="button" class="btn-close" onclick="closeModal()" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <h6 class="card-title">Click the ID of a faculty member to view more information.</h6>
+                    <p id="modalContent"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <script>
+              // Function to close the modal
+              function closeModal() {
+                $('#myModal').modal('hide');
+              }
+            </script>
           
            <!-- Faculty Members -->
            <div class="col-8">
@@ -840,42 +962,113 @@
                 useDirtyRect: false
               });
               var app = {};
-              
+            
               var option;
-          
+            
               option = {
-              tooltip: {
+                tooltip: {
                   trigger: 'axis',
                   axisPointer: {
                     type: 'shadow'
                   }
                 },
-            xAxis: {
-              type: 'category',
-              data: ['Full Time: {{full_time_percentage}}%', 'Part Time: {{part_time_percentage}}%']
-            },
-            yAxis: {
-              name: 'Quantity',
-              type: 'value',
-              min: 0,
-              max: {{total_faculty}}+5,
-            },
-            series: [
-              {
-                data: [{{full_time}}, {{part_time}}],
-                type: 'bar'
-              }
-            ]
-          };
-          
+                xAxis: {
+                  type: 'category',
+                  data: ['Full Time: {{full_time_percentage}}%', 'Part Time: {{part_time_percentage}}%']
+                },
+                yAxis: {
+                  name: 'Quantity',
+                  type: 'value',
+                  min: 0,
+                  max: {{total_faculty}} + 5,
+                },
+                series: [
+                  {
+                    data: [{{full_time}}, {{part_time}}],
+                    type: 'bar'
+                  }
+                ]
+              };
+            
               if (option && typeof option === 'object') {
                 myChart.setOption(option);
               }
-          
+            
+              // Function to display modal with faculty information in a table format
+                function showModal(title, quantity, content) {
+                  $('#modalTitle').text(title);
+                  $('#modalQuantity').text(`${quantity}`);
+
+                  const modalBody = $('#modalContent');
+                  modalBody.empty(); // Clear modal content
+
+                  if (Array.isArray(content) && content.length > 0) {
+                    const table = $('<table>').addClass('table'); // Create table with Bootstrap styling
+
+                    // Create table header
+                    const tableHeader = $('<thead>').html(`
+                      <tr>
+                        <th>ID</th>
+                        <th>Profile Pic</th>
+                        <th>Full Name</th>
+                        <th>Units</th>
+                      </tr>
+                    `);
+                    table.append(tableHeader);
+
+                    // Create table body
+                    const tableBody = $('<tbody>');
+
+                    // Ensure content is an array of objects and iterate through faculty data to create table rows
+                    if (content.every(faculty => typeof faculty === 'object')) {
+                      content.forEach(faculty => {
+                        const row = $('<tr>').html(`
+                          <td><a href="/faculty-member/${faculty.faculty_account_id}">${faculty.faculty_account_id}</a></td>
+                          <td><img src="http://drive.google.com/uc?export=view&id=${faculty.profile_pic}" alt="Profile Pic" style="width:90px;height:80px; border-radius: 10px 10px 10px 10px"></td>
+                          <td>${faculty.name}</td>
+                          <td>${faculty.units}</td>
+                        `);
+                        tableBody.append(row);
+                      });
+
+                      table.append(tableBody);
+                      modalBody.append(table); // Append table to modal body
+                    } else {
+                      modalBody.text('Invalid faculty information format.');
+                    }
+                  } else {
+                    modalBody.text('No faculty information available for this category.');
+                  }
+
+                  $('#myModal').modal('show');
+                }
+
+              // Function to handle the bar click event
+              myChart.on('click', function(params) {
+                if (params.componentType === 'series') {
+                  const clickedCategory = params.name.split(':')[0].trim();
+
+                  // Filter faculty data based on Full Time or Part Time category
+                  const facultyInCategory = Object.values(facultyAccountIds).filter(faculty => {
+                    if (clickedCategory === 'Full Time') {
+                      return faculty.faculty_type === 'Full Time';
+                    } else if (clickedCategory === 'Part Time') {
+                      return faculty.faculty_type === 'Part Time';
+                    }
+                    return false;
+                  });
+
+                  if (facultyInCategory.length > 0) {
+                    showModal(clickedCategory, facultyInCategory.length, facultyInCategory);
+                  } else {
+                    showModal(clickedCategory, 0, []); // Show modal with empty content if no data
+                  }
+                }
+              });
+            
               window.addEventListener('resize', myChart.resize);
             </script>
               
-
               </div>
 
             </div>

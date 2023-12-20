@@ -549,6 +549,7 @@ def adminH():
                                
                                total_faculty = total_faculty,
                                faculty_account_ids = faculty_account_ids,
+                               faculty_info = {faculty_id: api_data['Faculties'][faculty_id] for faculty_id in faculty_account_ids},
                                
                                total_instructor_I = total_instructor_I,
                                total_instructor_II = total_instructor_II,
