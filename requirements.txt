@@ -18,7 +18,7 @@ packaging
 aniso8601
 attrs
 configparser
-flask-restx
+flask-restx==0.5.1
 jsonschema
 jsonschema-specifications
 pytz
