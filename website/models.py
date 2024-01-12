@@ -1,277 +1,371 @@
 from datetime import datetime, timezone
 from sqlalchemy import inspect
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_Password_hash
 from flask_login import UserMixin
 
 from .extensions import db
 
+# Faculty Users
+class Faculty(db.Model):
+    __tableName__ = 'FISFaculty' # Set the Name of table in database
+    FacultyId = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    FacultyType = db.Column(db.String(50), nullable=False)  # Faculty Type
+    Rank = db.Column(db.String(50))  # Faculty Rank
+    Units = db.Column(db.Numeric, nullable=False)  # Faculty Unit
+    Name = db.Column(db.String(50), nullable=False)  # Name
+    FirstName = db.Column(db.String(50), nullable=False)  # First Name
+    LastName = db.Column(db.String(50), nullable=False)  # Last Name
+    MiddleName = db.Column(db.String(50))  # Middle Name
+    MiddleInitial = db.Column(db.String(50))  # Middle Initial
+    NameExtension = db.Column(db.String(50))  # Name Extension
+    BirthDate = db.Column(db.Date, nullable=False)  # Birthdate
+    DateHired = db.Column(db.Date, nullable=False)  # Date Hired
+    Degree = db.Column(db.String)  # Degree
+    Remarks = db.Column(db.String)  # Remarks
+    FacultyCode = db.Column(db.Integer, nullable=False)  # Faculty Code
+    Honorific = db.Column(db.String(50))  # Honorific
+    Age = db.Column(db.Numeric, nullable=False)  # Age
+    
+    Email = db.Column(db.String(50), unique=True, nullable=False)  # Email
+    ResidentialAddress = db.Column(db.String(50))  # ResidentialAddress
+    MobileNumber = db.Column(db.String(11))  # MobileNumber
+    Gender = db.Column(db.Integer) # Gender # 1 if Male 2 if Female
+    
+    Password = db.Column(db.String(128), nullable=False)  # Password
+    ProfilePic= db.Column(db.String(50),default="14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08")  # Profile Pic
+    IsActive = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+    
+    # FOREIGN TABLES
+    
+
+    def to_dict(self):
+        return {
+            'FacultyId': self.FacultyId,
+            'FacultyType': self.FacultyType,
+            'Rank': self.Rank,
+            'Units': self.Units,
+            'Name': self.Name,
+            'FirstName': self.FirstName,
+            'LastName': self.LastName,
+            'MiddleName': self.MiddleName,
+            'MiddleInitial': self.MiddleInitial,
+            'NameExtension': self.NameExtension,
+            'BirthDate': self.BirthDate,
+            'DateHired': self.DateHired,
+            'Degree': self.Degree,
+            'Remarks': self.Remarks,
+            'FacultyCode': self.FacultyCode,
+            'Honorific': self.Honorific,
+            'Age': self.Age,
+
+            'Email': self.Email,
+            # 'Password': self.Password,
+            'ProfilePic': self.ProfilePic,
+            'IsActive': self.IsActive,
+        }
+        
+    def get_id(self):
+        return str(self.FacultyId)  # Convert to string to ensure compatibility
+
+
  # Faculty Profile 
 
-class Faculty_Profile(db.Model, UserMixin):
-    __tablename__ = 'Faculty_Profile'
-    faculty_account_id = db.Column(db.String(50), primary_key=True)  # UserID
-    faculty_type = db.Column(db.String(50), nullable=False)  # Faculty Type
-    rank = db.Column(db.String(50))  # Faculty Rank
-    units = db.Column(db.Numeric, nullable=False)  # Faculty Unit
-    name = db.Column(db.String(50), nullable=False)  # Name
-    first_name = db.Column(db.String(50), nullable=False)  # First Name
-    last_name = db.Column(db.String(50), nullable=False)  # Last Name
-    middle_name = db.Column(db.String(50))  # Middle Name
-    middle_initial = db.Column(db.String(50))  # Middle Initial
-    name_extension = db.Column(db.String(50))  # Name Extension
-    birth_date = db.Column(db.Date, nullable=False)  # Birthdate
-    date_hired = db.Column(db.Date, nullable=False)  # Date Hired
-    degree = db.Column(db.String)  # Degree
-    remarks = db.Column(db.String)  # Remarks
-    faculty_code = db.Column(db.Integer, nullable=False)  # Faculty Code
-    honorific = db.Column(db.String(50))  # Honorific
-    age = db.Column(db.Numeric, nullable=False)  # Age
-    email = db.Column(db.String(50), unique=True, nullable=False)  # Email
-    password = db.Column(db.String(128), nullable=False)  # Password
-    profile_pic = db.Column(db.String(50),default="14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08")  # Profile Pic
-    is_active = db.Column(db.Boolean, default=True) 
+class FISFaculty(db.Model, UserMixin):
+    __tableName__ = 'FISFaculty'
+    FacultyId = db.Column(db.Integer, primary_key=True, autoincrement=True)  # UserID
+    FacultyType = db.Column(db.String(50), nullable=False)  # Faculty Type
+    Rank = db.Column(db.String(50))  # Faculty Rank
+    Units = db.Column(db.Numeric, nullable=False)  # Faculty Unit
+    Name = db.Column(db.String(50), nullable=False)  # Name
+    FirstName = db.Column(db.String(50), nullable=False)  # First Name
+    LastName = db.Column(db.String(50), nullable=False)  # Last Name
+    MiddleName = db.Column(db.String(50))  # Middle Name
+    MiddleInitial = db.Column(db.String(50))  # Middle Initial
+    NameExtension = db.Column(db.String(50))  # Name Extension
+    BirthDate = db.Column(db.Date, nullable=False)  # Birthdate
+    DateHired = db.Column(db.Date, nullable=False)  # Date Hired
+    Degree = db.Column(db.String)  # Degree
+    Remarks = db.Column(db.String)  # Remarks
+    FacultyCode = db.Column(db.Integer, nullable=False)  # Faculty Code
+    Honorific = db.Column(db.String(50))  # Honorific
+    Age = db.Column(db.Numeric, nullable=False)  # Age
+    
+    Email = db.Column(db.String(50), unique=True, nullable=False)  # Email
+    ResidentialAddress = db.Column(db.String(50))  # ResidentialAddress
+    MobileNumber = db.Column(db.String(11))  # MobileNumber
+    Gender = db.Column(db.Integer) # Gender # 1 if Male 2 if Female
+
+    Password = db.Column(db.String(128), nullable=False)  # Password
+    ProfilePic= db.Column(db.String(50),default="14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08")  # Profile Pic
+    IsActive = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     
     # FOREIGN TABLES
     
     # PDS
-    PDS_Personal_Details = db.relationship('PDS_Personal_Details')
-    PDS_Contact_Details = db.relationship('PDS_Contact_Details')
-    PDS_Family_Background = db.relationship('PDS_Family_Background')
-    PDS_Educational_Background = db.relationship('PDS_Educational_Background')
-    PDS_Eligibity = db.relationship('PDS_Eligibity')
-    PDS_Work_Experience = db.relationship('PDS_Work_Experience')
-    PDS_Voluntary_Work = db.relationship('PDS_Voluntary_Work')
-    PDS_Training_Seminars = db.relationship('PDS_Training_Seminars')
-    PDS_Outstanding_Achievements = db.relationship('PDS_Outstanding_Achievements')
-    PDS_OfficeShips_Memberships = db.relationship('PDS_OfficeShips_Memberships')
-    PDS_Agency_Membership = db.relationship('PDS_Agency_Membership')
-    PDS_Teacher_Information = db.relationship('PDS_Teacher_Information')
-    PDS_Additional_Questions = db.relationship('PDS_Additional_Questions')
-    PDS_Character_Reference = db.relationship('PDS_Character_Reference')
-    PDS_Signature = db.relationship('PDS_Signature')
+    FISPDS_PersonalDetails = db.relationship('FISPDS_PersonalDetails')
+    FISPDS_ContactDetails = db.relationship('FISPDS_ContactDetails')
+    FISPDS_FamilyBackground = db.relationship('FISPDS_FamilyBackground')
+    FISPDS_EducationalBackground = db.relationship('FISPDS_EducationalBackground')
+    FISPDS_Eligibity = db.relationship('FISPDS_Eligibity')
+    FISPDS_WorkExperience = db.relationship('FISPDS_WorkExperience')
+    FISPDS_VoluntaryWork = db.relationship('FISPDS_VoluntaryWork')
+    FISPDS_TrainingSeminars = db.relationship('FISPDS_TrainingSeminars')
+    FISPDS_OutstandingAchievements = db.relationship('FISPDS_OutstandingAchievements')
+    FISPDS_OfficeShipsMemberships = db.relationship('FISPDS_OfficeShipsMemberships')
+    FISPDS_AgencyMembership = db.relationship('FISPDS_AgencyMembership')
+    FISPDS_TeacherInformation = db.relationship('FISPDS_TeacherInformation')
+    FISPDS_AdditionalQuestions = db.relationship('FISPDS_AdditionalQuestions')
+    FISPDS_CharacterReference = db.relationship('FISPDS_CharacterReference')
+    FISPDS_Signature = db.relationship('FISPDS_Signature')
     
     # SUBMODULES
-    Evaluations = db.relationship('Evaluations')
-    Awards = db.relationship('Awards')
-    Qualifications = db.relationship('Qualifications')
-    Publications = db.relationship('Publications')
-    Conferences = db.relationship('Conferences')
-    Announcement = db.relationship('Announcement')
-    Research_Projects = db.relationship('Research_Projects')
-    Advising = db.relationship('Advising')
-    Mentoring = db.relationship('Mentoring')
-    Committee = db.relationship('Committee')
-    Collaboration_Opportunities = db.relationship('Collaboration_Opportunities')
-    Professional_Development = db.relationship('Professional_Development')
-    Feedback = db.relationship('Feedback')
-    Teaching_Activities = db.relationship('Teaching_Activities')
-    Assignment_Types = db.relationship('Assignment_Types')
-    Teaching_Assignments = db.relationship('Teaching_Assignments')
-    Mandatory_Requirements = db.relationship('Mandatory_Requirements')
+    FISEvaluations = db.relationship('FISEvaluations')
+    FISAwards = db.relationship('FISAwards')
+    FISQualifications = db.relationship('FISQualifications')
+    FISPublications = db.relationship('FISPublications')
+    FISConferences = db.relationship('FISConferences')
+    FISAnnouncement = db.relationship('FISAnnouncement')
+    FISResearchProjects = db.relationship('FISResearchProjects')
+    FISAdvising = db.relationship('FISAdvising')
+    FISMentoring = db.relationship('FISMentoring')
+    FISCommittee = db.relationship('FISCommittee')
+    FISCollaborationOpportunities = db.relationship('FISCollaborationOpportunities')
+    FISProfessionalDevelopment = db.relationship('FISProfessionalDevelopment')
+    FISFeedback = db.relationship('FISFeedback')
+    FISTeachingActivities = db.relationship('FISTeachingActivities')
+    FISAssignmentTypes = db.relationship('FISAssignmentTypes')
+    FISTeachingAssignments = db.relationship('FISTeachingAssignments')
+    FISMandatoryRequirements = db.relationship('FISMandatoryRequirements')
     
     # TOKEN
-    Login_Token = db.relationship('Login_Token')
+    FISLoginToken = db.relationship('FISLoginToken')
 
 
     def to_dict(self):
         return {
-            'faculty_account_id': self.faculty_account_id,
-            'faculty_type': self.faculty_type,
-            'rank': self.rank,
-            'units': self.units,
-            'name': self.name,
-            'first_name': self.first_name,
-            'last_name': self.last_name,
-            'middle_name': self.middle_name,
-            'middle_initial': self.middle_initial,
-            'name_extension': self.name_extension,
-            'birth_date': self.birth_date,
-            'date_hired': self.date_hired,
-            'degree': self.degree,
-            'remarks': self.remarks,
-            'faculty_code': self.faculty_code,
-            'honorific': self.honorific,
-            'age': self.age,
-            'email': self.email,
-            'password': self.password,
-            'profile_pic': self.profile_pic,
-            'is_active': self.is_active,
+            'FacultyId': self.FacultyId,
+            'FacultyType': self.FacultyType,
+            'Rank': self.Rank,
+            'Units': self.Units,
+            'Name': self.Name,
+            'FirstName': self.FirstName,
+            'LastName': self.LastName,
+            'MiddleName': self.MiddleName,
+            'MiddleInitial': self.MiddleInitial,
+            'NameExtension': self.NameExtension,
+            'BirthDate': self.BirthDate,
+            'DateHired': self.DateHired,
+            'Degree': self.Degree,
+            'Remarks': self.Remarks,
+            'FacultyCode': self.FacultyCode,
+            'Honorific': self.Honorific,
+            'Age': self.Age,
+
+            'Email': self.Email,
+            'ResidentialAddress': self.ResidentialAddress,
+            'MobileNumber': self.MobileNumber,
+            'Gender': self.Gender,
+            
+            'Password': self.Password,
+            'ProfilePic': self.ProfilePic,
+            'IsActive': self.IsActive,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at,
     
             # FOREIGN TABLES
             
             # PDS
-            'PDS_Personal_Details': self.PDS_Personal_Details,
-            'PDS_Contact_Details': self.PDS_Contact_Details,
-            'PDS_Family_Background': self.PDS_Family_Background,
-            'PDS_Educational_Background': self.PDS_Educational_Background,
-            'PDS_Eligibity': self.PDS_Eligibity,
-            'PDS_Work_Experience': self.PDS_Work_Experience,
-            'PDS_Voluntary_Work': self.PDS_Voluntary_Work,
-            'PDS_Training_Seminars': self.PDS_Training_Seminars,
-            'PDS_Outstanding_Achievements': self.PDS_Outstanding_Achievements,
-            'PDS_OfficeShips_Memberships': self.PDS_OfficeShips_Memberships,
-            'PDS_Agency_Membership': self.PDS_Agency_Membership,
-            'PDS_Teacher_Information': self.PDS_Teacher_Information,
-            'PDS_Additional_Questions': self.PDS_Additional_Questions,
-            'PDS_Character_Reference': self.PDS_Character_Reference,
-            'PDS_Signature': self.PDS_Signature,
+            'FISPDS_PersonalDetails': self.FISPDS_PersonalDetails,
+            'FISPDS_ContactDetails': self.FISPDS_ContactDetails,
+            'FISPDS_FamilyBackground': self.FISPDS_FamilyBackground,
+            'FISPDS_EducationalBackground': self.FISPDS_EducationalBackground,
+            'FISPDS_Eligibity': self.FISPDS_Eligibity,
+            'FISPDS_WorkExperience': self.FISPDS_WorkExperience,
+            'FISPDS_VoluntaryWork': self.FISPDS_VoluntaryWork,
+            'FISPDS_TrainingSeminars': self.FISPDS_TrainingSeminars,
+            'FISPDS_OutstandingAchievements': self.FISPDS_OutstandingAchievements,
+            'FISPDS_OfficeShipsMemberships': self.FISPDS_OfficeShipsMemberships,
+            'FISPDS_AgencyMembership': self.FISPDS_AgencyMembership,
+            'FISPDS_TeacherInformation': self.FISPDS_TeacherInformation,
+            'FISPDS_AdditionalQuestions': self.FISPDS_AdditionalQuestions,
+            'FISPDS_CharacterReference': self.FISPDS_CharacterReference,
+            'FISPDS_Signature': self.FISPDS_Signature,
             
             # SUBMODULES
-            'Evaluations': self.Evaluations,
-            'Awards': self.Awards,
-            'Qualifications': self.Qualifications,
-            'Publications': self.Publications,
-            'Conferences': self.Conferences,
-            'Announcement': self.Announcement,
-            'Research_Projects': self.Research_Projects,
-            'Advising': self.Advising,
-            'Mentoring': self.Mentoring,
-            'Committee': self.Committee,
-            'Collaboration_Opportunities': self.Collaboration_Opportunities,
-            'Professional_Development': self.Professional_Development,
-            'Feedback': self.Feedback,
-            'Teaching_Activities': self.Teaching_Activities,
-            'Assignment_Types': self.Assignment_Types,
-            'Teaching_Assignments': self.Teaching_Assignments,
-            'Mandatory_Requirements': self.Mandatory_Requirements,
+            'FISEvaluations': self.FISEvaluations,
+            'FISAwards': self.FISAwards,
+            'FISQualifications': self.FISQualifications,
+            'FISPublications': self.FISPublications,
+            'FISConferences': self.FISConferences,
+            'FISAnnouncement': self.FISAnnouncement,
+            'FISResearchProjects': self.FISResearchProjects,
+            'FISAdvising': self.FISAdvising,
+            'FISMentoring': self.FISMentoring,
+            'FISCommittee': self.FISCommittee,
+            'FISCollaborationOpportunities': self.FISCollaborationOpportunities,
+            'FISProfessionalDevelopment': self.FISProfessionalDevelopment,
+            'FISFeedback': self.FISFeedback,
+            'FISTeachingActivities': self.FISTeachingActivities,
+            'FISAssignmentTypes': self.FISAssignmentTypes,
+            'FISTeachingAssignments': self.FISTeachingAssignments,
+            'FISMandatoryRequirements': self.FISMandatoryRequirements,
             
-            'Login_Token': self.Login_Token,
+            'FISLoginToken': self.FISLoginToken,
 
             
         }
         
     def get_id(self):
-        return str(self.faculty_account_id)  # Convert to string to ensure compatibility
+        return str(self.FacultyId)  # Convert to string to ensure compatibility
   
 # Admin Profile 
 
-class Admin_Profile(db.Model, UserMixin):
-    __tablename__ = 'Admin_Profile'
-    admin_account_id = db.Column(db.String(50), primary_key=True)  # UserID
-    admin_type = db.Column(db.String(50), nullable=False)  # Faculty Type
-    rank = db.Column(db.String(50))  # Faculty Rank
-    units = db.Column(db.Numeric, nullable=False)  # Faculty Unit
-    name = db.Column(db.String(50), nullable=False)  # Name
-    first_name = db.Column(db.String(50), nullable=False)  # First Name
-    last_name = db.Column(db.String(50), nullable=False)  # Last Name
-    middle_name = db.Column(db.String(50))  # Middle Name
-    middle_initial = db.Column(db.String(50))  # Middle Initial
-    name_extension = db.Column(db.String(50))  # Name Extension
-    birth_date = db.Column(db.Date, nullable=False)  # Birthdate
-    date_hired = db.Column(db.Date, nullable=False)  # Date Hired
-    degree = db.Column(db.String)  # Degree
-    remarks = db.Column(db.String)  # Remarks
-    faculty_code = db.Column(db.Integer, nullable=False)  # Faculty Code
-    honorific = db.Column(db.String(50))  # Honorific
-    age = db.Column(db.Numeric, nullable=False)  # Age
-    email = db.Column(db.String(50), unique=True, nullable=False)  # Email
-    password = db.Column(db.String(128), nullable=False)  # Password
-    profile_pic = db.Column(db.String(50),default="14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08")  # Profile Pic
-    is_active = db.Column(db.Boolean, default=True)    
+class FISAdmin(db.Model, UserMixin):
+    __tableName__ = 'FISAdmin'
+    AdminId = db.Column(db.Integer, primary_key=True, autoincrement=True)  # UserID
+    AdminType = db.Column(db.String(50), nullable=False)  # Faculty Type
+    Rank = db.Column(db.String(50))  # Faculty Rank
+    Units = db.Column(db.Numeric, nullable=False)  # Faculty Unit
+    Name = db.Column(db.String(50), nullable=False)  # Name
+    FirstName = db.Column(db.String(50), nullable=False)  # First Name
+    LastName = db.Column(db.String(50), nullable=False)  # Last Name
+    MiddleName = db.Column(db.String(50))  # Middle Name
+    MiddleInitial = db.Column(db.String(50))  # Middle Initial
+    NameExtension = db.Column(db.String(50))  # Name Extension
+    BirthDate = db.Column(db.Date, nullable=False)  # Birthdate
+    DateHired = db.Column(db.Date, nullable=False)  # Date Hired
+    Degree = db.Column(db.String)  # Degree
+    Remarks = db.Column(db.String)  # Remarks
+    FacultyCode = db.Column(db.Integer, nullable=False)  # Faculty Code
+    Honorific = db.Column(db.String(50))  # Honorific
+    Age = db.Column(db.Numeric, nullable=False)  # Age
+    
+    Email = db.Column(db.String(50), unique=True, nullable=False)  # Email
+    ResidentialAddress = db.Column(db.String(50))  # ResidentialAddress
+    MobileNumber = db.Column(db.String(11))  # MobileNumber
+    Gender = db.Column(db.Integer) # Gender # 1 if Male 2 if Female
+
+    Password = db.Column(db.String(128), nullable=False)  # Password
+    ProfilePic= db.Column(db.String(50),default="14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08")  # Profile Pic
+    IsActive = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)  
     
     # FOREIGN TABLES
     
-    PDS_Personal_Details = db.relationship('PDS_Personal_Details')
-    PDS_Contact_Details = db.relationship('PDS_Contact_Details')
-    PDS_Family_Background = db.relationship('PDS_Family_Background')
-    PDS_Educational_Background = db.relationship('PDS_Educational_Background')
-    PDS_Eligibity = db.relationship('PDS_Eligibity')
-    PDS_Work_Experience = db.relationship('PDS_Work_Experience')
-    PDS_Voluntary_Work = db.relationship('PDS_Voluntary_Work')
-    PDS_Training_Seminars = db.relationship('PDS_Training_Seminars')
-    PDS_Outstanding_Achievements = db.relationship('PDS_Outstanding_Achievements')
-    PDS_OfficeShips_Memberships = db.relationship('PDS_OfficeShips_Memberships')
-    PDS_Agency_Membership = db.relationship('PDS_Agency_Membership')
-    PDS_Teacher_Information = db.relationship('PDS_Teacher_Information')
-    PDS_Additional_Questions = db.relationship('PDS_Additional_Questions')
-    PDS_Character_Reference = db.relationship('PDS_Character_Reference')
-    PDS_Signature = db.relationship('PDS_Signature')
+    FISPDS_PersonalDetails = db.relationship('FISPDS_PersonalDetails')
+    FISPDS_ContactDetails = db.relationship('FISPDS_ContactDetails')
+    FISPDS_FamilyBackground = db.relationship('FISPDS_FamilyBackground')
+    FISPDS_EducationalBackground = db.relationship('FISPDS_EducationalBackground')
+    FISPDS_Eligibity = db.relationship('FISPDS_Eligibity')
+    FISPDS_WorkExperience = db.relationship('FISPDS_WorkExperience')
+    FISPDS_VoluntaryWork = db.relationship('FISPDS_VoluntaryWork')
+    FISPDS_TrainingSeminars = db.relationship('FISPDS_TrainingSeminars')
+    FISPDS_OutstandingAchievements = db.relationship('FISPDS_OutstandingAchievements')
+    FISPDS_OfficeShipsMemberships = db.relationship('FISPDS_OfficeShipsMemberships')
+    FISPDS_AgencyMembership = db.relationship('FISPDS_AgencyMembership')
+    FISPDS_TeacherInformation = db.relationship('FISPDS_TeacherInformation')
+    FISPDS_AdditionalQuestions = db.relationship('FISPDS_AdditionalQuestions')
+    FISPDS_CharacterReference = db.relationship('FISPDS_CharacterReference')
+    FISPDS_Signature = db.relationship('FISPDS_Signature')
     
-    Login_Token = db.relationship('Login_Token')
+    FISLoginToken = db.relationship('FISLoginToken')
     
     def to_dict(self):
         return {
-            'admin_account_id': self.admin_account_id,
-            'admin_type': self.admin_type,
-            'rank': self.rank,
-            'units': self.units,
-            'name': self.name,
-            'first_name': self.first_name,
-            'last_name': self.last_name,
-            'middle_name': self.middle_name,
-            'middle_initial': self.middle_initial,
-            'name_extension': self.name_extension,
-            'birth_date': self.birth_date,
-            'date_hired': self.date_hired,
-            'degree': self.degree,
-            'remarks': self.remarks,
-            'faculty_code': self.faculty_code,
-            'honorific': self.honorific,
-            'age': self.age,
-            'email': self.email,
-            'password': self.password,
-            'profile_pic': self.profile_pic,
-            'is_active': self.is_active,
+            'AdminId': self.AdminId,
+            'AdminType': self.AdminType,
+            'Rank': self.Rank,
+            'Units': self.Units,
+            'Name': self.Name,
+            'FirstName': self.FirstName,
+            'LastName': self.LastName,
+            'MiddleName': self.MiddleName,
+            'MiddleInitial': self.MiddleInitial,
+            'NameExtension': self.NameExtension,
+            'BirthDate': self.BirthDate,
+            'DateHired': self.DateHired,
+            'Degree': self.Degree,
+            'Remarks': self.Remarks,
+            'FacultyCode': self.FacultyCode,
+            'Honorific': self.Honorific,
+            'Age': self.Age,
+
+            'Email': self.Email,
+            'ResidentialAddress': self.ResidentialAddress,
+            'MobileNumber': self.MobileNumber,
+            'Gender': self.Gender,
+            
+            'Password': self.Password,
+            'ProfilePic': self.ProfilePic,
+            'IsActive': self.IsActive,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at,
             
             # PDS FOREIGN TABLES
         
-            'PDS_Personal_Details': self.PDS_Personal_Details,
-            'PDS_Contact_Details': self.PDS_Contact_Details,
-            'PDS_Family_Background': self.PDS_Family_Background,
-            'PDS_Educational_Background': self.PDS_Educational_Background,
-            'PDS_Eligibity': self.PDS_Eligibity,
-            'PDS_Work_Experience': self.PDS_Work_Experience,
-            'PDS_Voluntary_Work': self.PDS_Voluntary_Work,
-            'PDS_Training_Seminars': self.PDS_Training_Seminars,
-            'PDS_Outstanding_Achievements': self.PDS_Outstanding_Achievements,
-            'PDS_OfficeShips_Memberships': self.PDS_OfficeShips_Memberships,
-            'PDS_Agency_Membership': self.PDS_Agency_Membership,
-            'PDS_Teacher_Information': self.PDS_Teacher_Information,
-            'PDS_Additional_Questions': self.PDS_Additional_Questions,
-            'PDS_Character_Reference': self.PDS_Character_Reference,
-            'PDS_Signature': self.PDS_Signature,
+            'FISPDS_PersonalDetails': self.FISPDS_PersonalDetails,
+            'FISPDS_ContactDetails': self.FISPDS_ContactDetails,
+            'FISPDS_FamilyBackground': self.FISPDS_FamilyBackground,
+            'FISPDS_EducationalBackground': self.FISPDS_EducationalBackground,
+            'FISPDS_Eligibity': self.FISPDS_Eligibity,
+            'FISPDS_WorkExperience': self.FISPDS_WorkExperience,
+            'FISPDS_VoluntaryWork': self.FISPDS_VoluntaryWork,
+            'FISPDS_TrainingSeminars': self.FISPDS_TrainingSeminars,
+            'FISPDS_OutstandingAchievements': self.FISPDS_OutstandingAchievements,
+            'FISPDS_OfficeShipsMemberships': self.FISPDS_OfficeShipsMemberships,
+            'FISPDS_AgencyMembership': self.FISPDS_AgencyMembership,
+            'FISPDS_TeacherInformation': self.FISPDS_TeacherInformation,
+            'FISPDS_AdditionalQuestions': self.FISPDS_AdditionalQuestions,
+            'FISPDS_CharacterReference': self.FISPDS_CharacterReference,
+            'FISPDS_Signature': self.FISPDS_Signature,
             
-            'Login_Token': self.Login_Token,
+            'FISLoginToken': self.FISLoginToken,
         }
         
     def get_id(self):
-        return str(self.admin_account_id)  # Convert to string to ensure compatibility
+        return str(self.AdminId)  # Convert to string to ensure compatibility
    
 # SYSTEM ADMIN 
 
 class System_Admin(db.Model, UserMixin):
-    __tablename__ = 'System_Admin'
-    sys_admin_id = db.Column(db.String(50), primary_key=True)  # UserID
-    name = db.Column(db.String(50), nullable=False)  # Name
-    email = db.Column(db.String(50), unique=True, nullable=False)  # Email
-    password = db.Column(db.String(128), nullable=False)  # Password
-    profile_pic = db.Column(db.String(50),default="14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08")  # Profile Pic  
+    __tableName__ = 'System_Admin'
+    SystemAdminId = db.Column(db.String(50), primary_key=True)  # UserID
+    Name = db.Column(db.String(50), nullable=False)  # Name
+    Email = db.Column(db.String(50), unique=True, nullable=False)  # Email
+    Password = db.Column(db.String(128), nullable=False)  # Password
+   
+    ProfilePic = db.Column(db.String(50),default="14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08")  # Profile Pic  
     access_token = db.Column(db.String)
     refresh_token = db.Column(db.String)
     
     def to_dict(self):
         return {
-            'sys_admin_id': self.sys_admin_id,
-            'name': self.name,
-            'email': self.email,
-            'password': self.password,
-            'profile_pic': self.profile_pic,
+            'SystemAdminId': self.SystemAdminId,
+            'Name': self.Name,
+            'Email': self.Email,
+            'Password': self.Password,
+            'ProfilePic': self.ProfilePic,
             'access_token': self.access_token,
             'refresh_token': self.refresh_token,
         }
         
     def get_id(self):
-        return str(self.sys_admin_id)  # Convert to string to ensure compatibility
+        return str(self.SystemAdminId)  # Convert to string to ensure compatibility
 
     
  # PDS Personal Details  
     
-class PDS_Personal_Details(db.Model):
-    __tablename__ = 'PDS_Personal_Details'
+class FISPDS_PersonalDetails(db.Model):
+    __tableName__ = 'FISPDS_PersonalDetails'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     sex = db.Column(db.String(50))  
     gender = db.Column(db.String(50)) 
     height = db.Column(db.Float)
@@ -284,14 +378,14 @@ class PDS_Personal_Details(db.Model):
     city = db.Column(db.String(50)) 
     citizenship = db.Column(db.String(50)) 
     dual_citizenship = db.Column(db.String(50)) 
-    remarks = db.Column(db.String(50)) 
+    Remarks = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
     
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            'AdminId': self.AdminId,
             'sex': self.sex,
             'gender': self.gender,
             'height': self.height,
@@ -304,7 +398,7 @@ class PDS_Personal_Details(db.Model):
             'city': self.city,
             'citizenship': self.citizenship,
             'dual_citizenship': self.dual_citizenship,
-            'remarks': self.remarks,
+            'Remarks': self.Remarks,
             'is_delete': self.is_delete,
             
         }
@@ -314,13 +408,13 @@ class PDS_Personal_Details(db.Model):
 
  # PDS Contact Details  
    
-class PDS_Contact_Details(db.Model):
-    __tablename__ = 'PDS_Contact_Details'
+class FISPDS_ContactDetails(db.Model):
+    __tableName__ = 'FISPDS_ContactDetails'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
-    email = db.Column(db.String(50))  
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    Email = db.Column(db.String(50))  
     mobile_number = db.Column(db.Numeric) 
     perm_country = db.Column(db.String(50))
     perm_region = db.Column(db.String(50))    
@@ -336,16 +430,16 @@ class PDS_Contact_Details(db.Model):
     res_address = db.Column(db.String(50))  
     res_zip_code = db.Column(db.Numeric)  
     res_phone_number = db.Column(db.Numeric) 
-    remarks = db.Column(db.String(50)) 
+    Remarks = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
     
 
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            'admin_account_id': self.admin_account_id,
-            'email': self.email,
+            'FacultyId': self.FacultyId,
+            'AdminId': self.AdminId,
+            'Email': self.Email,
             'mobile_number': self.mobile_number,
             'perm_country': self.perm_country,
             'perm_region': self.perm_region,
@@ -361,7 +455,7 @@ class PDS_Contact_Details(db.Model):
             'res_address': self.res_address,
             'res_zip_code': self.res_zip_code,
             'res_phone_number': self.res_phone_number,
-            'remarks': self.remarks,
+            'Remarks': self.Remarks,
             'is_delete': self.is_delete,
             
         }
@@ -371,23 +465,22 @@ class PDS_Contact_Details(db.Model):
 
 # PDS Family Background  
   
-class PDS_Family_Background(db.Model):
-    __tablename__ = 'PDS_Family_Background'
+class FISPDS_FamilyBackground(db.Model):
+    __tableName__ = 'FISPDS_FamilyBackground'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
-    full_name = db.Column(db.String(50))  
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    full_Name = db.Column(db.String(50))  
     relationship = db.Column(db.String(50))  
     is_delete = db.Column(db.Boolean, default=False) 
     
-
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            'admin_account_id': self.admin_account_id,
-            'full_name': self.full_name,
+            'FacultyId': self.FacultyId,
+            'AdminId': self.AdminId,
+            'full_Name': self.full_Name,
             'relationship': self.relationship,
             'is_delete': self.is_delete,
             
@@ -399,13 +492,13 @@ class PDS_Family_Background(db.Model):
 
 # PDS Educational Background  
   
-class PDS_Educational_Background(db.Model):
-    __tablename__ = 'PDS_Educational_Background'
+class FISPDS_EducationalBackground(db.Model):
+    __tableName__ = 'FISPDS_EducationalBackground'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
-    school_name = db.Column(db.String(50))  
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    school_Name = db.Column(db.String(50))  
     level = db.Column(db.String(50))  
     from_date = db.Column(db.Date) 
     to_date = db.Column(db.Date)  
@@ -415,9 +508,9 @@ class PDS_Educational_Background(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            'admin_account_id': self.admin_account_id,
-            'school_name': self.school_name,
+            'FacultyId': self.FacultyId,
+            'AdminId': self.AdminId,
+            'school_Name': self.school_Name,
             'level': self.level,
             'from_date': self.from_date,
             'to_date': self.to_date,
@@ -431,12 +524,12 @@ class PDS_Educational_Background(db.Model):
     
 # PDS Eligibity  
   
-class PDS_Eligibity(db.Model):
-    __tablename__ = 'PDS_Eligibity'
+class FISPDS_Eligibity(db.Model):
+    __tableName__ = 'FISPDS_Eligibity'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     eligibity = db.Column(db.String(50))  
     rating = db.Column(db.Float, default=0)  
     is_delete = db.Column(db.Boolean, default=False) 
@@ -445,8 +538,8 @@ class PDS_Eligibity(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            'AdminId': self.AdminId,
             'eligibity': self.eligibity,
             'rating': self.rating,
             'is_delete': self.is_delete,
@@ -460,14 +553,14 @@ class PDS_Eligibity(db.Model):
    
 # PDS Work Experience  
   
-class PDS_Work_Experience(db.Model):
-    __tablename__ = 'PDS_Work_Experience'
+class FISPDS_WorkExperience(db.Model):
+    __tableName__ = 'FISPDS_WorkExperience'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     position = db.Column(db.String(50))  
-    company_name = db.Column(db.String(50)) 
+    company_Name = db.Column(db.String(50)) 
     status = db.Column(db.String(50)) 
     from_date = db.Column(db.Date) 
     to_date = db.Column(db.Date)   
@@ -477,10 +570,10 @@ class PDS_Work_Experience(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            'AdminId': self.AdminId,
             'position_title': self.position,
-            'company_name': self.company_name,
+            'company_Name': self.company_Name,
             'status': self.status,
             'from_date': self.from_date,
             'to_date': self.to_date,
@@ -493,12 +586,12 @@ class PDS_Work_Experience(db.Model):
     
 # PDS Voluntary Work  
   
-class PDS_Voluntary_Work(db.Model):
-    __tablename__ = 'PDS_Voluntary_Work'
+class FISPDS_VoluntaryWork(db.Model):
+    __tableName__ = 'FISPDS_VoluntaryWork'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     organization = db.Column(db.String(50))  
     position = db.Column(db.String(50)) 
     from_date = db.Column(db.Date) 
@@ -509,8 +602,8 @@ class PDS_Voluntary_Work(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            'AdminId': self.AdminId,
             'organization': self.organization,
             'position': self.position,
             'from_date': self.from_date,
@@ -525,12 +618,12 @@ class PDS_Voluntary_Work(db.Model):
 
 # PDS Training & Seminars 
   
-class PDS_Training_Seminars(db.Model):
-    __tablename__ = 'PDS_Training_Seminars'
+class FISPDS_TrainingSeminars(db.Model):
+    __tableName__ = 'FISPDS_TrainingSeminars'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     title = db.Column(db.String(50))  
     level = db.Column(db.String(50)) 
     from_date = db.Column(db.Date) 
@@ -541,8 +634,8 @@ class PDS_Training_Seminars(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            'AdminId': self.AdminId,
             'title': self.title,
             'level': self.level,
             'from_date': self.from_date,
@@ -557,12 +650,12 @@ class PDS_Training_Seminars(db.Model):
 
 # PDS Outstanding Achievements
   
-class PDS_Outstanding_Achievements(db.Model):
-    __tablename__ = 'PDS_Outstanding_Achievements'
+class FISPDS_OutstandingAchievements(db.Model):
+    __tableName__ = 'FISPDS_OutstandingAchievements'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     achievement = db.Column(db.String(50))  
     level = db.Column(db.String(50)) 
     date = db.Column(db.Date) 
@@ -572,8 +665,8 @@ class PDS_Outstanding_Achievements(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            'AdminId': self.AdminId,
             'achievement': self.achievement,
             'level': self.level,
             'from_date': self.from_date,
@@ -588,12 +681,12 @@ class PDS_Outstanding_Achievements(db.Model):
 
 # PDS OfficeShips/Memberships
   
-class PDS_OfficeShips_Memberships(db.Model):
-    __tablename__ = 'PDS_OfficeShips_Memberships'
+class FISPDS_OfficeShipsMemberships(db.Model):
+    __tableName__ = 'FISPDS_OfficeShipsMemberships'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     organization = db.Column(db.String(50))  
     position = db.Column(db.String(50)) 
     from_date = db.Column(db.Date) 
@@ -604,8 +697,8 @@ class PDS_OfficeShips_Memberships(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            'AdminId': self.AdminId,
             'organization': self.organization,
             'position': self.position,
             'from_date': self.from_date,
@@ -620,32 +713,32 @@ class PDS_OfficeShips_Memberships(db.Model):
 
 # PDS Agency Membership
   
-class PDS_Agency_Membership(db.Model):
-    __tablename__ = 'PDS_Agency_Membership'
+class FISPDS_AgencyMembership(db.Model):
+    __tableName__ = 'FISPDS_AgencyMembership'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     GSIS = db.Column(db.String(20))  
     PAGIBIG = db.Column(db.String(20)) 
     PHILHEALTH = db.Column(db.String(20)) 
     SSS = db.Column(db.String(20)) 
     TIN = db.Column(db.String(20)) 
-    remarks = db.Column(db.String(50)) 
+    Remarks = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
     
 
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            'AdminId': self.AdminId,
             'GSIS': self.GSIS,
             'PAGIBIG': self.PAGIBIG,
             'PHILHEALTH': self.PHILHEALTH,
             'SSS': self.SSS,
             'TIN': self.TIN,
-            'remarks': self.remarks,
+            'Remarks': self.Remarks,
             'is_delete': self.is_delete,
             
         }
@@ -656,12 +749,12 @@ class PDS_Agency_Membership(db.Model):
 
 # PDS Teacher Information
   
-class PDS_Teacher_Information(db.Model):
-    __tablename__ = 'PDS_Teacher_Information'
+class FISPDS_TeacherInformation(db.Model):
+    __tableName__ = 'FISPDS_TeacherInformation'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     information = db.Column(db.String(50)) 
     type = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
@@ -670,8 +763,8 @@ class PDS_Teacher_Information(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            'AdminId': self.AdminId,
             'information': self.information,
             'type': self.type,
             'is_delete': self.is_delete,
@@ -684,12 +777,12 @@ class PDS_Teacher_Information(db.Model):
 
 # PDS Additional Questions
   
-class PDS_Additional_Questions(db.Model):
-    __tablename__ = 'PDS_Additional_Questions'
+class FISPDS_AdditionalQuestions(db.Model):
+    __tableName__ = 'FISPDS_AdditionalQuestions'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     
     q1_a = db.Column(db.String(50)) 
     q1_a_details = db.Column(db.String(50)) 
@@ -733,8 +826,8 @@ class PDS_Additional_Questions(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            'AdminId': self.AdminId,
             
             'q1_a': self.q1_a,
             'q1_a_details': self.q1_a_details,
@@ -781,22 +874,22 @@ class PDS_Additional_Questions(db.Model):
     
 # PDS Character Reference
   
-class PDS_Character_Reference(db.Model):
-    __tablename__ = 'PDS_Character_Reference'
+class FISPDS_CharacterReference(db.Model):
+    __tableName__ = 'FISPDS_CharacterReference'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
-    full_name = db.Column(db.String(50)) 
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    full_Name = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
     
 
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            'admin_account_id': self.admin_account_id,
-            'full_name': self.full_name,
+            'FacultyId': self.FacultyId,
+            'AdminId': self.AdminId,
+            'full_Name': self.full_Name,
             'is_delete': self.is_delete,
             
         }
@@ -807,12 +900,12 @@ class PDS_Character_Reference(db.Model):
    
 # PDS Signature
   
-class PDS_Signature(db.Model):
-    __tablename__ = 'PDS_Signature'
+class FISPDS_Signature(db.Model):
+    __tableName__ = 'FISPDS_Signature'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     wet_signature = db.Column(db.String(50)) 
     dict_certificate = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
@@ -821,8 +914,8 @@ class PDS_Signature(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            'AdminId': self.AdminId,
             'wet_signature': self.wet_signature,
             'dict_certificate': self.dict_certificate,
             'is_delete': self.is_delete
@@ -834,12 +927,12 @@ class PDS_Signature(db.Model):
    
 # LOGIN TOKEN
   
-class Login_Token(db.Model):
-    __tablename__ = 'Login_Token'
+class FISLoginToken(db.Model):
+    __tableName__ = 'FISLoginToken'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     access_token = db.Column(db.String)
     refresh_token = db.Column(db.String)
     is_delete = db.Column(db.Boolean, default=False) 
@@ -847,8 +940,8 @@ class Login_Token(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            'AdminId': self.AdminId,
             'access_token': self.access_token,
             'refresh_token': self.refresh_token,
             'is_delete': self.is_delete
@@ -861,24 +954,24 @@ class Login_Token(db.Model):
 # FACULTY AND ADMIN SUBMODULES
 
 # ------------------------------------------------
-# EVALUATIONS
+# FISEVALUATIONS
   
-class Evaluations(db.Model):
-    __tablename__ = 'Evaluations'
+class FISEvaluations(db.Model):
+    __tableName__ = 'FISEvaluations'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    # admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
-    feedback = db.Column(db.String) 
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    FISfeedback = db.Column(db.String) 
     is_delete = db.Column(db.Boolean, default=False) 
     
 
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            # 'admin_account_id': self.admin_account_id,
-            'feedback': self.feedback,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
+            'FISfeedback': self.FISfeedback,
             'is_delete': self.is_delete
         }
         
@@ -888,15 +981,15 @@ class Evaluations(db.Model):
 # ------------------------------------------------
 
 # ------------------------------------------------
-# AWARDS
+# FISAWARDS
   
-class Awards(db.Model):
-    __tablename__ = 'Awards'
+class FISAwards(db.Model):
+    __tableName__ = 'FISAwards'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    # admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
-    award_name = db.Column(db.String) 
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    award_Name = db.Column(db.String) 
     date_received = db.Column(db.Date)
     is_delete = db.Column(db.Boolean, default=False) 
     
@@ -904,9 +997,9 @@ class Awards(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            # 'admin_account_id': self.admin_account_id,
-            'award_name': self.award_name,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
+            'award_Name': self.award_Name,
             'date_received': self.date_received,
             'is_delete': self.is_delete
         }
@@ -917,15 +1010,15 @@ class Awards(db.Model):
 # ------------------------------------------------
 
 # ------------------------------------------------
-# QUALIFICATIONS
+# FISQUALIFICATIONS
   
-class Qualifications(db.Model):
-    __tablename__ = 'Qualifications'
+class FISQualifications(db.Model):
+    __tableName__ = 'FISQualifications'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    # admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
-    degree = db.Column(db.String(50)) 
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    Degree = db.Column(db.String(50)) 
     certification = db.Column(db.String(50)) 
     area_expertise = db.Column(db.String) 
     is_delete = db.Column(db.Boolean, default=False) 
@@ -934,9 +1027,9 @@ class Qualifications(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            # 'admin_account_id': self.admin_account_id,
-            'degree': self.degree,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
+            'Degree': self.Degree,
             'certification': self.certification,
             'area_expertise': self.area_expertise,
             'is_delete': self.is_delete
@@ -948,14 +1041,14 @@ class Qualifications(db.Model):
 # ------------------------------------------------
 
 # ------------------------------------------------
-# PUBLICATIONS
+# FISPUBLICATIONS
   
-class Publications(db.Model):
-    __tablename__ = 'Publications'
+class FISPublications(db.Model):
+    __tableName__ = 'FISPublications'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    # admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     title = db.Column(db.String(50)) 
     type = db.Column(db.String(50)) 
     date_published = db.Column(db.Date)
@@ -965,8 +1058,8 @@ class Publications(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            # 'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
             'title': self.title,
             'type': self.type,
             'date_published': self.date_published,
@@ -979,15 +1072,15 @@ class Publications(db.Model):
 # ------------------------------------------------
 
 # ------------------------------------------------
-# CONFERENCES
+# FISCONFERENCES
   
-class Conferences(db.Model):
-    __tablename__ = 'Conferences'
+class FISConferences(db.Model):
+    __tableName__ = 'FISConferences'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    # admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
-    conference_name = db.Column(db.String(50)) 
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    conference_Name = db.Column(db.String(50)) 
     date = db.Column(db.Date)
     is_delete = db.Column(db.Boolean, default=False) 
     
@@ -995,9 +1088,9 @@ class Conferences(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            # 'admin_account_id': self.admin_account_id,
-            'conference_name': self.conference_name,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
+            'conference_Name': self.conference_Name,
             'date': self.date,
             'is_delete': self.is_delete
         }
@@ -1008,14 +1101,14 @@ class Conferences(db.Model):
 # ------------------------------------------------
 
 # ------------------------------------------------
-# ANNOUNCEMENT
+# FISANNOUNCEMENT
   
-class Announcement(db.Model):
-    __tablename__ = 'Announcement'
+class FISAnnouncement(db.Model):
+    __tableName__ = 'FISAnnouncement'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    # admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     title = db.Column(db.String(50)) 
     content = db.Column(db.String) 
     date = db.Column(db.Date)
@@ -1025,8 +1118,8 @@ class Announcement(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            # 'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
             'title': self.title,
             'content': self.content,
             'date': self.date,
@@ -1041,12 +1134,12 @@ class Announcement(db.Model):
 # ------------------------------------------------
 # RESEARCH PROJECTS
   
-class Research_Projects(db.Model):
-    __tablename__ = 'Research_Projects'
+class FISResearchProjects(db.Model):
+    __tableName__ = 'FISResearchProjects'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    # admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     project_title = db.Column(db.String(50)) 
     status = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
@@ -1055,8 +1148,8 @@ class Research_Projects(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            # 'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
             'project_title': self.project_title,
             'status': self.status,
             'is_delete': self.is_delete
@@ -1068,14 +1161,14 @@ class Research_Projects(db.Model):
 # ------------------------------------------------
 
 # ------------------------------------------------
-# ADVISING
+# FISADVISING
   
-class Advising(db.Model):
-    __tablename__ = 'Advising'
+class FISAdvising(db.Model):
+    __tableName__ = 'FISAdvising'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    # admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     student_id = db.Column(db.String(50)) 
     role = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
@@ -1084,8 +1177,8 @@ class Advising(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            # 'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
             'student_id': self.student_id,
             'role': self.role,
             'is_delete': self.is_delete
@@ -1097,14 +1190,14 @@ class Advising(db.Model):
 # ------------------------------------------------
 
 # ------------------------------------------------
-# MENTORING
+# FISMENTORING
   
-class Mentoring(db.Model):
-    __tablename__ = 'Mentoring'
+class FISMentoring(db.Model):
+    __tableName__ = 'FISMentoring'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    # admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     year = db.Column(db.String(50)) 
     course = db.Column(db.String(50)) 
     section = db.Column(db.String(50)) 
@@ -1116,8 +1209,8 @@ class Mentoring(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            # 'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
             'year': self.year,
             'course': self.course,
             'section': self.section,
@@ -1132,15 +1225,15 @@ class Mentoring(db.Model):
 # ------------------------------------------------
 
 # ------------------------------------------------
-# COMMITTEES
+# FISCOMMITTEES
   
-class Committee(db.Model):
-    __tablename__ = 'Committee'
+class FISCommittee(db.Model):
+    __tableName__ = 'FISCommittee'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    # admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
-    committee_name = db.Column(db.String(50)) 
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    FIScommittee_Name = db.Column(db.String(50)) 
     role = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
     
@@ -1148,9 +1241,9 @@ class Committee(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            # 'admin_account_id': self.admin_account_id,
-            'committee_name': self.committee_name,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
+            'FIScommittee_Name': self.FIScommittee_Name,
             'role': self.role,
             'is_delete': self.is_delete
         }
@@ -1163,12 +1256,12 @@ class Committee(db.Model):
 # ------------------------------------------------
 # COLLABORATION AND OPPORTUNITIES
   
-class Collaboration_Opportunities(db.Model):
-    __tablename__ = 'Collaboration_Opportunities'
+class FISCollaborationOpportunities(db.Model):
+    __tableName__ = 'FISCollaborationOpportunities'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    # admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     description = db.Column(db.String) 
     funding_source = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
@@ -1177,8 +1270,8 @@ class Collaboration_Opportunities(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            # 'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
             'description': self.description,
             'funding_source': self.funding_source,
             'is_delete': self.is_delete
@@ -1192,12 +1285,12 @@ class Collaboration_Opportunities(db.Model):
 # ------------------------------------------------
 # PROFESSIONAL DEVELOPMENT
   
-class Professional_Development(db.Model):
-    __tablename__ = 'Professional_Development'
+class FISProfessionalDevelopment(db.Model):
+    __tableName__ = 'FISProfessionalDevelopment'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    # admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     activity_type = db.Column(db.String(50)) 
     description = db.Column(db.String) 
     date = db.Column(db.Date) 
@@ -1207,8 +1300,8 @@ class Professional_Development(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            # 'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
             'activity_type': self.activity_type,
             'description': self.description,
             'date': self.date,
@@ -1221,15 +1314,15 @@ class Professional_Development(db.Model):
 # ------------------------------------------------
 
 # ------------------------------------------------
-# FEEDBACK
+# FISFEEDBACK
   
-class Feedback(db.Model):
-    __tablename__ = 'Feedback'
+class FISFeedback(db.Model):
+    __tableName__ = 'FISFeedback'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    # admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
-    feedback_type = db.Column(db.String(50)) 
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    FISfeedback_type = db.Column(db.String(50)) 
     content = db.Column(db.String) 
     is_delete = db.Column(db.Boolean, default=False) 
     
@@ -1237,10 +1330,10 @@ class Feedback(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            # 'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
             'activity_type': self.activity_type,
-            'feedback_type': self.feedback_type,
+            'FISfeedback_type': self.FISfeedback_type,
             'content': self.content,
             'is_delete': self.is_delete
         }
@@ -1253,12 +1346,12 @@ class Feedback(db.Model):
 # ------------------------------------------------
 # TEACHING ACTIVITIES
   
-class Teaching_Activities(db.Model):
-    __tablename__ = 'Teaching_Activities'
+class FISTeachingActivities(db.Model):
+    __tableName__ = 'FISTeachingActivities'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    # admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     code = db.Column(db.String(50)) 
     course = db.Column(db.String(50)) 
     section = db.Column(db.String(50)) 
@@ -1270,8 +1363,8 @@ class Teaching_Activities(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            # 'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
             'code': self.code,
             'course': self.course,
             'section': self.section,
@@ -1288,12 +1381,12 @@ class Teaching_Activities(db.Model):
 # ------------------------------------------------
 # ASSIGNMENT TYPES
   
-class Assignment_Types(db.Model):
-    __tablename__ = 'Assignment_Types'
+class FISAssignmentTypes(db.Model):
+    __tableName__ = 'FISAssignmentTypes'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True) # FacultyID
-    # admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True) # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     course = db.Column(db.String(50)) 
     section = db.Column(db.String(50)) 
     subject = db.Column(db.String(50)) 
@@ -1304,8 +1397,8 @@ class Assignment_Types(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            # 'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
             'course': self.course,
             'section': self.section,
             'subject': self.subject,
@@ -1321,12 +1414,12 @@ class Assignment_Types(db.Model):
 # ------------------------------------------------
 # TEACHING ASSIGNMENTS
   
-class Teaching_Assignments(db.Model):
-    __tablename__ = 'Teaching_Assignments'
+class FISTeachingAssignments(db.Model):
+    __tableName__ = 'FISTeachingAssignments'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    # admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     semester = db.Column(db.String(50)) 
     code = db.Column(db.String(50)) 
     course = db.Column(db.String(50)) 
@@ -1340,8 +1433,8 @@ class Teaching_Assignments(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            # 'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
             'semester': self.semester,
             'code': self.code,
             'course': self.course,
@@ -1360,12 +1453,12 @@ class Teaching_Assignments(db.Model):
 # ------------------------------------------------
 # MANDATORY REQUIREMENTS
   
-class Mandatory_Requirements(db.Model):
-    __tablename__ = 'Mandatory_Requirements'
+class FISMandatoryRequirements(db.Model):
+    __tableName__ = 'FISMandatoryRequirements'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
-    faculty_account_id = db.Column(db.String(50), db.ForeignKey('Faculty_Profile.faculty_account_id'), nullable=True)  # FacultyID
-    # admin_account_id = db.Column(db.String(50), db.ForeignKey('Admin_Profile.admin_account_id'), nullable=True)  # AdminID 
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID 
     requirement_item = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
     
@@ -1373,8 +1466,8 @@ class Mandatory_Requirements(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'faculty_account_id': self.faculty_account_id,
-            # 'admin_account_id': self.admin_account_id,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
             'requirement_item': self.requirement_item,
             'is_delete': self.is_delete
         }
@@ -1389,7 +1482,7 @@ def init_db(app):
     db.init_app(app)
     with app.app_context():
         inspector = inspect(db.engine)
-        if not inspector.has_table('Faculty_Profile'):
+        if not inspector.has_table('FISFaculty'):
             db.create_all()
             # create_sample_data()
         
@@ -1397,74 +1490,74 @@ def init_db(app):
 # # INSERTING DATA
 # def create_sample_data():
         
-#  # Create and insert Faculty_Profile
+#  # Create and insert FISFaculty
  
-# #     faculty_sample1 = Faculty_Profile(
-# #         faculty_account_id='2020-00072-D-1',
-# #         faculty_type='Full Time',
-# #         rank='Associate Professor II',
-# #         units = 8,
-# #         name='Alma Matter',
-# #         first_name='Palma',
-# #         last_name='Matter',
-# #         middle_name='Bryant',
-# #         middle_initial='B',
-# #         name_extension='',
-# #         birth_date= datetime.now(timezone.utc),
-# #         date_hired= datetime.now(timezone.utc),
-# #         degree='Bachelor of Science in Computer Science',
-# #         remarks='',
-# #         faculty_code=91801,
-# #         honorific='N/A',
-# #         age=35,
-# #         email='alma123@gmail.com',
-# #         password=generate_password_hash('alma123'),
+# #     faculty_sample1 = FISFaculty(
+# #         FacultyId='2020-00072-D-1',
+# #         FacultyType='Full Time',
+# #         Rank='Associate Professor II',
+# #         Units = 8,
+# #         Name='Alma Matter',
+# #         FirstName='Palma',
+# #         LastName='Matter',
+# #         MiddleName='Bryant',
+# #         MiddleInitial='B',
+# #         NameExtension='',
+# #         BirthDate= datetime.now(timezone.utc),
+# #         DateHired= datetime.now(timezone.utc),
+# #         Degree='Bachelor of Science in Computer Science',
+# #         Remarks='',
+# #         FacultyCode=91801,
+# #         Honorific='N/A',
+# #         Age=35,
+# #         Email='alma123@gmail.com',
+# #         Password=generate_Password_hash('alma123'),
 # #         # Add more attributes here
 # #         )
     
-# #     faculty_sample2 = Faculty_Profile(
-# #         faculty_account_id='2020-00073-D-1',
-# #         faculty_type='Part Time',
-# #         rank='Instructor I',
-# #         units = 6,
-# #         name='Andrew Bardoquillo',
-# #         first_name='Andrew',
-# #         last_name='Bardoquillo',
-# #         middle_name='Lucero',
-# #         middle_initial='L',
-# #         name_extension='',
-# #         birth_date= datetime.now(timezone.utc),
-# #         date_hired= datetime.now(timezone.utc),
-# #         degree='Master in Business Administration',
-# #         remarks='',
-# #         faculty_code=51295,
-# #         honorific='N/A',
-# #         age=26,
-# #         email='robertandrewb.up@gmail.com',
-# #         password=generate_password_hash('plazma@123'),
+# #     faculty_sample2 = FISFaculty(
+# #         FacultyId='2020-00073-D-1',
+# #         FacultyType='Part Time',
+# #         Rank='Instructor I',
+# #         Units = 6,
+# #         Name='Andrew Bardoquillo',
+# #         FirstName='Andrew',
+# #         LastName='Bardoquillo',
+# #         MiddleName='Lucero',
+# #         MiddleInitial='L',
+# #         NameExtension='',
+# #         BirthDate= datetime.now(timezone.utc),
+# #         DateHired= datetime.now(timezone.utc),
+# #         Degree='Master in Business Administration',
+# #         Remarks='',
+# #         FacultyCode=51295,
+# #         Honorific='N/A',
+# #         Age=26,
+# #         Email='robertandrewb.up@gmail.com',
+# #         Password=generate_Password_hash('plazma@123'),
 # #         # Add more attributes here
 # #         ) 
     
-# #     faculty_sample3 = Faculty_Profile(
-# #         faculty_account_id='2020-00076-D-4',
-# #         faculty_type='Full Time',
-# #         rank='Instructor III',
-# #         units = 12,
-# #         name='Jason Derbis',
-# #         first_name='Jason',
-# #         last_name='Derbis',
-# #         middle_name='Lucero',
-# #         middle_initial='L',
-# #         name_extension='Jr.',
-# #         birth_date= datetime.now(timezone.utc),
-# #         date_hired= datetime.now(timezone.utc),
-# #         degree='Master In Information Technology',
-# #         remarks='N/A',
-# #         faculty_code=81214,
-# #         honorific='N/A',
-# #         age=29,
-# #         email='sample123@gmail.com',
-# #         password=generate_password_hash('plazma@123'),
+# #     faculty_sample3 = FISFaculty(
+# #         FacultyId='2020-00076-D-4',
+# #         FacultyType='Full Time',
+# #         Rank='Instructor III',
+# #         Units = 12,
+# #         Name='Jason Derbis',
+# #         FirstName='Jason',
+# #         LastName='Derbis',
+# #         MiddleName='Lucero',
+# #         MiddleInitial='L',
+# #         NameExtension='Jr.',
+# #         BirthDate= datetime.now(timezone.utc),
+# #         DateHired= datetime.now(timezone.utc),
+# #         Degree='Master In Information Technology',
+# #         Remarks='N/A',
+# #         FacultyCode=81214,
+# #         Honorific='N/A',
+# #         Age=29,
+# #         Email='sample123@gmail.com',
+# #         Password=generate_Password_hash('plazma@123'),
 # #         # Add more attributes here
 # #         ) 
   

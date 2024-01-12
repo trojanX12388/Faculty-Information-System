@@ -29,7 +29,7 @@ from .models import db
 from sqlalchemy import update
 
 # LOADING MODEL CLASSES
-from .models import Faculty_Profile, Admin_Profile, Login_Token
+from .models import FISFaculty, FISAdmin, FISLoginToken
 
 
 # LOAD JWT MODULE
@@ -103,7 +103,7 @@ def facultyL():
         password = request.form.get('password')
 
         entry = session['entry']
-        User = Faculty_Profile.query.filter_by(email=email).first()
+        User = FISFaculty.query.filter_by(Email=email).first()
 
         if not User:
             flash('Incorrect email or password!', category='error')
@@ -112,23 +112,23 @@ def facultyL():
             month = int(month)
             day = int(day)
                 
-            if check_password_hash(User.password,password) and User.birth_date.year == year and User.birth_date.month == month and User.birth_date.day == day:
+            if check_password_hash(User.Password,password) and User.birth_date.year == year and User.birth_date.month == month and User.birth_date.day == day:
                     login_user(User, remember=False)
                     access_token = generate_access_token(User.faculty_account_id)
                     refresh_token = generate_refresh_token(User.faculty_account_id)
                     
-                    if Login_Token.query.filter_by(faculty_account_id=current_user.faculty_account_id).first():
-                        u = update(Login_Token)
+                    if FISLoginToken.query.filter_by(faculty_account_id=current_user.faculty_account_id).first():
+                        u = update(FISLoginToken)
                         u = u.values({"access_token": access_token,
                                     "refresh_token": refresh_token
                                     })
-                        u = u.where(Login_Token.faculty_account_id == User.faculty_account_id)
+                        u = u.where(FISLoginToken.faculty_account_id == User.faculty_account_id)
                         db.session.execute(u)
                         db.session.commit()
                         db.session.close()
                         
                     else:
-                        add_record = Login_Token(   access_token = access_token,
+                        add_record = FISLoginToken(   access_token = access_token,
                                                     refresh_token = refresh_token,
                                                     faculty_account_id = current_user.faculty_account_id)
                     
@@ -168,7 +168,7 @@ def reset_entry():
 def facultyH():
         
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+        username = FISFaculty.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
         
         if username.profile_pic == None:
             profile_pic=profile_default
@@ -203,12 +203,12 @@ def login_error_modal():
 def Logout():
     
     # # REVOKE USER TOKEN FROM ALL BROWSERS
-    # token_list = current_user.Login_Token  # This returns a list of Login_Token objects
+    # token_list = current_user.FISLoginToken  # This returns a list of FISLoginToken objects
     # if token_list:
     #     # Access the first token from the list
     #     token_id = token_list[0].id  # Assuming you want the first token
-    #     user_token = Login_Token.query.filter_by(id=token_id, faculty_account_id=current_user.faculty_account_id).first()
-    #     # Now 'user_token' should contain the specific Login_Token object
+    #     user_token = FISLoginToken.query.filter_by(id=token_id, faculty_account_id=current_user.faculty_account_id).first()
+    #     # Now 'user_token' should contain the specific FISLoginToken object
     #     if user_token:
     #         db.session.delete(user_token)
     #         db.session.commit()
@@ -228,7 +228,7 @@ def Logout():
 @auth.route('/request-reset-pass', methods=["POST"])
 def facultyF():
     email = request.form['resetpass']
-    User = Faculty_Profile.query.filter_by(email=email).first()
+    User = FISFaculty.query.filter_by(email=email).first()
     
     # CHECKING IF ENTERED EMAIL IS NOT IN THE DATABASE
     if request.method == 'POST':
@@ -311,9 +311,9 @@ def facultyRP():
     if request.method == 'POST':
         if password1 == password2:
             # Update
-            u = update(Faculty_Profile)
+            u = update(FISFaculty)
             u = u.values({"password": generate_password_hash(password1)})
-            u = u.where(Faculty_Profile.email == email)
+            u = u.where(FISFaculty.email == email)
             db.session.execute(u)
             db.session.commit()
             db.session.close()
@@ -341,7 +341,7 @@ def adminL():
         password = request.form.get('password')
 
         entry = session['entry']
-        User = Admin_Profile.query.filter_by(email=email).first()
+        User = FISAdmin.query.filter_by(email=email).first()
 
         if not User:
             flash('Incorrect email or password!', category='error')
@@ -355,18 +355,18 @@ def adminL():
                     access_token = generate_access_token(User.admin_account_id)
                     refresh_token = generate_refresh_token(User.admin_account_id)
                     
-                    if Login_Token.query.filter_by(admin_account_id=current_user.admin_account_id).first():
-                        u = update(Login_Token)
+                    if FISLoginToken.query.filter_by(admin_account_id=current_user.admin_account_id).first():
+                        u = update(FISLoginToken)
                         u = u.values({"access_token": access_token,
                                     "refresh_token": refresh_token
                                     })
-                        u = u.where(Login_Token.admin_account_id == User.admin_account_id)
+                        u = u.where(FISLoginToken.admin_account_id == User.admin_account_id)
                         db.session.execute(u)
                         db.session.commit()
                         db.session.close()
                         
                     else:
-                        add_record = Login_Token(   access_token = access_token,
+                        add_record = FISLoginToken(   access_token = access_token,
                                                     refresh_token = refresh_token,
                                                     admin_account_id = current_user.admin_account_id)
                     
@@ -396,7 +396,7 @@ def adminL():
 def adminH():
         
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Admin_Profile.query.filter_by(admin_account_id=current_user.admin_account_id).first() 
+        username = FISAdmin.query.filter_by(admin_account_id=current_user.admin_account_id).first() 
         
         if username.profile_pic == None:
             profile_pic=profile_default
@@ -411,7 +411,7 @@ def adminH():
         else:
             base_url = 'http://127.0.0.1:8000' 
 
-        endpoint = '/api/all/Faculty_Profile'
+        endpoint = '/api/all/FISFaculty'
         url = f'{base_url}{endpoint}'
         
         api_key = selected_token
@@ -534,8 +534,8 @@ def adminH():
         total_assocProfs  = total_assocProf_I+total_assocProf_II+total_assocProf_III+total_assocProf_IV+total_assocProf_V
      
         def count_faculty_tokens_with_account_ids(session: Session):
-            # Counting Login_Token entries where faculty_account_id is not null
-            count = session.query(func.count()).filter(Login_Token.faculty_account_id.isnot(None)).scalar()
+            # Counting FISLoginToken entries where faculty_account_id is not null
+            count = session.query(func.count()).filter(FISLoginToken.faculty_account_id.isnot(None)).scalar()
             return count
         
         db = SessionLocal()  # Assuming you have your session initialized
@@ -607,7 +607,7 @@ def adminH():
 @Check_Token
 def admin_viewFM(faculty_id):
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-    username = Admin_Profile.query.filter_by(admin_account_id=current_user.admin_account_id).first() 
+    username = FISAdmin.query.filter_by(admin_account_id=current_user.admin_account_id).first() 
     
     if username.profile_pic == None:
         profile_pic=profile_default
@@ -622,7 +622,7 @@ def admin_viewFM(faculty_id):
     else:
         base_url = 'http://127.0.0.1:8000' 
 
-    endpoint = '/api/Faculty_Profile/'+faculty_id
+    endpoint = '/api/FISFaculty/'+faculty_id
     url = f'{base_url}{endpoint}'
     
     api_key = selected_token
@@ -640,13 +640,13 @@ def admin_viewFM(faculty_id):
         # Process the API response data
         api_data = response.json()
 
-    date_string = api_data['Faculty_Profile']['birth_date']
+    date_string = api_data['FISFaculty']['birth_date']
 
     # Parse the string into a datetime object
     date_object = datetime.datetime.strptime(date_string, '%a, %d %b %Y %H:%M:%S %Z')
     birth_date = date_object.strftime('%b %d %Y')
     
-    date_string = api_data['Faculty_Profile']['date_hired']
+    date_string = api_data['FISFaculty']['date_hired']
 
     # Parse the string into a datetime object
     date_object = datetime.datetime.strptime(date_string, '%a, %d %b %Y %H:%M:%S %Z')
@@ -655,7 +655,7 @@ def admin_viewFM(faculty_id):
     return render_template("Admin-Home-Page/Faculty/faculty-view.html", 
                            User= username.first_name + " " + username.last_name,
                            user= current_user,
-                           faculty_data = api_data['Faculty_Profile'],
+                           faculty_data = api_data['FISFaculty'],
                            birth_date = birth_date,
                            date_hired = date_hired,
                            profile_pic=profile_pic)
@@ -666,7 +666,7 @@ def admin_viewFM(faculty_id):
 @auth.route('/admin-request-reset-pass', methods=["POST"])
 def adminF():
     email = request.form['resetpass']
-    User = Admin_Profile.query.filter_by(email=email).first()
+    User = FISAdmin.query.filter_by(email=email).first()
     
     # CHECKING IF ENTERED EMAIL IS NOT IN THE DATABASE
     if request.method == 'POST':
@@ -724,9 +724,9 @@ def adminRP():
     if request.method == 'POST':
         if password1 == password2:
             # Update
-            u = update(Admin_Profile)
+            u = update(FISAdmin)
             u = u.values({"password": generate_password_hash(password1)})
-            u = u.where(Admin_Profile.email == email)
+            u = u.where(FISAdmin.email == email)
             db.session.execute(u)
             db.session.commit()
             db.session.close()
@@ -743,12 +743,12 @@ def adminRP():
 def adminLogout():
     
     # # REVOKE USER TOKEN FROM ALL BROWSERS
-    # token_list = current_user.Login_Token  # This returns a list of Login_Token objects
+    # token_list = current_user.FISLoginToken  # This returns a list of FISLoginToken objects
     # if token_list:
     #     # Access the first token from the list
     #     token_id = token_list[0].id  # Assuming you want the first token
-    #     user_token = Login_Token.query.filter_by(id=token_id, faculty_account_id=current_user.faculty_account_id).first()
-    #     # Now 'user_token' should contain the specific Login_Token object
+    #     user_token = FISLoginToken.query.filter_by(id=token_id, faculty_account_id=current_user.faculty_account_id).first()
+    #     # Now 'user_token' should contain the specific FISLoginToken object
     #     if user_token:
     #         db.session.delete(user_token)
     #         db.session.commit()
