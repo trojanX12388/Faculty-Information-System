@@ -50,7 +50,7 @@ def create_app():
     init_db(app)
     
     # LOADING MODEL CLASSES
-    from .models import Faculty_Profile,Admin_Profile
+    from .models import FISFaculty, FISAdmin
     
     # IMPORTING ROUTES
     from .views import views
@@ -97,11 +97,11 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         # Assuming the user ID is unique across both Faculty and Admin tables
-        faculty_user = Faculty_Profile.query.get(str(user_id))
+        faculty_user = FISFaculty.query.get(str(user_id))
         if faculty_user:
             return faculty_user
 
-        admin_user = Admin_Profile.query.get(str(user_id))
+        admin_user = FISAdmin.query.get(str(user_id))
         if admin_user:
             return admin_user
 

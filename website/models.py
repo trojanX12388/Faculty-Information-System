@@ -1,79 +1,14 @@
 from datetime import datetime, timezone
 from sqlalchemy import inspect
-from werkzeug.security import generate_Password_hash
+from werkzeug.security import generate_password_hash
 from flask_login import UserMixin
 
 from .extensions import db
 
-# Faculty Users
-class Faculty(db.Model):
-    __tableName__ = 'FISFaculty' # Set the Name of table in database
-    FacultyId = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    FacultyType = db.Column(db.String(50), nullable=False)  # Faculty Type
-    Rank = db.Column(db.String(50))  # Faculty Rank
-    Units = db.Column(db.Numeric, nullable=False)  # Faculty Unit
-    Name = db.Column(db.String(50), nullable=False)  # Name
-    FirstName = db.Column(db.String(50), nullable=False)  # First Name
-    LastName = db.Column(db.String(50), nullable=False)  # Last Name
-    MiddleName = db.Column(db.String(50))  # Middle Name
-    MiddleInitial = db.Column(db.String(50))  # Middle Initial
-    NameExtension = db.Column(db.String(50))  # Name Extension
-    BirthDate = db.Column(db.Date, nullable=False)  # Birthdate
-    DateHired = db.Column(db.Date, nullable=False)  # Date Hired
-    Degree = db.Column(db.String)  # Degree
-    Remarks = db.Column(db.String)  # Remarks
-    FacultyCode = db.Column(db.Integer, nullable=False)  # Faculty Code
-    Honorific = db.Column(db.String(50))  # Honorific
-    Age = db.Column(db.Numeric, nullable=False)  # Age
-    
-    Email = db.Column(db.String(50), unique=True, nullable=False)  # Email
-    ResidentialAddress = db.Column(db.String(50))  # ResidentialAddress
-    MobileNumber = db.Column(db.String(11))  # MobileNumber
-    Gender = db.Column(db.Integer) # Gender # 1 if Male 2 if Female
-    
-    Password = db.Column(db.String(128), nullable=False)  # Password
-    ProfilePic= db.Column(db.String(50),default="14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08")  # Profile Pic
-    IsActive = db.Column(db.Boolean, default=True)
-    created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
-    
-    # FOREIGN TABLES
-    
-
-    def to_dict(self):
-        return {
-            'FacultyId': self.FacultyId,
-            'FacultyType': self.FacultyType,
-            'Rank': self.Rank,
-            'Units': self.Units,
-            'Name': self.Name,
-            'FirstName': self.FirstName,
-            'LastName': self.LastName,
-            'MiddleName': self.MiddleName,
-            'MiddleInitial': self.MiddleInitial,
-            'NameExtension': self.NameExtension,
-            'BirthDate': self.BirthDate,
-            'DateHired': self.DateHired,
-            'Degree': self.Degree,
-            'Remarks': self.Remarks,
-            'FacultyCode': self.FacultyCode,
-            'Honorific': self.Honorific,
-            'Age': self.Age,
-
-            'Email': self.Email,
-            # 'Password': self.Password,
-            'ProfilePic': self.ProfilePic,
-            'IsActive': self.IsActive,
-        }
-        
-    def get_id(self):
-        return str(self.FacultyId)  # Convert to string to ensure compatibility
-
-
  # Faculty Profile 
 
 class FISFaculty(db.Model, UserMixin):
-    __tableName__ = 'FISFaculty'
+    __tablename__ = 'FISFaculty'
     FacultyId = db.Column(db.Integer, primary_key=True, autoincrement=True)  # UserID
     FacultyType = db.Column(db.String(50), nullable=False)  # Faculty Type
     Rank = db.Column(db.String(50))  # Faculty Rank
@@ -177,7 +112,7 @@ class FISFaculty(db.Model, UserMixin):
             'updated_at': self.updated_at,
     
             # FOREIGN TABLES
-            
+
             # PDS
             'FISPDS_PersonalDetails': self.FISPDS_PersonalDetails,
             'FISPDS_ContactDetails': self.FISPDS_ContactDetails,
@@ -225,7 +160,7 @@ class FISFaculty(db.Model, UserMixin):
 # Admin Profile 
 
 class FISAdmin(db.Model, UserMixin):
-    __tableName__ = 'FISAdmin'
+    __tablename__ = 'FISAdmin'
     AdminId = db.Column(db.Integer, primary_key=True, autoincrement=True)  # UserID
     AdminType = db.Column(db.String(50), nullable=False)  # Faculty Type
     Rank = db.Column(db.String(50))  # Faculty Rank
@@ -332,8 +267,8 @@ class FISAdmin(db.Model, UserMixin):
    
 # SYSTEM ADMIN 
 
-class System_Admin(db.Model, UserMixin):
-    __tableName__ = 'System_Admin'
+class FISSystem_Admin(db.Model, UserMixin):
+    __tableName__ = 'FISSystem_Admin'
     SystemAdminId = db.Column(db.String(50), primary_key=True)  # UserID
     Name = db.Column(db.String(50), nullable=False)  # Name
     Email = db.Column(db.String(50), unique=True, nullable=False)  # Email
@@ -361,7 +296,7 @@ class System_Admin(db.Model, UserMixin):
  # PDS Personal Details  
     
 class FISPDS_PersonalDetails(db.Model):
-    __tableName__ = 'FISPDS_PersonalDetails'
+    __tablename__ = 'FISPDS_PersonalDetails'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -409,7 +344,7 @@ class FISPDS_PersonalDetails(db.Model):
  # PDS Contact Details  
    
 class FISPDS_ContactDetails(db.Model):
-    __tableName__ = 'FISPDS_ContactDetails'
+    __tablename__ = 'FISPDS_ContactDetails'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -466,21 +401,22 @@ class FISPDS_ContactDetails(db.Model):
 # PDS Family Background  
   
 class FISPDS_FamilyBackground(db.Model):
-    __tableName__ = 'FISPDS_FamilyBackground'
+    __tablename__ = 'FISPDS_FamilyBackground'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
-    full_Name = db.Column(db.String(50))  
+    full_name = db.Column(db.String(50))  
     relationship = db.Column(db.String(50))  
     is_delete = db.Column(db.Boolean, default=False) 
     
+
     def to_dict(self):
         return {
             'id': self.id,
             'FacultyId': self.FacultyId,
             'AdminId': self.AdminId,
-            'full_Name': self.full_Name,
+            'full_name': self.full_name,
             'relationship': self.relationship,
             'is_delete': self.is_delete,
             
@@ -493,12 +429,12 @@ class FISPDS_FamilyBackground(db.Model):
 # PDS Educational Background  
   
 class FISPDS_EducationalBackground(db.Model):
-    __tableName__ = 'FISPDS_EducationalBackground'
+    __tablename__ = 'FISPDS_EducationalBackground'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
-    school_Name = db.Column(db.String(50))  
+    school_name = db.Column(db.String(50))  
     level = db.Column(db.String(50))  
     from_date = db.Column(db.Date) 
     to_date = db.Column(db.Date)  
@@ -510,7 +446,7 @@ class FISPDS_EducationalBackground(db.Model):
             'id': self.id,
             'FacultyId': self.FacultyId,
             'AdminId': self.AdminId,
-            'school_Name': self.school_Name,
+            'school_name': self.school_name,
             'level': self.level,
             'from_date': self.from_date,
             'to_date': self.to_date,
@@ -525,7 +461,7 @@ class FISPDS_EducationalBackground(db.Model):
 # PDS Eligibity  
   
 class FISPDS_Eligibity(db.Model):
-    __tableName__ = 'FISPDS_Eligibity'
+    __tablename__ = 'FISPDS_Eligibity'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -554,13 +490,13 @@ class FISPDS_Eligibity(db.Model):
 # PDS Work Experience  
   
 class FISPDS_WorkExperience(db.Model):
-    __tableName__ = 'FISPDS_WorkExperience'
+    __tablename__ = 'FISPDS_WorkExperience'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     position = db.Column(db.String(50))  
-    company_Name = db.Column(db.String(50)) 
+    company_name = db.Column(db.String(50)) 
     status = db.Column(db.String(50)) 
     from_date = db.Column(db.Date) 
     to_date = db.Column(db.Date)   
@@ -573,7 +509,7 @@ class FISPDS_WorkExperience(db.Model):
             'FacultyId': self.FacultyId,
             'AdminId': self.AdminId,
             'position_title': self.position,
-            'company_Name': self.company_Name,
+            'company_name': self.company_name,
             'status': self.status,
             'from_date': self.from_date,
             'to_date': self.to_date,
@@ -587,7 +523,7 @@ class FISPDS_WorkExperience(db.Model):
 # PDS Voluntary Work  
   
 class FISPDS_VoluntaryWork(db.Model):
-    __tableName__ = 'FISPDS_VoluntaryWork'
+    __tablename__ = 'FISPDS_VoluntaryWork'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -619,7 +555,7 @@ class FISPDS_VoluntaryWork(db.Model):
 # PDS Training & Seminars 
   
 class FISPDS_TrainingSeminars(db.Model):
-    __tableName__ = 'FISPDS_TrainingSeminars'
+    __tablename__ = 'FISPDS_TrainingSeminars'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -651,7 +587,7 @@ class FISPDS_TrainingSeminars(db.Model):
 # PDS Outstanding Achievements
   
 class FISPDS_OutstandingAchievements(db.Model):
-    __tableName__ = 'FISPDS_OutstandingAchievements'
+    __tablename__ = 'FISPDS_OutstandingAchievements'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -682,7 +618,7 @@ class FISPDS_OutstandingAchievements(db.Model):
 # PDS OfficeShips/Memberships
   
 class FISPDS_OfficeShipsMemberships(db.Model):
-    __tableName__ = 'FISPDS_OfficeShipsMemberships'
+    __tablename__ = 'FISPDS_OfficeShipsMemberships'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -714,7 +650,7 @@ class FISPDS_OfficeShipsMemberships(db.Model):
 # PDS Agency Membership
   
 class FISPDS_AgencyMembership(db.Model):
-    __tableName__ = 'FISPDS_AgencyMembership'
+    __tablename__ = 'FISPDS_AgencyMembership'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -750,7 +686,7 @@ class FISPDS_AgencyMembership(db.Model):
 # PDS Teacher Information
   
 class FISPDS_TeacherInformation(db.Model):
-    __tableName__ = 'FISPDS_TeacherInformation'
+    __tablename__ = 'FISPDS_TeacherInformation'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -778,7 +714,7 @@ class FISPDS_TeacherInformation(db.Model):
 # PDS Additional Questions
   
 class FISPDS_AdditionalQuestions(db.Model):
-    __tableName__ = 'FISPDS_AdditionalQuestions'
+    __tablename__ = 'FISPDS_AdditionalQuestions'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -875,12 +811,12 @@ class FISPDS_AdditionalQuestions(db.Model):
 # PDS Character Reference
   
 class FISPDS_CharacterReference(db.Model):
-    __tableName__ = 'FISPDS_CharacterReference'
+    __tablename__ = 'FISPDS_CharacterReference'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
-    full_Name = db.Column(db.String(50)) 
+    full_name = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
     
 
@@ -889,7 +825,7 @@ class FISPDS_CharacterReference(db.Model):
             'id': self.id,
             'FacultyId': self.FacultyId,
             'AdminId': self.AdminId,
-            'full_Name': self.full_Name,
+            'full_name': self.full_name,
             'is_delete': self.is_delete,
             
         }
@@ -901,7 +837,7 @@ class FISPDS_CharacterReference(db.Model):
 # PDS Signature
   
 class FISPDS_Signature(db.Model):
-    __tableName__ = 'FISPDS_Signature'
+    __tablename__ = 'FISPDS_Signature'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -928,7 +864,7 @@ class FISPDS_Signature(db.Model):
 # LOGIN TOKEN
   
 class FISLoginToken(db.Model):
-    __tableName__ = 'FISLoginToken'
+    __tablename__ = 'FISLoginToken'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -954,15 +890,15 @@ class FISLoginToken(db.Model):
 # FACULTY AND ADMIN SUBMODULES
 
 # ------------------------------------------------
-# FISEVALUATIONS
+# EVALUATIONS
   
 class FISEvaluations(db.Model):
-    __tableName__ = 'FISEvaluations'
+    __tablename__ = 'FISEvaluations'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
-    FISfeedback = db.Column(db.String) 
+    feedback = db.Column(db.String) 
     is_delete = db.Column(db.Boolean, default=False) 
     
 
@@ -971,7 +907,7 @@ class FISEvaluations(db.Model):
             'id': self.id,
             'FacultyId': self.FacultyId,
             # 'AdminId': self.AdminId,
-            'FISfeedback': self.FISfeedback,
+            'feedback': self.feedback,
             'is_delete': self.is_delete
         }
         
@@ -981,15 +917,15 @@ class FISEvaluations(db.Model):
 # ------------------------------------------------
 
 # ------------------------------------------------
-# FISAWARDS
+# AWARDS
   
 class FISAwards(db.Model):
-    __tableName__ = 'FISAwards'
+    __tablename__ = 'FISAwards'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
-    award_Name = db.Column(db.String) 
+    award_name = db.Column(db.String) 
     date_received = db.Column(db.Date)
     is_delete = db.Column(db.Boolean, default=False) 
     
@@ -999,7 +935,7 @@ class FISAwards(db.Model):
             'id': self.id,
             'FacultyId': self.FacultyId,
             # 'AdminId': self.AdminId,
-            'award_Name': self.award_Name,
+            'award_name': self.award_name,
             'date_received': self.date_received,
             'is_delete': self.is_delete
         }
@@ -1010,10 +946,10 @@ class FISAwards(db.Model):
 # ------------------------------------------------
 
 # ------------------------------------------------
-# FISQUALIFICATIONS
+# QUALIFICATIONS
   
 class FISQualifications(db.Model):
-    __tableName__ = 'FISQualifications'
+    __tablename__ = 'FISQualifications'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -1041,10 +977,10 @@ class FISQualifications(db.Model):
 # ------------------------------------------------
 
 # ------------------------------------------------
-# FISPUBLICATIONS
+# PUBLICATIONS
   
 class FISPublications(db.Model):
-    __tableName__ = 'FISPublications'
+    __tablename__ = 'FISPublications'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -1072,15 +1008,15 @@ class FISPublications(db.Model):
 # ------------------------------------------------
 
 # ------------------------------------------------
-# FISCONFERENCES
+# CONFERENCES
   
 class FISConferences(db.Model):
-    __tableName__ = 'FISConferences'
+    __tablename__ = 'FISConferences'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
-    conference_Name = db.Column(db.String(50)) 
+    conference_name = db.Column(db.String(50)) 
     date = db.Column(db.Date)
     is_delete = db.Column(db.Boolean, default=False) 
     
@@ -1090,7 +1026,7 @@ class FISConferences(db.Model):
             'id': self.id,
             'FacultyId': self.FacultyId,
             # 'AdminId': self.AdminId,
-            'conference_Name': self.conference_Name,
+            'conference_name': self.conference_name,
             'date': self.date,
             'is_delete': self.is_delete
         }
@@ -1101,10 +1037,10 @@ class FISConferences(db.Model):
 # ------------------------------------------------
 
 # ------------------------------------------------
-# FISANNOUNCEMENT
+# ANNOUNCEMENT
   
 class FISAnnouncement(db.Model):
-    __tableName__ = 'FISAnnouncement'
+    __tablename__ = 'FISAnnouncement'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -1135,7 +1071,7 @@ class FISAnnouncement(db.Model):
 # RESEARCH PROJECTS
   
 class FISResearchProjects(db.Model):
-    __tableName__ = 'FISResearchProjects'
+    __tablename__ = 'FISResearchProjects'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -1161,10 +1097,10 @@ class FISResearchProjects(db.Model):
 # ------------------------------------------------
 
 # ------------------------------------------------
-# FISADVISING
+# ADVISING
   
 class FISAdvising(db.Model):
-    __tableName__ = 'FISAdvising'
+    __tablename__ = 'FISAdvising'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -1190,10 +1126,10 @@ class FISAdvising(db.Model):
 # ------------------------------------------------
 
 # ------------------------------------------------
-# FISMENTORING
+# MENTORING
   
 class FISMentoring(db.Model):
-    __tableName__ = 'FISMentoring'
+    __tablename__ = 'FISMentoring'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -1225,15 +1161,15 @@ class FISMentoring(db.Model):
 # ------------------------------------------------
 
 # ------------------------------------------------
-# FISCOMMITTEES
+# COMMITTEES
   
 class FISCommittee(db.Model):
-    __tableName__ = 'FISCommittee'
+    __tablename__ = 'FISCommittee'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
-    FIScommittee_Name = db.Column(db.String(50)) 
+    committee_name = db.Column(db.String(50)) 
     role = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
     
@@ -1243,7 +1179,7 @@ class FISCommittee(db.Model):
             'id': self.id,
             'FacultyId': self.FacultyId,
             # 'AdminId': self.AdminId,
-            'FIScommittee_Name': self.FIScommittee_Name,
+            'committee_name': self.committee_name,
             'role': self.role,
             'is_delete': self.is_delete
         }
@@ -1257,7 +1193,7 @@ class FISCommittee(db.Model):
 # COLLABORATION AND OPPORTUNITIES
   
 class FISCollaborationOpportunities(db.Model):
-    __tableName__ = 'FISCollaborationOpportunities'
+    __tablename__ = 'FISCollaborationOpportunities'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -1286,7 +1222,7 @@ class FISCollaborationOpportunities(db.Model):
 # PROFESSIONAL DEVELOPMENT
   
 class FISProfessionalDevelopment(db.Model):
-    __tableName__ = 'FISProfessionalDevelopment'
+    __tablename__ = 'FISProfessionalDevelopment'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -1314,15 +1250,15 @@ class FISProfessionalDevelopment(db.Model):
 # ------------------------------------------------
 
 # ------------------------------------------------
-# FISFEEDBACK
+# FEEDBACK
   
 class FISFeedback(db.Model):
-    __tableName__ = 'FISFeedback'
+    __tablename__ = 'FISFeedback'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
-    FISfeedback_type = db.Column(db.String(50)) 
+    feedback_type = db.Column(db.String(50)) 
     content = db.Column(db.String) 
     is_delete = db.Column(db.Boolean, default=False) 
     
@@ -1333,7 +1269,7 @@ class FISFeedback(db.Model):
             'FacultyId': self.FacultyId,
             # 'AdminId': self.AdminId,
             'activity_type': self.activity_type,
-            'FISfeedback_type': self.FISfeedback_type,
+            'feedback_type': self.feedback_type,
             'content': self.content,
             'is_delete': self.is_delete
         }
@@ -1347,7 +1283,7 @@ class FISFeedback(db.Model):
 # TEACHING ACTIVITIES
   
 class FISTeachingActivities(db.Model):
-    __tableName__ = 'FISTeachingActivities'
+    __tablename__ = 'FISTeachingActivities'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -1382,7 +1318,7 @@ class FISTeachingActivities(db.Model):
 # ASSIGNMENT TYPES
   
 class FISAssignmentTypes(db.Model):
-    __tableName__ = 'FISAssignmentTypes'
+    __tablename__ = 'FISAssignmentTypes'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True) # FacultyID
@@ -1415,7 +1351,7 @@ class FISAssignmentTypes(db.Model):
 # TEACHING ASSIGNMENTS
   
 class FISTeachingAssignments(db.Model):
-    __tableName__ = 'FISTeachingAssignments'
+    __tablename__ = 'FISTeachingAssignments'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -1454,7 +1390,7 @@ class FISTeachingAssignments(db.Model):
 # MANDATORY REQUIREMENTS
   
 class FISMandatoryRequirements(db.Model):
-    __tableName__ = 'FISMandatoryRequirements'
+    __tablename__ = 'FISMandatoryRequirements'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
@@ -1511,7 +1447,7 @@ def init_db(app):
 # #         Honorific='N/A',
 # #         Age=35,
 # #         Email='alma123@gmail.com',
-# #         Password=generate_Password_hash('alma123'),
+# #         Password=generate_password_hash('alma123'),
 # #         # Add more attributes here
 # #         )
     
@@ -1534,7 +1470,7 @@ def init_db(app):
 # #         Honorific='N/A',
 # #         Age=26,
 # #         Email='robertandrewb.up@gmail.com',
-# #         Password=generate_Password_hash('plazma@123'),
+# #         Password=generate_password_hash('plazma@123'),
 # #         # Add more attributes here
 # #         ) 
     
@@ -1557,7 +1493,7 @@ def init_db(app):
 # #         Honorific='N/A',
 # #         Age=29,
 # #         Email='sample123@gmail.com',
-# #         Password=generate_Password_hash('plazma@123'),
+# #         Password=generate_password_hash('plazma@123'),
 # #         # Add more attributes here
 # #         ) 
   

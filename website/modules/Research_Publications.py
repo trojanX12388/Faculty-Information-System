@@ -17,7 +17,7 @@ from website.models import db
 from sqlalchemy import update
 
 # LOADING MODEL CLASSES
-from website.models import Faculty_Profile
+from website.models import FISFaculty
 
 # LOADING FUNCTION CHECK TOKEN
 from website.Token.token_check import Check_Token
@@ -66,13 +66,13 @@ profile_default='14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08'
 @Check_Token
 def RP_H():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
         
 
-        if username.profile_pic == None:
-            profile_pic=profile_default
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
         else:
-            profile_pic=username.profile_pic
+            ProfilePic=username.ProfilePic
            
         
         # # UPDATE PROFILE BASIC DETAILS
@@ -81,29 +81,29 @@ def RP_H():
 
         #     # UPDATE BASIC DETAILS
         #     # VALUES
-        #     faculty_code = request.form.get('faculty_code')
+        #     FacultyCode = request.form.get('FacultyCode')
         #     honorific = request.form.get('honorific')
 
-        #     u = update(Faculty_Profile)
-        #     u = u.values({"faculty_code": faculty_code,
+        #     u = update(FISFaculty)
+        #     u = u.values({"FacultyCode": FacultyCode,
         #                   "honorific": honorific
         #                   })
-        #     u = u.where(Faculty_Profile.faculty_account_id == current_user.faculty_account_id)
+        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
         #     db.session.execute(u)
         #     db.session.commit()
         #     db.session.close()
         #     return redirect(url_for('PDM.PDM_BD')) 
         
-        gatch = Faculty_Profile.query.filter_by(faculty_account_id='000-000-A-002').first() 
-        dem = Faculty_Profile.query.filter_by(faculty_account_id='000-000-A-004').first() 
-        che = Faculty_Profile.query.filter_by(faculty_account_id='000-000-A-012').first() 
-        drew = Faculty_Profile.query.filter_by(faculty_account_id='2020-00073-D-1').first() 
-        celeste = Faculty_Profile.query.filter_by(faculty_account_id='000-000-A-022').first() 
-        berna = Faculty_Profile.query.filter_by(faculty_account_id='000-000-A-017').first() 
+        gatch = FISFaculty.query.filter_by(FacultyId='000-000-A-002').first() 
+        dem = FISFaculty.query.filter_by(FacultyId='000-000-A-004').first() 
+        che = FISFaculty.query.filter_by(FacultyId='000-000-A-012').first() 
+        drew = FISFaculty.query.filter_by(FacultyId='2020-00073-D-1').first() 
+        celeste = FISFaculty.query.filter_by(FacultyId='000-000-A-022').first() 
+        berna = FISFaculty.query.filter_by(FacultyId='000-000-A-017').first() 
                       
         return render_template("Faculty-Home-Page/Research-Publications/Collaboration-Research-Opportunities.html", 
-                               User= username.first_name + " " + username.last_name,
-                               faculty_code= username.faculty_code,
+                               User= username.FirstName + " " + username.LastName,
+                               faculty_code= username.FacultyCode,
                                user= current_user,
                                gatch = gatch,
                                dem = dem,
@@ -111,7 +111,7 @@ def RP_H():
                                drew = drew,
                                celeste = celeste,
                                berna = berna,
-                               profile_pic=profile_pic,
+                               profile_pic=ProfilePic,
                                RP="show",
                                activate_CRO= "active")
 
@@ -123,13 +123,13 @@ def RP_H():
 @Check_Token
 def RP_T():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
         
 
-        if username.profile_pic == None:
-            profile_pic=profile_default
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
         else:
-            profile_pic=username.profile_pic
+            ProfilePic=username.ProfilePic
            
         
         # # UPDATE PROFILE BASIC DETAILS
@@ -138,24 +138,24 @@ def RP_T():
 
         #     # UPDATE BASIC DETAILS
         #     # VALUES
-        #     faculty_code = request.form.get('faculty_code')
+        #     FacultyCode = request.form.get('FacultyCode')
         #     honorific = request.form.get('honorific')
 
-        #     u = update(Faculty_Profile)
-        #     u = u.values({"faculty_code": faculty_code,
+        #     u = update(FISFaculty)
+        #     u = u.values({"FacultyCode": FacultyCode,
         #                   "honorific": honorific
         #                   })
-        #     u = u.where(Faculty_Profile.faculty_account_id == current_user.faculty_account_id)
+        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
         #     db.session.execute(u)
         #     db.session.commit()
         #     db.session.close()
         #     return redirect(url_for('PDM.PDM_BD')) 
                       
         return render_template("Faculty-Home-Page/Research-Publications/Thesis.html", 
-                               User= username.first_name + " " + username.last_name,
-                               faculty_code= username.faculty_code,
+                               User= username.FirstName + " " + username.LastName,
+                               faculty_code= username.FacultyCode,
                                user= current_user,
-                               profile_pic=profile_pic,
+                               profile_pic=ProfilePic,
                                RP="show",
                                activate_T= "active")
 

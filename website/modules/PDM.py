@@ -20,10 +20,10 @@ from website.models import db
 from sqlalchemy import update
 
 # LOADING MODEL CLASSES
-from website.models import Faculty_Profile
+from website.models import FISFaculty
 
 # LOADING MODEL PDS_TABLES
-from website.models import PDS_Personal_Details, PDS_Contact_Details, PDS_Family_Background, PDS_Educational_Background, PDS_Eligibity, PDS_Work_Experience, PDS_Voluntary_Work, PDS_Training_Seminars, PDS_Outstanding_Achievements, PDS_OfficeShips_Memberships, PDS_Agency_Membership, PDS_Teacher_Information, PDS_Additional_Questions, PDS_Character_Reference,PDS_Signature
+from website.models import FISPDS_PersonalDetails, FISPDS_ContactDetails, FISPDS_FamilyBackground, FISPDS_EducationalBackground, FISPDS_Eligibity, FISPDS_WorkExperience, FISPDS_VoluntaryWork, FISPDS_TrainingSeminars, FISPDS_OutstandingAchievements, FISPDS_OfficeShipsMemberships, FISPDS_AgencyMembership, FISPDS_TeacherInformation, FISPDS_AdditionalQuestions, FISPDS_CharacterReference,FISPDS_Signature
    
 # LOADING FUNCTION CHECK TOKEN
 from website.Token.token_check import Check_Token
@@ -92,13 +92,13 @@ def calculateAge(born):
 @Check_Token
 def PDM_BD():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
         
 
-        if username.profile_pic == None:
-            profile_pic=profile_default
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
         else:
-            profile_pic=username.profile_pic
+            ProfilePic=username.ProfilePic
            
         
         # UPDATE PROFILE BASIC DETAILS
@@ -107,53 +107,53 @@ def PDM_BD():
 
             # UPDATE BASIC DETAILS
             # VALUES
-            faculty_code = request.form.get('faculty_code')
-            honorific = request.form.get('honorific')
-            last_name = request.form.get('last_name')
-            first_name = request.form.get('first_name')
-            middle_name = request.form.get('middle_name')
-            middle_initial = request.form.get('middle_initial')
-            name_extension = request.form.get('name_extension')
-            birth_date = request.form.get('birth_date')
-            date_hired = request.form.get('date_hired')
-            remarks = request.form.get('remarks')
-            name = first_name + " " + last_name
+            FacultyCode = request.form.get('faculty_code')
+            Honorific = request.form.get('honorific')
+            LastName = request.form.get('last_name')
+            FirstName = request.form.get('first_name')
+            MiddleName = request.form.get('middle_name')
+            MiddleInitial = request.form.get('middle_initial')
+            NameExtension = request.form.get('name_extension')
+            BirthDate = request.form.get('birth_date')
+            DateHired = request.form.get('date_hired')
+            Remarks = request.form.get('remarks')
+            Name = FirstName + " " + LastName
 
-            u = update(Faculty_Profile)
-            u = u.values({"faculty_code": faculty_code,
-                          "honorific": honorific,
-                          "last_name": last_name,
-                          "first_name": first_name,
-                          "middle_name": middle_name,
-                          "middle_initial": middle_initial,
-                          "name_extension": name_extension,
-                          "birth_date": birth_date,
-                          "date_hired": date_hired,
-                          "remarks": remarks,
-                          "name": name
+            u = update(FISFaculty)
+            u = u.values({"FacultyCode": FacultyCode,
+                          "Honorific": Honorific,
+                          "LastName": LastName,
+                          "FirstName": FirstName,
+                          "MiddleName": MiddleName,
+                          "MiddleInitial": MiddleInitial,
+                          "NameExtension": NameExtension,
+                          "BirthDate": BirthDate,
+                          "DateHired": DateHired,
+                          "Remarks": Remarks,
+                          "Name": Name
                           })
-            u = u.where(Faculty_Profile.faculty_account_id == current_user.faculty_account_id)
+            u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
             db.session.execute(u)
             db.session.commit()
             db.session.close()
             return redirect(url_for('PDM.PDM_BD')) 
                       
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Basic-Details.html", 
-                               User= username.first_name + " " + username.last_name,
+                               User= username.FirstName + " " + username.LastName,
                                PDM= "show",
-                               faculty_code= username.faculty_code,
-                               first_name= username.first_name,
-                               last_name= username.last_name,
-                               middle_name= username.middle_name,
-                               middle_initial= username.middle_initial,
-                               name_extension= username.name_extension,
-                               birth_date= username.birth_date,
-                               date_hired= username.date_hired,
-                               remarks= username.remarks,
-                               honorific= username.honorific,
+                               faculty_code= username.FacultyCode,
+                               first_name= username.FirstName,
+                               last_name= username.LastName,
+                               middle_name= username.MiddleName,
+                               middle_initial= username.MiddleInitial,
+                               name_extension= username.NameExtension,
+                               birth_date= username.BirthDate,
+                               date_hired= username.DateHired,
+                               remarks= username.Remarks,
+                               honorific= username.Honorific,
                                user= current_user,
-                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
-                               profile_pic=profile_pic,
+                               age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
+                               profile_pic=ProfilePic,
                                activate_BD= "active")
 
 
@@ -163,8 +163,8 @@ def PDM_BD():
 @login_required
 def PDM_BDUP():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
-        id = username.faculty_account_id
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        id = username.FacultyId
         
         # UPDATE PROFILE PIC
         
@@ -198,9 +198,9 @@ def PDM_BDUP():
         file1.SetContentFile(filename)
         file1.Upload()
         
-        u = update(Faculty_Profile)
-        u = u.values({"profile_pic": '%s'%(file1['id'])})
-        u = u.where(Faculty_Profile.faculty_account_id == current_user.faculty_account_id)
+        u = update(FISFaculty)
+        u = u.values({"ProfilePic": '%s'%(file1['id'])})
+        u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
         db.session.execute(u)
         db.session.commit()
         db.session.close()
@@ -214,8 +214,8 @@ def PDM_BDUP():
 @login_required
 def PDM_BDCP():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
-        id = username.faculty_account_id
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        id = username.FacultyId
         
         # FACULTY FIS PROFILE PIC FOLDER ID
         folder = '1mT1alkWJ-akPnPyB9T7vtumNutwqRK0S'
@@ -231,9 +231,9 @@ def PDM_BDCP():
 
         # UPDATE USER PROFILE PIC ID
         
-        u = update(Faculty_Profile)
-        u = u.values({"profile_pic": profile_default})
-        u = u.where(Faculty_Profile.faculty_account_id == current_user.faculty_account_id)
+        u = update(FISFaculty)
+        u = u.values({"ProfilePic": profile_default})
+        u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
         db.session.execute(u)
         db.session.commit()
         db.session.close()
@@ -251,16 +251,16 @@ def PDM_BDCP():
 @Check_Token
 def PDM_PD():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
 
         # CHECKING IF PROFILE PIC EXIST
-        if username.profile_pic == None:
-            profile_pic=profile_default
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
         else:
-            profile_pic=username.profile_pic   
+            ProfilePic=username.ProfilePic   
              
         # VERIFYING IF DATA OF CURRENT USER EXISTS
-        if current_user.PDS_Personal_Details:
+        if current_user.FISPDS_PersonalDetails:
             data = current_user
         else:
             data =  {'PDS_Personal_Details':
@@ -276,7 +276,7 @@ def PDM_PD():
                     'city':"",
                     'citizenship':"",
                     'dual_citizenship':"",
-                    'remarks':"",
+                    'Remarks':"",
                     }
                     }
         
@@ -297,11 +297,11 @@ def PDM_PD():
             city = request.form.get('city')
             citizenship = request.form.get('citizenship')
             dual_citizenship = request.form.get('dual_citizenship')
-            remarks = request.form.get('remarks')
+            Remarks = request.form.get('remarks')
            
 
-            if PDS_Personal_Details.query.filter_by(faculty_account_id=current_user.faculty_account_id).first():
-                u = update(PDS_Personal_Details)
+            if FISPDS_PersonalDetails.query.filter_by(FacultyId=current_user.FacultyId).first():
+                u = update(FISPDS_PersonalDetails)
                 u = u.values({"sex": sex,
                             "gender": gender,
                             "height": height,
@@ -314,16 +314,16 @@ def PDM_PD():
                             "city": city,
                             "citizenship": citizenship,
                             "dual_citizenship": dual_citizenship,
-                            "remarks": remarks,
+                            "Remarks": Remarks,
                             })
-                u = u.where(PDS_Personal_Details.faculty_account_id == current_user.faculty_account_id)
+                u = u.where(FISPDS_PersonalDetails.FacultyId == current_user.FacultyId)
                 db.session.execute(u)
                 db.session.commit()
                 db.session.close()
                 return redirect(url_for('PDM.PDM_PD'))
             
             else:
-                add_record = PDS_Personal_Details(  sex = sex,
+                add_record = FISPDS_PersonalDetails(  sex = sex,
                                                     gender = gender,
                                                     height = height,
                                                     weight = weight,
@@ -335,8 +335,8 @@ def PDM_PD():
                                                     city = city,
                                                     citizenship = citizenship,
                                                     dual_citizenship = dual_citizenship,
-                                                    remarks = remarks,
-                                                    faculty_account_id = current_user.faculty_account_id)
+                                                    Remarks = Remarks,
+                                                    FacultyId = current_user.FacultyId)
             
                 db.session.add(add_record)
                 db.session.commit()
@@ -345,12 +345,12 @@ def PDM_PD():
             
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Personal-Details.html", 
-                               User=username.first_name + " " + username.last_name,
-                               profile_pic=profile_pic,
+                               User=username.FirstName + " " + username.LastName,
+                               profile_pic=ProfilePic,
                                PDM="show",
                                user = current_user,
                                data = data,
-                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
+                               age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                activate_PD="active")
 
 # ------------------------------- END PDM PERSONAL DETAILS ----------------------------  
@@ -363,16 +363,16 @@ def PDM_PD():
 @Check_Token
 def PDM_CD():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
        
         # CHECKING IF PROFILE PIC EXIST
-        if username.profile_pic == None:
-            profile_pic=profile_default
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
         else:
-            profile_pic=username.profile_pic   
+            ProfilePic=username.ProfilePic   
              
         # VERIFYING IF DATA OF CURRENT USER EXISTS
-        if current_user.PDS_Contact_Details:
+        if current_user.FISPDS_ContactDetails:
             data = current_user
         else:
             data =  {'PDS_Contact_Details':
@@ -392,7 +392,7 @@ def PDM_CD():
                      'res_address':"",
                      'res_zip_code':"",
                      'res_phone_number':"",
-                    'remarks':"",
+                    'Remarks':"",
                     }
                     }
         
@@ -417,10 +417,10 @@ def PDM_CD():
             res_address = request.form.get('res_address')
             res_zip_code = request.form.get('res_zip_code')
             res_phone_number = request.form.get('res_phone_number')
-            remarks = request.form.get('remarks')
+            Remarks = request.form.get('remarks')
 
-            if PDS_Contact_Details.query.filter_by(faculty_account_id=current_user.faculty_account_id).first():
-                u = update(PDS_Contact_Details)
+            if FISPDS_ContactDetails.query.filter_by(FacultyId=current_user.FacultyId).first():
+                u = update(FISPDS_ContactDetails)
                 u = u.values({"email": email,
                             "mobile_number": mobile_number,
                             "perm_country": perm_country,
@@ -437,9 +437,9 @@ def PDM_CD():
                             "res_address": res_address,
                             "res_zip_code": res_zip_code,
                             "res_phone_number": res_phone_number,
-                            "remarks": remarks
+                            "Remarks": Remarks
                             })
-                u = u.where(PDS_Contact_Details.faculty_account_id == current_user.faculty_account_id)
+                u = u.where(FISPDS_ContactDetails.FacultyId == current_user.FacultyId)
                 db.session.execute(u)
                 db.session.commit()
                 db.session.close()
@@ -447,7 +447,7 @@ def PDM_CD():
             
             else:
                 
-                add_record = PDS_Contact_Details(  email = email,
+                add_record = FISPDS_ContactDetails(  email = email,
                                                     mobile_number = mobile_number,
                                                     perm_country = perm_country,
                                                     perm_region = perm_region,
@@ -463,8 +463,8 @@ def PDM_CD():
                                                     res_address = res_address,
                                                     res_zip_code = res_zip_code,
                                                     res_phone_number = res_phone_number,
-                                                    remarks = remarks,
-                                                    faculty_account_id = current_user.faculty_account_id)
+                                                    Remarks = Remarks,
+                                                    FacultyId = current_user.FacultyId)
                 db.session.add(add_record)
                 db.session.commit()
                 db.session.close()
@@ -472,11 +472,11 @@ def PDM_CD():
         
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Contact-Details.html", 
-                               User=username.first_name + " " + username.last_name,
-                               profile_pic=profile_pic,
+                               User=username.FirstName + " " + username.LastName,
+                               profile_pic=ProfilePic,
                                PDM="show",
                                user = current_user,
-                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
+                               age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                data = data,
                                activate_CD="active")
         
@@ -491,12 +491,12 @@ def PDM_CD():
 @Check_Token
 def PDM_FB():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
 
-        if username.profile_pic == None:
-            profile_pic=profile_default
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
         else:
-            profile_pic=username.profile_pic
+            ProfilePic=username.ProfilePic
             
          # UPDATE 
         
@@ -508,11 +508,11 @@ def PDM_FB():
             relationship = request.form.get('relationship')
             id = request.form.get('id')
 
-            u = update(PDS_Family_Background)
+            u = update(FISPDS_FamilyBackground)
             u = u.values({"full_name": full_name,
                           "relationship": relationship
                           })
-            u = u.where(PDS_Family_Background.id == id)
+            u = u.where(FISPDS_FamilyBackground.id == id)
             db.session.execute(u)
             db.session.commit()
             db.session.close()
@@ -520,11 +520,11 @@ def PDM_FB():
             
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Family-Background.html", 
-                               User=username.first_name + " " + username.last_name, 
-                               profile_pic=profile_pic,
+                               User=username.FirstName + " " + username.LastName, 
+                               profile_pic=ProfilePic,
                                PDM="show",
                                user = current_user,
-                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
+                               age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                activate_FB="active")
  
 @PDM.route("/PDM-Family-Background/add-record", methods=['GET', 'POST'])
@@ -540,7 +540,7 @@ def PDM_FBadd():
             full_name = request.form.get('full_name')
             relationship = request.form.get('relationship')
            
-            add_record = PDS_Family_Background(full_name=full_name,relationship=relationship,faculty_account_id = current_user.faculty_account_id)
+            add_record = FISPDS_FamilyBackground(full_name=full_name,relationship=relationship,FacultyId = current_user.FacultyId)
             
             db.session.add(add_record)
             db.session.commit()
@@ -562,7 +562,7 @@ def PDM_FBdel():
         id = request.form.get('id')
         
 
-        data = PDS_Family_Background.query.filter_by(id=id).first() 
+        data = FISPDS_FamilyBackground.query.filter_by(id=id).first() 
         
         if data:
             db.session.delete(data)
@@ -580,12 +580,12 @@ def PDM_FBdel():
 @Check_Token
 def PDM_EB():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
 
-        if username.profile_pic == None:
-            profile_pic=profile_default
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
         else:
-            profile_pic=username.profile_pic
+            ProfilePic=username.ProfilePic
             
         # UPDATE 
         
@@ -599,25 +599,25 @@ def PDM_EB():
             to_date = request.form.get('to_date')
             id = request.form.get('id')
 
-            u = update(PDS_Educational_Background)
+            u = update(FISPDS_EducationalBackground)
             u = u.values({"school_name": school_name,
                           "level": level,
                           "from_date": from_date,
                           "to_date": to_date
                           })
             
-            u = u.where(PDS_Educational_Background.id == id)
+            u = u.where(FISPDS_EducationalBackground.id == id)
             db.session.execute(u)
             db.session.commit()
             db.session.close()
             return redirect(url_for('PDM.PDM_EB'))    
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Educational-Background.html", 
-                               User=username.first_name + " " + username.last_name, 
-                               profile_pic=profile_pic,
+                               User=username.FirstName + " " + username.LastName, 
+                               profile_pic=ProfilePic,
                                PDM="show",
                                user = current_user,
-                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
+                               age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                activate_EB="active")
 
 
@@ -636,11 +636,11 @@ def PDM_EBadd():
             from_date = request.form.get('from_date')
             to_date = request.form.get('to_date')
            
-            add_record = PDS_Educational_Background(school_name=school_name,
+            add_record = FISPDS_EducationalBackground(school_name=school_name,
                                                     level=level,
                                                     from_date=from_date,
                                                     to_date=to_date,
-                                                    faculty_account_id = current_user.faculty_account_id)
+                                                    FacultyId = current_user.FacultyId)
             
             db.session.add(add_record)
             db.session.commit()
@@ -656,7 +656,7 @@ def PDM_EBdel():
         id = request.form.get('id')
         
 
-        data = PDS_Educational_Background.query.filter_by(id=id).first() 
+        data = FISPDS_EducationalBackground.query.filter_by(id=id).first() 
         
         if data:
             db.session.delete(data)
@@ -674,12 +674,12 @@ def PDM_EBdel():
 @Check_Token
 def PDM_E():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
        
-        if username.profile_pic == None:
-            profile_pic=profile_default
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
         else:
-            profile_pic=username.profile_pic
+            ProfilePic=username.ProfilePic
             
         # UPDATE 
         
@@ -691,12 +691,12 @@ def PDM_E():
             rating = request.form.get('rating')
             id = request.form.get('id')
 
-            u = update(PDS_Eligibity)
+            u = update(FISPDS_Eligibity)
             u = u.values({"eligibity": eligibity,
                           "rating": rating
                           })
             
-            u = u.where(PDS_Eligibity.id == id)
+            u = u.where(FISPDS_Eligibity.id == id)
             db.session.execute(u)
             db.session.commit()
             db.session.close()
@@ -705,11 +705,11 @@ def PDM_E():
             
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Eligibities.html", 
-                               User=username.first_name + " " + username.last_name, 
-                               profile_pic=profile_pic,
+                               User=username.FirstName + " " + username.LastName, 
+                               profile_pic=ProfilePic,
                                PDM="show",
                                user = current_user,
-                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
+                               age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                activate_E="active")
 
 @PDM.route("/PDM-Eligibities/add-record", methods=['GET', 'POST'])
@@ -725,7 +725,7 @@ def PDM_Eadd():
             eligibity = request.form.get('eligibity')
             rating = request.form.get('rating')
            
-            add_record = PDS_Eligibity(eligibity=eligibity,rating=rating,faculty_account_id = current_user.faculty_account_id)
+            add_record = FISPDS_Eligibity(eligibity=eligibity,rating=rating,FacultyId = current_user.FacultyId)
             
             db.session.add(add_record)
             db.session.commit()
@@ -740,7 +740,7 @@ def PDM_Edel():
          
         id = request.form.get('id')
         
-        data = PDS_Eligibity.query.filter_by(id=id).first() 
+        data = FISPDS_Eligibity.query.filter_by(id=id).first() 
         
         if data:
             db.session.delete(data)
@@ -761,12 +761,12 @@ def PDM_Edel():
 @Check_Token
 def PDM_WE():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
 
-        if username.profile_pic == None:
-            profile_pic=profile_default
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
         else:
-            profile_pic=username.profile_pic 
+            ProfilePic=username.ProfilePic 
         
         # UPDATE 
         
@@ -781,7 +781,7 @@ def PDM_WE():
             to_date = request.form.get('to_date')
             id = request.form.get('id')
 
-            u = update(PDS_Work_Experience)
+            u = update(FISPDS_WorkExperience)
             u = u.values({"position": position,
                           "company_name": company_name,
                           "status": status,
@@ -789,18 +789,18 @@ def PDM_WE():
                           "to_date": to_date
                           })
             
-            u = u.where(PDS_Work_Experience.id == id)
+            u = u.where(FISPDS_WorkExperience.id == id)
             db.session.execute(u)
             db.session.commit()
             db.session.close()
             return redirect(url_for('PDM.PDM_WE'))
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Work-Experience.html", 
-                               User=username.first_name + " " + username.last_name, 
-                               profile_pic=profile_pic,
+                               User=username.FirstName + " " + username.LastName, 
+                               profile_pic=ProfilePic,
                                PDM="show",
                                user = current_user,
-                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
+                               age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                activate_WE="active")
   
 @PDM.route("/PDM-Work-Experience/add-record", methods=['GET', 'POST'])
@@ -819,12 +819,12 @@ def PDM_WEadd():
             from_date = request.form.get('from_date')
             to_date = request.form.get('to_date')
            
-            add_record = PDS_Work_Experience(position=position,
+            add_record = FISPDS_WorkExperience(position=position,
                                              company_name=company_name,
                                              status=status,
                                              from_date=from_date,
                                              to_date=to_date,
-                                             faculty_account_id = current_user.faculty_account_id)
+                                             FacultyId = current_user.FacultyId)
             
             db.session.add(add_record)
             db.session.commit()
@@ -839,7 +839,7 @@ def PDM_WEdel():
          
         id = request.form.get('id')
         
-        data = PDS_Work_Experience.query.filter_by(id=id).first() 
+        data = FISPDS_WorkExperience.query.filter_by(id=id).first() 
         
         if data:
             db.session.delete(data)
@@ -857,12 +857,12 @@ def PDM_WEdel():
 @Check_Token
 def PDM_VW():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
 
-        if username.profile_pic == None:
-            profile_pic=profile_default
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
         else:
-            profile_pic=username.profile_pic
+            ProfilePic=username.ProfilePic
         
         # UPDATE 
         
@@ -876,25 +876,25 @@ def PDM_VW():
             to_date = request.form.get('to_date')
             id = request.form.get('id')
 
-            u = update(PDS_Voluntary_Work)
+            u = update(FISPDS_VoluntaryWork)
             u = u.values({"position": position,
                           "organization": organization,
                           "from_date": from_date,
                           "to_date": to_date
                           })
             
-            u = u.where(PDS_Voluntary_Work.id == id)
+            u = u.where(FISPDS_VoluntaryWork.id == id)
             db.session.execute(u)
             db.session.commit()
             db.session.close()
             return redirect(url_for('PDM.PDM_VW'))
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Voluntary-Works.html", 
-                               User=username.first_name + " " + username.last_name, 
-                               profile_pic=profile_pic,
+                               User=username.FirstName + " " + username.LastName, 
+                               profile_pic=ProfilePic,
                                PDM="show",
                                user = current_user,
-                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
+                               age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                activate_VW="active")
 
 
@@ -913,11 +913,11 @@ def PDM_VWadd():
             from_date = request.form.get('from_date')
             to_date = request.form.get('to_date')
            
-            add_record = PDS_Voluntary_Work(organization=organization,
+            add_record = FISPDS_VoluntaryWork(organization=organization,
                                             position=position,
                                             from_date=from_date,
                                             to_date=to_date,
-                                            faculty_account_id = current_user.faculty_account_id)
+                                            FacultyId = current_user.FacultyId)
             
             db.session.add(add_record)
             db.session.commit()
@@ -932,7 +932,7 @@ def PDM_VWdel():
          
         id = request.form.get('id')
         
-        data = PDS_Voluntary_Work.query.filter_by(id=id).first() 
+        data = FISPDS_VoluntaryWork.query.filter_by(id=id).first() 
         
         if data:
             db.session.delete(data)
@@ -951,12 +951,12 @@ def PDM_VWdel():
 @Check_Token
 def PDM_TS():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
 
-        if username.profile_pic == None:
-            profile_pic=profile_default
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
         else:
-            profile_pic=username.profile_pic
+            ProfilePic=username.ProfilePic
         
         # UPDATE 
         
@@ -970,25 +970,25 @@ def PDM_TS():
             to_date = request.form.get('to_date')
             id = request.form.get('id')
 
-            u = update(PDS_Training_Seminars)
+            u = update(FISPDS_TrainingSeminars)
             u = u.values({"title": title,
                           "level": level,
                           "from_date": from_date,
                           "to_date": to_date
                           })
             
-            u = u.where(PDS_Training_Seminars.id == id)
+            u = u.where(FISPDS_TrainingSeminars.id == id)
             db.session.execute(u)
             db.session.commit()
             db.session.close()
             return redirect(url_for('PDM.PDM_TS'))
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Training-Seminars.html", 
-                               User=username.first_name + " " + username.last_name, 
-                               profile_pic=profile_pic,
+                               User=username.FirstName + " " + username.LastName, 
+                               profile_pic=ProfilePic,
                                PDM="show",
                                user = current_user,
-                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
+                               age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                activate_TS="active")
         
 
@@ -1007,11 +1007,11 @@ def PDM_TSadd():
             from_date = request.form.get('from_date')
             to_date = request.form.get('to_date')
            
-            add_record = PDS_Training_Seminars(title=title,
+            add_record = FISPDS_TrainingSeminars(title=title,
                                                 level=level,
                                                 from_date=from_date,
                                                 to_date=to_date,
-                                                faculty_account_id = current_user.faculty_account_id)
+                                                FacultyId = current_user.FacultyId)
             
             db.session.add(add_record)
             db.session.commit()
@@ -1026,7 +1026,7 @@ def PDM_TSdel():
          
         id = request.form.get('id')
         
-        data = PDS_Training_Seminars.query.filter_by(id=id).first() 
+        data = FISPDS_TrainingSeminars.query.filter_by(id=id).first() 
         
         if data:
             db.session.delete(data)
@@ -1046,12 +1046,12 @@ def PDM_TSdel():
 @Check_Token
 def PDM_OA():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
        
-        if username.profile_pic == None:
-            profile_pic=profile_default
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
         else:
-            profile_pic=username.profile_pic
+            ProfilePic=username.ProfilePic
             
         # UPDATE 
         
@@ -1064,24 +1064,24 @@ def PDM_OA():
             from_date = request.form.get('date')
             id = request.form.get('id')
 
-            u = update(PDS_Outstanding_Achievements)
+            u = update(FISPDS_OutstandingAchievements)
             u = u.values({"achievement": achievement,
                           "level": level,
                           "date": from_date
                           })
             
-            u = u.where(PDS_Outstanding_Achievements.id == id)
+            u = u.where(FISPDS_OutstandingAchievements.id == id)
             db.session.execute(u)
             db.session.commit()
             db.session.close()
             return redirect(url_for('PDM.PDM_OA'))
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Outstanding-Achievements.html", 
-                               User=username.first_name + " " + username.last_name, 
-                               profile_pic=profile_pic,
+                               User=username.FirstName + " " + username.LastName, 
+                               profile_pic=ProfilePic,
                                PDM="show",
                                user = current_user,
-                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
+                               age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                activate_OA="active")
 
 
@@ -1099,10 +1099,10 @@ def PDM_OAadd():
             level = request.form.get('level')
             date = request.form.get('date')
            
-            add_record = PDS_Outstanding_Achievements(achievement=achievement,
+            add_record = FISPDS_OutstandingAchievements(achievement=achievement,
                                                     level=level,
                                                     date=date,
-                                                    faculty_account_id = current_user.faculty_account_id)
+                                                    FacultyId = current_user.FacultyId)
             
             db.session.add(add_record)
             db.session.commit()
@@ -1117,7 +1117,7 @@ def PDM_OAdel():
          
         id = request.form.get('id')
         
-        data = PDS_Outstanding_Achievements.query.filter_by(id=id).first() 
+        data = FISPDS_OutstandingAchievements.query.filter_by(id=id).first() 
         
         if data:
             db.session.delete(data)
@@ -1135,12 +1135,12 @@ def PDM_OAdel():
 @Check_Token
 def PDM_OSM():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
       
-        if username.profile_pic == None:
-            profile_pic=profile_default
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
         else:
-            profile_pic=username.profile_pic
+            ProfilePic=username.ProfilePic
         
         # UPDATE 
         
@@ -1154,25 +1154,25 @@ def PDM_OSM():
             to_date = request.form.get('to_date')
             id = request.form.get('id')
 
-            u = update(PDS_OfficeShips_Memberships)
+            u = update(FISPDS_OfficeShipsMemberships)
             u = u.values({"position": position,
                           "organization": organization,
                           "from_date": from_date,
                           "to_date": to_date
                           })
             
-            u = u.where(PDS_OfficeShips_Memberships.id == id)
+            u = u.where(FISPDS_OfficeShipsMemberships.id == id)
             db.session.execute(u)
             db.session.commit()
             db.session.close()
             return redirect(url_for('PDM.PDM_OSM')) 
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Officeships-Memberships.html", 
-                               User=username.first_name + " " + username.last_name, 
-                               profile_pic=profile_pic,
+                               User=username.FirstName + " " + username.LastName, 
+                               profile_pic=ProfilePic,
                                PDM="show",
                                user = current_user,
-                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
+                               age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                activate_OSM="active")
 
 @PDM.route("/PDM-Officeships-Memberships/add-record", methods=['GET', 'POST'])
@@ -1190,11 +1190,11 @@ def PDM_OSMadd():
             from_date = request.form.get('from_date')
             to_date = request.form.get('to_date')
            
-            add_record = PDS_OfficeShips_Memberships(organization=organization,
+            add_record = FISPDS_OfficeShipsMemberships(organization=organization,
                                             position=position,
                                             from_date=from_date,
                                             to_date=to_date,
-                                            faculty_account_id = current_user.faculty_account_id)
+                                            FacultyId = current_user.FacultyId)
             
             db.session.add(add_record)
             db.session.commit()
@@ -1209,7 +1209,7 @@ def PDM_OSMdel():
          
         id = request.form.get('id')
         
-        data = PDS_OfficeShips_Memberships.query.filter_by(id=id).first() 
+        data = FISPDS_OfficeShipsMemberships.query.filter_by(id=id).first() 
         
         if data:
             db.session.delete(data)
@@ -1228,25 +1228,25 @@ def PDM_OSMdel():
 @Check_Token
 def PDM_AM():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
       
         # CHECKING IF PROFILE PIC EXIST
-        if username.profile_pic == None:
-            profile_pic=profile_default
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
         else:
-            profile_pic=username.profile_pic   
+            ProfilePic=username.ProfilePic   
              
         # VERIFYING IF DATA OF CURRENT USER EXISTS
-        if current_user.PDS_Agency_Membership:
+        if current_user.FISPDS_AgencyMembership:
             data = current_user
         else:
-            data =  {'PDS_Agency_Membership':
+            data =  {'FISPDS_AgencyMembership':
                     {'GSIS':"",
                     'PAGIBIG':"",
                     'PHILHEALTH':"",
                     'SSS':"",
                     'TIN':"",
-                    'remarks':""
+                    'Remarks':""
                     }
                     }
         
@@ -1260,32 +1260,32 @@ def PDM_AM():
             PHILHEALTH = request.form.get('PHILHEALTH')
             SSS = request.form.get('SSS')
             TIN = request.form.get('TIN')
-            remarks = request.form.get('remarks')
+            Remarks = request.form.get('remarks')
            
 
-            if PDS_Agency_Membership.query.filter_by(faculty_account_id=current_user.faculty_account_id).first():
-                u = update(PDS_Agency_Membership)
+            if FISPDS_AgencyMembership.query.filter_by(FacultyId=current_user.FacultyId).first():
+                u = update(FISPDS_AgencyMembership)
                 u = u.values({  "GSIS": GSIS,
                                 "PAGIBIG": PAGIBIG,
                                 "PHILHEALTH": PHILHEALTH,
                                 "SSS": SSS,
                                 "TIN": TIN,
-                                "remarks": remarks,
+                                "Remarks": Remarks,
                             })
-                u = u.where(PDS_Agency_Membership.faculty_account_id == current_user.faculty_account_id)
+                u = u.where(FISPDS_AgencyMembership.FacultyId == current_user.FacultyId)
                 db.session.execute(u)
                 db.session.commit()
                 db.session.close()
                 return redirect(url_for('PDM.PDM_AM'))
             
             else:
-                add_record = PDS_Agency_Membership( GSIS = GSIS,
+                add_record = FISPDS_AgencyMembership( GSIS = GSIS,
                                                     PAGIBIG = PAGIBIG,
                                                     PHILHEALTH = PHILHEALTH,
                                                     SSS = SSS,
                                                     TIN = TIN,
-                                                    remarks = remarks,
-                                                    faculty_account_id = current_user.faculty_account_id)
+                                                    Remarks = Remarks,
+                                                    FacultyId = current_user.FacultyId)
             
                 db.session.add(add_record)
                 db.session.commit()
@@ -1293,11 +1293,11 @@ def PDM_AM():
                 return redirect(url_for('PDM.PDM_AM'))
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Agency-Membership.html", 
-                               User=username.first_name + " " + username.last_name, 
-                               profile_pic=profile_pic,
+                               User=username.FirstName + " " + username.LastName, 
+                               profile_pic=ProfilePic,
                                PDM="show",
                                user = current_user,
-                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
+                               age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                data = data,
                                activate_AM="active")  
 
@@ -1310,12 +1310,12 @@ def PDM_AM():
 @Check_Token
 def PDM_TI():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
       
-        if username.profile_pic == None:
-            profile_pic=profile_default
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
         else:
-            profile_pic=username.profile_pic
+            ProfilePic=username.ProfilePic
         
         # UPDATE 
         
@@ -1327,23 +1327,23 @@ def PDM_TI():
             type = request.form.get('type')
             id = request.form.get('id')
 
-            u = update(PDS_Teacher_Information)
+            u = update(FISPDS_TeacherInformation)
             u = u.values({"information": information,
                           "type": type
                           })
             
-            u = u.where(PDS_Teacher_Information.id == id)
+            u = u.where(FISPDS_TeacherInformation.id == id)
             db.session.execute(u)
             db.session.commit()
             db.session.close()
             return redirect(url_for('PDM.PDM_TI'))
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Teacher-Information.html", 
-                               User=username.first_name + " " + username.last_name, 
-                               profile_pic=profile_pic,
+                               User=username.FirstName + " " + username.LastName, 
+                               profile_pic=ProfilePic,
                                PDM="show",
                                user = current_user,
-                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
+                               age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                activate_TI="active")  
 
 @PDM.route("/PDM-Teacher-Information/add-record", methods=['GET', 'POST'])
@@ -1359,9 +1359,9 @@ def PDM_TIadd():
             information = request.form.get('information')
             type = request.form.get('type')
            
-            add_record = PDS_Teacher_Information(information=information,
+            add_record = FISPDS_TeacherInformation(information=information,
                                                 type=type,
-                                                faculty_account_id = current_user.faculty_account_id)
+                                                FacultyId = current_user.FacultyId)
             db.session.add(add_record)
             db.session.commit()
             db.session.close()
@@ -1375,7 +1375,7 @@ def PDM_TIdel():
          
         id = request.form.get('id')
         
-        data = PDS_Teacher_Information.query.filter_by(id=id).first() 
+        data = FISPDS_TeacherInformation.query.filter_by(id=id).first() 
         
         if data:
             db.session.delete(data)
@@ -1392,12 +1392,12 @@ def PDM_TIdel():
 @Check_Token
 def PDM_CR():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
       
-        if username.profile_pic == None:
-            profile_pic=profile_default
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
         else:
-            profile_pic=username.profile_pic
+            ProfilePic=username.ProfilePic
         
         # UPDATE 
         
@@ -1408,21 +1408,21 @@ def PDM_CR():
             full_name = request.form.get('full_name')
             id = request.form.get('id')
 
-            u = update(PDS_Character_Reference)
+            u = update(FISPDS_CharacterReference)
             u = u.values({"full_name": full_name})
             
-            u = u.where(PDS_Character_Reference.id == id)
+            u = u.where(FISPDS_CharacterReference.id == id)
             db.session.execute(u)
             db.session.commit()
             db.session.close()
             return redirect(url_for('PDM.PDM_CR')) 
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Character-Reference.html", 
-                               User=username.first_name + " " + username.last_name, 
-                               profile_pic=profile_pic,
+                               User=username.FirstName + " " + username.LastName, 
+                               profile_pic=ProfilePic,
                                PDM="show",
                                user = current_user,
-                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
+                               age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                activate_CR="active")
 
 @PDM.route("/PDM-Character-Reference/add-record", methods=['GET', 'POST'])
@@ -1436,8 +1436,8 @@ def PDM_CRadd():
             # VALUES
             full_name = request.form.get('full_name')
 
-            add_record = PDS_Character_Reference(full_name=full_name,
-                                                faculty_account_id = current_user.faculty_account_id)
+            add_record = FISPDS_CharacterReference(full_name=full_name,
+                                                FacultyId = current_user.FacultyId)
             
             db.session.add(add_record)
             db.session.commit()
@@ -1452,7 +1452,7 @@ def PDM_CRdel():
          
         id = request.form.get('id')
         
-        data = PDS_Character_Reference.query.filter_by(id=id).first() 
+        data = FISPDS_CharacterReference.query.filter_by(id=id).first() 
         
         if data:
             db.session.delete(data)
@@ -1469,21 +1469,21 @@ def PDM_CRdel():
 @Check_Token
 def PDM_S():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
-        id = username.faculty_account_id
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        id = username.FacultyId
         
         # CHECKING IF PROFILE PIC EXIST
-        if username.profile_pic == None:
-            profile_pic=profile_default
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
         else:
-            profile_pic=username.profile_pic   
+            ProfilePic=username.ProfilePic   
         
          # VERIFYING IF DATA OF CURRENT USER EXISTS
-        if current_user.PDS_Signature:
+        if current_user.FISPDS_Signature:
             data = current_user
             
             # FETCHING USER ENCRYPTED SIGNATURE DATA
-            fetch = PDS_Signature.query.filter_by(faculty_account_id=current_user.faculty_account_id).first()
+            fetch = FISPDS_Signature.query.filter_by(FacultyId=current_user.FacultyId).first()
             
             # FETCHING USER ENCRYPTED SIGNATURE DATA
             wet_signature = fetch.wet_signature
@@ -1542,7 +1542,7 @@ def PDM_S():
             
             data = """{}""".format(encrypted)
  
-            if PDS_Signature.query.filter_by(faculty_account_id=current_user.faculty_account_id).first():
+            if FISPDS_Signature.query.filter_by(FacultyId=current_user.FacultyId).first():
                 
                 file_list = drive.ListFile({'q': "'%s' in parents and trashed=false"%(folder)}).GetList()
                 try:
@@ -1562,9 +1562,9 @@ def PDM_S():
                 file1.SetContentString(data)
                 file1.Upload()
                 
-                u = update(PDS_Signature)
+                u = update(FISPDS_Signature)
                 u = u.values({"wet_signature": '%s'%(file1['id'])})
-                u = u.where(PDS_Signature.faculty_account_id == current_user.faculty_account_id)
+                u = u.where(FISPDS_Signature.FacultyId == current_user.FacultyId)
                 db.session.execute(u)
                 db.session.commit()
                 db.session.close()
@@ -1583,19 +1583,19 @@ def PDM_S():
                 file1.SetContentString(data)
                 file1.Upload()
                 
-                add_record = PDS_Signature( wet_signature = '%s'%(file1['id']),
-                                            faculty_account_id = current_user.faculty_account_id)
+                add_record = FISPDS_Signature( wet_signature = '%s'%(file1['id']),
+                                            FacultyId = current_user.FacultyId)
                 db.session.add(add_record)
                 db.session.commit()
                 db.session.close()
                 return redirect(url_for('PDM.PDM_S'))
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Signature.html", 
-                               User=username.first_name + " " + username.last_name, 
-                               profile_pic=profile_pic,
+                               User=username.FirstName + " " + username.LastName, 
+                               profile_pic=ProfilePic,
                                PDM="show",
                                user = current_user,
-                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
+                               age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                signature = "data:image/png;base64," + decrypted_signature.decode('utf-8'),
                                dict_cert = decrypted_dict_cert.decode('utf-8'),
                                activate_S="active")
@@ -1604,8 +1604,8 @@ def PDM_S():
 @login_required
 def PDM_SS():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
-        id = username.faculty_account_id
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        id = username.FacultyId
 
         # FACULTY FIS DICT CERTIFICATE FOLDER ID
         folder = '1KrXqzGYLm9ET4D6bPLwrP_QJGtCufkly'
@@ -1620,7 +1620,7 @@ def PDM_SS():
             
             data = """{}""".format(encrypted)
  
-            if PDS_Signature.query.filter_by(faculty_account_id=current_user.faculty_account_id).first():
+            if FISPDS_Signature.query.filter_by(FacultyId=current_user.FacultyId).first():
                 
                 file_list = drive.ListFile({'q': "'%s' in parents and trashed=false"%(folder)}).GetList()
                 try:
@@ -1640,9 +1640,9 @@ def PDM_SS():
                 file1.SetContentString(data)
                 file1.Upload()
                 
-                u = update(PDS_Signature)
+                u = update(FISPDS_Signature)
                 u = u.values({"dict_certificate": '%s'%(file1['id'])})
-                u = u.where(PDS_Signature.faculty_account_id == current_user.faculty_account_id)
+                u = u.where(FISPDS_Signature.FacultyId == current_user.FacultyId)
                 db.session.execute(u)
                 db.session.commit()
                 db.session.close()
@@ -1661,8 +1661,8 @@ def PDM_SS():
                 file1.SetContentString(data)
                 file1.Upload()
                 
-                add_record = PDS_Signature( dict_certificate = '%s'%(file1['id']),
-                                            faculty_account_id = current_user.faculty_account_id)
+                add_record = FISPDS_Signature( dict_certificate = '%s'%(file1['id']),
+                                            FacultyId = current_user.FacultyId)
                 db.session.add(add_record)
                 db.session.commit()
                 db.session.close()
@@ -1677,19 +1677,19 @@ def PDM_SS():
 @Check_Token
 def PDM_AQ():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
        
         # CHECKING IF PROFILE PIC EXIST
-        if username.profile_pic == None:
-            profile_pic=profile_default
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
         else:
-            profile_pic=username.profile_pic   
+            ProfilePic=username.ProfilePic   
              
         # VERIFYING IF DATA OF CURRENT USER EXISTS
-        if current_user.PDS_Additional_Questions:
+        if current_user.FISPDS_AdditionalQuestions:
             data = current_user
         else:
-            data =  {'PDS_Additional_Questions':
+            data =  {'FISPDS_AdditionalQuestions':
                     {'q1_a':"",
                     'q1_a_details':"",
                     
@@ -1770,8 +1770,8 @@ def PDM_AQ():
             q7_c_details = request.form.get('q7_c_details')
            
 
-            if PDS_Additional_Questions.query.filter_by(faculty_account_id=current_user.faculty_account_id).first():
-                u = update(PDS_Additional_Questions)
+            if FISPDS_AdditionalQuestions.query.filter_by(FacultyId=current_user.FacultyId).first():
+                u = update(FISPDS_AdditionalQuestions)
                 u = u.values({
                             "q1_a": q1_a,
                             "q1_a_details": q1_a_details,
@@ -1809,14 +1809,14 @@ def PDM_AQ():
                             "q7_c": q7_c,
                             "q7_c_details": q7_c_details
                             })
-                u = u.where(PDS_Additional_Questions.faculty_account_id == current_user.faculty_account_id)
+                u = u.where(FISPDS_AdditionalQuestions.FacultyId == current_user.FacultyId)
                 db.session.execute(u)
                 db.session.commit()
                 db.session.close()
                 return redirect(url_for('PDM.PDM_AQ'))
             
             else:
-                add_record = PDS_Additional_Questions(  
+                add_record = FISPDS_AdditionalQuestions(  
                                                     q1_a = q1_a,
                                                     q1_a_details= q1_a_details,
                                                     
@@ -1852,7 +1852,7 @@ def PDM_AQ():
                                                     
                                                     q7_c = q7_c,
                                                     q7_c_details= q7_c_details,
-                                                    faculty_account_id = current_user.faculty_account_id)
+                                                    FacultyId = current_user.FacultyId)
             
                 db.session.add(add_record)
                 db.session.commit()
@@ -1860,11 +1860,11 @@ def PDM_AQ():
                 return redirect(url_for('PDM.PDM_AQ'))
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Additional-Questions.html", 
-                               User=username.first_name + " " + username.last_name, 
-                               profile_pic=profile_pic,
+                               User=username.FirstName + " " + username.LastName, 
+                               profile_pic=ProfilePic,
                                PDM="show",
                                user = current_user,
-                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
+                               age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                data = data,
                                activate_AQ="active")
   
@@ -1878,19 +1878,19 @@ def PDM_AQ():
 @Check_Token
 def PDM_PDR():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = Faculty_Profile.query.filter_by(faculty_account_id=current_user.faculty_account_id).first() 
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
       
-        if username.profile_pic == None:
-            profile_pic=profile_default
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
         else:
-            profile_pic=username.profile_pic
+            ProfilePic=username.ProfilePic
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Personal-Data-Reports.html", 
-                               User=username.first_name + " " + username.last_name, 
-                               profile_pic=profile_pic,
+                               User=username.FirstName + " " + username.LastName, 
+                               profile_pic=ProfilePic,
                                PDM="show",
                                user = current_user,
-                               age = str(calculateAge(date(current_user.birth_date.year, current_user.birth_date.month, current_user.birth_date.day))),
+                               age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                activate_PDR="active")
     
 # ------------------------------- END OF PDM PERSONAL DATA REPORTS  ---------------------------- 

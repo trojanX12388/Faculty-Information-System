@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 app.config['REFRESH_TOKEN_SECRET'] = os.getenv('REFRESH_TOKEN_SECRET')
 
-from website.models import Login_Token
+from website.models import FISLoginToken
 from .token_gen import generate_access_token
 from flask_login import current_user
 
@@ -24,11 +24,11 @@ def Check_Token(func):
     def decorated(*args, **kwargs):
         session['previous_url'] = request.url
         
-        if current_user.__class__.__name__ == "Faculty_Profile":
-            user_token = Login_Token.query.filter_by(faculty_account_id=current_user.faculty_account_id).first()
-        elif current_user.__class__.__name__ == "Admin_Profile":
-            user_token = Login_Token.query.filter_by(admin_account_id=current_user.admin_account_id).first()
-        elif not current_user.__class__.__name__ == "Faculty_Profile":
+        if current_user.__class__.__name__ == "FISFaculty":
+            user_token = FISLoginToken.query.filter_by(FacultyId=current_user.FacultyId).first()
+        elif current_user.__class__.__name__ == "FISAdmin":
+            user_token = FISLoginToken.query.filter_by(AdminId=current_user.AdminId).first()
+        elif not current_user.__class__.__name__ == "FISFaculty":
             # Handle other user types here if needed
             flash('Unknown user type.', category='error')
             return redirect(url_for('auth.Logout'))
@@ -46,7 +46,7 @@ def Check_Token(func):
             else:
                 refresh_token(user_token)
                 previous_url = session.pop('previous_url', None)
-                if current_user.__class__.__name__ == "Faculty_Profile":
+                if current_user.__class__.__name__ == "FISFaculty":
                     return redirect(previous_url or url_for('auth.facultyH'))
                 else:
                     return redirect(previous_url or url_for('auth.adminH'))
@@ -58,35 +58,35 @@ def Check_Token(func):
                 
                 if datetime.utcnow() >= refresh_expiration_time:
                     flash('Session Expired. Please Login again.', category='error')
-                    if current_user.__class__.__name__ == "Faculty_Profile":
+                    if current_user.__class__.__name__ == "FISFaculty":
                         return redirect(url_for('auth.Logout'))
                     else:
                         return redirect(url_for('auth.adminLogout'))
                 else:
                     refresh_token(user_token)
                     previous_url = session.pop('previous_url', None)
-                    if current_user.__class__.__name__ == "Faculty_Profile":
+                    if current_user.__class__.__name__ == "FISFaculty":
                         return redirect(previous_url or url_for('auth.facultyH'))
                     else:
                         return redirect(previous_url or url_for('auth.adminH'))
             
             except jwt.ExpiredSignatureError:
                 flash('Session Expired. Please Login again.', category='error')
-                if current_user.__class__.__name__ == "Faculty_Profile":
+                if current_user.__class__.__name__ == "FISFaculty":
                     return redirect(url_for('auth.Logout'))
                 else:
                     return redirect(url_for('auth.adminLogout'))
             
             except jwt.InvalidTokenError:
                 flash('Invalid Token. Please Login again.', category='error')
-                if current_user.__class__.__name__ == "Faculty_Profile":
+                if current_user.__class__.__name__ == "FISFaculty":
                     return redirect(url_for('auth.Logout'))
                 else:
                     return redirect(url_for('auth.adminLogout'))
         
         except Exception as e:
             print(f'Error: {str(e)}')
-            if current_user.__class__.__name__ == "Faculty_Profile":
+            if current_user.__class__.__name__ == "FISFaculty":
                 return redirect(url_for('views.home'))
             else:
                 return redirect(url_for('views.home'))
@@ -103,20 +103,20 @@ def refresh_token(user_token):
 
         new_access_token = generate_access_token(user_id)
         
-        if current_user.__class__.__name__ == "Faculty_Profile":
-            u = update(Login_Token)
+        if current_user.__class__.__name__ == "FISFaculty":
+            u = update(FISLoginToken)
             u = u.values({"access_token": new_access_token})
-            u = u.where(Login_Token.faculty_account_id == current_user.faculty_account_id)
+            u = u.where(FISLoginToken.FacultyId == current_user.FacultyId)
             db.session.execute(u)
-        elif current_user.__class__.__name__ == "Admin_Profile":
-            u = update(Login_Token)
+        elif current_user.__class__.__name__ == "FISAdmin":
+            u = update(FISLoginToken)
             u = u.values({"access_token": new_access_token})
-            u = u.where(Login_Token.admin_account_id == current_user.admin_account_id)
+            u = u.where(FISLoginToken.AdminId == current_user.AdminId)
             db.session.execute(u)
         else:
             # Handle other user types here if needed
             flash('Unknown user type.', category='error')
-            if current_user.__class__.__name__ == "Faculty_Profile":
+            if current_user.__class__.__name__ == "FISFaculty":
                 return redirect(url_for('auth.Logout'))
             else:
                 return redirect(url_for('auth.adminLogout'))
@@ -125,13 +125,13 @@ def refresh_token(user_token):
         db.session.close()
         
     except jwt.ExpiredSignatureError:
-        if current_user.__class__.__name__ == "Faculty_Profile":
+        if current_user.__class__.__name__ == "FISFaculty":
             return redirect(url_for('auth.Logout'))
         else:
             return redirect(url_for('auth.adminLogout'))
     except jwt.InvalidTokenError:
         flash('Invalid User Token. Please Login again.', category='error')
-        if current_user.__class__.__name__ == "Faculty_Profile":
+        if current_user.__class__.__name__ == "FISFaculty":
             return redirect(url_for('auth.Logout'))
         else:
             return redirect(url_for('auth.adminLogout'))
