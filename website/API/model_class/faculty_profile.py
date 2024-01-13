@@ -19,7 +19,6 @@ class FISFaculty(Base):
     FacultyType = Column(String)
     Rank = Column(String)
     Units = Column(Integer)
-    Name = Column(String)
     FirstName = Column(String)
     LastName = Column(String)
     MiddleName = Column(String)
@@ -47,7 +46,6 @@ class FISFaculty_Model(BaseModel):
     FacultyType: str
     Rank: str
     Units: int
-    Name: str
     FirstName: str  = "" 
     LastName: str = ""
     MiddleName: Optional[str]

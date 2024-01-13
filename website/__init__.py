@@ -97,13 +97,13 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         # Assuming the user ID is unique across both Faculty and Admin tables
-        faculty_user = FISFaculty.query.get(str(user_id))
-        if faculty_user:
-            return faculty_user
-
-        admin_user = FISAdmin.query.get(str(user_id))
+        admin_user = FISAdmin.query.get(int(user_id))
         if admin_user:
             return admin_user
+        
+        faculty_user = FISFaculty.query.get(int(user_id))
+        if faculty_user:
+            return faculty_user
 
         return None  # Return None if user not found
     

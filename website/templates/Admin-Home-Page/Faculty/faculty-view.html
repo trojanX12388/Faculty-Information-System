@@ -1,4 +1,4 @@
-{% extends "/Admin-Home-Page/base.html" %}{% block title %}View {{faculty_data.name}}{% endblock %} {% block content%}
+{% extends "/Admin-Home-Page/base.html" %}{% block title %}View {{faculty_data.FirstName}} {{faculty_data.LastName}}{% endblock %} {% block content%}
 <main id="main" class="main">
 
 <section class="section profile">
@@ -7,10 +7,10 @@
         <div class="card">
           <div class="card-body pt-3">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-              <img src="http://drive.google.com/uc?export=view&id={{faculty_data.profile_pic}}" alt="Profile" class="rounded-circle" style="width:250px;height:120px">
+              <img src="https://lh3.googleusercontent.com/d/{{faculty_data.ProfilePic}}" alt="Profile" class="rounded-circle" style="width:250px;height:120px">
            
-            <h2>{{faculty_data.name}}</h2>
-            <h3>{{faculty_data.rank}}</h3>
+            <h2>{{faculty_data.FirstName}} {{faculty_data.MiddleInitial}} {{faculty_data.LastName}}</h2>
+            <h3>{{faculty_data.Rank}}</h3>
       
           </div>
             <!-- Bordered Tabs -->
@@ -21,37 +21,37 @@
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                  <div class="col-lg-9 col-md-8">{{faculty_data.name}}</div>
+                  <div class="col-lg-9 col-md-8">{{faculty_data.FirstName}} {{faculty_data.MiddleInitial}} {{faculty_data.LastName}}</div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Employee ID</div>
-                  <div class="col-lg-9 col-md-8">{{faculty_data.faculty_account_id}}</div>
+                  <div class="col-lg-9 col-md-8">{{faculty_data.FacultyId}}</div>
                 </div>
 
                 <div class="row">
                     <div class="col-lg-3 col-md-4 label">Email</div>
-                    <div class="col-lg-9 col-md-8">{{faculty_data.email}}</div>
+                    <div class="col-lg-9 col-md-8">{{faculty_data.Email}}</div>
                   </div>
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Faculty Type</div>
-                  <div class="col-lg-9 col-md-8">{{faculty_data.faculty_type}}</div>
+                  <div class="col-lg-9 col-md-8">{{faculty_data.FacultyType}}</div>
                 </div>
 
                 <div class="row">
                     <div class="col-lg-3 col-md-4 label">Faculty Code</div>
-                    <div class="col-lg-9 col-md-8">{{faculty_data.faculty_code}}</div>
+                    <div class="col-lg-9 col-md-8">{{faculty_data.FacultyCode}}</div>
                 </div>
 
                 <div class="row">
                     <div class="col-lg-3 col-md-4 label">Age</div>
-                    <div class="col-lg-9 col-md-8">{{faculty_data.age}}</div>
+                    <div class="col-lg-9 col-md-8">{{faculty_data.Age}}</div>
                   </div>
 
                 <div class="row">
                     <div class="col-lg-3 col-md-4 label">Birth Date</div>
-                    <div class="col-lg-9 col-md-8">{{birth_date}}</div>
+                    <div class="col-lg-9 col-md-8">{{BirthDate}}</div>
                   </div>
   
                   <div class="row">
@@ -61,17 +61,17 @@
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Rank</div>
-                  <div class="col-lg-9 col-md-8">{{faculty_data.rank}}</div>
+                  <div class="col-lg-9 col-md-8">{{faculty_data.Rank}}</div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Units</div>
-                  <div class="col-lg-9 col-md-8">{{faculty_data.units}}</div>
+                  <div class="col-lg-9 col-md-8">{{faculty_data.Units}}</div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Degree</div>
-                  <div class="col-lg-9 col-md-8">{{faculty_data.degree}}</div>
+                  <div class="col-lg-9 col-md-8">{{faculty_data.Degree}}</div>
                 </div>
 
               </div>
@@ -89,7 +89,7 @@
       <div class="section dashboard col-xxl-4 col-md-4">
         <div class="card info-card sales-card">
 
-          <a href="/faculty-member/{{ faculty_data.faculty_account_id }}/personal-data" class="card-body">
+          <a href="/faculty-member/{{ faculty_data.FacultyId }}/personal-data" class="card-body">
             <h5 class="card-title">Personal Data</h5>
 
             <div class="d-flex align-items-center">
@@ -109,7 +109,7 @@
       <div class="section dashboard col-xxl-4 col-md-4">
         <div class="card info-card sales-card">
 
-          <a href="/faculty-member/{{ faculty_data.faculty_account_id }}/teaching-instructions" class="card-body">
+          <a href="/faculty-member/{{ faculty_data.FacultyId }}/teaching-instructions" class="card-body">
             <h5 class="card-title">Teaching Instructions</h5>
 
             <div class="d-flex align-items-center">
@@ -129,7 +129,7 @@
       <div class="section dashboard col-xxl-4 col-md-4">
         <div class="card info-card sales-card">
 
-          <a href="/faculty-member/{{ faculty_data.faculty_account_id }}/schedules" class="card-body">
+          <a href="/faculty-member/{{ faculty_data.FacultyId }}/schedules" class="card-body">
             <h5 class="card-title">Schedules</h5>
 
             <div class="d-flex align-items-center">
@@ -149,7 +149,7 @@
       <div class="section dashboard col-xxl-4 col-md-4">
         <div class="card info-card sales-card">
 
-          <a href="/faculty-member/{{ faculty_data.faculty_account_id }}/roles" class="card-body">
+          <a href="/faculty-member/{{ faculty_data.FacultyId }}/roles" class="card-body">
             <h5 class="card-title">Roles</h5>
 
             <div class="d-flex align-items-center">
@@ -169,7 +169,7 @@
       <div class="section dashboard col-xxl-4 col-md-4">
         <div class="card info-card sales-card">
 
-          <a href="/faculty-member/{{ faculty_data.faculty_account_id }}/attendance" class="card-body">
+          <a href="/faculty-member/{{ faculty_data.FacultyId }}/attendance" class="card-body">
             <h5 class="card-title">Attendance</h5>
 
             <div class="d-flex align-items-center">
@@ -189,7 +189,7 @@
       <div class="section dashboard col-xxl-4 col-md-4">
         <div class="card info-card sales-card">
 
-          <a href="/faculty-member/{{ faculty_data.faculty_account_id }}/research-publications" class="card-body">
+          <a href="/faculty-member/{{ faculty_data.FacultyId }}/research-publications" class="card-body">
             <h5 class="card-title">Research and Publications</h5>
 
             <div class="d-flex align-items-center">
@@ -209,7 +209,7 @@
       <div class="section dashboard col-xxl-4 col-md-4">
         <div class="card info-card sales-card">
 
-          <a href="/faculty-member/{{ faculty_data.faculty_account_id }}/awards-recognition" class="card-body">
+          <a href="/faculty-member/{{ faculty_data.FacultyId }}/awards-recognition" class="card-body">
             <h5 class="card-title">Awards and Recognition</h5>
 
             <div class="d-flex align-items-center">
@@ -229,7 +229,7 @@
       <div class="section dashboard col-xxl-4 col-md-4">
         <div class="card info-card sales-card">
 
-          <a href="/faculty-member/{{ faculty_data.faculty_account_id }}/professional-development" class="card-body">
+          <a href="/faculty-member/{{ faculty_data.FacultyId }}/professional-development" class="card-body">
             <h5 class="card-title">Professional Development</h5>
 
             <div class="d-flex align-items-center">
@@ -249,7 +249,7 @@
       <div class="section dashboard col-xxl-4 col-md-4">
         <div class="card info-card sales-card">
 
-          <a href="/faculty-member/{{ faculty_data.faculty_account_id }}/mandatory-requirements" class="card-body">
+          <a href="/faculty-member/{{ faculty_data.FacultyId }}/mandatory-requirements" class="card-body">
             <h5 class="card-title">Mandatory Requirements</h5>
 
             <div class="d-flex align-items-center">
@@ -269,7 +269,7 @@
       <div class="section dashboard col-xxl-4 col-md-4">
         <div class="card info-card sales-card">
 
-          <a href="/faculty-member/{{ faculty_data.faculty_account_id }}/services" class="card-body">
+          <a href="/faculty-member/{{ faculty_data.FacultyId }}/services" class="card-body">
             <h5 class="card-title">Services</h5>
 
             <div class="d-flex align-items-center">
@@ -289,7 +289,7 @@
       <div class="section dashboard col-xxl-4 col-md-4">
         <div class="card info-card sales-card">
 
-          <a href="/faculty-member/{{ faculty_data.faculty_account_id }}/medical-record" class="card-body">
+          <a href="/faculty-member/{{ faculty_data.FacultyId }}/medical-record" class="card-body">
             <h5 class="card-title">Medical Record</h5>
 
             <div class="d-flex align-items-center">
@@ -309,7 +309,7 @@
       <div class="section dashboard col-xxl-4 col-md-4">
         <div class="card info-card sales-card">
 
-          <a href="/faculty-member/{{ faculty_data.faculty_account_id }}/absence-leave" class="card-body">
+          <a href="/faculty-member/{{ faculty_data.FacultyId }}/absence-leave" class="card-body">
             <h5 class="card-title">Leave of Absence</h5>
 
             <div class="d-flex align-items-center">

@@ -26,11 +26,11 @@
                   <span class="bi bi-camera-fill" style="position:relative; top:2px"></span>
                   <span>Change Photo</span>
                 </label>
-                <img src="http://drive.google.com/uc?export=view&id={{profile_pic}}" alt="Profile" class="rounded-circle" style="width:250px;height:120px">
+                <img src="https://lh3.googleusercontent.com/d/{{profile_pic}}" alt="Profile" class="rounded-circle" style="width:250px;height:120px">
               </div>
 
-              <h2>{{User}}</h2>
-              <h3>{{user.rank}}</h3>
+              <h2>{{user.FirstName}} {{user.MiddleInitial}} {{user.LastName}}</h2>
+              <h3>{{user.Rank}}</h3>
         
             </div>
             <div class="section profile">
@@ -41,27 +41,27 @@
     
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label ">Faculty ID</div>
-                      <div class="col-lg-9 col-md-8">{{user.faculty_account_id}}</div>
+                      <div class="col-lg-9 col-md-8">{{user.FacultyId}}</div>
                     </div>
     
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Age</div>
-                      <div class="col-lg-9 col-md-8">{{age}}</div>
+                      <div class="col-lg-9 col-md-8">{{user.Age}}</div>
                     </div>
     
                     <div class="row">
                         <div class="col-lg-3 col-md-4 label">Faculty Type</div>
-                        <div class="col-lg-9 col-md-8">{{user.faculty_type}}</div>
+                        <div class="col-lg-9 col-md-8">{{user.FacultyType}}</div>
                       </div>
     
                     <div class="row">
                       <div class="col-lg-3 col-md-4 label">Units</div>
-                      <div class="col-lg-9 col-md-8">{{user.units}}</div>
+                      <div class="col-lg-9 col-md-8">{{user.Units}}</div>
                     </div>
     
                     <div class="row">
                         <div class="col-lg-3 col-md-4 label">Degree</div>
-                        <div class="col-lg-9 col-md-8">{{user.degree}}</div>
+                        <div class="col-lg-9 col-md-8">{{user.Degree}}</div>
                     </div>
     
                   </div>
@@ -102,42 +102,42 @@
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                    <div class="col-lg-9 col-md-8">{{User}}</div>
+                    <div class="col-lg-9 col-md-8">{{user.FirstName}} {{user.MiddleInitial}} {{user.LastName}}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Employee No.</div>
-                    <div class="col-lg-9 col-md-8">{{user.faculty_account_id}}</div>
+                    <div class="col-lg-9 col-md-8">{{user.FacultyId}}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Faculty Code</div>
-                    <div class="col-lg-9 col-md-8">{{faculty_code}}</div>
+                    <div class="col-lg-9 col-md-8">{{user.FacultyCode}}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Honorific</div>
-                    <div class="col-lg-9 col-md-8">{{honorific}}</div>
+                    <div class="col-lg-9 col-md-8">{{user.Honorific}}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Middle Name</div>
-                    <div class="col-lg-9 col-md-8">{{middle_name}}</div>
+                    <div class="col-lg-9 col-md-8">{{user.MiddleName}}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Birth Date</div>
-                    <div class="col-lg-9 col-md-8">{{birth_date}}</div>
+                    <div class="col-lg-9 col-md-8">{{user.BirthDate}}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Date Hired</div>
-                    <div class="col-lg-9 col-md-8">{{date_hired}}</div>
+                    <div class="col-lg-9 col-md-8">{{user.DateHired}}</div>
                   </div>
 
                   <h5 class="card-title">Remarks</h5>
                   <div class="row">
-                    <div class="d-grid gap-2 mt-3">{{remarks}}</div>
+                    <div class="d-grid gap-2 mt-3">{{user.Remarks}}</div>
                   </div>
                  
                   {% include "/Faculty-Home-Page/Personal-Data-Management-Page/Privacy-Notice.html" %}                
@@ -161,14 +161,14 @@
                     <div class="row mb-3">
                       <label for="employee_no" class="col-md-4 col-lg-3 col-form-label">Employee No.</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="employee_no" type="text" class="form-control" id="employee_no" value="{{user.faculty_account_id}}" disabled>
+                        <input name="employee_no" type="text" class="form-control" id="employee_no" value="{{user.FacultyId}}" disabled>
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="faculty_code" class="col-md-4 col-lg-3 col-form-label">Faculty Code</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="faculty_code" type="text" class="form-control" id="faculty_code" value="{{faculty_code}}">
+                        <input name="faculty_code" type="text" class="form-control" id="faculty_code" value="{{user.FacultyCode}}">
                       </div>
                     </div>
 
@@ -176,14 +176,14 @@
                     <div class="row mb-3">
                       <label for="honorific" class="col-md-4 col-lg-3 col-form-label">Honorific</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="honorific" type="text" class="form-control" id="honorific" value="{{honorific}}">
+                        <input name="honorific" type="text" class="form-control" id="honorific" value="{{user.Honorific}}">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="last_name" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="last_name" type="text" class="form-control" id="lastname" value="{{last_name}}">
+                        <input name="last_name" type="text" class="form-control" id="lastname" value="{{user.LastName}}">
                       </div>
                     </div>
 
@@ -191,7 +191,7 @@
                     <div class="row mb-3">
                       <label for="first_name" class="col-md-4 col-lg-3 col-form-label">First Name</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="first_name" type="text" class="form-control" id="first_name" value="{{first_name}}">
+                        <input name="first_name" type="text" class="form-control" id="first_name" value="{{user.FirstName}}">
                       </div>
                     </div>
 
@@ -199,7 +199,7 @@
                     <div class="row mb-3">
                       <label for="middle_name" class="col-md-4 col-lg-3 col-form-label">Middle Name</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="middle_name" type="text" class="form-control" id="middle_name" value="{{middle_name}}">
+                        <input name="middle_name" type="text" class="form-control" id="middle_name" value="{{user.MiddleName}}">
                       </div>
                     </div>
 
@@ -207,7 +207,7 @@
                     <div class="row mb-3">
                       <label for="middle_initial" class="col-md-4 col-lg-3 col-form-label">Middle Initial</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="middle_initial" type="text" class="form-control" id="middle_initial" value="{{middle_initial}}">
+                        <input name="middle_initial" type="text" class="form-control" id="middle_initial" value="{{user.MiddleInitial}}">
                       </div>
                     </div>
 
@@ -215,28 +215,28 @@
                     <div class="row mb-3">
                       <label for="name_extension" class="col-md-4 col-lg-3 col-form-label">Name Extension</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="name_extension" type="text" class="form-control" id="name_extension" value="{{name_extension}}">
+                        <input name="name_extension" type="text" class="form-control" id="name_extension" value="{{user.NameExtension}}">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="birth_date" class="col-md-4 col-lg-3 col-form-label">Birth Date</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="birth_date" type="date" class="form-control" id="birth_date" value="{{birth_date}}">
+                        <input name="birth_date" type="date" class="form-control" id="birth_date" value="{{user.BirthDate}}">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="date_hired" class="col-md-4 col-lg-3 col-form-label">Date Hired</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="date_hired" type="date" class="form-control" id="date_hired" value="{{date_hired}}">
+                        <input name="date_hired" type="date" class="form-control" id="date_hired" value="{{user.DateHired}}">
                       </div>
                     </div>
 
                     <h5 class="card-title">Remarks</h5>
                     <div class="row mb-3">
                       <div class="d-grid gap-2 mt-3">
-                        <textarea name="remarks" type="text" class="form-control " id="remarks" value="" style="height: 100px">{{remarks}}</textarea>
+                        <textarea name="remarks" type="text" class="form-control " id="remarks" value="" style="height: 100px">{{user.Remarks}}</textarea>
                       </div>
                     </div>
 

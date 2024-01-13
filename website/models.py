@@ -13,7 +13,6 @@ class FISFaculty(db.Model, UserMixin):
     FacultyType = db.Column(db.String(50), nullable=False)  # Faculty Type
     Rank = db.Column(db.String(50))  # Faculty Rank
     Units = db.Column(db.Numeric, nullable=False)  # Faculty Unit
-    Name = db.Column(db.String(50), nullable=False)  # Name
     FirstName = db.Column(db.String(50), nullable=False)  # First Name
     LastName = db.Column(db.String(50), nullable=False)  # Last Name
     MiddleName = db.Column(db.String(50))  # Middle Name
@@ -63,8 +62,7 @@ class FISFaculty(db.Model, UserMixin):
     FISQualifications = db.relationship('FISQualifications')
     FISPublications = db.relationship('FISPublications')
     FISConferences = db.relationship('FISConferences')
-    FISAnnouncement = db.relationship('FISAnnouncement')
-    FISResearchProjects = db.relationship('FISResearchProjects')
+    
     FISAdvising = db.relationship('FISAdvising')
     FISMentoring = db.relationship('FISMentoring')
     FISCommittee = db.relationship('FISCommittee')
@@ -86,7 +84,6 @@ class FISFaculty(db.Model, UserMixin):
             'FacultyType': self.FacultyType,
             'Rank': self.Rank,
             'Units': self.Units,
-            'Name': self.Name,
             'FirstName': self.FirstName,
             'LastName': self.LastName,
             'MiddleName': self.MiddleName,
@@ -165,7 +162,6 @@ class FISAdmin(db.Model, UserMixin):
     AdminType = db.Column(db.String(50), nullable=False)  # Faculty Type
     Rank = db.Column(db.String(50))  # Faculty Rank
     Units = db.Column(db.Numeric, nullable=False)  # Faculty Unit
-    Name = db.Column(db.String(50), nullable=False)  # Name
     FirstName = db.Column(db.String(50), nullable=False)  # First Name
     LastName = db.Column(db.String(50), nullable=False)  # Last Name
     MiddleName = db.Column(db.String(50))  # Middle Name
@@ -216,7 +212,6 @@ class FISAdmin(db.Model, UserMixin):
             'AdminType': self.AdminType,
             'Rank': self.Rank,
             'Units': self.Units,
-            'Name': self.Name,
             'FirstName': self.FirstName,
             'LastName': self.LastName,
             'MiddleName': self.MiddleName,
@@ -267,10 +262,9 @@ class FISAdmin(db.Model, UserMixin):
    
 # SYSTEM ADMIN 
 
-class FISSystem_Admin(db.Model, UserMixin):
-    __tableName__ = 'FISSystem_Admin'
+class FISSystemAdmin(db.Model, UserMixin):
+    __tablename__ = 'FISSystemAdmin'
     SystemAdminId = db.Column(db.String(50), primary_key=True)  # UserID
-    Name = db.Column(db.String(50), nullable=False)  # Name
     Email = db.Column(db.String(50), unique=True, nullable=False)  # Email
     Password = db.Column(db.String(128), nullable=False)  # Password
    
@@ -281,7 +275,6 @@ class FISSystem_Admin(db.Model, UserMixin):
     def to_dict(self):
         return {
             'SystemAdminId': self.SystemAdminId,
-            'Name': self.Name,
             'Email': self.Email,
             'Password': self.Password,
             'ProfilePic': self.ProfilePic,
@@ -350,21 +343,21 @@ class FISPDS_ContactDetails(db.Model):
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     Email = db.Column(db.String(50))  
-    mobile_number = db.Column(db.Numeric) 
+    mobile_number = db.Column(db.String(11)) 
     perm_country = db.Column(db.String(50))
     perm_region = db.Column(db.String(50))    
     perm_province = db.Column(db.String(50))  
     perm_city = db.Column(db.String(50))  
     perm_address = db.Column(db.String(50))  
-    perm_zip_code = db.Column(db.Numeric)  
-    perm_phone_number = db.Column(db.Numeric) 
+    perm_zip_code = db.Column(db.String)  
+    perm_phone_number = db.Column(db.String(11))
     res_country = db.Column(db.String(50))
     res_region = db.Column(db.String(50))    
     res_province = db.Column(db.String(50))  
     res_city = db.Column(db.String(50))  
     res_address = db.Column(db.String(50))  
-    res_zip_code = db.Column(db.Numeric)  
-    res_phone_number = db.Column(db.Numeric) 
+    res_zip_code = db.Column(db.String)  
+    res_phone_number = db.Column(db.String(11))
     Remarks = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
     
@@ -655,11 +648,11 @@ class FISPDS_AgencyMembership(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
-    GSIS = db.Column(db.String(20))  
-    PAGIBIG = db.Column(db.String(20)) 
-    PHILHEALTH = db.Column(db.String(20)) 
-    SSS = db.Column(db.String(20)) 
-    TIN = db.Column(db.String(20)) 
+    GSIS = db.Column(db.String(255))  
+    PAGIBIG = db.Column(db.String(255)) 
+    PHILHEALTH = db.Column(db.String(255)) 
+    SSS = db.Column(db.String(255)) 
+    TIN = db.Column(db.String(255)) 
     Remarks = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
     
@@ -1028,66 +1021,6 @@ class FISConferences(db.Model):
             # 'AdminId': self.AdminId,
             'conference_name': self.conference_name,
             'date': self.date,
-            'is_delete': self.is_delete
-        }
-        
-    def get_id(self):
-        return str(self.id)  # Convert to string to ensure compatibility  
-
-# ------------------------------------------------
-
-# ------------------------------------------------
-# ANNOUNCEMENT
-  
-class FISAnnouncement(db.Model):
-    __tablename__ = 'FISAnnouncement'
-
-    id = db.Column(db.Integer, primary_key=True)  # DataID
-    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
-    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
-    title = db.Column(db.String(50)) 
-    content = db.Column(db.String) 
-    date = db.Column(db.Date)
-    is_delete = db.Column(db.Boolean, default=False) 
-    
-
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'FacultyId': self.FacultyId,
-            # 'AdminId': self.AdminId,
-            'title': self.title,
-            'content': self.content,
-            'date': self.date,
-            'is_delete': self.is_delete
-        }
-        
-    def get_id(self):
-        return str(self.id)  # Convert to string to ensure compatibility  
-
-# ------------------------------------------------
-
-# ------------------------------------------------
-# RESEARCH PROJECTS
-  
-class FISResearchProjects(db.Model):
-    __tablename__ = 'FISResearchProjects'
-
-    id = db.Column(db.Integer, primary_key=True)  # DataID
-    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
-    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
-    project_title = db.Column(db.String(50)) 
-    status = db.Column(db.String(50)) 
-    is_delete = db.Column(db.Boolean, default=False) 
-    
-
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'FacultyId': self.FacultyId,
-            # 'AdminId': self.AdminId,
-            'project_title': self.project_title,
-            'status': self.status,
             'is_delete': self.is_delete
         }
         

@@ -18,7 +18,7 @@
   <div class="tab-pane fade show active profile-overview" id="profile-overview">
 
     <h5 class="card-title">Agency Membership Identification Numbers</h5>
-  {% for data in data.PDS_Agency_Membership %}
+  {% for data in data.FISPDS_AgencyMembership %}
   {% if loop.first %}
   
     <p class="col-lg-9 col-md-8">Please contact HRMD Records Management Section if you don't know your membership identification number.</p>
@@ -26,32 +26,32 @@
     <br>
     <div class="row">
       <div class="col-lg-3 col-md-4 label">GSIS</div>
-      <div class="col-lg-9 col-md-8">{{data.GSIS}}</div>
+      <div class="col-lg-9 col-md-8">{{decrypted_GSIS}}</div>
     </div>
 
     <div class="row">
       <div class="col-lg-3 col-md-4 label">PAG-IBIG Fund</div>
-      <div class="col-lg-9 col-md-8">{{data.PAGIBIG}}</div>
+      <div class="col-lg-9 col-md-8">{{decrypted_PAGIBIG}}</div>
     </div>
 
     <div class="row">
       <div class="col-lg-3 col-md-4 label">PHILHEALTH</div>
-      <div class="col-lg-9 col-md-8">{{data.PHILHEALTH}}</div>
+      <div class="col-lg-9 col-md-8">{{decrypted_PHILHEALTH}}</div>
     </div>
 
     <div class="row">
       <div class="col-lg-3 col-md-4 label">SSS</div>
-      <div class="col-lg-9 col-md-8">{{data.SSS}}</div>
+      <div class="col-lg-9 col-md-8">{{decrypted_SSS}}</div>
     </div>
 
     <div class="row">
       <div class="col-lg-3 col-md-4 label">TIN</div>
-      <div class="col-lg-9 col-md-8">{{data.TIN}}</div>
+      <div class="col-lg-9 col-md-8">{{decrypted_TIN}}</div>
     </div>
 
     <h5 class="card-title">Remarks</h5>
     <div class="row">
-      <div class="d-grid gap-2 mt-3">{{data.remarks}}</div>
+      <div class="d-grid gap-2 mt-3">{{data.Remarks}}</div>
     </div>
 
     {% include "/Faculty-Home-Page/Personal-Data-Management-Page/Privacy-Notice.html" %}       
@@ -78,14 +78,14 @@
       <div class="row mb-3">
         <label for="GSIS" class="col-md-4 col-lg-3 col-form-label">GSIS</label>
         <div class="col-md-8 col-lg-9">
-          <input name="GSIS" type="text" class="form-control" id="GSIS" value="{{data.GSIS}}" required>
+          <input name="GSIS" type="text" class="form-control" id="GSIS" value="{{decrypted_GSIS}}" required>
         </div>
       </div>
 
       <div class="row mb-3">
         <label for="PAGIBIG_FUND" class="col-md-4 col-lg-3 col-form-label">PAG-IBIG Fund</label>
         <div class="col-md-8 col-lg-9">
-          <input name="PAGIBIG" type="text" class="form-control" id="PAGIBIG_FUND" value="{{data.PAGIBIG}}" required>
+          <input name="PAGIBIG" type="text" class="form-control" id="PAGIBIG_FUND" value="{{decrypted_PAGIBIG}}" required>
         </div>
       </div>
 
@@ -93,14 +93,14 @@
       <div class="row mb-3">
         <label for="PHILHEALTH" class="col-md-4 col-lg-3 col-form-label">PHILHEALTH</label>
         <div class="col-md-8 col-lg-9">
-          <input name="PHILHEALTH" type="text" class="form-control" id="PHILHEALTH" value="{{data.PHILHEALTH}}" required>
+          <input name="PHILHEALTH" type="text" class="form-control" id="PHILHEALTH" value="{{decrypted_PHILHEALTH}}" required>
         </div>
       </div>
 
       <div class="row mb-3">
         <label for="SSS" class="col-md-4 col-lg-3 col-form-label">SSS</label>
         <div class="col-md-8 col-lg-9">
-          <input name="SSS" type="text" class="form-control" id="SSS" value="{{data.SSS}}" required>
+          <input name="SSS" type="text" class="form-control" id="SSS" value="{{decrypted_SSS}}" required>
         </div>
       </div>
 
@@ -108,7 +108,7 @@
       <div class="row mb-3">
         <label for="TIN" class="col-md-4 col-lg-3 col-form-label">TIN</label>
         <div class="col-md-8 col-lg-9">
-          <input name="TIN" type="text" class="form-control" id="TIN" value="{{data.TIN}}" required>
+          <input name="TIN" type="text" class="form-control" id="TIN" value="{{decrypted_TIN}}" required>
         </div>
       </div>
 
