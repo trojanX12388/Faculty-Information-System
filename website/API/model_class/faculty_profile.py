@@ -12,52 +12,60 @@ import datetime
 # FACULTY PROFILE
 # --------------------------------------------------------------
 
-class Faculty_Profile(Base):
-    __tablename__ = 'Faculty_Profile'
+class FISFaculty(Base):
+    __tablename__ = 'FISFaculty'
 
-    faculty_account_id = Column(String, primary_key=True, index=True)
-    faculty_type = Column(String)
-    rank = Column(String)
-    units = Column(Integer)
-    name = Column(String)
-    first_name = Column(String)
-    last_name = Column(String)
-    middle_name = Column(String)
-    middle_initial = Column(String)
-    name_extension = Column(String)
-    birth_date = Column(String)
-    date_hired = Column(String)
-    degree = Column(String)
-    remarks = Column(String)
-    faculty_code = Column(String)
-    honorific = Column(String)
-    age = Column(Integer)
-    email = Column(String)
-    profile_pic = Column(String)
-    is_active = Column(Boolean, default=True)
+    FacultyId = Column(Integer, primary_key=True, index=True)
+    FacultyType = Column(String)
+    Rank = Column(String)
+    Units = Column(Integer)
+    Name = Column(String)
+    FirstName = Column(String)
+    LastName = Column(String)
+    MiddleName = Column(String)
+    MiddleInitial = Column(String)
+    NameExtension = Column(String)
+    BirthDate = Column(String)
+    DateHired = Column(String)
+    Degree = Column(String)
+    Remarks = Column(String)
+    FacultyCode = Column(String)
+    Honorific = Column(String)
+    Age = Column(Integer)
+    
+    Email = Column(String)
+    ResidentialAddress = Column(String)
+    MobileNumber = Column(String)
+    Gender = Column(Integer)
+    
+    ProfilePic = Column(String)
+    IsActive = Column(Boolean, default=True)
 
 # Pydantic model for data validation
-class Faculty_Profile_Model(BaseModel):
-    faculty_account_id: str
-    faculty_type: str
-    rank: str
-    units: int
-    name: str
-    first_name: str  = "" 
-    last_name: str = ""
-    middle_name: Optional[str]
-    middle_initial: Optional[str]
-    name_extension: Optional[str]
-    birth_date: datetime.date 
-    date_hired: datetime.date 
-    degree: Optional[str]
-    remarks: Optional[str]
-    faculty_code: int
-    honorific: Optional[str]
-    age: int
-    email: str = ""
-    profile_pic: str = ""
-    is_active: bool 
+class FISFaculty_Model(BaseModel):
+    FacultyId: int
+    FacultyType: str
+    Rank: str
+    Units: int
+    Name: str
+    FirstName: str  = "" 
+    LastName: str = ""
+    MiddleName: Optional[str]
+    MiddleInitial: Optional[str]
+    NameExtension: Optional[str]
+    BirthDate: datetime.date 
+    DateHired: datetime.date 
+    Degree: Optional[str]
+    Remarks: Optional[str]
+    FacultyCode: int
+    Honorific: Optional[str]
+    Age: int
+    Email: str = ""
+    ResidentialAddress: str = ""
+    MobileNumber: str = ""
+    Gender: int
+    ProfilePic: str = ""
+    IsActive: bool 
 
     class Config:
         orm_mode = True

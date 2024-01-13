@@ -10,7 +10,7 @@ function disableForm(disable) {
 
 // Function to start the countdown
 function startCountdown() {
-    let countdownTime = 30; // Initial countdown time in seconds
+    let countdownTime = localStorage.getItem('countdownTime') || 30; // Retrieve countdown time from localStorage or set to 30 initially
     let countdownDisplay = document.getElementById('countdownDisplay'); // Reference to the countdown display span
 
     countdownDisplay.textContent = countdownTime; // Display initial countdown
@@ -22,11 +22,13 @@ function startCountdown() {
             clearInterval(countdownInterval); // Stop the countdown when it reaches 0
             resetEntrySession(); // Reset entry session on the server
             localStorage.setItem('entry', 3); // Reset attempts in localStorage
+            localStorage.removeItem('countdownTime'); // Remove countdown time from localStorage
             countdownDisplay.textContent = ''; // Clear countdown display
             document.getElementById('manyAttempt').style.display = 'none'; // Hide the attempt message
             disableForm(false); // Enable form fields and submit button after countdown
         } else {
             countdownDisplay.textContent = countdownTime; // Update countdown text
+            localStorage.setItem('countdownTime', countdownTime); // Update countdown time in localStorage
         }
     }, 1000); // Update every 1 second (1000 milliseconds)
 }

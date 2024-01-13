@@ -37,14 +37,14 @@ API_KEYS = ast.literal_eval(os.environ["API_KEYS"])
 # ---------------------------------------------------------
 
 # LOAD MODELS
-from .model_class.faculty_profile import Faculty_Profile
+from .model_class.faculty_profile import FISFaculty
 # PDS
-from .model_class.pds_model import PDS_Personal_Details,PDS_Contact_Details
+from .model_class.pds_model import FISPDS_PersonalDetails,FISPDS_ContactDetails
 
 # LOAD PYDANTIC MODELS
-from .model_class.faculty_profile import Faculty_Profile_Model
+from .model_class.faculty_profile import FISFaculty_Model
 # PDS 
-from .model_class.pds_model import PDS_Personal_Details_Model,PDS_Contact_Details_Model
+from .model_class.pds_model import FISPDS_PersonalDetails_Model,FISPDS_ContactDetails_Model
 
 
 # ---------------------------------------------------------
@@ -58,7 +58,7 @@ API = Blueprint('API', __name__)
 
 from sqlalchemy.orm import aliased
 
-@API.route('/api/all/Faculty_Profile', methods=['GET'])
+@API.route('/api/all/FISFaculty', methods=['GET'])
 @admin_token_required  # Get the API key from the request header
 def get_combined_profile():
     token = request.headers.get('token')  # Get the API key from the request header
@@ -71,35 +71,35 @@ def get_combined_profile():
     else:
         db = SessionLocal()
         try:
-            # Perform outer joins with Faculty_Profile, PDS_Personal_Details, and PDS_Contact_Details
-            faculty_alias = aliased(Faculty_Profile)
-            personal_details_alias = aliased(PDS_Personal_Details)
-            contact_details_alias = aliased(PDS_Contact_Details)
+            # Perform outer joins with FISFaculty, FISPDS_PersonalDetails, and FISPDS_ContactDetails
+            faculty_alias = aliased(FISFaculty)
+            personal_details_alias = aliased(FISPDS_PersonalDetails)
+            contact_details_alias = aliased(FISPDS_ContactDetails)
 
-            combined_data = db.query(Faculty_Profile, personal_details_alias, contact_details_alias).outerjoin(
-                personal_details_alias, Faculty_Profile.faculty_account_id == personal_details_alias.faculty_account_id
+            combined_data = db.query(FISFaculty, personal_details_alias, contact_details_alias).outerjoin(
+                personal_details_alias, FISFaculty.FacultyId == personal_details_alias.FacultyId
             ).outerjoin(
-                contact_details_alias, Faculty_Profile.faculty_account_id == contact_details_alias.faculty_account_id
+                contact_details_alias, FISFaculty.FacultyId == contact_details_alias.FacultyId
             ).all()
 
-            # Create a dictionary to store combined data with faculty_account_id as keys
+            # Create a dictionary to store combined data with FacultyId as keys
             combined_profile_by_id = {}
 
             for faculty, pds_personal_details, pds_contact_details in combined_data:
-                faculty_dict = Faculty_Profile_Model.from_orm(faculty).dict()
-                faculty_id = faculty.faculty_account_id
+                faculty_dict = FISFaculty_Model.from_orm(faculty).dict()
+                faculty_id = faculty.FacultyId
 
                 if pds_personal_details:
-                    faculty_dict['PDS_Personal_Details'] = PDS_Personal_Details_Model.from_orm(pds_personal_details).dict()
+                    faculty_dict['FISPDS_PersonalDetails'] = FISPDS_PersonalDetails_Model.from_orm(pds_personal_details).dict()
                 else:
-                    faculty_dict['PDS_Personal_Details'] = None
+                    faculty_dict['FISPDS_PersonalDetails'] = None
 
                 if pds_contact_details:
-                    faculty_dict['PDS_Contact_Details'] = PDS_Contact_Details_Model.from_orm(pds_contact_details).dict()
+                    faculty_dict['FISPDS_ContactDetails'] = FISPDS_ContactDetails_Model.from_orm(pds_contact_details).dict()
                 else:
-                    faculty_dict['PDS_Contact_Details'] = None
+                    faculty_dict['FISPDS_ContactDetails'] = None
 
-                # Store combined data with faculty_account_id as keys in the dictionary
+                # Store combined data with FacultyId as keys in the dictionary
                 combined_profile_by_id[faculty_id] = faculty_dict
 
             return jsonify({'Faculties': combined_profile_by_id})
@@ -112,7 +112,7 @@ def get_combined_profile():
 # FACULTY DATA 
 # -------------------------------------------------------------------------
 
-@API.route('/api/Faculty_Profile', methods=['GET'])
+@API.route('/api/FISFaculty', methods=['GET'])
 @admin_token_required # Get the API key from the request header
 def get_all_faculty():
     token = request.headers.get('token') # Get the API key from the request header
@@ -124,11 +124,11 @@ def get_all_faculty():
     
     else:
         db = SessionLocal()
-        faculty_profile = db.query(Faculty_Profile).all()
+        faculty_profile = db.query(FISFaculty).all()
         db.close()
         try:
-            profile = [Faculty_Profile_Model.from_orm(faculty).dict() for faculty in faculty_profile]
-            return jsonify({'Faculty_Profile': profile})
+            profile = [FISFaculty_Model.from_orm(faculty).dict() for faculty in faculty_profile]
+            return jsonify({'FISFaculty': profile})
         
         
         
@@ -138,9 +138,9 @@ def get_all_faculty():
 
 
 
-@API.route('/api/Faculty_Profile/<faculty_account_id>',  methods=['GET', 'POST', 'PUT', 'DELETE'])
+@API.route('/api/FISFaculty/<FacultyId>',  methods=['GET', 'POST', 'PUT', 'DELETE'])
 @admin_token_required # Get the API key from the request header
-def get_task(faculty_account_id):
+def get_task(FacultyId):
     token = request.headers.get('token')  # Get the API key from the request header
     key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
     key = key['key']
@@ -151,21 +151,21 @@ def get_task(faculty_account_id):
     else:
         if request.method == 'GET':
             db = SessionLocal()
-            faculty_profile = db.query(Faculty_Profile).filter(Faculty_Profile.faculty_account_id == faculty_account_id).first()
+            faculty_profile = db.query(FISFaculty).filter(FISFaculty.FacultyId == FacultyId).first()
             db.close()
             if faculty_profile is None:
                 return jsonify({'error': 'no data found'}), 404
             try:
-                return jsonify({'Faculty_Profile': Faculty_Profile_Model.from_orm(faculty_profile).dict()})
+                return jsonify({'FISFaculty': FISFaculty_Model.from_orm(faculty_profile).dict()})
             except ValidationError as e:
                 return jsonify({'error': f'Validation error: {e}'})
         
         
         elif request.method == 'POST':
             data = request.json
-            faculty_profile = Faculty_Profile_Model(**data)
+            faculty_profile = FISFaculty_Model(**data)
             db = SessionLocal()
-            db_faculty_profile = Faculty_Profile(**Faculty_Profile_Model.dict())
+            db_faculty_profile = FISFaculty(**FISFaculty_Model.dict())
             db.add(db_faculty_profile)
             db.commit()
             db.refresh(db_faculty_profile)
@@ -173,7 +173,7 @@ def get_task(faculty_account_id):
             if faculty_profile is None:
                     return jsonify({'error': 'no data found'}), 404
             try:
-                return jsonify({'Faculty_Profile': Faculty_Profile_Model.from_orm(faculty_profile).dict()})
+                return jsonify({'FISFaculty': FISFaculty_Model.from_orm(faculty_profile).dict()})
             except ValidationError as e:
                 return jsonify({'error': f'Validation error: {e}'})
             
@@ -181,7 +181,7 @@ def get_task(faculty_account_id):
         elif request.method == 'PUT':
             data = request.json
             db = SessionLocal()
-            db_faculty_profile = db.query(Faculty_Profile).filter(Faculty_Profile.faculty_account_id == faculty_account_id).first()
+            db_faculty_profile = db.query(FISFaculty).filter(FISFaculty.FacultyId == FacultyId).first()
             if db_faculty_profile is None:
                 db.close()
                 return jsonify({'error': 'no data found'}), 404
@@ -193,14 +193,14 @@ def get_task(faculty_account_id):
             if db_faculty_profile is None:
                     return jsonify({'error': 'no data found'}), 404
             try:
-                return jsonify({'Faculty_Profile': Faculty_Profile_Model.from_orm(db_faculty_profile).dict()})
+                return jsonify({'FISFaculty': FISFaculty_Model.from_orm(db_faculty_profile).dict()})
             except ValidationError as e:
                 return jsonify({'error': f'Validation error: {e}'})
         
         
         elif request.method == 'DELETE':
             db = SessionLocal()
-            db_faculty_profile = db.query(Faculty_Profile).filter(Faculty_Profile.faculty_account_id == faculty_account_id).first()
+            db_faculty_profile = db.query(FISFaculty).filter(FISFaculty.FacultyId == FacultyId).first()
             if db_faculty_profile is None:
                 db.close()
                 return jsonify({'error': 'no data found'}), 404
@@ -214,7 +214,7 @@ def get_task(faculty_account_id):
 # PERSONAL DETAILS
 # -------------------------------------------------------------------------
 
-@API.route('/api/Faculty_Profile/PDS_Personal_Details', methods=['GET'])
+@API.route('/api/FISFaculty/FISPDS_PersonalDetails', methods=['GET'])
 @admin_token_required # Get the API key from the request header
 def get_all_pds_personal_details():
     token = request.headers.get('token')  # Get the API key from the request header
@@ -226,19 +226,19 @@ def get_all_pds_personal_details():
     
     else:
         db = SessionLocal()
-        faculty_profile = db.query(PDS_Personal_Details).all()
+        faculty_profile = db.query(FISPDS_PersonalDetails).all()
         db.close()
         try:
-            profile = [PDS_Personal_Details_Model.from_orm(faculty).dict() for faculty in faculty_profile]
-            return jsonify({'PDS_Personal_Details': profile})
+            profile = [FISPDS_PersonalDetails_Model.from_orm(faculty).dict() for faculty in faculty_profile]
+            return jsonify({'FISPDS_PersonalDetails': profile})
         except ValidationError as e:
             return jsonify({'error': f'Validation error: {e}'})
 
 
 
-@API.route('/api/Faculty_Profile/PDS_Personal_Details/<faculty_account_id>',  methods=['GET', 'POST', 'PUT', 'DELETE'])
+@API.route('/api/FISFaculty/FISPDS_PersonalDetails/<FacultyId>',  methods=['GET', 'POST', 'PUT', 'DELETE'])
 @admin_token_required # Get the API key from the request header
-def get_pds_personal_details(faculty_account_id):
+def get_pds_personal_details(FacultyId):
     token = request.headers.get('token')  # Get the API key from the request header
     key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
     key = key['key']
@@ -249,21 +249,21 @@ def get_pds_personal_details(faculty_account_id):
     else:
         if request.method == 'GET':
             db = SessionLocal()
-            faculty_profile = db.query(PDS_Personal_Details).filter(PDS_Personal_Details.faculty_account_id == faculty_account_id).first()
+            faculty_profile = db.query(FISPDS_PersonalDetails).filter(FISPDS_PersonalDetails.FacultyId == FacultyId).first()
             db.close()
             if faculty_profile is None:
                 return jsonify({'error': 'no data found'}), 404
             try:
-                return jsonify({'PDS_Personal_Details': PDS_Personal_Details_Model.from_orm(faculty_profile).dict()})
+                return jsonify({'FISPDS_PersonalDetails': FISPDS_PersonalDetails_Model.from_orm(faculty_profile).dict()})
             except ValidationError as e:
                 return jsonify({'error': f'Validation error: {e}'})
         
         
         elif request.method == 'POST':
             data = request.json
-            faculty_profile = PDS_Personal_Details_Model(**data)
+            faculty_profile = FISPDS_PersonalDetails_Model(**data)
             db = SessionLocal()
-            db_faculty_profile = PDS_Personal_Details(**PDS_Personal_Details_Model.dict())
+            db_faculty_profile = FISPDS_PersonalDetails(**FISPDS_PersonalDetails_Model.dict())
             db.add(db_faculty_profile)
             db.commit()
             db.refresh(db_faculty_profile)
@@ -271,7 +271,7 @@ def get_pds_personal_details(faculty_account_id):
             if faculty_profile is None:
                     return jsonify({'error': 'no data found'}), 404
             try:
-                return jsonify({'PDS_Personal_Details': PDS_Personal_Details_Model.from_orm(faculty_profile).dict()})
+                return jsonify({'FISPDS_PersonalDetails': FISPDS_PersonalDetails_Model.from_orm(faculty_profile).dict()})
             except ValidationError as e:
                 return jsonify({'error': f'Validation error: {e}'})
             
@@ -279,7 +279,7 @@ def get_pds_personal_details(faculty_account_id):
         elif request.method == 'PUT':
             data = request.json
             db = SessionLocal()
-            db_faculty_profile = db.query(PDS_Personal_Details).filter(PDS_Personal_Details.faculty_account_id == faculty_account_id).first()
+            db_faculty_profile = db.query(FISPDS_PersonalDetails).filter(FISPDS_PersonalDetails.FacultyId == FacultyId).first()
             if db_faculty_profile is None:
                 db.close()
                 return jsonify({'error': 'no data found'}), 404
@@ -291,13 +291,13 @@ def get_pds_personal_details(faculty_account_id):
             if db_faculty_profile is None:
                     return jsonify({'error': 'no data found'}), 404
             try:
-                return jsonify({'PDS_Personal_Details': PDS_Personal_Details_Model.from_orm(db_faculty_profile).dict()})
+                return jsonify({'FISPDS_PersonalDetails': FISPDS_PersonalDetails_Model.from_orm(db_faculty_profile).dict()})
             except ValidationError as e:
                 return jsonify({'error': f'Validation error: {e}'})
         
         elif request.method == 'DELETE':
             db = SessionLocal()
-            db_faculty_profile = db.query(PDS_Personal_Details).filter(PDS_Personal_Details.faculty_account_id == faculty_account_id).first()
+            db_faculty_profile = db.query(FISPDS_PersonalDetails).filter(FISPDS_PersonalDetails.FacultyId == FacultyId).first()
             if db_faculty_profile is None:
                 db.close()
                 return jsonify({'error': 'no data found'}), 404
@@ -310,7 +310,7 @@ def get_pds_personal_details(faculty_account_id):
  # PDS Contact Details  
 # -------------------------------------------------------------------------
 
-@API.route('/api/Faculty_Profile/PDS_Contact_Details', methods=['GET'])
+@API.route('/api/FISFaculty/FISPDS_ContactDetails', methods=['GET'])
 @admin_token_required # Get the API key from the request header
 def get_all_pds_contact_details():
     token = request.headers.get('token') # Get the API key from the request header
@@ -322,19 +322,19 @@ def get_all_pds_contact_details():
     
     else:
         db = SessionLocal()
-        faculty_profile = db.query(PDS_Contact_Details).all()
+        faculty_profile = db.query(FISPDS_ContactDetails).all()
         db.close()
         try:
-            profile = [PDS_Contact_Details_Model.from_orm(faculty).dict() for faculty in faculty_profile]
-            return jsonify({'PDS_Contact_Details': profile})
+            profile = [FISPDS_ContactDetails_Model.from_orm(faculty).dict() for faculty in faculty_profile]
+            return jsonify({'FISPDS_ContactDetails': profile})
         except ValidationError as e:
             return jsonify({'error': f'Validation error: {e}'})
 
 
 
-@API.route('/api/Faculty_Profile/PDS_Contact_Details/<faculty_account_id>',  methods=['GET', 'POST', 'PUT', 'DELETE'])
+@API.route('/api/FISFaculty/FISPDS_ContactDetails/<FacultyId>',  methods=['GET', 'POST', 'PUT', 'DELETE'])
 @admin_token_required # Get the API key from the request header
-def get_pds_contact_details(faculty_account_id):
+def get_pds_contact_details(FacultyId):
     token = request.headers.get('token')  # Get the API key from the request header
     key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
     key = key['key']
@@ -345,21 +345,21 @@ def get_pds_contact_details(faculty_account_id):
     else:
         if request.method == 'GET':
             db = SessionLocal()
-            faculty_profile = db.query(PDS_Contact_Details).filter(PDS_Contact_Details.faculty_account_id == faculty_account_id).first()
+            faculty_profile = db.query(FISPDS_ContactDetails).filter(FISPDS_ContactDetails.FacultyId == FacultyId).first()
             db.close()
             if faculty_profile is None:
                 return jsonify({'error': 'no data found'}), 404
             try:
-                return jsonify({'PDS_Contact_Details': PDS_Contact_Details_Model.from_orm(faculty_profile).dict()})
+                return jsonify({'FISPDS_ContactDetails': FISPDS_ContactDetails_Model.from_orm(faculty_profile).dict()})
             except ValidationError as e:
                 return jsonify({'error': f'Validation error: {e}'})
         
         
         elif request.method == 'POST':
             data = request.json
-            faculty_profile = PDS_Contact_Details_Model(**data)
+            faculty_profile = FISPDS_ContactDetails_Model(**data)
             db = SessionLocal()
-            db_faculty_profile = PDS_Contact_Details(**PDS_Contact_Details_Model.dict())
+            db_faculty_profile = FISPDS_ContactDetails(**FISPDS_ContactDetails_Model.dict())
             db.add(db_faculty_profile)
             db.commit()
             db.refresh(db_faculty_profile)
@@ -367,7 +367,7 @@ def get_pds_contact_details(faculty_account_id):
             if faculty_profile is None:
                     return jsonify({'error': 'no data found'}), 404
             try:
-                return jsonify({'PDS_Contact_Details': PDS_Contact_Details_Model.from_orm(faculty_profile).dict()})
+                return jsonify({'FISPDS_ContactDetails': FISPDS_ContactDetails_Model.from_orm(faculty_profile).dict()})
             except ValidationError as e:
                 return jsonify({'error': f'Validation error: {e}'})
             
@@ -375,7 +375,7 @@ def get_pds_contact_details(faculty_account_id):
         elif request.method == 'PUT':
             data = request.json
             db = SessionLocal()
-            db_faculty_profile = db.query(PDS_Contact_Details).filter(PDS_Contact_Details.faculty_account_id == faculty_account_id).first()
+            db_faculty_profile = db.query(FISPDS_ContactDetails).filter(FISPDS_ContactDetails.FacultyId == FacultyId).first()
             if db_faculty_profile is None:
                 db.close()
                 return jsonify({'error': 'no data found'}), 404
@@ -387,13 +387,13 @@ def get_pds_contact_details(faculty_account_id):
             if db_faculty_profile is None:
                     return jsonify({'error': 'no data found'}), 404
             try:
-                return jsonify({'PDS_Contact_Details': PDS_Contact_Details_Model.from_orm(db_faculty_profile).dict()})
+                return jsonify({'FISPDS_ContactDetails': FISPDS_ContactDetails_Model.from_orm(db_faculty_profile).dict()})
             except ValidationError as e:
                 return jsonify({'error': f'Validation error: {e}'})
         
         elif request.method == 'DELETE':
             db = SessionLocal()
-            db_faculty_profile = db.query(PDS_Contact_Details).filter(PDS_Contact_Details.faculty_account_id == faculty_account_id).first()
+            db_faculty_profile = db.query(FISPDS_ContactDetails).filter(FISPDS_ContactDetails.FacultyId == FacultyId).first()
             if db_faculty_profile is None:
                 db.close()
                 return jsonify({'error': 'no data found'}), 404
