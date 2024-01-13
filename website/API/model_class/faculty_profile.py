@@ -2,7 +2,7 @@
 from pydantic import BaseModel, Field
 from typing import Optional
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String, Boolean, Float
 
 Base = declarative_base()
 
@@ -18,7 +18,7 @@ class FISFaculty(Base):
     FacultyId = Column(Integer, primary_key=True, index=True)
     FacultyType = Column(String)
     Rank = Column(String)
-    Units = Column(Integer)
+    Units = Column(Float)
     FirstName = Column(String)
     LastName = Column(String)
     MiddleName = Column(String)
@@ -45,7 +45,7 @@ class FISFaculty_Model(BaseModel):
     FacultyId: int
     FacultyType: str
     Rank: str
-    Units: int
+    Units: float
     FirstName: str  = "" 
     LastName: str = ""
     MiddleName: Optional[str]

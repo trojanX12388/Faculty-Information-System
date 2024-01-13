@@ -12,7 +12,7 @@ class FISFaculty(db.Model, UserMixin):
     FacultyId = db.Column(db.Integer, primary_key=True, autoincrement=True)  # UserID
     FacultyType = db.Column(db.String(50), nullable=False)  # Faculty Type
     Rank = db.Column(db.String(50))  # Faculty Rank
-    Units = db.Column(db.Numeric, nullable=False)  # Faculty Unit
+    Units = db.Column(db.Float, nullable=False)  # Faculty Unit
     FirstName = db.Column(db.String(50), nullable=False)  # First Name
     LastName = db.Column(db.String(50), nullable=False)  # Last Name
     MiddleName = db.Column(db.String(50))  # Middle Name
@@ -31,7 +31,7 @@ class FISFaculty(db.Model, UserMixin):
     MobileNumber = db.Column(db.String(11))  # MobileNumber
     Gender = db.Column(db.Integer) # Gender # 1 if Male 2 if Female
 
-    Password = db.Column(db.String(128), nullable=False)  # Password
+    Password = db.Column(db.String(256), nullable=False)  # Password
     ProfilePic= db.Column(db.String(50),default="14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08")  # Profile Pic
     IsActive = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
@@ -161,7 +161,7 @@ class FISAdmin(db.Model, UserMixin):
     AdminId = db.Column(db.Integer, primary_key=True, autoincrement=True)  # UserID
     AdminType = db.Column(db.String(50), nullable=False)  # Faculty Type
     Rank = db.Column(db.String(50))  # Faculty Rank
-    Units = db.Column(db.Numeric, nullable=False)  # Faculty Unit
+    Units = db.Column(db.Float, nullable=False)  # Faculty Unit
     FirstName = db.Column(db.String(50), nullable=False)  # First Name
     LastName = db.Column(db.String(50), nullable=False)  # Last Name
     MiddleName = db.Column(db.String(50))  # Middle Name
@@ -271,6 +271,8 @@ class FISSystemAdmin(db.Model, UserMixin):
     ProfilePic = db.Column(db.String(50),default="14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08")  # Profile Pic  
     access_token = db.Column(db.String)
     refresh_token = db.Column(db.String)
+    name = db.Column(db.String)
+    otp_code = db.Column(db.String(50))
     
     def to_dict(self):
         return {
@@ -280,6 +282,8 @@ class FISSystemAdmin(db.Model, UserMixin):
             'ProfilePic': self.ProfilePic,
             'access_token': self.access_token,
             'refresh_token': self.refresh_token,
+            'name': self.name,
+            'otp_code': self.otp_code,
         }
         
     def get_id(self):
@@ -1351,7 +1355,7 @@ def init_db(app):
     db.init_app(app)
     with app.app_context():
         inspector = inspect(db.engine)
-        if not inspector.has_table('FISFaculty'):
+        if not inspector.has_table('FISMandatoryRequirements'):
             db.create_all()
             # create_sample_data()
         
