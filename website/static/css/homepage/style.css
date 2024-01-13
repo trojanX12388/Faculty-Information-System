@@ -314,7 +314,7 @@ h6 {
 }
 
 .breadcrumb .active {
-  color: #51678f;
+  color: #3F0E10;
   font-weight: 600;
 }
 
@@ -380,7 +380,7 @@ h6 {
   font-size: 32px;
   padding-right: 30px;
   cursor: pointer;
-  color: #012970;
+  color: #3F0E10;
 }
 
 .header .search-bar {
@@ -396,6 +396,7 @@ h6 {
     right: 0;
     padding: 20px;
     box-shadow: 0px 0px 15px 0px rgba(1, 41, 112, 0.1);
+    border: 1px solid #3F0E10;
     background: white;
     z-index: 9999;
     transition: 0.3s;
@@ -417,7 +418,7 @@ h6 {
 .header .search-form input {
   border: 0;
   font-size: 14px;
-  color: #012970;
+  color: #3F0E10;
   border: 1px solid rgba(1, 41, 112, 0.2);
   padding: 7px 38px 7px 8px;
   border-radius: 3px;
@@ -440,7 +441,7 @@ h6 {
 }
 
 .header .search-form button i {
-  color: #012970;
+  color: #3F0E10;
 }
 
 /*--------------------------------------------------------------
@@ -457,13 +458,13 @@ h6 {
 
 .header-nav .nav-icon {
   font-size: 22px;
-  color: #012970;
+  color: #3F0E10;
   margin-right: 25px;
   position: relative;
 }
 
 .header-nav .nav-profile {
-  color: #012970;
+  color: #3F0E10;
 }
 
 .header-nav .nav-profile img {
@@ -597,9 +598,9 @@ h6 {
   padding: 20px;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: #aab7cf transparent;
-  box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
-  background-color: #2B2D42;
+  scrollbar-color: #582326 transparent;
+  box-shadow: 0px 0px 10px 2px #582326;
+  background-color: #3F0E10;
 }
 
 .main-profile {
@@ -1007,7 +1008,7 @@ h6 {
 # Profie Page
 --------------------------------------------------------------*/
 .profile .profile-card img {
-  max-width: 120px;
+  max-width: 150px;
 }
 
 .profile .profile-card h2 {
@@ -1240,4 +1241,36 @@ h6 {
   text-align: center;
   font-size: 13px;
   color: #e9e2ff;
+}
+/*--------------------------------------------------------------
+# ETC
+--------------------------------------------------------------*/
+.fcard {
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 25px;
+  box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+  background-color: #fff;
+}
+.fcard-p {
+  margin: 0;
+}
+.quill-editor-default {
+  height: 200px;
+}
+.table-bordered th{
+    background-color: #3F0E10;
+    color: #ffffff;
+}
+.info {
+  cursor: pointer;
+}
+/* modals */
+.modal-dialog {
+  max-width: 50%;
+  margin: 1.75rem auto;
+}
+.adminmodal-dialog  {
+  max-width: 50%;
+  margin: 1.75rem auto;
 }
