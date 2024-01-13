@@ -1657,7 +1657,7 @@ def PDM_S():
                                age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                signature = "data:image/png;base64," + decrypted_signature.decode('utf-8'),
                                dict_cert = decrypted_dict_cert.decode('utf-8'),
-                               activate_S="active")
+                               activate_Sig="active")
         
 @PDM.route("/PDM-Signature/Submit_DICT", methods=['GET', 'POST'])
 @login_required
