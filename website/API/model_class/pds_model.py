@@ -28,7 +28,7 @@ class FISPDS_PersonalDetails(Base):
     city = Column(String)
     citizenship = Column(String)
     dual_citizenship = Column(String)
-    remarks = Column(String)
+    Remarks = Column(String)
     is_delete = Column(Boolean, default=False)
 
 # Pydantic model for data validation
@@ -47,7 +47,7 @@ class FISPDS_PersonalDetails_Model(BaseModel):
     city : Optional[str]
     citizenship : Optional[str]
     dual_citizenship : Optional[str]
-    remarks : Optional[str]
+    Remarks : Optional[str]
     is_delete: bool 
 
     class Config:
@@ -66,46 +66,46 @@ class FISPDS_ContactDetails(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     FacultyId = Column(Integer)
-    email = Column(String)
-    mobile_number = Column(Integer)
+    Email = Column(String)
+    mobile_number = Column(String)
     perm_country = Column(String)
     perm_region = Column(String)   
     perm_province = Column(String) 
     perm_city = Column(String)
     perm_address = Column(String) 
-    perm_zip_code = Column(Integer) 
-    perm_phone_number = Column(Integer)
+    perm_zip_code = Column(String) 
+    perm_phone_number = Column(String)
     res_country = Column(String)
     res_region = Column(String)   
     res_province = Column(String)  
     res_city = Column(String) 
     res_address = Column(String) 
-    res_zip_code = Column(Integer)
-    res_phone_number = Column(Integer)
-    remarks = Column(String)
+    res_zip_code = Column(String)
+    res_phone_number = Column(String)
+    Remarks = Column(String)
     is_delete = Column(Boolean, default=False)
 
 # Pydantic model for data validation
 class FISPDS_ContactDetails_Model(BaseModel):
     id: int
     FacultyId : int
-    email : Optional[str]
-    mobile_number : Optional[int]
+    Email : Optional[str]
+    mobile_number : Optional[str]
     perm_country : Optional[str]
     perm_region : Optional[str]  
     perm_province : Optional[str] 
     perm_city : Optional[str]
     perm_address : Optional[str]
-    perm_zip_code : Optional[int] 
-    perm_phone_number : Optional[int]
+    perm_zip_code : Optional[str] 
+    perm_phone_number : Optional[str]
     res_country : Optional[str]
     res_region : Optional[str]
     res_province : Optional[str]
     res_city : Optional[str]
     res_address : Optional[str]
-    res_zip_code : Optional[int]
-    res_phone_number : Optional[int]
-    remarks : Optional[str]
+    res_zip_code : Optional[str]
+    res_phone_number : Optional[str]
+    Remarks : Optional[str]
     is_delete: bool 
 
     class Config:

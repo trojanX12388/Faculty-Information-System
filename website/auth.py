@@ -178,7 +178,7 @@ def facultyH():
         return render_template("Faculty-Home-Page/base.html", 
                                User= username.FirstName + " " + username.LastName,
                                user= current_user,
-                               ProfilePic=ProfilePic)
+                               profile_pic=ProfilePic)
 
 
 
@@ -393,9 +393,8 @@ def adminL():
 @auth.route("/admin-home-page")
 @login_required
 @Check_Token
-def adminH():
-        
-    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+def adminH():    
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT   
         username = FISAdmin.query.filter_by(AdminId=current_user.AdminId).first() 
         
         if username.ProfilePic == None:
@@ -411,7 +410,7 @@ def adminH():
         else:
             base_url = 'http://127.0.0.1:8000' 
 
-        endpoint = '/api/FISFaculty'
+        endpoint = '/api/all/FISFaculty'
         url = f'{base_url}{endpoint}'
         
         api_key = selected_token
@@ -454,15 +453,15 @@ def adminH():
         if response.status_code == 200:
             # Process the API response data
             api_data = response.json()
-            FacultyIds = list(api_data['FISFaculty'].keys())
+            FacultyIds = list(api_data['Faculties'].keys())
             
             total_faculty = len(FacultyIds)
             
             for faculty_id in FacultyIds:
-                faculty_info = api_data['FISFaculty'][faculty_id]
+                faculty_info = api_data['Faculties'][faculty_id]
                 faculty_rank = faculty_info['Rank']
-                faculty_type = faculty_info['faculty_type']
-                faculty_hired_date = faculty_info['date_hired']
+                faculty_type = faculty_info['FacultyType']
+                faculty_hired_date = faculty_info['DateHired']
 
                 if faculty_hired_date:
                     # Convert the date string to a datetime object and extract the year
@@ -576,13 +575,13 @@ def adminH():
                                full_time = full_time,
                                part_time = part_time,
                                
-                               years_range1 = years_range1,
-                               years_range2 = years_range2,
-                               years_range3 = years_range3,
-                               years_range4 = years_range4,
-                               years_range5 = years_range5,
-                               years_range6 = years_range6,
                                years_range7 = years_range7,
+                               years_range6 = years_range6,
+                               years_range5 = years_range5,
+                               years_range4 = years_range4,
+                               years_range3 = years_range3,
+                               years_range2 = years_range2,
+                               years_range1 = years_range1,
                                
                                years_range = years_range,
                                part_time_counts = part_time_counts,
@@ -596,7 +595,7 @@ def adminH():
                                total_assocProfs_percentage = "{:.2f}".format((total_assocProfs / total_faculty)*100),
                                
                                faculty_active = faculty_active,
-                               ProfilePic=ProfilePic)
+                               profile_pic=ProfilePic)
 
 # -------------------------------------------------------------
 
@@ -640,13 +639,13 @@ def admin_viewFM(faculty_id):
         # Process the API response data
         api_data = response.json()
 
-    date_string = api_data['FISFaculty']['BirthDate']
+    date_string = api_data['Faculties']['BirthDate']
 
     # Parse the string into a datetime object
     date_object = datetime.datetime.strptime(date_string, '%a, %d %b %Y %H:%M:%S %Z')
     BirthDate = date_object.strftime('%b %d %Y')
     
-    date_string = api_data['FISFaculty']['date_hired']
+    date_string = api_data['Faculties']['DateHired']
 
     # Parse the string into a datetime object
     date_object = datetime.datetime.strptime(date_string, '%a, %d %b %Y %H:%M:%S %Z')
@@ -655,10 +654,10 @@ def admin_viewFM(faculty_id):
     return render_template("Admin-Home-Page/Faculty/faculty-view.html", 
                            User= username.FirstName + " " + username.LastName,
                            user= current_user,
-                           faculty_data = api_data['FISFaculty'],
+                           faculty_data = api_data['Faculties'],
                            BirthDate = BirthDate,
                            date_hired = date_hired,
-                           ProfilePic=ProfilePic)
+                           profile_pic=ProfilePic)
 
 
 # -----------------------------------------------------------------

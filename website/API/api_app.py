@@ -128,7 +128,7 @@ def get_all_faculty():
         db.close()
         try:
             profile = [FISFaculty_Model.from_orm(faculty).dict() for faculty in faculty_profile]
-            return jsonify({'FISFaculty': profile})
+            return jsonify({'Faculties': profile})
         
         
         
@@ -156,7 +156,7 @@ def get_task(FacultyId):
             if faculty_profile is None:
                 return jsonify({'error': 'no data found'}), 404
             try:
-                return jsonify({'FISFaculty': FISFaculty_Model.from_orm(faculty_profile).dict()})
+                return jsonify({'Faculties': FISFaculty_Model.from_orm(faculty_profile).dict()})
             except ValidationError as e:
                 return jsonify({'error': f'Validation error: {e}'})
         
@@ -173,7 +173,7 @@ def get_task(FacultyId):
             if faculty_profile is None:
                     return jsonify({'error': 'no data found'}), 404
             try:
-                return jsonify({'FISFaculty': FISFaculty_Model.from_orm(faculty_profile).dict()})
+                return jsonify({'Faculties': FISFaculty_Model.from_orm(faculty_profile).dict()})
             except ValidationError as e:
                 return jsonify({'error': f'Validation error: {e}'})
             
@@ -193,7 +193,7 @@ def get_task(FacultyId):
             if db_faculty_profile is None:
                     return jsonify({'error': 'no data found'}), 404
             try:
-                return jsonify({'FISFaculty': FISFaculty_Model.from_orm(db_faculty_profile).dict()})
+                return jsonify({'Faculties': FISFaculty_Model.from_orm(db_faculty_profile).dict()})
             except ValidationError as e:
                 return jsonify({'error': f'Validation error: {e}'})
         

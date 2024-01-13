@@ -18,7 +18,7 @@
   
       <h5 class="card-title">Personal Details</h5>
      
-      {% for data in data.PDS_Personal_Details %}
+      {% for data in data.FISPDS_PersonalDetails %}
       {% if loop.first %}
      
       <div class="row">
@@ -92,7 +92,7 @@
 
       <h5 class="card-title">Remarks</h5>
       <div class="row">
-        <div class="d-grid gap-2 mt-3">{{data.remarks}}</div>
+        <div class="d-grid gap-2 mt-3">{{data.Remarks}}</div>
       </div>
 
       {% include "/Faculty-Home-Page/Personal-Data-Management-Page/Privacy-Notice.html" %}       
@@ -214,7 +214,7 @@
         <h5 class="card-title">Remarks</h5>
         <div class="row mb-3">
           <div class="d-grid gap-2 mt-3">
-            <textarea name="remarks" type="text" class="form-control " id="remarks" value="" style="height: 100px">{{data.remarks}}</textarea>
+            <textarea name="remarks" type="text" class="form-control " id="remarks" value="" style="height: 100px">{{data.Remarks}}</textarea>
           </div>
         </div>
 

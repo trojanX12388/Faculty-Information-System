@@ -117,8 +117,13 @@ def PDM_BD():
             BirthDate = request.form.get('birth_date')
             DateHired = request.form.get('date_hired')
             Remarks = request.form.get('remarks')
-            Name = FirstName + " " + LastName
-
+            calcBirthDate = {"year": int(BirthDate[:-6]), "month": int(BirthDate[5:-3]), "day": int(BirthDate[8:])}
+            
+            # Create a date object from the input format
+            birth_date_object = date(calcBirthDate["year"], calcBirthDate["month"], calcBirthDate["day"])
+            # Calculate age using the calculateAge function
+            age = calculateAge(birth_date_object)
+            
             u = update(FISFaculty)
             u = u.values({"FacultyCode": FacultyCode,
                           "Honorific": Honorific,
@@ -129,8 +134,8 @@ def PDM_BD():
                           "NameExtension": NameExtension,
                           "BirthDate": BirthDate,
                           "DateHired": DateHired,
+                          "Age": age,
                           "Remarks": Remarks,
-                          "Name": Name
                           })
             u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
             db.session.execute(u)
@@ -141,16 +146,6 @@ def PDM_BD():
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Basic-Details.html", 
                                User= username.FirstName + " " + username.LastName,
                                PDM= "show",
-                               faculty_code= username.FacultyCode,
-                               first_name= username.FirstName,
-                               last_name= username.LastName,
-                               middle_name= username.MiddleName,
-                               middle_initial= username.MiddleInitial,
-                               name_extension= username.NameExtension,
-                               birth_date= username.BirthDate,
-                               date_hired= username.DateHired,
-                               remarks= username.Remarks,
-                               honorific= username.Honorific,
                                user= current_user,
                                age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                profile_pic=ProfilePic,
@@ -263,7 +258,7 @@ def PDM_PD():
         if current_user.FISPDS_PersonalDetails:
             data = current_user
         else:
-            data =  {'PDS_Personal_Details':
+            data =  {'FISPDS_PersonalDetails':
                     {'sex':"",
                     'gender':"",
                     'height':"",
@@ -375,7 +370,7 @@ def PDM_CD():
         if current_user.FISPDS_ContactDetails:
             data = current_user
         else:
-            data =  {'PDS_Contact_Details':
+            data =  {'FISPDS_ContactDetails':
                     {'email':"",
                      'mobile_number':"",
                      'perm_country':"",
@@ -421,7 +416,7 @@ def PDM_CD():
 
             if FISPDS_ContactDetails.query.filter_by(FacultyId=current_user.FacultyId).first():
                 u = update(FISPDS_ContactDetails)
-                u = u.values({"email": email,
+                u = u.values({"Email": email,
                             "mobile_number": mobile_number,
                             "perm_country": perm_country,
                             "perm_region": perm_region,
@@ -442,12 +437,22 @@ def PDM_CD():
                 u = u.where(FISPDS_ContactDetails.FacultyId == current_user.FacultyId)
                 db.session.execute(u)
                 db.session.commit()
+                
+                u = update(FISFaculty)
+                u = u.values({"Email": email,
+                            "MobileNumber": mobile_number,
+                            "ResidentialAddress": res_address,
+                            })
+                u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
+                db.session.execute(u)
+                db.session.commit()
+                
                 db.session.close()
                 return redirect(url_for('PDM.PDM_CD'))
             
             else:
                 
-                add_record = FISPDS_ContactDetails(  email = email,
+                add_record = FISPDS_ContactDetails(  Email = email,
                                                     mobile_number = mobile_number,
                                                     perm_country = perm_country,
                                                     perm_region = perm_region,
@@ -467,6 +472,16 @@ def PDM_CD():
                                                     FacultyId = current_user.FacultyId)
                 db.session.add(add_record)
                 db.session.commit()
+                
+                u = update(FISFaculty)
+                u = u.values({"Email": email,
+                            "MobileNumber": mobile_number,
+                            "ResidentialAddress": res_address,
+                            })
+                u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
+                db.session.execute(u)
+                db.session.commit()
+                
                 db.session.close()
                 return redirect(url_for('PDM.PDM_CD'))
         
@@ -1228,6 +1243,7 @@ def PDM_OSMdel():
 @Check_Token
 def PDM_AM():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        
         username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
       
         # CHECKING IF PROFILE PIC EXIST
@@ -1235,41 +1251,79 @@ def PDM_AM():
             ProfilePic=profile_default
         else:
             ProfilePic=username.ProfilePic   
-             
+        
+        # Generate a Fernet key
+        key_bytes = os.getenv('Symmetric_Key').encode('utf-8')
+        fernet_key = (key_bytes)
+        cipher = Fernet(fernet_key)
+  
         # VERIFYING IF DATA OF CURRENT USER EXISTS
         if current_user.FISPDS_AgencyMembership:
             data = current_user
+            fetch = FISPDS_AgencyMembership.query.filter_by(FacultyId=current_user.FacultyId).first()
+            
+            # Decrypt the sensitive data
+            GSIShex_bytes = bytes.fromhex(fetch.GSIS[2:])
+            PAGIBIGhex_bytes = bytes.fromhex(fetch.PAGIBIG[2:])
+            PHILHEALTHhex_bytes = bytes.fromhex(fetch.PAGIBIG[2:])
+            SSShex_bytes = bytes.fromhex(fetch.PAGIBIG[2:])
+            TINhex_bytes = bytes.fromhex(fetch.PAGIBIG[2:])
+        
+            # Decrypt the ciphertext
+            GSISdecrypted_data = cipher.decrypt(GSIShex_bytes)
+            PAGIBIGdecrypted_data = cipher.decrypt(PAGIBIGhex_bytes)
+            PHILHEALTHdecrypted_data = cipher.decrypt(PHILHEALTHhex_bytes)
+            SSSdecrypted_data = cipher.decrypt(SSShex_bytes)
+            TINdecrypted_data = cipher.decrypt(TINhex_bytes)
+            
+            # Decode the decrypted data to utf-8
+            decrypted_GSIS = GSISdecrypted_data.decode('utf-8')
+            decrypted_PAGIBIG = PAGIBIGdecrypted_data.decode('utf-8')
+            decrypted_PHILHEALTH = PHILHEALTHdecrypted_data.decode('utf-8')
+            decrypted_SSS = SSSdecrypted_data.decode('utf-8')
+            decrypted_TIN = TINdecrypted_data.decode('utf-8')
+            
         else:
             data =  {'FISPDS_AgencyMembership':
-                    {'GSIS':"",
-                    'PAGIBIG':"",
-                    'PHILHEALTH':"",
-                    'SSS':"",
-                    'TIN':"",
+                    {
                     'Remarks':""
                     }
                     }
+            # Decrypt the sensitive data
+            decrypted_GSIS = ""
+            decrypted_PAGIBIG = ""
+            decrypted_PHILHEALTH = ""
+            decrypted_SSS = ""
+            decrypted_TIN = ""
         
         # UPDATE 
         
         if request.method == 'POST':
-         
-            # VALUES
+            # Values
             GSIS = request.form.get('GSIS')
             PAGIBIG = request.form.get('PAGIBIG')
             PHILHEALTH = request.form.get('PHILHEALTH')
             SSS = request.form.get('SSS')
             TIN = request.form.get('TIN')
             Remarks = request.form.get('remarks')
+
+            # Encrypt sensitive data
+            
+            encrypted_GSIS = cipher.encrypt(GSIS.encode('utf-8'))
+            encrypted_PAGIBIG = cipher.encrypt(PAGIBIG.encode('utf-8'))
+            encrypted_PHILHEALTH = cipher.encrypt(PHILHEALTH.encode('utf-8'))
+            encrypted_SSS = cipher.encrypt(SSS.encode('utf-8'))
+            encrypted_TIN = cipher.encrypt(TIN.encode('utf-8'))
+           
            
 
             if FISPDS_AgencyMembership.query.filter_by(FacultyId=current_user.FacultyId).first():
                 u = update(FISPDS_AgencyMembership)
-                u = u.values({  "GSIS": GSIS,
-                                "PAGIBIG": PAGIBIG,
-                                "PHILHEALTH": PHILHEALTH,
-                                "SSS": SSS,
-                                "TIN": TIN,
+                u = u.values({  "GSIS": encrypted_GSIS,
+                                "PAGIBIG": encrypted_PAGIBIG,
+                                "PHILHEALTH": encrypted_PHILHEALTH,
+                                "SSS": encrypted_SSS,
+                                "TIN": encrypted_TIN,
                                 "Remarks": Remarks,
                             })
                 u = u.where(FISPDS_AgencyMembership.FacultyId == current_user.FacultyId)
@@ -1279,11 +1333,11 @@ def PDM_AM():
                 return redirect(url_for('PDM.PDM_AM'))
             
             else:
-                add_record = FISPDS_AgencyMembership( GSIS = GSIS,
-                                                    PAGIBIG = PAGIBIG,
-                                                    PHILHEALTH = PHILHEALTH,
-                                                    SSS = SSS,
-                                                    TIN = TIN,
+                add_record = FISPDS_AgencyMembership( GSIS = encrypted_GSIS,
+                                                    PAGIBIG = encrypted_PAGIBIG,
+                                                    PHILHEALTH = encrypted_PHILHEALTH,
+                                                    SSS = encrypted_SSS,
+                                                    TIN = encrypted_TIN,
                                                     Remarks = Remarks,
                                                     FacultyId = current_user.FacultyId)
             
@@ -1299,6 +1353,11 @@ def PDM_AM():
                                user = current_user,
                                age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                data = data,
+                               decrypted_GSIS = decrypted_GSIS,
+                               decrypted_PAGIBIG = decrypted_PAGIBIG,
+                               decrypted_PHILHEALTH = decrypted_PHILHEALTH,
+                               decrypted_SSS = decrypted_SSS,
+                               decrypted_TIN = decrypted_TIN,
                                activate_AM="active")  
 
 # ------------------------------- END OF PDM AGENCY MEMBERSHIP  ---------------------------- 
@@ -1598,7 +1657,7 @@ def PDM_S():
                                age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                signature = "data:image/png;base64," + decrypted_signature.decode('utf-8'),
                                dict_cert = decrypted_dict_cert.decode('utf-8'),
-                               activate_S="active")
+                               activate_Sig="active")
         
 @PDM.route("/PDM-Signature/Submit_DICT", methods=['GET', 'POST'])
 @login_required

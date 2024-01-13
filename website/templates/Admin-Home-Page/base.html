@@ -212,14 +212,14 @@
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="http://drive.google.com/uc?export=view&id={{profile_pic}}" alt="Profile" class="rounded-circle" style="width:30px;height:30px;">
+            <img src="https://lh3.googleusercontent.com/d/{{profile_pic}}" alt="Profile" class="rounded-circle" style="width:30px;height:30px;">
             <span class="d-none d-md-block dropdown-toggle ps-2">{{User}}</span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
               <h6>{{User}}</h6>
-              <span>{{user.rank}}</span>
+              <span>{{user.Rank}}</span>
             </li>
 
             <li>
@@ -285,7 +285,7 @@
     <li class="nav-item">
       <a class="nav-link " href="/admin-home-page">
         <i class="bi bi-grid"></i>
-        <span>Dashboard</span>
+        <span>Faculties</span>
       </a>
     </li>
 
@@ -735,7 +735,7 @@
                         <tr>
                           <th>ID</th>
                           <th>Profile Pic</th>
-                          <th>Full Name</th>
+                          <th>Full name</th>
                           <th>Units</th>
                         </tr>
                       `);
@@ -748,10 +748,10 @@
                       if (content.every(faculty => typeof faculty === 'object')) {
                         content.forEach(faculty => {
                           const row = $('<tr>').html(`
-                            <td><a href="/faculty-member/${faculty.faculty_account_id}">${faculty.faculty_account_id}</a></td>
-                            <td><img src="http://drive.google.com/uc?export=view&id=${faculty.profile_pic}" alt="Profile Pic" style="width:90px;height:80px; border-radius: 10px 10px 10px 10px"></td>
-                            <td>${faculty.name}</td>
-                            <td>${faculty.units}</td>
+                            <td><a href="/faculty-member/${faculty.FacultyId}">${faculty.FacultyId}</a></td>
+                            <td><img src="https://lh3.googleusercontent.com/d/${faculty.ProfilePic}" alt="Profile Pic" style="width:90px;height:80px; border-radius: 10px 10px 10px 10px"></td>
+                            <td>${faculty.FirstName} ${faculty.LastName}</td>
+                            <td>${faculty.Units}</td>
                           `);
                           tableBody.append(row);
                         });
@@ -774,11 +774,11 @@
                     const chart2 = echarts.init(document.querySelector("#Rank2"));
                     const chart3 = echarts.init(document.querySelector("#Rank3"));
                   
-                    function createChartClickHandler(chart, rankName) {
+                    function createChartClickHandler(chart, rankname) {
                       chart.on('click', function(params) {
                         if (params.componentType === 'series') {
                           const clickedCategory = params.name;
-                          const facultyInCategory = Object.values(facultyAccountIds).filter(faculty => faculty.rank === rankName && faculty.rank === clickedCategory);
+                          const facultyInCategory = Object.values(facultyAccountIds).filter(faculty => faculty.Rank === rankname && faculty.Rank === clickedCategory);
                   
                           if (facultyInCategory.length > 0) {
                             // Display faculty information in the modal
@@ -880,7 +880,7 @@
             xAxis: [
               {
                 type: 'category',
-                data: ['{{years_range7}}', '{{years_range6}}', '{{years_range5}}', '{{years_range4}}', '{{years_range3}}', '{{years_range2}}', '{{years_range1}}'],
+                data: ['{{years_range1}}', '{{years_range2}}', '{{years_range3}}', '{{years_range4}}', '{{years_range5}}', '{{years_range6}}', '{{years_range7}}'],
                 axisPointer: {
                   type: 'shadow'
                 }
@@ -1010,7 +1010,7 @@
                       <tr>
                         <th>ID</th>
                         <th>Profile Pic</th>
-                        <th>Full Name</th>
+                        <th>Full name</th>
                         <th>Units</th>
                       </tr>
                     `);
@@ -1023,10 +1023,10 @@
                     if (content.every(faculty => typeof faculty === 'object')) {
                       content.forEach(faculty => {
                         const row = $('<tr>').html(`
-                          <td><a href="/faculty-member/${faculty.faculty_account_id}">${faculty.faculty_account_id}</a></td>
-                          <td><img src="http://drive.google.com/uc?export=view&id=${faculty.profile_pic}" alt="Profile Pic" style="width:90px;height:80px; border-radius: 10px 10px 10px 10px"></td>
-                          <td>${faculty.name}</td>
-                          <td>${faculty.units}</td>
+                          <td><a href="/faculty-member/${faculty.FacultyId}">${faculty.FacultyId}</a></td>
+                          <td><img src="https://lh3.googleusercontent.com/d/${faculty.ProfilePic}" alt="Profile Pic" style="width:90px;height:80px; border-radius: 10px 10px 10px 10px"></td>
+                          <td>${faculty.FirstName} ${faculty.LastName}</td>
+                          <td>${faculty.Units}</td>
                         `);
                         tableBody.append(row);
                       });
@@ -1051,9 +1051,9 @@
                   // Filter faculty data based on Full Time or Part Time category
                   const facultyInCategory = Object.values(facultyAccountIds).filter(faculty => {
                     if (clickedCategory === 'Full Time') {
-                      return faculty.faculty_type === 'Full Time';
+                      return faculty.FacultyType === 'Full Time';
                     } else if (clickedCategory === 'Part Time') {
-                      return faculty.faculty_type === 'Part Time';
+                      return faculty.FacultyType === 'Part Time';
                     }
                     return false;
                   });
@@ -1095,16 +1095,16 @@
                     </tr>
                   </thead>
                   <tbody>
-                    {% for faculty_id in faculty_account_ids %}
+                    {% for faculty_id in FacultyIds %}
                     {% set faculty_info = api_data['Faculties'][faculty_id] %}
                     <tr>
                       <td><a href="/faculty-member/{{ faculty_id }}">{{ faculty_id }}</a></td>
-                      <td><img src="http://drive.google.com/uc?export=view&id={{ faculty_info['profile_pic'] }}" alt="Profile Pic" style="width:90px;height:80px; border-radius: 10px 10px 10px 10px"></td>
-                      <td>{{ faculty_info['name'] }}</td>
-                      <td>{{ faculty_info['faculty_type'] }}</td>
-                      <td>{{ faculty_info['rank'] }}</td>
-                      <td class="fw-bold">{{ faculty_info['units'] }}</td>
-                      {% if faculty_info['is_active'] == True %}
+                      <td><img src="https://lh3.googleusercontent.com/d/{{ faculty_info['ProfilePic'] }}" alt="Profile Pic" style="width:90px;height:80px; border-radius: 10px 10px 10px 10px"></td>
+                      <td>{{ faculty_info['FirstName']}} {{faculty_info['LastName']}}</td>
+                      <td>{{ faculty_info['FacultyType'] }}</td>
+                      <td>{{ faculty_info['Rank'] }}</td>
+                      <td class="fw-bold">{{ faculty_info['Units'] }}</td>
+                      {% if faculty_info['IsActive'] == True %}
                       <td><span class="badge bg-success">Active</span></td>
                       {% else %}
                       <td><span class="badge bg-danger">Inactive</span></td>

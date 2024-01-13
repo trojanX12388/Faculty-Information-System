@@ -19,17 +19,17 @@
   
       <h5 class="card-title">Contact Details</h5>
 
-    {% for data in data.PDS_Contact_Details %}
+    {% for data in data.FISPDS_ContactDetails %}
     {% if loop.first %}
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label ">Email Address</div>
-        <div class="col-lg-9 col-md-8">{{data.email}}</div>
+        <div class="col-lg-9 col-md-8">{{user.Email}}</div>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Mobile Number</div>
-        <div class="col-lg-9 col-md-8">{{data.mobile_number}}</div>
+        <div class="col-lg-9 col-md-8">{{user.MobileNumber}}</div>
       </div>
 
       <h5 class="card-title">Permanent Address</h5>
@@ -134,14 +134,14 @@
         <div class="row mb-3">
           <label for="email" class="col-md-4 col-lg-3 col-form-label">Email Address</label>
           <div class="col-md-8 col-lg-9">
-            <input name="email" type="text" class="form-control" id="email" value="{{data.email}}" >
+            <input name="email" type="text" class="form-control" id="email" value="{{user.Email}}" >
           </div>
         </div>
 
         <div class="row mb-3">
           <label for="mobile_number" class="col-md-4 col-lg-3 col-form-label">Mobile Number</label>
           <div class="col-md-8 col-lg-9">
-            <input name="mobile_number" type="number" class="form-control" id="mobile_number" value="{{data.mobile_number}}">
+            <input name="mobile_number" type="text" class="form-control" id="mobile_number" value="{{user.MobileNumber}}">
           </div>
         </div>
 
@@ -186,14 +186,14 @@
           <div class="row mb-3">
             <label for="perm_zip_code" class="col-md-4 col-lg-3 col-form-label">Zip Code</label>
             <div class="col-md-8 col-lg-9">
-              <input name="perm_zip_code" type="number" class="form-control" id="perm_zip_code" value="{{data.perm_zip_code}}">
+              <input name="perm_zip_code" type="text" class="form-control" id="perm_zip_code" value="{{data.perm_zip_code}}">
             </div>
           </div>
 
           <div class="row mb-3">
             <label for="perm_phone_number" class="col-md-4 col-lg-3 col-form-label">Phone Number</label>
             <div class="col-md-8 col-lg-9">
-              <input name="perm_phone_number" type="number" class="form-control" id="perm_phone_number" value="{{data.perm_phone_number}}">
+              <input name="perm_phone_number" type="text" class="form-control" id="perm_phone_number" value="{{data.perm_phone_number}}">
             </div>
           </div>
 
@@ -252,21 +252,21 @@
             <div class="row mb-3">
               <label for="res_zip_code" class="col-md-4 col-lg-3 col-form-label">Zip Code</label>
               <div class="col-md-8 col-lg-9">
-                <input name="res_zip_code" type="number" class="form-control" id="res_zip_code" value="{{data.res_zip_code}}" >
+                <input name="res_zip_code" type="text" class="form-control" id="res_zip_code" value="{{data.res_zip_code}}" >
               </div>
             </div>
   
             <div class="row mb-3">
               <label for="res_phone_number" class="col-md-4 col-lg-3 col-form-label">Phone Number</label>
               <div class="col-md-8 col-lg-9">
-                <input name="res_phone_number" type="number" class="form-control" id="res_phone_number" value="{{data.res_phone_number}}" >
+                <input name="res_phone_number" type="text" class="form-control" id="res_phone_number" value="{{data.res_phone_number}}" >
               </div>
             </div>
 
         <h5 class="card-title">Remarks</h5>
         <div class="row mb-3">
           <div class="d-grid gap-2 mt-3">
-            <textarea name="remarks" type="text" class="form-control " id="remarks" value="" style="height: 100px">{{data.remarks}}</textarea>
+            <textarea name="remarks" type="text" class="form-control " id="remarks" value="" style="height: 100px">{{data.Remarks}}</textarea>
           </div>
         </div>
 
