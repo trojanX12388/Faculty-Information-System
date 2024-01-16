@@ -1,8 +1,26 @@
 {% extends "/Faculty-Home-Page/base.html" %}{% block title %}Advising and Mentoring{% endblock %} {% block content%}
 
 
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<!-- Include DataTables Buttons CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+
+<!-- Include DataTables Print Button JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+
 <main id="main" class="main">
 
+  {% block Advising_Mentoring %}
     <div class="pagetitle">
       <h1>Advising and Mentoring</h1>
       <nav>
@@ -15,196 +33,398 @@
     </div><!-- End Page Title -->
 
     <section class="section">
-      <div class="card">
-        <div class="card-body">
-      <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-        <div class="col-md-11">
-          <h4 class="d-flex flex-column align-items-center">This section covers the general information of the students you are mentoring and advising. The table consist of the general class information and their schedules when they visit the Polytechnic University of the Philippines of Quezon City branch.</h4>
-        </div>
-    </div>
-
-          <div class="card">
-            <div class="card-body">
-
-              <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-                <h2>ADVISING</h2>
-          </div>
-    
-              <!-- Table with stripped rows -->
-              <table id="example" class="table datatable" > 
-                <thead>
-                  <tr>
-                    <th scope="col">Subject Code</th>
-                    <th scope="col">Year</th>
-                    <th scope="col">Course</th>
-                    <th scope="col">Section</th>
-                    <th scope="col">No. Of Students</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">BSIT323</th>
-                    <td>2022-2023</td>
-                    <td>BSIT</td>
-                    <td>3-1</td>
-                    <td>35</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">Schedule</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">BSIT166</th>
-                    <td>2022-2023</td>
-                    <td>BSBM</td>
-                    <td>1-1</td>
-                    <td>30</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">Schedule</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">BSBM321</th>
-                    <td>2022-2023</td>
-                    <td>BSBM</td>
-                    <td>3-1</td>
-                    <td>42</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">Schedule</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">BSBM267</th>
-                    <td>2022-2023</td>
-                    <td>BSBM</td>
-                    <td>2-2</td>
-                    <td>25</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">Schedule</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">BSHM199</th>
-                    <td>2022-2023</td>
-                    <td>BSHM</td>
-                    <td>1-1</td>
-                    <td>60</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">Schedule</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <!-- End Table with stripped rows -->
-
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-body">
-
-              <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-                <h2>MENTORING</h2>
+      <div class="row">
+        <div class="card">
+          <div class="card-body profile-card pt-4 d-flex flex-col align-items-start">
+            <img src="https://lh3.googleusercontent.com/d/{{profile_pic}}" alt="Profile" class="rounded-circle" style="width:150px; height:150px;">
+            <div class="mx-md-3" style="position:relative;left:30px;">
+              <div class="w-100">
+                <h4 class="my-0">{{user.FirstName}} {{user.MiddleInitial}} {{user.LastName}}</h4>
+                <small class="text-muted mt-sm-1">{{user.Rank}}</small>
               </div>
 
-              <!-- Table with stripped rows -->
-              <table class="table datatable"> 
-                <thead>
-                  <tr>
-                    <th scope="col">Year</th>
-                    <th scope="col">Course</th>
-                    <th scope="col">Section</th>
-                    <th scope="col">No. Of Students</th>
-                    <th scope="col">Individual/Group</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">2022-2023</th>
-                    <td>BSIT</td>
-                    <td>3-1</td>
-                    <td>35</td>
-                    <td>GROUP</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2022-2023</th>
-                    <td>BSHM</td>
-                    <td>2-1</td>
-                    <td>40</td>
-                    <td>INDIVIDUAL</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <!-- End Table with stripped rows -->
+              <style>
+                .responsive-table {
+                  display: flex;
+                  flex-wrap: wrap;
+                  margin: -10px; /* Adjust margin as needed */
+                }
+              
+                .responsive-table td {
+                  flex: 1;
+                  padding: 10px; /* Adjust padding as needed */
+                  box-sizing: border-box;
+                }
+              
+                .responsive-table h6 {
+                  margin: 0;
+                }
+                .btnprinter-container {
+                  text-align: right;
+                }
+              
+                .btnprinter {
+                  width: 50px;
+                  background-color: transparent;
+                  border: none;
+                  padding: 0;
+                  cursor: pointer;
+                }
+              
+                .btnprinter i {
+                  font-size: 24px; /* You can adjust the font size as needed */
+                  color: #000; /* You can set the color as needed */
+                }
+              </style>
 
+              <div class="d-block mt-md-3">
+                <br>
+                <table class="responsive-table">
+                  <tr>
+                    <td><h6>RESEARCH PROFESSOR</h6></td>
+                    <td style="padding: 0 2em;"><h6>PROGRAMMING PROFESSOR</h6></td>
+                    <td style="padding: 0 2em;"><h6></h6></td>
+                  </tr>
+                  <tr>
+                    <td><h6>STATISTICS PROFESSOR</h6></td>
+                    <td style="padding: 0 2em;"><h6></h6></td>
+                  </tr>
+                  <tr>
+                    <td><h6>COMPUTER SCIENCE PROFESSOR</h6></td>
+                    <td style="padding: 0 2em;"><h6></h6></td>
+                  </tr>
+                </table>
+                <br>
+              </div>
+          </div>
+        </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body d-flex flex-column justify-content-center">
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+              <h5><strong>ADVISING CLASSES</strong></h5>
             </div>
+            <div class="btnprinter-container">
+              <button id="btnPrintDetail1" class="btnprinter"><i class="bi bi-printer"></i></button>
+            </div>
+            <br>
+
+            <!-- Advising Table with stripped rows -->
+            <table id="table1" class="display" style="width:100%"> 
+              <thead>
+                <tr>
+                  <th scope="col">CLASSROOM ID</th>
+                  <th scope="col">COURSE CODE</th>
+                  <th scope="col">ADVISING SESSION</th>
+                  <th scope="col">COURSE</th>
+                  <th scope="col">SECTION</th>
+                  <th scope="col">STATUS</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">COMLAB 101</th>
+                  <td>BSIT-0301</td>
+                  <td>Specialization or Elective Choices</td>
+                  <td>BSIT</td>
+                  <td>3-1</td>
+                  <td>ADVISING</td>
+                  <td> 
+                    <div class="d-grid gap-2 mt-3">
+                      <button type="button" onclick="classredirectToURL()" class="btn btn-success">Schedule</i></button>
+                      <script>
+                        function classredirectToURL() {
+                            window.location.href = '/TI-Advising-Mentoring/BSIT-3-1/Schedules';
+                        }
+                    </script>
+                    </div>
+                </td>
+                </tr>
+                <tr>
+                  <th scope="row">ROOM 203</th>
+                  <td>BAS-0303</td>
+                  <td>Certifications and Professional Exams</td>
+                  <td>BAS</td>
+                  <td>3-1</td>
+                  <td>ADVISING</td>
+                  <td> 
+                    <div class="d-grid gap-2 mt-3">
+                      <button type="button" class="btn btn-success">Schedule</i></button>
+                  </div>
+                </td>
+                </tr>
+                <tr>
+                  <th scope="row">COMLAB 101</th>
+                  <td>BSCS-0401</td>
+                  <td>Career Guidance in Computer Science</td>
+                  <td>BSCS</td>
+                  <td>4-1</td>
+                  <td>ADVISING</td>
+                  <td> 
+                    <div class="d-grid gap-2 mt-3">
+                      <button type="button" class="btn btn-success">Schedule</i></button>
+                  </div>
+                </td>
+                </tr>
+                <tr>
+                  <th scope="row">LAB 101</th>
+                  <td>BSIT-0401</td>
+                  <td>Soft Skills Development</td>
+                  <td>BSIT</td>
+                  <td>4-1</td>
+                  <td>ADVISING</td>
+                  <td> 
+                    <div class="d-grid gap-2 mt-3">
+                      <button type="button" class="btn btn-success">Schedule</i></button>
+                  </div>
+                </td>
+                </tr>
+              </tbody>
+            </table><!-- End Table with stripped rows -->
+          </div>
+        </div>
+
+            <!-- ADVISING STUDENTS Card -->
+            <div class="card">
+              <div class="card-body d-flex flex-column justify-content-center">
+                <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                  <h5><strong>ADVISING STUDENTS</strong></h5>
+                </div>
+                <div class="btnprinter-container">
+                  <button id="btnPrintDetail2" class="btnprinter"><i class="bi bi-printer"></i></button>
+                </div>
+                <br>
+
+                <table id="table2" class="display" style="width:100%"> <!-- Mentoring Table with stripped rows -->
+                  <thead>
+                    <tr>
+                      <th scope="col">STUDENT ID</th>
+                      <th scope="col">STUDENT NAME</th>
+                      <th scope="col">COURSE/SECTION</th>
+                      <th scope="col">COURSE SUBJECT</th>
+                      <th scope="col">STATUS</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">2021-0021-CM</th>
+                      <td>Mabini, Vincent Rodhy</td>
+                      <td>BAS-0303</td>
+                      <td>Statistical Inference</td>
+                      <td>ADVISING</td>
+                      <td> 
+                        <div class="d-grid gap-2 mt-3">
+                          <button type="button" onclick="studentredirectToURL()" class="btn btn-success">Schedule</i></button>
+                          <script>
+                            function studentredirectToURL() {
+                                window.location.href = '/TI-Advising-Mentoring/2021-0021-CM/Schedules';
+                            }
+                        </script>
+                        </div>
+                    </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2021-0126-CM</th>
+                      <td>Chu, Kimmy</td>
+                      <td>BAS-0303</td>
+                      <td>Statistical Inference</td>
+                      <td>ADVISING</td>
+                      <td> 
+                        <div class="d-grid gap-2 mt-3">
+                          <button type="button" class="btn btn-success">Schedule</i></button>
+                      </div>
+                    </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2021-0052-CM</th>
+                      <td>Ong, Darrel Michael</td>
+                      <td>BSCpE-0304</td>
+                      <td>Probability and Statistics</td>
+                      <td>ADVISING</td>
+                      <td> 
+                        <div class="d-grid gap-2 mt-3">
+                          <button type="button" class="btn btn-success">Schedule</i></button>
+                      </div>
+                    </td>
+                    </tr>
+                    
+                  </tbody>
+                </table> 
+              </div> 
+          </div>
+
+            <!-- MENTORING STUDENT Card -->
+            <div class="card">
+              <div class="card-body d-flex flex-column justify-content-center">
+                <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                  <h5><strong>MENTORING</strong></h5>
+                </div>
+                <div class="btnprinter-container">
+                  <button id="btnPrintDetail3" class="btnprinter"><i class="bi bi-printer"></i></button>
+                </div>
+                <br>
+
+                <table id="table3" class="display" style="width:100%"> <!-- Mentoring Table with stripped rows -->
+                  <thead>
+                    <tr>
+                      <th scope="col">STUDENT ID</th>
+                      <th scope="col">STUDENT NAME</th>
+                      <th scope="col">COURSE/SECTION</th>
+                      <th scope="col">COURSE TITLE</th>
+                      <th scope="col">STATUS</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">2020-0056-CM</th>
+                      <td>Washington, George Mickel</td>
+                      <td>BSCS 4-1</td>
+                      <td>Bachelor of Science in Computer Science</td>
+                      <td>MENTORING</td>
+                      <td> 
+                        <div class="d-grid gap-2 mt-3">
+                          <button type="button" onclick="mentoringredirectToURL()" class="btn btn-success">Schedule</i></button>
+                          <script>
+                            function mentoringredirectToURL() {
+                                window.location.href = '/TI-Advising-Mentoring/2020-0056-CM/Mentoring/Schedules';
+                            }
+                        </script>
+                        </div>
+                    </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2020-0182-CM</th>
+                      <td>Thompson, Sarah L.</td>
+                      <td>BSCS 4-1</td>
+                      <td>Bachelor of Science in Computer Science</td>
+                      <td>MENTORING</td>
+                      <td> 
+                        <div class="d-grid gap-2 mt-3">
+                          <button type="button" class="btn btn-success">Schedule</i></button>
+                      </div>
+                    </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2020-0246-CM</th>
+                      <td>Rodriguez, Javier M.</td>
+                      <td>BSIT 4-1</td>
+                      <td>Bachelor of Science in Information Technology</td>
+                      <td>MENTORING</td>
+                      <td> 
+                        <div class="d-grid gap-2 mt-3">
+                          <button type="button" class="btn btn-success">Schedule</i></button>
+                      </div>
+                    </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2020-0119-CM</th>
+                      <td>Williams, Emily J.</td>
+                      <td>BSIT 4-2</td>
+                      <td>Bachelor of Science in Information Technology</td>
+                      <td>MENTORING</td>
+                      <td> 
+                        <div class="d-grid gap-2 mt-3">
+                          <button type="button" class="btn btn-success">Schedule</i></button>
+                      </div>
+                    </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2020-0215-CM</th>
+                      <td>Chen, Michael K.</td>
+                      <td>BAS 4-3</td>
+                      <td>Bachelor of Applied Statistics</td>
+                      <td>MENTORING</td>
+                      <td> 
+                        <div class="d-grid gap-2 mt-3">
+                          <button type="button" class="btn btn-success">Schedule</i></button>
+                      </div>
+                    </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2020-0170-CM</th>
+                      <td>Davis, Olivia R.</td>
+                      <td>BAS 4-3</td>
+                      <td>Bachelor of Applied Statistics</td>
+                      <td>MENTORING</td>
+                      <td> 
+                        <div class="d-grid gap-2 mt-3">
+                          <button type="button" class="btn btn-success">Schedule</i></button>
+                      </div>
+                    </td>
+                    </tr>
+                    
+                  </tbody>
+                </table> 
+              </div> 
           </div>
 
         </div>
-      </div>
       
     </section>
 
   </main><!-- End #main -->
 
-  <script>
-    $(document).ready(function() {
-      var printCounter = 0;
-   
-      // Append a caption to the table before the DataTables initialisation
-      $('#example').append('<caption style="caption-side: bottom">A fictional company\'s staff table.</caption>');
-   
-      $('#example').DataTable( {
-          dom: 'Bfrtip',
-          buttons: [
-              'copy',
-              {
-                  extend: 'excel',
-                  messageTop: 'The information in this table is copyright to Sirius Cybernetics Corp.'
-              },
-              {
-                  extend: 'pdf',
-                  messageBottom: null
-              },
-              {
-                  extend: 'print',
-                  messageTop: function () {
-                      printCounter++;
-   
-                      if ( printCounter === 1 ) {
-                          return 'This is the first time you have printed this document.';
-                      }
-                      else {
-                          return 'You have printed this document '+printCounter+' times';
-                      }
-                  },
-                  messageBottom: null
-              }
-          ]
-      } );
-  } );
+ <script>
+  $(document).ready(function() {
+    // Function to initialize DataTable for a given table ID
+    function initializeDataTable(tableId, buttonId, title, customExportColumns) {
+      var dataTable = $(tableId).DataTable({
+        dom: 'BPlfrtip',
+        responsive: true,
+        columnDefs: [
+          {
+            searchPanes: {
+              show: true
+            },
+            targets: [0]
+          },
+          {
+            searchPanes: {
+              show: false
+            },
+            targets: [2]
+          }
+        ],
+        buttons: [
+          {
+            extend: 'print',
+            class: 'buttons-print',
+            title: title, // Set the title for each table
+            messageBottom: null,
+            exportOptions: {
+              columns: customExportColumns
+            },
+            text: 'Print'
+          }
+        ]
+      });
+
+       // Initially hide the DataTables print button
+      dataTable.buttons('.buttons-print').nodes().addClass('d-none');
+
+      $('#' + buttonId).on('click', function() {
+        // Trigger the DataTables print button click
+        dataTable.buttons('.buttons-print').trigger();
+      });
+    }
+
+    // Customize your export options for each table
+    var exportColumnsTable1 = [ 0, 1, 2, 3, 4, 5 ];
+    var exportColumnsTable2 = [ 0, 1, 2, 3, 4 ];
+    var exportColumnsTable3 = [ 0, 1, 2, 3, 4 ];
+
+    // Initialize DataTables for each table
+    initializeDataTable('#table1', 'btnPrintDetail1', 'Advising Classes', exportColumnsTable1);
+    initializeDataTable('#table2', 'btnPrintDetail2', 'Advising Students', exportColumnsTable2);
+    initializeDataTable('#table3', 'btnPrintDetail3', 'Mentoring', exportColumnsTable3);
+  });
 </script>
+
+  {% endblock %}
 
 {% endblock %}
 

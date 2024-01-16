@@ -1,9 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;600;700;800&display=swap');
+
 :root {
   scroll-behavior: smooth;
 }
 
 body {
-  font-family: "Source Sans", sans-serif;
+  font-family: 'Inter';
   background: #D9D9D9;
   color: #444444;
 }
@@ -12,7 +14,9 @@ a {
   color: #4154f1;
   text-decoration: none;
 }
-
+p {
+  margin: 0;
+}
 a:hover {
   color: #666fc5;
   text-decoration: none;
@@ -24,7 +28,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Source Sans", sans-serif;
+  font-family: "Inter";
 }
 
 /*--------------------------------------------------------------
@@ -53,7 +57,7 @@ h6 {
   font-size: 20px;
   margin-bottom: 0;
   font-weight: 600;
-  color: #012970;
+  color: #000000;
 }
 
 /*--------------------------------------------------------------
@@ -226,11 +230,11 @@ h6 {
   font-size: 18px;
   font-weight: 500;
   color: #012970;
-  font-family: "Poppins", sans-serif;
+  font-family: "Inter";
 }
 
 .card-title span {
-  color: #899bbd;
+  color: #3F0E10;
   font-size: 14px;
   font-weight: 400;
 }
@@ -246,7 +250,7 @@ h6 {
 /* Alerts */
 .alert-heading {
   font-weight: 500;
-  font-family: "Poppins", sans-serif;
+  font-family: "Inter";
   font-size: 20px;
 }
 
@@ -295,13 +299,13 @@ h6 {
 /* Breadcrumbs */
 .breadcrumb {
   font-size: 14px;
-  font-family: "Nunito", sans-serif;
-  color: #899bbd;
+  font-family: "Inter";
+  color: #000000;
   font-weight: 600;
 }
 
 .breadcrumb a {
-  color: #899bbd;
+  color: #000000;
   transition: 0.3s;
 }
 
@@ -310,7 +314,7 @@ h6 {
 }
 
 .breadcrumb .breadcrumb-item::before {
-  color: #899bbd;
+  color: #000000;
 }
 
 .breadcrumb .active {
@@ -361,8 +365,8 @@ h6 {
 .logo span {
   font-size: 26px;
   font-weight: 700;
-  color: #012970;
-  font-family: "Nunito", sans-serif;
+  color: #3F0E10;
+  font-family: "Inter";
 }
 
 .header {
@@ -713,7 +717,7 @@ h6 {
 }
 
 .sidebar-nav .nav-link.collapsed i {
-  color: #899bbd;
+  color: #FFFFFF;
 }
 
 .sidebar-nav .nav-link:hover {
@@ -764,7 +768,7 @@ h6 {
 }
 
 .sidebar-nav .nav-content a.active i {
-  background-color: #626dd1;
+  background-color: #582326;
 }
 
 /*--------------------------------------------------------------
@@ -836,13 +840,13 @@ h6 {
 }
 
 .dashboard .revenue-card .card-icon {
-  color: #2eca6a;
-  background: #e0f8e9;
+  color: #f15441;
+  background: #fef6f6;
 }
 
 .dashboard .customers-card .card-icon {
-  color: #ff771d;
-  background: #ffecdf;
+  color: #54f141;
+  background: #f6fef6;
 }
 
 /* Activity */
@@ -993,7 +997,7 @@ h6 {
 }
 
 .iconslist .label {
-  font-family: var(--bs-font-monospace);
+  font-family: 'Inter';
   display: inline-block;
   width: 100%;
   overflow: hidden;
@@ -1057,6 +1061,15 @@ h6 {
 .profile .profile-edit img {
   max-width: 120px;
 }
+
+select {
+  width: 150px;
+  height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 5px;
+}
+
 
 /*--------------------------------------------------------------
 # F.A.Q Page
@@ -1224,7 +1237,7 @@ h6 {
 # Footer
 --------------------------------------------------------------*/
 .footer {
-  background-color: #800000;
+  background-color: #3F0E10;
   padding: 20px 0;
   font-size: 14px;
   transition: all 0.3s;
@@ -1242,9 +1255,8 @@ h6 {
   font-size: 13px;
   color: #e9e2ff;
 }
-/*--------------------------------------------------------------
-# ETC
---------------------------------------------------------------*/
+
+/*ETC */
 .fcard {
   margin-bottom: 20px;
   border: none;
@@ -1273,4 +1285,117 @@ h6 {
 .adminmodal-dialog  {
   max-width: 50%;
   margin: 1.75rem auto;
+}
+/* CALENDAR */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+body {
+    font-family: "Inter";
+}
+
+#calendar {
+    max-width: 800px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 15px;
+
+}
+
+.fc-event {
+    border: 1px solid #eee !important;
+}
+
+.fc-content {
+    padding: 3px !important;
+}
+
+.fc-content .fc-title {
+    display: block !important;
+    overflow: hidden;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.fc-customButton-button {
+    font-size: 13px !important;
+    position: absolute;
+    top:  0px;
+    left: 50%;
+    transform: translateY(-50%);
+}
+
+
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group>label {
+    margin-bottom: 10px;
+}
+
+#delete-modal .modal-footer > .btn {
+
+    border-radius: 3px !important; 
+    padding: 0px 8px !important;
+    font-size: 15px;
+
+ }
+
+
+
+
+.fc-scroller {
+    overflow-y: hidden !important;
+}
+
+.context-menu {
+    position: absolute;
+    z-index: 1000;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+    padding: 5px;
+}
+
+/* .context-menu.show {
+    display: block;
+  } */
+
+.context-menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+}
+
+.context-menu ul>li {
+    display: block;
+    ;
+    padding: 5px 15px;
+    list-style-type: none;
+    color: #333;
+    display: block;
+    cursor: pointer;
+    margin: 0 auto;
+    transition: 0.10s;
+    font-size: 13px;
+
+
+}
+
+.context-menu ul>li:hover {
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 2px;
+
+}
+
+.fa,
+.fas {
+    font-size: 13px;
+    margin-right: 4px;
 }

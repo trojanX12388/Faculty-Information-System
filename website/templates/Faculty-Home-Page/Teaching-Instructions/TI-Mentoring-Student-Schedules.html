@@ -1,0 +1,220 @@
+{% extends "/Faculty-Home-Page/Teaching-Instructions/TI-Advising-Mentoring.html" %}{% block title %}Mentoring Schedules{% endblock %} {% block Advising_Mentoring%}
+<div class="pagetitle">
+  <h1>Advising and Mentoring</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Homepage</li>
+      <li class="breadcrumb-item">{{User}}</li>
+      <li class="breadcrumb-item active">Teaching Instructions</li>
+    </ol>
+  </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+  <div class="row">
+    <div class="card">
+      <div class="card-body profile-card pt-4 d-flex flex-col align-items-start">
+        <img src="https://lh3.googleusercontent.com/d/{{profile_pic}}" alt="Profile" class="rounded-circle" style="width:150px; height:150px;">
+        <div class="mx-md-3" style="position:relative;left:30px;">
+          <div class="w-100">
+            <h4 class="my-0">{{user.FirstName}} {{user.MiddleInitial}} {{user.LastName}}</h4>
+            <small class="text-muted mt-sm-1">{{user.Rank}}</small>
+          </div>
+
+          <style>
+            .responsive-table {
+              display: flex;
+              flex-wrap: wrap;
+              margin: -10px; /* Adjust margin as needed */
+            }
+          
+            .responsive-table td {
+              flex: 1;
+              padding: 10px; /* Adjust padding as needed */
+              box-sizing: border-box;
+            }
+          
+            .responsive-table h6 {
+              margin: 0;
+            }
+            .btnprinter-container {
+              text-align: right;
+            }
+          
+            .btnprinter {
+              width: 50px;
+              background-color: transparent;
+              border: none;
+              padding: 0;
+              cursor: pointer;
+            }
+          
+            .btnprinter i {
+              font-size: 24px; /* You can adjust the font size as needed */
+              color: #000; /* You can set the color as needed */
+            }
+          </style>
+
+          <div class="d-block mt-md-3">
+            <br>
+            <table class="responsive-table">
+              <tr>
+                <td><h6>RESEARCH PROFESSOR</h6></td>
+                <td style="padding: 0 2em;"><h6>PROGRAMMING PROFESSOR</h6></td>
+                <td style="padding: 0 2em;"><h6></h6></td>
+              </tr>
+              <tr>
+                <td><h6>STATISTICS PROFESSOR</h6></td>
+                <td style="padding: 0 2em;"><h6></h6></td>
+              </tr>
+              <tr>
+                <td><h6>COMPUTER SCIENCE PROFESSOR</h6></td>
+                <td style="padding: 0 2em;"><h6></h6></td>
+              </tr>
+            </table>
+            <br>
+          </div>
+      </div>
+    </div>
+    </div>
+
+          <div class="card">
+            <div class="card-body">
+              <div class="card-body profile-card pt-4 d-flex flex-column align-items-start">
+                <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                  <h5><strong>MENTORING SCHEDULE</strong></h5>
+                </div>
+              </div>
+
+              <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                <h5>2020-0056-CM</h5>
+                <h5>Washington, George Mickel</h5>
+              </div>
+              <div class="btnprinter-container">
+                <button id="btnPrintDetail1" class="btnprinter"><i class="bi bi-printer"></i></button>
+              </div>
+              <br>
+            
+              <!-- Table with stripped rows -->
+              <table id="table1" class="display" style="width:100%">
+                <thead>
+                  <tr>
+                    <th scope="col">COURSE/SECTION</th>
+                    <th scope="col">TOPIC TO ADVISE</th>
+                    <th scope="col">TIME</th>
+                    <th scope="col">DAY</th>
+                    <th scope="col">SEMESTER</th>
+                    <th scope="col">YEAR</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">BAS 3-1</th>
+                    <td>Statistical Computing</td>
+                    <td>1:00-3:00 P.M</td>
+                    <td>Monday</td>
+                    <td>2</td>
+                    <td>2024</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">BAS 3-1</th>
+                    <td>Multivariate Analysis</td>
+                    <td>10:00-11:00 A.M</td>
+                    <td>Monday</td>
+                    <td>2</td>
+                    <td>2024</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">BAS 3-1</th>
+                    <td>Multivariate Analysis</td>
+                    <td>11:30-12:30 P.M</td>
+                    <td>Tuesday</td>
+                    <td>2</td>
+                    <td>2024</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">BAS 3-1</th>
+                    <td>Complexity Theory</td>
+                    <td>6:00-7:00 A.M</td>
+                    <td>Tuesday</td>
+                    <td>2</td>
+                    <td>2024</td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+              <br>
+              <br>
+              <div class="d-grid gap-2 mt-3 col-md-12 d-flex flex-column align-items-end">
+                <button type="button" onclick="redirectToURL()" class="btn btn-primary rounded-pill col-md-2">Back</i></button>
+                <script>
+                  function redirectToURL() {
+                      window.location.href = '/TI-Advising-Mentoring';
+                  }
+              </script>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+    </section>
+
+  </main><!-- End #main -->
+
+  <script>
+    $(document).ready(function() {
+      // Function to initialize DataTable for a given table ID
+      function initializeDataTable(tableId, buttonId, title, customExportColumns) {
+        var dataTable = $(tableId).DataTable({
+          dom: 'BPlfrtip',
+          responsive: true,
+          columnDefs: [
+            {
+              searchPanes: {
+                show: true
+              },
+              targets: [0]
+            },
+            {
+              searchPanes: {
+                show: false
+              },
+              targets: [2]
+            }
+          ],
+          buttons: [
+            {
+              extend: 'print',
+              class: 'buttons-print',
+              title: title, // Set the title for each table
+              messageBottom: null,
+              exportOptions: {
+                columns: customExportColumns
+              },
+              text: 'Print'
+            }
+          ]
+        });
+  
+         // Initially hide the DataTables print button
+        dataTable.buttons('.buttons-print').nodes().addClass('d-none');
+  
+        $('#' + buttonId).on('click', function() {
+          // Trigger the DataTables print button click
+          dataTable.buttons('.buttons-print').trigger();
+        });
+      }
+  
+      // Customize your export options for each table
+      var exportColumnsTable1 = [ 0, 1, 2, 3, 4, 5 ];
+  
+      // Initialize DataTables for each table
+      initializeDataTable('#table1', 'btnPrintDetail1', '2020-0056-CM - Mentoring Schedule', exportColumnsTable1);
+    });
+  </script>
+
+{% endblock %}
+
+      

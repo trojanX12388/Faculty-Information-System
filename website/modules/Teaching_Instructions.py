@@ -105,8 +105,54 @@ def TI_TA():
  
 # ------------------------------------------------------------- 
 
+# ------------------------------- TEACHING ASSIGNMENTS SCHEDULES----------------------------  
 
-# ------------------------------- TEACHING ASSIGNMENTS ----------------------------  
+@TI.route("/TI-Teaching-Assignments/BSCS-0104/Schedules", methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def TI_TAS():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        
+
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
+        else:
+            ProfilePic=username.ProfilePic
+           
+        
+        # # UPDATE PROFILE BASIC DETAILS
+        
+        # if request.method == 'POST':
+
+        #     # UPDATE BASIC DETAILS
+        #     # VALUES
+        #     FacultyCode = request.form.get('FacultyCode')
+        #     honorific = request.form.get('honorific')
+
+        #     u = update(FISFaculty)
+        #     u = u.values({"FacultyCode": FacultyCode,
+        #                   "honorific": honorific
+        #                   })
+        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
+        #     db.session.execute(u)
+        #     db.session.commit()
+        #     db.session.close()
+        #     return redirect(url_for('PDM.PDM_BD')) 
+                      
+        return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Teaching-Assignments-Schedules.html", 
+                               User= username.FirstName + " " + username.LastName,
+                               faculty_code= username.FacultyCode,
+                               user= current_user,
+                               TI="show",
+                               activate_TA="active",
+                               profile_pic=ProfilePic)
+
+ 
+# ------------------------------------------------------------- 
+
+
+# ------------------------------- ADVISING MENTORING ----------------------------  
 
 @TI.route("/TI-Advising-Mentoring", methods=['GET', 'POST'])
 @login_required
@@ -146,7 +192,191 @@ def TI_AM():
                                faculty_code= username.FacultyCode,
                                user= current_user,
                                TI="show",
-                               activate_AM="active",
+                               activate_AdM="active",
+                               profile_pic=ProfilePic)
+
+ 
+# ------------------------------------------------------------- 
+
+# ------------------------------- ADVISING CLASS SCHEDULES----------------------------  
+
+@TI.route("/TI-Advising-Mentoring/BSIT-3-1/Schedules", methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def TI_AMCS():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        
+
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
+        else:
+            ProfilePic=username.ProfilePic
+           
+        
+        # # UPDATE PROFILE BASIC DETAILS
+        
+        # if request.method == 'POST':
+
+        #     # UPDATE BASIC DETAILS
+        #     # VALUES
+        #     FacultyCode = request.form.get('FacultyCode')
+        #     honorific = request.form.get('honorific')
+
+        #     u = update(FISFaculty)
+        #     u = u.values({"FacultyCode": FacultyCode,
+        #                   "honorific": honorific
+        #                   })
+        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
+        #     db.session.execute(u)
+        #     db.session.commit()
+        #     db.session.close()
+        #     return redirect(url_for('PDM.PDM_BD')) 
+                      
+        return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Advising-Class-Schedules.html", 
+                               User= username.FirstName + " " + username.LastName,
+                               faculty_code= username.FacultyCode,
+                               user= current_user,
+                               TI="show",
+                               activate_AdM="active",
+                               profile_pic=ProfilePic)
+
+ 
+# ------------------------------------------------------------- 
+
+# ------------------------------- ADVISING STUDENT SCHEDULES----------------------------  
+
+@TI.route("/TI-Advising-Mentoring/2021-0021-CM/Schedules", methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def TI_AMSS():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        
+
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
+        else:
+            ProfilePic=username.ProfilePic
+           
+        
+        # # UPDATE PROFILE BASIC DETAILS
+        
+        # if request.method == 'POST':
+
+        #     # UPDATE BASIC DETAILS
+        #     # VALUES
+        #     FacultyCode = request.form.get('FacultyCode')
+        #     honorific = request.form.get('honorific')
+
+        #     u = update(FISFaculty)
+        #     u = u.values({"FacultyCode": FacultyCode,
+        #                   "honorific": honorific
+        #                   })
+        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
+        #     db.session.execute(u)
+        #     db.session.commit()
+        #     db.session.close()
+        #     return redirect(url_for('PDM.PDM_BD')) 
+                      
+        return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Advising-Student-Schedules.html", 
+                               User= username.FirstName + " " + username.LastName,
+                               faculty_code= username.FacultyCode,
+                               user= current_user,
+                               TI="show",
+                               activate_AdM="active",
+                               profile_pic=ProfilePic)
+
+ 
+# ------------------------------------------------------------- 
+
+# ------------------------------- MENTORING STUDENT SCHEDULES----------------------------  
+
+@TI.route("/TI-Advising-Mentoring/2020-0056-CM/Mentoring/Schedules", methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def TI_AMMS():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        
+
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
+        else:
+            ProfilePic=username.ProfilePic
+           
+        
+        # # UPDATE PROFILE BASIC DETAILS
+        
+        # if request.method == 'POST':
+
+        #     # UPDATE BASIC DETAILS
+        #     # VALUES
+        #     FacultyCode = request.form.get('FacultyCode')
+        #     honorific = request.form.get('honorific')
+
+        #     u = update(FISFaculty)
+        #     u = u.values({"FacultyCode": FacultyCode,
+        #                   "honorific": honorific
+        #                   })
+        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
+        #     db.session.execute(u)
+        #     db.session.commit()
+        #     db.session.close()
+        #     return redirect(url_for('PDM.PDM_BD')) 
+                      
+        return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Mentoring-Student-Schedules.html", 
+                               User= username.FirstName + " " + username.LastName,
+                               faculty_code= username.FacultyCode,
+                               user= current_user,
+                               TI="show",
+                               activate_AdM="active",
+                               profile_pic=ProfilePic)
+
+ 
+# ------------------------------------------------------------- 
+
+# ------------------------------- ADVISING MENTORING ----------------------------  
+
+@TI.route("/TI-Teaching-Effectiveness", methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def TI_TE():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        
+
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
+        else:
+            ProfilePic=username.ProfilePic
+           
+        
+        # # UPDATE PROFILE BASIC DETAILS
+        
+        # if request.method == 'POST':
+
+        #     # UPDATE BASIC DETAILS
+        #     # VALUES
+        #     FacultyCode = request.form.get('FacultyCode')
+        #     honorific = request.form.get('honorific')
+
+        #     u = update(FISFaculty)
+        #     u = u.values({"FacultyCode": FacultyCode,
+        #                   "honorific": honorific
+        #                   })
+        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
+        #     db.session.execute(u)
+        #     db.session.commit()
+        #     db.session.close()
+        #     return redirect(url_for('PDM.PDM_BD')) 
+                      
+        return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Teaching-Effectiveness.html", 
+                               User= username.FirstName + " " + username.LastName,
+                               faculty_code= username.FacultyCode,
+                               user= current_user,
+                               TI="show",
+                               activate_TE="active",
                                profile_pic=ProfilePic)
 
  

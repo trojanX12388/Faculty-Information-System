@@ -1,0 +1,353 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Teaching Effectiveness{% endblock %} {% block content%}
+
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<!-- Include DataTables Buttons CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+
+<!-- Include DataTables Print Button JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Teaching Effectiveness</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Teaching Instructions</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="card">
+          
+        </div>
+
+        {% block Teaching_Effectiveness %}
+
+        <div class="card">
+          <div class="card-body profile-card pt-4 d-flex flex-col align-items-start">
+            <img src="https://lh3.googleusercontent.com/d/{{profile_pic}}" alt="Profile" class="rounded-circle" style="width:150px; height:150px;">
+            <div class="mx-md-3" style="position:relative;left:30px;">
+              <div class="w-100">
+                <br><br>
+                <h4 class="my-0">{{user.FirstName}} {{user.MiddleInitial}} {{user.LastName}}</h4>
+                <small class="text-muted mt-sm-1">{{user.Rank}}</small>
+              </div>
+
+              <style>
+                .responsive-table {
+                  display: flex;
+                  flex-wrap: wrap;
+                  margin: -10px; /* Adjust margin as needed */
+                }
+              
+                .responsive-table td {
+                  flex: 1;
+                  padding: 10px; /* Adjust padding as needed */
+                  box-sizing: border-box;
+                }
+              
+                .responsive-table h6 {
+                  margin: 0;
+                }
+                .btnprinter-container {
+                  text-align: right;
+                }
+              
+                .btnprinter {
+                  width: 50px;
+                  background-color: transparent;
+                  border: none;
+                  padding: 0;
+                  cursor: pointer;
+                }
+              
+                .btnprinter i {
+                  font-size: 24px; /* You can adjust the font size as needed */
+                  color: #000; /* You can set the color as needed */
+                }
+                #table1 thead th {
+                  background-color: #1A2432;
+                  color: white; /* Set text color to white for better visibility */
+                }
+              </style>
+
+          </div>
+        </div>
+        <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+          <h3><strong>STUDENT FEEDBACK RESULTS</strong></h3>
+        </div>
+        <div class="card-body profile-card pt-4 d-flex flex-column align-items-start" style="text-style: underlined;">
+          <h6><u>Student Faculty Feedback for Faculty Form</u> <a href="/TI-Faculty-Feedback-Form">view</a></h6>
+        </div>
+        <div class="card-body d-flex flex-column justify-content-center">
+          <br>
+        
+          <!-- Advising Table with stripped rows -->
+          <div class="d-flex flex-row">
+            <div class="table-container">
+              <table id="table1" class="display" style="width:100%">
+                <thead>
+                  <tr>
+                    <th scope="col">SCHOOL YEAR</th>
+                    <th scope="col">COURSE/SECTION</th>
+                    <th scope="col">NO. OF STUDENTS</th>
+                    <th scope="col">RESULT</th>
+                    <th scope="col">RATING</th>
+                    <th scope="col">PERCENTAGE</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">2023-2024</th>
+                    <td>BSCS 1-1</td>
+                    <td>36</td>
+                    <td>89/100</td>
+                    <td>4.0</td>
+                    <td>89%</td>
+                    <td> 
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button" onclick="classredirectToURL()" class="btn btn-success">View</button>
+                        <script>
+                          function classredirectToURL() {
+                              window.location.href = '/TI-Advising-Mentoring/BSIT-3-1/Schedules';
+                          }
+                      </script>
+                      </div>
+                  </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2023-2024</th>
+                    <td>BSCS 1-2</td>
+                    <td>43</td>
+                    <td>99/100</td>
+                    <td>4.9</td>
+                    <td>99%</td>
+                    <td> 
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button"  class="btn btn-success">View</button>
+                      </div>
+                  </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2023-2024</th>
+                    <td>BSCS 1-2</td>
+                    <td>43</td>
+                    <td>99/100</td>
+                    <td>4.9</td>
+                    <td>99%</td>
+                    <td> 
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button"  class="btn btn-success">View</button>
+                      </div>
+                  </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2023-2024</th>
+                    <td>BSCS 1-2</td>
+                    <td>43</td>
+                    <td>99/100</td>
+                    <td>4.9</td>
+                    <td>99%</td>
+                    <td> 
+                      <div class="d-grid gap-2 mt-3">
+                        <button type="button"  class="btn btn-success">View</button>
+                      </div>
+                  </td>
+                  </tr>
+                </tbody>
+              </table><!-- End Table with stripped rows -->
+            </div>
+        
+            <div class="corner-div-container">
+              <div id="__p__result_calculation__numerical_values_based_on_the_qualitative_responses__90___100__excellent_80___89__very_good_70___79__good_60___69__fair_0___59__poor_rating__the_rating_scale_will_be_defined_based_on_the_calculated_average_scores__4_5___5_0__excellent_3_5___4_49__very_good_2_5___3_49__good_1_5___2_49__fair_1_0___1_49__poor_percentage__the_average_score_will_be_converted_to_a_percentage_by_scaling_it_to_the_maximum_possible_score__ex__4_49___89_8_">
+                <strong>Result Calculation:</strong><br />
+                Numerical values based on the qualitative responses.<br />
+                90 - 100: Excellent<br />
+                80 - 89: Very Good<br />
+                70 - 79: Good<br />
+                60 - 69: Fair<br />
+                0 - 59: Poor<br /><br />
+        
+                <strong>Rating:</strong><br />
+                The rating scale will be defined based on the calculated average scores.<br />
+                4.5 - 5.0: Excellent<br />
+                3.5 - 4.49: Very Good<br />
+                2.5 - 3.49: Good<br />
+                1.5 - 2.49: Fair<br />
+                1.0 - 1.49: Poor<br /><br />
+        
+                <strong>Percentage:</strong><br />
+                The average score will be converted to a percentage by scaling it to the maximum possible score.<br />
+                Ex.<br />
+                4.49 = 89.8%
+              </div>
+            </div>
+          </div>
+        
+          <br><br>
+        </div>
+        
+        <style type="text/css">
+          .corner-div-container {
+            margin-left: 20px; /* Adjust the margin as needed */
+          }
+        
+          .table-container {
+            flex: 1;
+          }
+        
+          .corner-div-container {
+            width: 294.2px;
+            height: 396.2px;
+            overflow: hidden;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 12px;
+            text-align: left;
+            color: #000000;
+          }
+        </style>
+        
+          <!-- aAnalytics -->
+          <div class="d-flex flex-row my-sm-5">
+            <div class="w-50">
+                <h5 class="d-flex align-items-center justify-content-center fw-bolder">COMPARISON CHART ANALYSIS</h5>
+                 <!-- Bar Chart -->
+                    <div id="barChart"></div>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", () => {
+                        new ApexCharts(document.querySelector("#barChart"), {
+                            series: [{
+                            data: [20, 40, 60, 80, 100]
+                            }],
+                            chart: {
+                            type: 'bar',
+                            height: 350
+                            },
+                            plotOptions: {
+                            bar: {
+                                borderRadius: 4,
+                                horizontal: true,
+                            }
+                            },
+                            dataLabels: {
+                            enabled: false
+                            },
+                            xaxis: {
+                            categories: ['BSIT 1-1', 'BSIT 1-2', 'BSIT 1-3', 'BSIT 1-4'
+                            ],
+                            }
+                        }).render();
+                        });
+                    </script>
+                    <!-- End Bar Chart -->
+            </div>
+            <div class="w-50">
+                <h5 class="d-flex align-items-center justify-content-center fw-bolder">OVERALL AVERAGE RATING</h5>
+                <!-- Donut Chart -->
+                <div id="donutChart"></div>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                    new ApexCharts(document.querySelector("#donutChart"), {
+                        series: [95, 5],
+                        chart: {
+                        height: 350,
+                        type: 'donut',
+                        toolbar: {
+                            show: true
+                        }
+                        },
+                        labels: ['Rating'],
+                    }).render();
+                    });
+                </script>
+                <!-- End Donut Chart -->
+                <h6 class="d-flex align-items-center justify-content-center text-wrap">Given an average rating of 95.5%, Jacob Ovalle is rated as "Excellent" in student feedback, reflecting outstanding performance with the students.</h6>
+            </div>
+          </div>
+
+      </div>
+      
+    </section>
+
+  </main><!-- End #main -->
+
+ <script>
+  $(document).ready(function() {
+    // Function to initialize DataTable for a given table ID
+    function initializeDataTable(tableId, buttonId, title, customExportColumns) {
+      var dataTable = $(tableId).DataTable({
+        dom: 'BPlfrtip',
+        responsive: true,
+        columnDefs: [
+          {
+            searchPanes: {
+              show: true
+            },
+            targets: [0]
+          },
+          {
+            searchPanes: {
+              show: false
+            },
+            targets: [2]
+          }
+        ],
+        buttons: [
+          {
+            extend: 'print',
+            class: 'buttons-print',
+            title: title, // Set the title for each table
+            messageBottom: null,
+            exportOptions: {
+              columns: customExportColumns
+            },
+            text: 'Print'
+          }
+        ]
+      });
+
+       // Initially hide the DataTables print button
+      dataTable.buttons('.buttons-print').nodes().addClass('d-none');
+
+      $('#' + buttonId).on('click', function() {
+        // Trigger the DataTables print button click
+        dataTable.buttons('.buttons-print').trigger();
+      });
+    }
+
+    // Customize your export options for each table
+    var exportColumnsTable1 = [ 0, 1, 2, 3, 4, 5 ];
+    var exportColumnsTable2 = [ 0, 1, 2, 3, 4 ];
+    var exportColumnsTable3 = [ 0, 1, 2, 3, 4 ];
+
+    // Initialize DataTables for each table
+    initializeDataTable('#table1', 'btnPrintDetail1', 'Advising Classes', exportColumnsTable1);
+    initializeDataTable('#table2', 'btnPrintDetail2', 'Advising Students', exportColumnsTable2);
+    initializeDataTable('#table3', 'btnPrintDetail3', 'Mentoring', exportColumnsTable3);
+  });
+</script>
+
+  {% endblock %}
+
+{% endblock %}
+
+      
