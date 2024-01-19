@@ -56,10 +56,10 @@ profile_default='14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08'
 # -------------------------------------------------------------
 
 
-#                                                    AWARDS AND RECOGNITIONS ROUTE
+#                                                    COMMITTEE AND ADMINISTRATIVE ROLES
 
 
-# ------------------------------- AWARDS AND RECOGNITIONS ----------------------------  
+# ------------------------------- COMMITTEE AND ADMINISTRATIVE ROLES ----------------------------  
 
 @CAR.route("/Committee-Administrative-Roles", methods=['GET', 'POST'])
 @login_required
@@ -95,6 +95,94 @@ def CAR_H():
         #     return redirect(url_for('PDM.PDM_BD')) 
                       
         return render_template("Faculty-Home-Page/Committee-Administrative-Role/index.html", 
+                               User= username.FirstName + " " + username.LastName,
+                               faculty_code= username.FacultyCode,
+                               user= current_user,
+                               profile_pic=ProfilePic)
+
+ 
+# ------------------------------------------------------------- 
+
+# ------------------------------- COMMITTEE ROLES ----------------------------  
+
+@CAR.route("/CAR-Committee-Roles", methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def CAR_CR():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        
+
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
+        else:
+            ProfilePic=username.ProfilePic
+           
+        
+        # # UPDATE PROFILE BASIC DETAILS
+        
+        # if request.method == 'POST':
+
+        #     # UPDATE BASIC DETAILS
+        #     # VALUES
+        #     FacultyCode = request.form.get('FacultyCode')
+        #     honorific = request.form.get('honorific')
+
+        #     u = update(FISFaculty)
+        #     u = u.values({"FacultyCode": FacultyCode,
+        #                   "honorific": honorific
+        #                   })
+        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
+        #     db.session.execute(u)
+        #     db.session.commit()
+        #     db.session.close()
+        #     return redirect(url_for('PDM.PDM_BD')) 
+                      
+        return render_template("Faculty-Home-Page/Committee-Administrative-Role/CAR-Committee-Roles.html", 
+                               User= username.FirstName + " " + username.LastName,
+                               faculty_code= username.FacultyCode,
+                               user= current_user,
+                               profile_pic=ProfilePic)
+
+ 
+# ------------------------------------------------------------- 
+
+# ------------------------------- ADMINISTRATIVE ROLES ----------------------------  
+
+@CAR.route("/CAR-Administrative-Roles", methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def CAR_AR():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        
+
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
+        else:
+            ProfilePic=username.ProfilePic
+           
+        
+        # # UPDATE PROFILE BASIC DETAILS
+        
+        # if request.method == 'POST':
+
+        #     # UPDATE BASIC DETAILS
+        #     # VALUES
+        #     FacultyCode = request.form.get('FacultyCode')
+        #     honorific = request.form.get('honorific')
+
+        #     u = update(FISFaculty)
+        #     u = u.values({"FacultyCode": FacultyCode,
+        #                   "honorific": honorific
+        #                   })
+        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
+        #     db.session.execute(u)
+        #     db.session.commit()
+        #     db.session.close()
+        #     return redirect(url_for('PDM.PDM_BD')) 
+                      
+        return render_template("Faculty-Home-Page/Committee-Administrative-Role/CAR-Administrative-Roles.html", 
                                User= username.FirstName + " " + username.LastName,
                                faculty_code= username.FacultyCode,
                                user= current_user,

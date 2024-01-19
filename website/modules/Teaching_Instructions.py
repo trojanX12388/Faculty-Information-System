@@ -644,3 +644,46 @@ def TI_Caps():
                                TI="show",
                                activate_Caps="active",
                                profile_pic=ProfilePic)
+        
+# ------------------------------- SERVICES ----------------------------  
+
+@TI.route("/TI-Services", methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def TI_S():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        
+
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
+        else:
+            ProfilePic=username.ProfilePic
+           
+        
+        # # UPDATE PROFILE BASIC DETAILS
+        
+        # if request.method == 'POST':
+
+        #     # UPDATE BASIC DETAILS
+        #     # VALUES
+        #     FacultyCode = request.form.get('FacultyCode')
+        #     honorific = request.form.get('honorific')
+
+        #     u = update(FISFaculty)
+        #     u = u.values({"FacultyCode": FacultyCode,
+        #                   "honorific": honorific
+        #                   })
+        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
+        #     db.session.execute(u)
+        #     db.session.commit()
+        #     db.session.close()
+        #     return redirect(url_for('PDM.PDM_BD')) 
+                      
+        return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Services.html", 
+                               User= username.FirstName + " " + username.LastName,
+                               faculty_code= username.FacultyCode,
+                               user= current_user,
+                               TI="show",
+                               activate_S="active",
+                               profile_pic=ProfilePic)

@@ -15,80 +15,173 @@
     </div><!-- End Page Title -->
 
     <section class="section">
-       <!-- Card with an image on left -->
-       <div class="row">
-        <div class="row g-3">
-          
-          <div class="col-xl-6">
-            <div class="card">
-            <div class="card-body">
-              <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-                <h2>COMMITTEE ROLES</h2>
-          </div>
-          
-          <div class="row d-flex text-left pt-3">
-            <div class="card-body profile-card pt-4 d-flex flex-column align-items-left">
-              <h4 class="card-title"> 
-                Curriculum Development Committee
-              </h4>
-        </div>
-        </div>
-          <div class="row d-flex text-left pt-3">
-            <h5 class="font-weight-bolder">
-              {{User}} is a member of a committee responsible for reviewing and refining the literature curriculum.
-            </h5>
-        </div>
-
-
-        <br>
-        <br>
-        <br>
-
-        <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-          <h2>ADMINISTRATIVE ROLES</h2>
-      </div>
-
-      <div class="row d-flex text-left pt-1">
-        <div class="card-body profile-card pt-4 d-flex flex-column align-items-left">
-          <h4 class="card-title"> 
-            Department Chair's Advisory Group
-          </h4>
-    </div>
-    </div>
-      <div class="row d-flex text-left pt-3">
-        <h5 class="font-weight-bolder">
-          {{User}} is a member of a group that advises the department chair on matters related to faculty development.
-        </h5>
-    </div>
-
-    <div class="row d-flex text-left pt-3">
-      <div class="card-body profile-card pt-4 d-flex flex-column align-items-left">
-        <h4 class="card-title"> 
-          Campus Inclusivity Task Force
-        </h4>
-  </div>
-  </div>
-    <div class="row d-flex text-left pt-3">
-      <h5 class="font-weight-bolder">
-        {{User}} is a co-chair of a subcommittee within a task force focused on promoting inclusivity.
-      </h5>
-  </div>
-</div>
-        </div>
-          
-
-          
-        </div>
+      <div class="row">
         <div class="col-xl-6">
-          <img src="{{ url_for('static', filename='images/Default-Images/sideview-image.png')}}" alt="side image" style="width: 100%; height: 100%">
-        </div> 
+          <div class="card">
+            <div class="card-body">
+              <br><br>
+              <div class=" d-flex justify-content-center">
+                <h3><strong>COMMITTEE ROLES</strong></h3>
+              </div>
+              <!-- List group with Advanced Contents -->
+              <div class="list-group">
+                <a href="/CAR-Committee-Roles" class="list-group-item list-group-item-action">
+                  <div class="d-flex w-100 justify-content-between">
+                    <h5 class="card-title">Curriculum Development Committee</h5>
+                  </div>
+                    <p class="mb-1">Jacob Ovalle is a member of a committee responsible for reviewing and refining the literature curriculum.</p>
+                      </a>
+              </div><!-- End List group Advanced Content -->
+              <div class="d-flex justify-content-end my-md-2">
+                <button type="button" class="btn btn-primary mx-md-2"><i class="bx bxs-pencil"></i>Edit</button>
+                  <!-- etong edit button pre, hindi ko alam paano gagawan HAHAHAHA ikaw na bahala ah -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#committeeModal"><i class="bx bx-plus"></i> Add New</button>
+              </div>
+            </div>
+              <div class="card-body">
+                <br><br>
+                <div class=" d-flex justify-content-center">
+                  <h3><strong>ADMINISTRATIVE ROLES</strong></h3>
+                </div>
+                  <!-- List group with Advanced Contents -->
+                  <div class="list-group">
+                    <a href="/CAR-Administrative-Roles" class="list-group-item list-group-item-action">
+                      <div class="d-flex w-100 justify-content-between">
+                        <h5 class="card-title">Department Chair's Advisory Group</h5>
+                      </div>
+                        <p class="mb-1">Jane Doe is a member of a group that advises the department chair on matters related to faculty development.</p>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                      <div class="d-flex w-100 justify-content-between">
+                        <h5 class="card-title">Campus Inclusivity Task Force</h5>
+                      </div>
+                        <p class="mb-1">Jane Doe is a co-chair of a subcommittee within a task force focused on promoting inclusivity.</p>
+                    </a>
+                  </div><!-- End List group Advanced Content -->
+                  <div class="d-flex justify-content-end my-md-2">
+                    <button type="button" class="btn btn-primary mx-md-2"><i class="bx bxs-pencil"></i>Edit</button>
+                    <!-- etong edit button pre, hindi ko alam paano gagawan HAHAHAHA ikaw na bahala ah -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#adminModal"> <i class="bx bx-plus"></i> Add New
+                  </button>
+                  
+                  </div>
+                  
+              </div>
+              
+          </div>
       </div>
-     
-    </div><!-- End Card with an image on left -->
-
+      <div class="col-xl-6">
+        <img src="{{ url_for('static', filename='images/Default-Images/sideview-image.png')}}" alt="side image" style="width: 100%; height: 100%">
+      </div> 
+    </div>
+  
+      
     </section>
 
   </main><!-- End #main -->
+
+  <!-- Committee Modal -->
+  <div class="modal fade" id="committeeModal" tabindex="-1" aria-labelledby="committeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="uploadModalLabel">Add new Committee Role</h5>
+          <!-- close button -->
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="row mb-3">
+              <label for="inputText" class="col-sm-2 col-form-label">Title</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control">
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="inputPassword" class="col-sm-2 col-form-label">Abstract</label>
+              <div class="col-sm-10">
+                <textarea class="form-control" style="height: 100px"></textarea>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="inputDate" class="col-sm-2 col-form-label">Member Since</label>
+              <div class="col-sm-10">
+                <input type="date" class="form-control">
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="inputText" class="col-sm-2 col-form-label">Responsibilities</label>
+              <div class="col-sm-10">
+                  <input type="text" class="form-control" placeholder="1.">
+                  <input type="text" class="form-control" placeholder="2.">
+                  <input type="text" class="form-control" placeholder="3.">
+                  <input type="text" class="form-control" placeholder="4.">
+                  <input type="text" class="form-control" placeholder="5.">
+                  <small class="text-decoration-underline"><a href="">add more</a></small>      
+                  <!-- dito pre sa add more, kung pwede sana is mag add siya ng input type for responsibility, if ever na need pa ng mas marami -->
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- END OF MODAL -->
+<!-- Administrative Modal -->
+<div class="modal fade" id="adminModal" tabindex="-1" aria-labelledby="adminModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadModalLabel">Add new Administrative Role</h5>
+        <!-- close button -->
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row mb-3">
+            <label for="inputText" class="col-sm-2 col-form-label">Title</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Abstract</label>
+            <div class="col-sm-10">
+              <textarea class="form-control" style="height: 100px"></textarea>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputDate" class="col-sm-2 col-form-label">Member Since</label>
+            <div class="col-sm-10">
+              <input type="date" class="form-control">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputText" class="col-sm-2 col-form-label">Responsibilities</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" placeholder="1.">
+                <input type="text" class="form-control" placeholder="2.">
+                <input type="text" class="form-control" placeholder="3.">
+                <input type="text" class="form-control" placeholder="4.">
+                <input type="text" class="form-control" placeholder="5.">
+                <small class="text-decoration-underline"><a href="">add more</a></small>      
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="d-flex justify-content-end">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}
 

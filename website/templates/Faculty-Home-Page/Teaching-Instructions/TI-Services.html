@@ -1,0 +1,87 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Services{% endblock %} {% block content%}
+
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<!-- Include DataTables Buttons CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+
+<!-- Include DataTables Print Button JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Services</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Teaching Instructions</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    {% block Services %}
+
+    <section class="section">
+      <br><br><br>
+        <div class="card-body">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Services</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-decoration-underline"><a href="#">Advising</a></td>
+                <td>On Going</td>
+              </tr>
+              <tr>
+                <td class="text-decoration-underline"><a href="#">Mentoring</a></td>
+                <td>On Going</td>
+              </tr>
+              <tr>
+                <td class="text-decoration-underline"><a href="#">Office Hours</a></td>
+                <td>On Going</td>
+              </tr>
+              <tr>
+                <td class="text-decoration-underline"><a href="#">Community Outreach</a></td>
+                <td>On Going</td>
+              </tr>
+              <tr>
+                <td class="text-decoration-underline"><a href="#">Course Planning</a></td>
+                <td>On Going</td>
+              </tr>
+              <tr>
+                <td class="text-decoration-underline"><a href="#">Professional Development</a></td>
+                <td>On Going</td>
+              </tr>
+              <tr>
+                <td class="text-decoration-underline"><a href="#">Collaboration with Peers</a></td>
+                <td>On Going</td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- End Bordered Table -->
+      </div>
+      <br><br>
+</section>
+    {% endblock %}
+
+  </main><!-- End #main -->
+
+{% endblock %}
+
+      
