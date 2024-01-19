@@ -1,0 +1,350 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Forum{% endblock %} {% block content%}
+
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Forum</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Announcement & Forum</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="card ">
+          <div class="card-body">
+            <div class="card-title d-flex justify-content-between">
+              <p>Forum</p>
+              <button type="button" class="btn">Write a Post <a class="bx bxs-pencil"></a></button>
+            </div>
+  
+            <!-- Default Tabs -->
+            <ul class="nav nav-tabs d-flex" id="myTabjustified" role="tablist">
+              <li class="nav-item flex-fill" role="presentation">
+                <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-justified" type="button" role="tab" aria-controls="Latest" aria-selected="true">Latest</button>
+              </li>
+              <li class="nav-item flex-fill" role="presentation">
+                <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-justified" type="button" role="tab" aria-controls="Post-Feed" aria-selected="false">Post Feed</button>
+              </li>
+              <li class="nav-item flex-fill" role="presentation">
+                <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-justified" type="button" role="tab" aria-controls="Unaswered" aria-selected="false">Unanswered</button>
+              </li>
+              <li class="nav-item flex-fill" role="presentation">
+                <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-justified" type="button" role="tab" aria-controls="PopularThisWeek" aria-selected="false">Popular this Week</button>
+              </li>
+            </ul>
+              <!-- End of Tab List -->
+            <div class="row">
+              <div class="tab-content pt-2 col-lg-9" id="myTabjustifiedContent">
+  
+                <!-- Latest Tab -->
+                <div class="tab-pane fade show active" id="home-justified" role="tabpanel" aria-labelledby="Latest-tab">
+                    <!-- Latest tab Contents -->
+                  <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action">    
+                      <div class="col d-flex">
+                        <img src="https://lh3.googleusercontent.com/d/{{drew.ProfilePic}}" alt="Profile" class="rounded-circle"style="width: 100px; height: 100px;border-radius: 50%;margin-right: 15px;">
+                        <div class="d-flex justify-content-between w-100">
+                          <div class="ms-md-3 mt-md-4">
+                            <h6 class="d-flex">Prof. Mark Doe</h6>
+                            <h5 class="d-flex fw-bold">Seeking Input on Teaching Strategies for Remote Learning</h5>
+                          </div>
+                          <small>9/01/23</small>
+                        </div>
+                      </div>
+                        <p class="my-sm-3">Hello fellow faculty members, I hope this message finds you all well. As we continue to navigate the challenges of remote and hybrid learning environments, 
+                          I wanted to reach out to our amazing community for some insights and ideas...</p>
+                    </a>
+  
+                    <a href="#" class="list-group-item list-group-item-action">    
+                      <div class="col d-flex">
+                        <img src="https://lh3.googleusercontent.com/d/{{drew.ProfilePic}}" alt="Profile" class="rounded-circle"style="width: 100px; height: 100px;border-radius: 50%;margin-right: 15px;">
+                        <div class="d-flex justify-content-between w-100">
+                          <div class="ms-md-3 mt-md-4">
+                            <h6 class="d-flex">Prof. Mark Doe</h6>
+                            <h5 class="d-flex fw-bold">Collaborative Research Opportunity in Environmental Science</h5>
+                          </div>
+                          <small>8/31/23</small>
+                        </div>
+                      </div>
+                        <p class="my-sm-3">I hope this message finds you all in good health and high spirits. I'm excited to share an opportunity for collaborative research in the field of environmental science.
+                          I've recently secured a research grant that allows for interdisciplinary exploration of environmental challenges, specifically focusing on the impact of climate change on local...</p>
+                    </a>
+  
+                     <a href="#" class="list-group-item list-group-item-action">    
+                      <div class="col d-flex">
+                        <img src="https://lh3.googleusercontent.com/d/{{drew.ProfilePic}}" alt="Profile" class="rounded-circle"style="width: 100px; height: 100px;border-radius: 50%;margin-right: 15px;">
+                        <div class="d-flex justify-content-between w-100">
+                          <div class="ms-md-3 mt-md-4">
+                            <h6 class="d-flex">Prof. Vista Doe</h6>
+                            <h5 class="d-flex fw-bold">Seeking Input on Virtual Office Hours</h5>
+                          </div>
+                          <small>8/31/23</small>
+                        </div>
+                      </div>
+                        <p class="my-sm-3">Hello fellow educators,
+                          I hope everyone is doing well amidst the challenges of remote and hybrid teaching. I wanted to seek your insights and experiences regarding virtual office hours. As we continue to adapt 
+                          to new teaching modalities, I've been pondering the most effective ways to conduct virtual offi...</p>
+                    </a>
+  
+                    <a href="#" class="list-group-item list-group-item-action">    
+                      <div class="col d-flex">
+                        <img src="https://lh3.googleusercontent.com/d/{{drew.ProfilePic}}" alt="Profile" class="rounded-circle"style="width: 100px; height: 100px;border-radius: 50%;margin-right: 15px;">
+                        <div class="d-flex justify-content-between w-100">
+                          <div class="ms-md-3 mt-md-4">
+                            <h6 class="d-flex">Prof. Robert Bardoquillo</h6>
+                            <h5 class="d-flex fw-bold">Seeking Input on Effective Online Assessment Strategies</h5>
+                          </div>
+                          <small>8/30/23</small>
+                        </div>
+                      </div>
+                        <p class="my-sm-3">Hello everyone,
+                          I hope you're all doing well. I'm reaching out to seek your expertise on a topic that many of us have been exploring lately—online assessment strategies. As we adapt to remote and blended</p>
+                    </a>
+  
+                  </div><!-- End Latest tab Content -->
+                </div>
+  
+                <!-- Post Feed Tab -->
+                <div class="tab-pane fade" id="profile-justified" role="tabpanel" aria-labelledby="PostFeed-tab">
+                    <!-- Post feed tab Contents -->
+                  <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action">    
+                      <div class="col d-flex">
+                        <img src="https://lh3.googleusercontent.com/d/{{drew.ProfilePic}}" alt="Profile" class="rounded-circle"style="width: 100px; height: 100px;border-radius: 50%;margin-right: 15px;">
+                        <div class="d-flex justify-content-between w-100">
+                          <div class="ms-md-3 mt-md-4">
+                            <h6 class="d-flex">Prof. Mark Doe</h6>
+                            <h5 class="d-flex fw-bold">Seeking Input on Teaching Strategies for Remote Learning</h5>
+                          </div>
+                          <small>9/01/23</small>
+                        </div>
+                      </div>
+                        <p class="my-sm-3">Hello fellow faculty members, I hope this message finds you all well. As we continue to navigate the challenges of remote and hybrid learning environments, 
+                          I wanted to reach out to our amazing community for some insights and ideas...</p>
+                    </a>
+  
+                    <a href="#" class="list-group-item list-group-item-action">    
+                      <div class="col d-flex">
+                        <img src="https://lh3.googleusercontent.com/d/{{drew.ProfilePic}}" alt="Profile" class="rounded-circle"style="width: 100px; height: 100px;border-radius: 50%;margin-right: 15px;">
+                        <div class="d-flex justify-content-between w-100">
+                          <div class="ms-md-3 mt-md-4">
+                            <h6 class="d-flex">Prof. Mark Doe</h6>
+                            <h5 class="d-flex fw-bold">Collaborative Research Opportunity in Environmental Science</h5>
+                          </div>
+                          <small>8/31/23</small>
+                        </div>
+                      </div>
+                        <p class="my-sm-3">I hope this message finds you all in good health and high spirits. I'm excited to share an opportunity for collaborative research in the field of environmental science.
+                          I've recently secured a research grant that allows for interdisciplinary exploration of environmental challenges, specifically focusing on the impact of climate change on local...</p>
+                    </a>
+  
+                     <a href="#" class="list-group-item list-group-item-action">    
+                      <div class="col d-flex">
+                        <img src="https://lh3.googleusercontent.com/d/{{drew.ProfilePic}}" alt="Profile" class="rounded-circle"style="width: 100px; height: 100px;border-radius: 50%;margin-right: 15px;">
+                        <div class="d-flex justify-content-between w-100">
+                          <div class="ms-md-3 mt-md-4">
+                            <h6 class="d-flex">Prof. Vista Doe</h6>
+                            <h5 class="d-flex fw-bold">Seeking Input on Virtual Office Hours</h5>
+                          </div>
+                          <small>8/31/23</small>
+                        </div>
+                      </div>
+                        <p class="my-sm-3">Hello fellow educators,
+                          I hope everyone is doing well amidst the challenges of remote and hybrid teaching. I wanted to seek your insights and experiences regarding virtual office hours. As we continue to adapt 
+                          to new teaching modalities, I've been pondering the most effective ways to conduct virtual offi...</p>
+                    </a>
+  
+                    <a href="#" class="list-group-item list-group-item-action">    
+                      <div class="col d-flex">
+                        <img src="https://lh3.googleusercontent.com/d/{{drew.ProfilePic}}" alt="Profile" class="rounded-circle"style="width: 100px; height: 100px;border-radius: 50%;margin-right: 15px;">
+                        <div class="d-flex justify-content-between w-100">
+                          <div class="ms-md-3 mt-md-4">
+                            <h6 class="d-flex">Prof. Robert Bardoquillo</h6>
+                            <h5 class="d-flex fw-bold">Seeking Input on Effective Online Assessment Strategies</h5>
+                          </div>
+                          <small>8/30/23</small>
+                        </div>
+                      </div>
+                        <p class="my-sm-3">Hello everyone,
+                          I hope you're all doing well. I'm reaching out to seek your expertise on a topic that many of us have been exploring lately—online assessment strategies. As we adapt to remote and blended</p>
+                    </a>
+  
+                  </div><!-- End post feed tab Content -->
+                </div>
+  
+                <!-- Unanswered Tab -->
+                <div class="tab-pane fade" id="contact-justified" role="tabpanel" aria-labelledby="Unanswered-tab">
+                  <!-- Unasnwered tab Contents -->
+                  <div class="list-group">
+                   <a href="#" class="list-group-item list-group-item-action">    
+                      <div class="col d-flex">
+                        <img src="https://lh3.googleusercontent.com/d/{{drew.ProfilePic}}" alt="Profile" class="rounded-circle"style="width: 100px; height: 100px;border-radius: 50%;margin-right: 15px;">
+                        <div class="d-flex justify-content-between w-100">
+                          <div class="ms-md-3 mt-md-4">
+                            <h6 class="d-flex">Prof. Mark Doe</h6>
+                            <h5 class="d-flex fw-bold">Seeking Input on Teaching Strategies for Remote Learning</h5>
+                          </div>
+                          <small>9/01/23</small>
+                        </div>
+                      </div>
+                        <p class="my-sm-3">Hello fellow faculty members, I hope this message finds you all well. As we continue to navigate the challenges of remote and hybrid learning environments, 
+                          I wanted to reach out to our amazing community for some insights and ideas...</p>
+                    </a>
+  
+                    <a href="#" class="list-group-item list-group-item-action">    
+                      <div class="col d-flex">
+                        <img src="https://lh3.googleusercontent.com/d/{{drew.ProfilePic}}" alt="Profile" class="rounded-circle"style="width: 100px; height: 100px;border-radius: 50%;margin-right: 15px;">
+                        <div class="d-flex justify-content-between w-100">
+                          <div class="ms-md-3 mt-md-4">
+                            <h6 class="d-flex">Prof. Mark Doe</h6>
+                            <h5 class="d-flex fw-bold">Collaborative Research Opportunity in Environmental Science</h5>
+                          </div>
+                          <small>8/31/23</small>
+                        </div>
+                      </div>
+                        <p class="my-sm-3">I hope this message finds you all in good health and high spirits. I'm excited to share an opportunity for collaborative research in the field of environmental science.
+                          I've recently secured a research grant that allows for interdisciplinary exploration of environmental challenges, specifically focusing on the impact of climate change on local...</p>
+                    </a>
+  
+                     <a href="#" class="list-group-item list-group-item-action">    
+                      <div class="col d-flex">
+                        <img src="https://lh3.googleusercontent.com/d/{{drew.ProfilePic}}" alt="Profile" class="rounded-circle"style="width: 100px; height: 100px;border-radius: 50%;margin-right: 15px;">
+                        <div class="d-flex justify-content-between w-100">
+                          <div class="ms-md-3 mt-md-4">
+                            <h6 class="d-flex">Prof. Vista Doe</h6>
+                            <h5 class="d-flex fw-bold">Seeking Input on Virtual Office Hours</h5>
+                          </div>
+                          <small>8/31/23</small>
+                        </div>
+                      </div>
+                        <p class="my-sm-3">Hello fellow educators,
+                          I hope everyone is doing well amidst the challenges of remote and hybrid teaching. I wanted to seek your insights and experiences regarding virtual office hours. As we continue to adapt 
+                          to new teaching modalities, I've been pondering the most effective ways to conduct virtual offi...</p>
+                    </a>
+  
+                    <a href="#" class="list-group-item list-group-item-action">    
+                      <div class="col d-flex">
+                        <img src="https://lh3.googleusercontent.com/d/{{drew.ProfilePic}}" alt="Profile" class="rounded-circle"style="width: 100px; height: 100px;border-radius: 50%;margin-right: 15px;">
+                        <div class="d-flex justify-content-between w-100">
+                          <div class="ms-md-3 mt-md-4">
+                            <h6 class="d-flex">Prof. Robert Bardoquillo</h6>
+                            <h5 class="d-flex fw-bold">Seeking Input on Effective Online Assessment Strategies</h5>
+                          </div>
+                          <small>8/30/23</small>
+                        </div>
+                      </div>
+                        <p class="my-sm-3">Hello everyone,
+                          I hope you're all doing well. I'm reaching out to seek your expertise on a topic that many of us have been exploring lately—online assessment strategies. As we adapt to remote and blended</p>
+                    </a>
+  
+                  </div><!-- Unasnwered tab Content -->
+                </div>
+  
+                <!-- Popular This Week Tab -->
+                <div class="tab-pane fade" id="contact-justified" role="tabpanel" aria-labelledby="PopularThisWeek-tab">
+                  <!-- Popular this week tab Contents -->
+                  <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action">    
+                      <div class="col d-flex">
+                        <img src="https://lh3.googleusercontent.com/d/{{drew.ProfilePic}}" alt="Profile" class="rounded-circle"style="width: 100px; height: 100px;border-radius: 50%;margin-right: 15px;">
+                        <div class="d-flex justify-content-between w-100">
+                          <div class="ms-md-3 mt-md-4">
+                            <h6 class="d-flex">Prof. Mark Doe</h6>
+                            <h5 class="d-flex fw-bold">Seeking Input on Teaching Strategies for Remote Learning</h5>
+                          </div>
+                          <small>9/01/23</small>
+                        </div>
+                      </div>
+                        <p class="my-sm-3">Hello fellow faculty members, I hope this message finds you all well. As we continue to navigate the challenges of remote and hybrid learning environments, 
+                          I wanted to reach out to our amazing community for some insights and ideas...</p>
+                    </a>
+  
+                    <a href="#" class="list-group-item list-group-item-action">    
+                      <div class="col d-flex">
+                        <img src="https://lh3.googleusercontent.com/d/{{drew.ProfilePic}}" alt="Profile" class="rounded-circle"style="width: 100px; height: 100px;border-radius: 50%;margin-right: 15px;">
+                        <div class="d-flex justify-content-between w-100">
+                          <div class="ms-md-3 mt-md-4">
+                            <h6 class="d-flex">Prof. Mark Doe</h6>
+                            <h5 class="d-flex fw-bold">Collaborative Research Opportunity in Environmental Science</h5>
+                          </div>
+                          <small>8/31/23</small>
+                        </div>
+                      </div>
+                        <p class="my-sm-3">I hope this message finds you all in good health and high spirits. I'm excited to share an opportunity for collaborative research in the field of environmental science.
+                          I've recently secured a research grant that allows for interdisciplinary exploration of environmental challenges, specifically focusing on the impact of climate change on local...</p>
+                    </a>
+  
+                     <a href="#" class="list-group-item list-group-item-action">    
+                      <div class="col d-flex">
+                        <img src="https://lh3.googleusercontent.com/d/{{drew.ProfilePic}}" alt="Profile" class="rounded-circle"style="width: 100px; height: 100px;border-radius: 50%;margin-right: 15px;" >
+                        <div class="d-flex justify-content-between w-100">
+                          <div class="ms-md-3 mt-md-4">
+                            <h6 class="d-flex">Prof. Vista Doe</h6>
+                            <h5 class="d-flex fw-bold">Seeking Input on Virtual Office Hours</h5>
+                          </div>
+                          <small>8/31/23</small>
+                        </div>
+                      </div>
+                        <p class="my-sm-3">Hello fellow educators,
+                          I hope everyone is doing well amidst the challenges of remote and hybrid teaching. I wanted to seek your insights and experiences regarding virtual office hours. As we continue to adapt 
+                          to new teaching modalities, I've been pondering the most effective ways to conduct virtual offi...</p>
+                    </a>
+  
+                    <a href="#" class="list-group-item list-group-item-action">    
+                      <div class="col d-flex">
+                        <img src="https://lh3.googleusercontent.com/d/{{drew.ProfilePic}}" alt="Profile" class="rounded-circle"style="width: 100px; height: 100px;border-radius: 50%;margin-right: 15px;">
+                        <div class="d-flex justify-content-between w-100">
+                          <div class="ms-md-3 mt-md-4">
+                            <h6 class="d-flex">Prof. Robert Bardoquillo</h6>
+                            <h5 class="d-flex fw-bold">Seeking Input on Effective Online Assessment Strategies</h5>
+                          </div>
+                          <small>8/30/23</small>
+                        </div>
+                      </div>
+                        <p class="my-sm-3">Hello everyone,
+                          I hope you're all doing well. I'm reaching out to seek your expertise on a topic that many of us have been exploring lately—online assessment strategies. As we adapt to remote and blended</p>
+                    </a>
+  
+                  </div><!--Popular this week tab Content -->
+                </div>
+              </div><!-- End Default Tabs -->
+  
+              <!-- Member Side Panel -->
+                <div class="members col-lg-3 mt-sm-2">
+                  <h4 class="fw-bold mt-md-3 ms-md-2">TOP MEMBERS</h4>
+                  <div class="rowd-flex ms-md-4 mt-md-4">
+                    <div class="col d-flex my-md-3">
+                      <img src="https://lh3.googleusercontent.com/d/{{berna.ProfilePic}}" alt="Profile" class="rounded-circle"style="width: 100px; height: 100px;border-radius: 50%;margin-right: 15px;">
+                      <h5 class="d-flex align-items-center fw-bold ms-md-3">{{berna.LastName}}</h5>
+                    </div>
+                    <div class="col d-flex my-md-3">
+                      <img src="https://lh3.googleusercontent.com/d/{{drew.ProfilePic}}" alt="Profile" class="rounded-circle"style="width: 100px; height: 100px;border-radius: 50%;margin-right: 15px;">
+                      <h5 class="d-flex align-items-center fw-bold ms-md-3">{{drew.LastName}}</h5>
+                    </div>
+                    <div class="col d-flex my-md-3">
+                      <img class="profile-image bg-dark" src="https://lh3.googleusercontent.com/d/{{celeste.ProfilePic}}" alt="Profile" class="rounded-circle"style="width: 100px; height: 100px;border-radius: 50%;margin-right: 15px;">
+                      <h5 class="d-flex align-items-center fw-bold ms-md-3">{{celeste.LastName}}</h5>
+                    </div>
+                    <div class="col d-flex my-md-3">
+                      <img class="profile-image bg-dark" src="https://lh3.googleusercontent.com/d/{{che.ProfilePic}}" alt="Profile" class="rounded-circle"style="width: 100px; height: 100px;border-radius: 50%;margin-right: 15px;">
+                      <h5 class="d-flex align-items-center fw-bold ms-md-3">{{che.LastName}}</h5>
+                    </div>
+                  </div>
+                  
+                </div>
+              <!-- end of side panel -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+  </main><!-- End #main -->
+
+{% endblock %}
+
+      

@@ -23,7 +23,7 @@ from website.models import FISFaculty
 from website.Token.token_check import Check_Token
 
 # WEB AUTH ROUTES URL
-Forum = Blueprint('Forum', __name__)
+MI = Blueprint('MI', __name__)
 
 # -------------------------------------------------------------
 
@@ -56,15 +56,14 @@ profile_default='14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08'
 # -------------------------------------------------------------
 
 
-#                                                    RECORDS ROUTE
+#                                                    MEDICAL INFORMATION ROUTE
+        
+# ------------------------------- MEDICAL INFORMATION ----------------------------  
 
-
-# ------------------------------- RECORDS ----------------------------  
-
-@Forum.route("/Forum", methods=['GET', 'POST'])
+@MI.route("/Medical-Information", methods=['GET', 'POST'])
 @login_required
 @Check_Token
-def Forum_H():
+def MI_H():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
         
@@ -93,23 +92,10 @@ def Forum_H():
         #     db.session.commit()
         #     db.session.close()
         #     return redirect(url_for('PDM.PDM_BD')) 
-        
-        che = FISFaculty.query.filter_by(FacultyId='000-000-A-012').first() 
-        drew = FISFaculty.query.filter_by(FacultyId='2020-00073-D-1').first() 
-        celeste = FISFaculty.query.filter_by(FacultyId='000-000-A-022').first() 
-        berna = FISFaculty.query.filter_by(FacultyId='000-000-A-017').first() 
                       
-        return render_template("Faculty-Home-Page/Forum/Forum.html", 
+        return render_template("Faculty-Home-Page/Medical-Information/index.html", 
                                User= username.FirstName + " " + username.LastName,
                                faculty_code= username.FacultyCode,
                                user= current_user,
-                               che = che,
-                               drew = drew,
-                               celeste = celeste,
-                               berna = berna,
-                               profile_pic=ProfilePic,
-                               AF="show",
-                               activate_F= "active")
-
- 
-# ------------------------------------------------------------- 
+                               profile_pic=ProfilePic)
+        

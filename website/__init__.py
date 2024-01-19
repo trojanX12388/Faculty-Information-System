@@ -83,11 +83,20 @@ def create_app():
     from .modules.Research_Publications import RP
     app.register_blueprint(RP, url_prefix='/')
     
-    from .modules.Forum import Forum
-    app.register_blueprint(Forum, url_prefix='/')
+    from .modules.Announcement_Forum import AF
+    app.register_blueprint(AF, url_prefix='/')
     
     from .modules.Professional_Development import PD
     app.register_blueprint(PD, url_prefix='/')
+    
+    from .modules.Mandatory_Requirements import MR
+    app.register_blueprint(MR, url_prefix='/')
+    
+    from .modules.Medical_Information import MI
+    app.register_blueprint(MI, url_prefix='/')
+    
+    from .modules.Attendance_Management import AM
+    app.register_blueprint(AM, url_prefix='/')
     
     # LOADING LOGIN MANAGER CACHE
     login_manager = LoginManager()

@@ -4,7 +4,7 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Records of Faculty Member's Teaching Assignments</h1>
+      <h1>Records</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item">Homepage</li>
@@ -14,233 +14,379 @@
       </nav>
     </div><!-- End Page Title -->
 
-    <section class="section">
-      <div class="row align-items-top">
-        <div class="col-12">
-          <div class="card d-flex p-1 ">
-            <div class="row d-flex flex-column">
-                <div class="row d-flex text-center pt-3">
-                    <h5 class="font-weight-bolder">
-                      The RECORDS section captures, organizes, and maintains essential information and data pertaining to various aspects of faculty members' academic and professional activities. It serves as a comprehensive repository for managing records related to faculty profiles, teaching assignments, research endeavors, administrative roles, performance evaluations, professional development, awards, and other relevant interactions. 
-                    </h5>
-        
+    <section class="section profile">
+      <div class="row h-100">
+        <div class="w-25 p-0">
+        <div class="records h-100 col card-body profile-card pt-4 d-flex flex-column align-items-center">
+            <img src="https://lh3.googleusercontent.com/d/{{profile_pic}}" alt="Profile" class="rounded-circle" style="width:150px; height:150px;">
+              <h4 class="mt-md-2">{{User}}</h4>
+              <small>{{user.Rank}}</small>
+             <div class="section profile">
+              <div class="card-body profile-card pt-4 d-flex flex-column align-items-left">
+                <div class="tab-content pt-3">
+
+                  <div class="tab-pane fade show active profile-overview">
+    
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label ">Faculty ID</div>
+                      <div class="col-lg-9 col-md-8">{{user.FacultyId}}</div>
+                    </div>
+    
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label">Age</div>
+                      <div class="col-lg-9 col-md-8">{{user.Age}}</div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Faculty Type</div>
+                        <div class="col-lg-9 col-md-8">{{user.FacultyType}}</div>
+                      </div>
+    
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label">Units</div>
+                      <div class="col-lg-9 col-md-8">{{user.Units}}</div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Degree</div>
+                        <div class="col-lg-9 col-md-8">{{user.Degree}}</div>
+                    </div>
+    
+                  </div>
                 </div>
-                <h5 class="card-title" style="position:relative;left:25px;">Faculty Member's Name: <span style="font-size:20px; color:#3E4647;">{{user.first_name}} {{user.middle_initial}} {{user.last_name}} </span></h5>
-                <h5 class="card-title" style="position:relative;left:25px;">Employee ID: <span style="font-size:20px; color:#3E4647;">{{user.faculty_account_id}}</span></h5>
-                <h5 class="card-title" style="position:relative;left:25px;">Department Affiliation:<span style="font-size:20px; color:#3E4647;"> Department of Environmental Science</span></h5>
-        
-                <br>
-                </div>
+               
               </div>
             </div>
-        
-          </div>
-   
-                
-          <br>
-
-        
-
-          <div class="card">
-            <div class="card-body">
-              <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-                <h2>Teaching Assignments</h2>
-              </div>
-              <div class="col-md-2">
-                <button type="button" style="border:none;width:50px;height:50px; background-color:#FFFFFF;"><i class="bi bi-printer-fill"></i></button>
+        </div>
+        </div>
+        <!-- end left side panel profile -->
+        <div class="col p-0 h-100">
+            <div class="records-top col d-flex m-0 py-3 ps-3">
+                <div class="row w-25 d-flex justify-content-between">
+                    <h3 class="fw-bold">FACULTY RECORD</h3>
+                    <div class="my-md-2">
+                        <h4 class="fw-bold">{{User}}</h4>
+                        <p>{{user.Rank}}</p>
+                    </div>
+                </div>
+                 <div class="w-25 align-self-end text-muted">
+                    <p>RESEARCH PROFESSOR</p>
+                    <p>COMPUTER SCIENCE PROFESSOR</p>
+                    <p>STATISTICS PROFESSOR</p>
+                </div>
+                <div class="d-flex justify-content-end w-50">
+                    <p class="w-50">If you want to print this faculty record, click the print icon. <a href="#" class="bx bxs-printer"></a></p>
+                </div>
+            </div><!-- end of top bar profile info -->
+            <!-- performance matrix -->
+            <div class="card mb-0 col pt-2 ps-3">
+                <h4 class="fw-bold">PERFORMANCE MATRIX</h4>
+                <div class="col w-100 d-flex justify-content-between">
+                    <div class="w-50">
+                        <h5 class="card-title">COMPARISON CHART ANALYSIS</h5>
+          
+                        <!-- Bar Chart -->
+                        <div id="barChart"></div>
+          
+                        <script>
+                          document.addEventListener("DOMContentLoaded", () => {
+                            new ApexCharts(document.querySelector("#barChart"), {
+                              series: [{
+                                data: [400, 430, 448, 470]
+                              }],
+                              chart: {
+                                type: 'bar',
+                                height: 350
+                              },
+                              plotOptions: {
+                                bar: {
+                                  borderRadius: 4,
+                                  horizontal: true,
+                                }
+                              },
+                              dataLabels: {
+                                enabled: false
+                              },
+                              xaxis: {
+                                categories: ['BSCS 1-1', 'BSCS 1-2', 'BSCS 1-3', 'BSCS 1-4'
+                                ],
+                              }
+                            }).render();
+                          });
+                        </script>
+                        <!-- End Bar Chart -->
+                    </div>
+                        <!-- end of bar chart div -->
+                        <div class="w-50">
+                            <h5 class="card-title">OVERALL AVERAGE RATING</h5>
+              
+                            <!-- Donut Chart -->
+                            <div id="donutChart"></div>
+              
+                            <script>
+                              document.addEventListener("DOMContentLoaded", () => {
+                                new ApexCharts(document.querySelector("#donutChart"), {
+                                  series: [95],
+                                  chart: {
+                                    height: 350,
+                                    type: 'donut',
+                                    toolbar: {
+                                      show: true
+                                    }
+                                  },
+                                  labels: ['Team A'],
+                                }).render();
+                              });
+                            </script>
+                            <!-- End Donut Chart -->
+                            <p class="d-flex justify-content-center">Given an average rating of 95.5%, Jacob Ovalle is rated as "Excellent" in student feedback, reflecting outstanding performance with the students.</p>
+                        </div>
+                        <!-- end of donut chart div -->
+                </div>
+                <div class="card-body mt-3">
+                    <h5 class="fw-bold">TEACHING ASSIGNMENTS</h5>
+                    <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th scope="col">CLASSROOM ID</th>
+                            <th scope="col">SECTION</th>
+                            <th scope="col">COURSE</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>COMLAB 101</td>
+                            <td>BSCS 1-4</td>
+                            <td>Bachelor of Science in Computer Science</td>
+                          </tr>
+                          <tr>
+                            <td>COMLAB 102</td>
+                            <td>BSCS 2-1</td>
+                            <td>Bachelor of Science in Computer Science</td>
+                          </tr>
+                          <tr>
+                            <td>COMLAB 101</td>
+                            <td>BSIT 3-1</td>
+                            <td>Bachelor of Science in Information Technology</td>
+                          </tr>
+                          <tr>
+                            <td>ROOM 205</td>
+                            <td>BSIT 3-2</td>
+                            <td>Bachelor of Science in Information Technology</td>
+                          </tr>
+                          <tr>
+                            <td>ROOM 203</td>
+                            <td>BAS 3-3</td>
+                            <td>Bachelor in Applied Statistics</td>
+                          </tr>
+                          <tr>
+                            <td>ROOM 202</td>
+                            <td>BSCpE 3-4</td>
+                            <td>Bachelor of Science in Computer Engineering</td>
+                          </tr>
+                          <tr>
+                            <td>ROOM 104</td>
+                            <td>BSCS 4-1</td>
+                            <td>Bachelor of Science in Computer Science</td>
+                          </tr>
+                          <tr>
+                            <td>Dynamic Division Officer</td>
+                            <td>BSIT 4-1</td>
+                            <td>Bachelor of Science in Information Technology</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                </div>
+                <div class="card-body mt-3">
+                    <h5 class="fw-bold">ADVISING</h5>
+                    <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th scope="col">CLASSROOM ID</th>
+                            <th scope="col">SECTION</th>
+                            <th scope="col">ADVISING SESSION</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>COMLAB 101</td>
+                            <td>BSCS 1-4</td>
+                            <td>Specialization or Elective Choices</td>
+                          </tr>
+                          <tr>
+                            <td>COMLAB 102</td>
+                            <td>BSCS 2-1</td>
+                            <td>Capstone Integration</td>
+                          </tr>
+                          <tr>
+                            <td>COMLAB 101</td>
+                            <td>BSIT 3-1</td>
+                            <td>Research II</td>
+                          </tr>
+                          <tr>
+                            <td>ROOM 205</td>
+                            <td>BSIT 3-2</td>
+                            <td>Database Management</td>
+                          </tr>
+                          <tr>
+                            <td>ROOM 203</td>
+                            <td>BAS 3-3</td>
+                            <td>UI/UX</td>
+                          </tr>
+                          <tr>
+                            <td>ROOM 202</td>
+                            <td>BSCpE 3-4</td>
+                            <td>Information Security</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                </div>
+                <div class="mb-0 row py-2 ps-3">
+                    <h4 class="fw-bold">ATTENDANCE RECORDS</h4>
+                    <div class="w-50">
+                        <h5 class="card-title">ATTENDANCE </h5>
+          
+                        <!-- Donut Chart -->
+                        <div id="donutChart1"></div>
+          
+                        <script>
+                          document.addEventListener("DOMContentLoaded", () => {
+                            new ApexCharts(document.querySelector("#donutChart1"), {
+                              series: [99],
+                              chart: {
+                                height: 350,
+                                type: 'donut',
+                                toolbar: {
+                                  show: true
+                                }
+                              },
+                              labels: ['Team A'],
+                            }).render();
+                          });
+                        </script>
+                        <!-- End Donut Chart -->
+                        <p class="d-flex justify-content-center">Only 1 absence in the month of November, 2024.</p>
+                    </div>
+                    <div class="card-body w-50">
+                        <h5 class="card-title">Attendance Comparison</h5>
+          
+                        <!-- Area Chart -->
+                        <div id="areaChart"></div>
+          
+                        <script>
+                          document.addEventListener("DOMContentLoaded", () => {
+                            const series = {
+                              "monthDataSeries1": {
+                                "prices": [
+                                  8107.85,
+                                  8128.0,
+                                  8122.9,
+                                  8165.5,
+                                  8340.7,
+                                  8423.7,
+                                ],
+                                "dates": [
+                                  "13 Nov 2017",
+                                  "14 Nov 2017",
+                                  "15 Nov 2017",
+                                  "16 Nov 2017",
+                                  "17 Nov 2017",
+                                  "20 Nov 2017",
+                                ]
+                              },
+                              "monthDataSeries2": {
+                                "prices": [
+                                  8423.7,
+                                  8423.5,
+                                  8514.3,
+                                  8481.85,
+                                  8487.7,
+                                  8506.9,
+                                  8626.2,
+                                ],
+                                "dates": [
+                                  "13 Nov 2017",
+                                  "14 Nov 2017",
+                                  "15 Nov 2017",
+                                  "16 Nov 2017",
+                                  "17 Nov 2017",
+                                  "20 Nov 2017",
+                                  "21 Nov 2017",
+                                  "22 Nov 2017",
+                                  "23 Nov 2017",
+                                ]
+                              },
+                              "monthDataSeries3": {
+                                "prices": [
+                                  7114.25,
+                                  7126.6,
+                                  7116.95,
+                                  7203.7,
+                                  7233.75,
+                                  7451.0,
+                                  7381.15,
+                                  7348.95,
+                                  7347.75,
+                                  7311.25,
+                                  7266.4,
+                                  7253.25,
+                 
+                                ],
+                                "dates": [
+                                  "02 Jun 2017",
+                                  "05 Jun 2017",
+                                  "06 Jun 2017",
+                                  "07 Jun 2017",
+                                  "08 Jun 2017",
+                                  "09 Jun 2017",
+                                  "12 Jun 2017",
+                                  "13 Jun 2017",
+                                  "14 Jun 2017",
+                                  "15 Jun 2017",
+                                  "16 Jun 2017",
+                                  "19 Jun 2017",
+                                  "20 Jun 2017"
+                                ]
+                              }
+                            }
+                            new ApexCharts(document.querySelector("#areaChart"), {
+                              series: [{
+                                name: "STOCK ABC",
+                                data: series.monthDataSeries1.prices
+                              }],
+                              chart: {
+                                type: 'area',
+                                height: 350,
+                                zoom: {
+                                  enabled: false
+                                }
+                              },
+                              dataLabels: {
+                                enabled: false
+                              },
+                              stroke: {
+                                curve: 'straight'
+                              },
+                              labels: series.monthDataSeries1.dates,
+                              xaxis: {
+                                type: 'datetime',
+                              },
+                              yaxis: {
+                                opposite: true
+                              },
+                              legend: {
+                                horizontalAlign: 'left'
+                              }
+                            }).render();
+                          });
+                        </script>
+                        <!-- End Area Chart -->
+          
+                      </div>
+                </div>
             </div>
-              <!-- Table with stripped rows -->
-              <table class="table datatable "> 
-                <thead>
-                  <tr>
-                    <th scope="col">Semester</th>
-                    <th scope="col">Code</th>
-                    <th scope="col">Course</th>
-                    <th scope="col">Section</th>
-                    <th scope="col">No. Of Students</th>
-                    <th scope="col">Course Load</th>
-                    <th scope="col">Course Type</th>
-                    <th scope="col"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">1st 2022-2023</th>
-                    <td>BSIT323</td>
-                    <td>BSIT</td>
-                    <td>3-1</td>
-                    <td>35</td>
-                    <td>Research Professor</td>
-                    <td>Undergraduate</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">1st 2022-2023</th>
-                    <td>MATH101</td>
-                    <td>ITM</td>
-                    <td>1-A</td>
-                    <td>25</td>
-                    <td>Lecturer</td>
-                    <td>Undergraduate</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">1st 2022-2023</th>
-                    <td>CHEM201</td>
-                    <td>OC</td>
-                    <td>2-2</td>
-                    <td>30</td>
-                    <td>Associate Professor</td>
-                    <td>Undergraduate</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">1st 2022-2023</th>
-                    <td>ECON301</td>
-                    <td>Mcro-E</td>
-                    <td>3-3</td>
-                    <td>40</td>
-                    <td>Professor</td>
-                    <td>Undergraduate</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">1st 2022-2023</th>
-                    <td>BSHM333</td>
-                    <td>BSHM</td>
-                    <td>1-1</td>
-                    <td>60</td>
-                    <td>Professor</td>
-                    <td>Undergraduate</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">1st 2022-2023</th>
-                    <td>ECON301</td>
-                    <td>Mcro-E</td>
-                    <td>2-1</td>
-                    <td>36</td>
-                    <td>Lecturer</td>
-                    <td>Undergraduate</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">1st 2022-2023</th>
-                    <td>BSIT323</td>
-                    <td>BSIT</td>
-                    <td>3-3</td>
-                    <td>35</td>
-                    <td>Research Professor</td>
-                    <td>Undergraduate</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">1st 2022-2023</th>
-                    <td>BSMM393</td>
-                    <td>BSMM</td>
-                    <td>3-1</td>
-                    <td>35</td>
-                    <td>Research Professor</td>
-                    <td>Undergraduate</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">1st 2022-2023</th>
-                    <td>BSMM393</td>
-                    <td>BSMM</td>
-                    <td>3-3</td>
-                    <td>35</td>
-                    <td>Research Professor</td>
-                    <td>Undergraduate</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">1st 2022-2023</th>
-                    <td>BSMM303</td>
-                    <td>BSMM</td>
-                    <td>3-3</td>
-                    <td>35</td>
-                    <td>Research Professor</td>
-                    <td>Undergraduate</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">1st 2022-2023</th>
-                    <td>ENGL401</td>
-                    <td>ENG</td>
-                    <td>1-1</td>
-                    <td>45</td>
-                    <td>Associate Professor</td>
-                    <td>Undergraduate</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">1st 2022-2023</th>
-                    <td>ENGL401</td>
-                    <td>ENG</td>
-                    <td>1-2</td>
-                    <td>55</td>
-                    <td>Professor</td>
-                    <td>Undergraduate</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">More Info</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <!-- End Table with stripped rows -->
-
-            </div>
-          </div>
-
-
-
+        </div>
+      </div>
     </section>
 
   </main><!-- End #main -->

@@ -1,0 +1,150 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Master's Thesis{% endblock %} {% block content%}
+
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Master's Thesis</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Research Innovation For Creative Work</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+          <div class="d-flex flex-column align-items-center">
+              <div class="input-group d-flex  justify-content-center mb-2">
+                  <input type="search" class="form-control d-flex justify-content-center" placeholder="Search..." aria-label="Search ">
+                  <i class="bi bi-search" style="position: absolute; top: 50%; transform: translateY(-50%); right: 10px;"></i>
+                  </span>
+              </div>
+              <!-- End Search Bar -->
+              <div class="card p-md-2">
+                  <div class="card-body">
+                      <div class="">
+                          <div class="d-flex justify-content-between">
+                              <label for="sort"><button type="button" class="btn btn-light mb-2">
+                                  Sort <span class="bx bx-sort"></span>
+                                </button>
+                              </label>
+  
+                               <!-- Right/End Aligned Pagination -->
+                              <nav aria-label="Page navigation example">
+                                  <ul class="pagination justify-content-end">
+                                  <li class="page-item disabled">
+                                      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                  </li>
+                                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                  <li class="page-item">
+                                      <a class="page-link" href="#">Next</a>
+                                  </li>
+                                  </ul>
+                              </nav><!-- End Right/End Aligned Pagination -->
+                          </div>
+                          <div class="d-flex justify-content-center">
+                              <div class="form-check">
+                                  <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
+                                  <label class="form-check-label" for="gridRadios1">
+                                    Completed
+                                  </label>
+                                </div>
+                                <div class="form-check">
+                                  <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+                                  <label class="form-check-label" for="gridRadios2">
+                                    On-going
+                                  </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+                                    <label class="form-check-label" for="gridRadios2">
+                                      Upcoming
+                                    </label>
+                                  </div>
+                          </div>                      
+                                <!-- end Radios -->
+                          <div class="col d-flex flex-row justify-content-center mb-4">
+                              <label for="sort">YEAR:</label>
+                              <select class="form-control d-flex w-25" id="sortDropdown" onchange="sortData()">
+                              </select>
+                              <label for="sort">TO:</label>
+                              <select class="form-control d-flex w-25" id="sortDropdown" onchange="sortData()">
+                              </select>
+                          </div>  
+                          <!-- end sort -->
+                      </div>
+                      
+                      <!-- List group with Advanced Contents -->
+                      <div class="list-group">
+                          <a href="#" class="list-group-item list-group-item-action border border-dark mb-md-2">
+                                  <div class="card-body">
+                                      <h5 class="card-title">Exploring Sustainable Tourism Development: A Case Study of Community-Based Ecotourism in the Philippines</h5>
+                                      <div class="row d-inline-flex my-sm-2">
+                                          <div class="col">
+                                              <p class="fw-bold">Author: <span class="fw-normal">Prof. Maria Santos </span></p>
+                                          </div>
+                                          <div class="col-auto">
+                                              <p class="fw-bold">Year: <span class="fw-normal">2022-2023</span></p>
+                                          </div>
+                                      </div>
+                                      <div class="card-subtitle d-flex mb-2">
+                                          <h6 class="date col-md-2 bi bi-dot  fw-bold">Published</h6> 
+                                          <h6 class="due col-md-2 bi bi-dot  fw-bold">Completed</h6> 
+                                      </div>
+                                          <p>Maria Santos' master's thesis investigates the dynamics of sustainable tourism development through a case study on community-based ecotourism in the Philippines. 
+                                              This research aims to examine the impacts of community involvement, environmental conservation practices, and economic benefits on the overall sustainability
+                                              of tourism initiatives within local communities.
+                                              Utilizing a mixed-methods approach, Maria delves into the perspectives of community members, tourists, and stakeholders involved in the ecotourism project. 
+                                              Through surveys, interviews, and on-site observations, she analyzes the social, economic, and environmental dimensions of the community-based ecotourism 
+                                              model. The findings of the study provide valuable insights into the challenges, successes, and opportunities for promoting sustainable tourism 
+                                              practices at the local level.
+                                              Maria Santos' master's thesis serves as a significant contribution to the discourse on sustainable tourism in the Philippines, offering practical recommendations 
+                                              for policymakers, community leaders, and tourism practitioners aiming to foster ecotourism initiatives that benefit both the environment and the local communities.
+                                              </p>
+                                  </div>
+                          </a>
+  
+                          <a href="#" class="list-group-item list-group-item-action border border-dark mb-md-2">
+                              <div class="card-body">
+                                  <h5 class="card-title">Promoting Mental Health Awareness in Filipino Schools: An Intervention Framework</h5>
+                                  <div class="row d-inline-flex my-sm-2">
+                                      <div class="col">
+                                          <p class="fw-bold">Author: <span class="fw-normal">Prof. Maria Santos </span></p>
+                                      </div>
+                                      <div class="col-auto">
+                                          <p class="fw-bold">Year: <span class="fw-normal">2022-2023 </span></p>
+                                      </div>
+                                  </div>
+                                  <div class="card-subtitle d-flex mb-2">
+                                      <h6 class="date col-md-2 bi bi-dot fw-bold">Published</h6> 
+                                      <h6 class="due col-md-2 bi bi-dot fw-bold">Completed</h6> 
+                                  </div>
+                                      <p> Maria Santos' master's thesis focuses on the critical issue of mental health in Filipino schools, presenting an intervention framework to promote awareness and support among students. 
+                                          The research aims to address the growing concerns related to mental health challenges faced by students and advocates for proactive measures within the educational system.
+                                          Employing a qualitative research design, Maria conducts in-depth interviews with students, teachers, and mental health professionals to understand the prevailing issues 
+                                          and gather insights into effective intervention strategies. The thesis proposes a comprehensive framework that includes awareness campaigns, mental health education, 
+                                          and support systems within the school environment.
+                                          Through this work, Maria Santos contributes to the ongoing dialogue about mental health in the Philippines, particularly in the context of education. The proposed intervention 
+                                          framework provides a blueprint for schools and educational institutions to create a nurturing environment that prioritizes the mental well-being of students, 
+                                          fostering a culture of understanding and support.
+                                          </p>
+                              </div>
+                          </a>
+                      </div><!-- End List group Advanced Content --> 
+                  </div>
+              </div>
+      </div>
+  </div>
+        </div>
+      </section>
+
+  </main><!-- End #main -->
+
+{% endblock %}
+
+      

@@ -1,0 +1,154 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Mandatory Requirements{% endblock %} {% block content%}
+
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<!-- Include DataTables Buttons CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+
+<!-- Include DataTables Print Button JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+
+<main id="main" class="main">
+
+  {% block Mandatory_Requirements %}
+    <div class="pagetitle">
+      <h1>Mandatory Requirements</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Mandatory Requirements</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="card">
+          <div class="card-body profile-card pt-4 d-flex flex-col align-items-start">
+            <img src="https://lh3.googleusercontent.com/d/{{profile_pic}}" alt="Profile" class="rounded-circle" style="width:150px; height:150px;">
+            <div class="mx-md-3" style="position:relative;left:30px;">
+              <div class="w-100">
+                <br><br>
+                <h4 class="my-0">{{user.FirstName}} {{user.MiddleInitial}} {{user.LastName}}</h4>
+                <small class="text-muted mt-sm-1">{{user.Rank}}</small>
+                <br>
+                <small class="text-muted mt-sm-1">ID: {{user.FacultyId}}</small>
+              </div>
+
+              <style>
+                .responsive-table {
+                  display: flex;
+                  flex-wrap: wrap;
+                  margin: -10px; /* Adjust margin as needed */
+                }
+              
+                .responsive-table td {
+                  flex: 1;
+                  padding: 10px; /* Adjust padding as needed */
+                  box-sizing: border-box;
+                }
+              
+                .responsive-table h6 {
+                  margin: 0;
+                }
+                .btnprinter-container {
+                  text-align: right;
+                }
+              
+                .btnprinter {
+                  width: 50px;
+                  background-color: transparent;
+                  border: none;
+                  padding: 0;
+                  cursor: pointer;
+                }
+              
+                .btnprinter i {
+                  font-size: 24px; /* You can adjust the font size as needed */
+                  color: #000; /* You can set the color as needed */
+                }
+                #table1 thead th {
+                  background-color: #1A2432;
+                  color: white; /* Set text color to white for better visibility */
+                }
+              </style>
+
+          </div>
+        </div>
+      </div>
+
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">DOCUMENTS REQUIRED</th>
+                <th scope="col">DESCRIPTOPM</th>
+                <th scope="col">STATUS</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-decoration-underline"><a href="#">Educational Credentials</a></td>
+                <td>Faculty members are typically expected to hold a doctoral degree (Ph.D.) in the relevant field. This signifies a high...</a></td>
+                <td>PASSED</td>
+                <td>Details</td>
+              </tr>
+              <tr>
+                <td class="text-decoration-underline"><a href="#">Teaching Experience</a></td>
+                <td>Previous teaching experience, preferably at the tertiary level, is crucial. This requirement ensures that faculty...</td>
+                <td>PASSED</td>
+                <td>Details</td>
+              </tr>
+              <tr>
+                <td class="text-decoration-underline"><a href="#">Research and Publications</a></td>
+                <td>A strong record of research and publications is essential. This demonstrates the faculty member’s  commitment...</td>
+                <td>ON GOING</td>
+                <td>Details</td>
+              </tr>
+              <tr>
+                <td class="text-decoration-underline"><a href="#">Professional Development</a></td>
+                <td>Ongoing engagement in professional development activities, such as attending conferences and workshops...</td>
+                <td>PASSED</td>
+                <td>Details</td>
+              </tr>
+              <tr>
+                <td class="text-decoration-underline"><a href="#">Internal and External Services</a></td>
+                <td>Involvement in university and community service highlights the faculty member’s willingness to contribute...</td>
+                <td>ONGOING</td>
+                <td>Details</td>
+              </tr>
+              <tr>
+                <td class="text-decoration-underline"><a href="#">Licensure Certification</a></td>
+                <td>Faculty members may need specific professional licensures or certifications. This ensures that faculty members...</td>
+                <td>ONGOING</td>
+                <td>Details</td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- End Bordered Table -->
+
+
+</section>
+
+
+ 
+
+  </main><!-- End #main -->
+
+
+  {% endblock %}
+
+{% endblock %}
+
+      

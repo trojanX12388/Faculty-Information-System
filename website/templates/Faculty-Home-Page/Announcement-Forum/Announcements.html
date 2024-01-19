@@ -1,0 +1,168 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Announcements{% endblock %} {% block content%}
+
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Announcements</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Announcement & Forum</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="w-50 ps-0">
+            <div class="row mb-2">
+                <div class="w-25">
+                  <select class="form-select" aria-label="Default select example">
+                    <option selected>Year</option>
+                    <option value="1">2024</option>
+                    <option value="2">2023</option>
+                    <option value="3">2022</option>
+                    <option value="4">2021</option>
+                    <option value="5">2020</option>
+                    <option value="6">2019</option>
+                    <option value="7">2018</option>
+                    <option value="8">2017</option>
+                    <option value="9">2016</option>
+                    <option value="10">2015</option>
+                    <option value="11">2014</option>
+                    <option value="12">2013</option>
+                    <option value="13">2012</option>
+                    <option value="14">2011</option>
+                    <option value="15">2010</option>
+                    <option value="16">2009</option>
+                    <option value="17">2008</option>
+                    <option value="18">2007</option>
+                  </select>
+                </div>
+                <div class="w-25">
+                    <select class="form-select" aria-label="Default select example">
+                      <option selected>Month</option>
+                      <option value="1">January</option>
+                      <option value="2">February</option>
+                      <option value="3">March</option>
+                      <option value="4">April</option>
+                      <option value="5">May</option>
+                      <option value="6">June</option>
+                      <option value="7">July</option>
+                      <option value="8">August</option>
+                      <option value="9">September</option>
+                      <option value="10">October</option>
+                      <option value="11">Novermber</option>
+                      <option value="12">December</option>
+                    </select>
+                  </div>
+            </div>
+            <div class="mb-2 col-sm-10">
+                <select class="form-select" aria-label="Default select example">
+                  <option selected>ALL</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </select>
+            </div>
+        </div>
+                        <!-- End Search Bar -->
+
+                        <div class="card p-md-2">
+                            <div class="card-body pt-md-3">
+                                <!-- List group with Advanced Contents -->
+                                <div class="list-group">
+                                    <a href="#" class="list-group-item list-group-item-action border border-dark mb-md-2">
+                                            <div class="card-body">
+                                                <div class="col d-flex justify-content-between">
+                                                    <h5 class="card-title fw-bold">World Harmony Night</h5>
+                                                    <p class="card-title text-muted">Announcement</p>
+                                                </div>
+                                                <div class="row d-flex mb-sm-2">
+                                                    <p class="fw-bold">Date: <span class="fw-normal">November 20, 2023</span></p>
+                                                    <p class="fw-bold">Time: <span class="fw-normal">6:00pm - 9:00pm</span></p>
+                                                    <p class="fw-bold">Type: <span class="fw-normal">Cultural Event</span></p>
+                                                    <p class="fw-bold">Title: "<span class="fw-normal">World Harmony Night</span>"</p>
+                                                </div>
+                                                <div class="d-flex">
+                                                    <p class="fw-bold">Description: <span class="fw-normal">Embrace the richness of diverse cultures at our upcoming "World Harmony Night"! 
+                                                        Join us on November 20th, from 6:00 PM to 9:00 PM in the school auditorium for an evening filled with cultural 
+                                                        performances, international cuisine, and a vibrant celebration of unity. Students from various backgrounds 
+                                                        will showcase their talents through music, dance, and artistic expressions. Don't miss this opportunity 
+                                                        to foster a sense of global community within our school. Admission is free, and everyone is welcome to 
+                                                        attend this enriching cultural experience!</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                    </a>
+
+                                    <a href="#" class="list-group-item list-group-item-action border border-dark mb-md-2">
+                                        <div class="card-body">
+                                            <div class="col d-flex justify-content-between">
+                                                <h5 class="card-title fw-bold">Innovate and Elevate: Student Entrepreneurship Workshop</h5>
+                                                <p class="card-title text-muted">Announcement</p>
+                                            </div>
+                                            <div class="row d-flex mb-sm-2">
+                                                <p class="fw-bold">Date: <span class="fw-normal">November 10, 2023</span></p>
+                                                <p class="fw-bold">Time: <span class="fw-normal">2:30 PM - 4:00 PM</span></p>
+                                                <p class="fw-bold">Type: <span class="fw-normal"> Academic Seminar</span></p>
+                                                <p class="fw-bold">Title: "<span class="fw-normal">Innovate and Elevate: Student Entrepreneurship Workshop</span>"</p>
+                                            </div>
+                                            <div class="d-flex">
+                                                <p class="fw-bold">Description: <span class="fw-normal">Unlock your entrepreneurial spirit at our exclusive seminar on 
+                                                    November 10th, from 2:30 PM to 4:00 PM in the school's innovation hub. Renowned guest speakers from the business 
+                                                    world will share insights on innovation, startup strategies, and success stories. Whether you're a budding 
+                                                    entrepreneur or simply curious about the business world, this workshop is tailored for you. Seize the 
+                                                    opportunity to learn, network, and ignite your passion for innovation. Light refreshments will be provided.</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+
+                                    <a href="#" class="list-group-item list-group-item-action border border-dark mb-md-2">
+                                        <div class="card-body">
+                                            <div class="col d-flex justify-content-between">
+                                                <h5 class="card-title fw-bold"> PUPQC Embraces the Future of Learning - Introduces Virtual Reality Classes</h5>
+                                                <p class="card-title text-muted">News</p>
+                                            </div>
+                                            <div class="row d-flex mb-sm-2">
+                                                <p class="fw-bold">Date: <span class="fw-normal">November 20, 2023</span></p>
+                                                <p class="fw-bold">Headline: <span class="fw-normal">PUPQC Embraces the Future of Learning - Introduces Virtual Reality Classes
+                                                    In a groundbreaking move, Polytechnic University of the Philippines Quezon City (PUPQC) is set to revolutionize 
+                                                    education with the introduction of Virtual Reality (VR) classes, starting November 20, 2023. This innovative 
+                                                    approach aims to provide students with an immersive and interactive learning experience.</span></p>
+                                            </div>
+                                            <div class="d-flex">
+                                                <p class="fw-bold">Description: <span class="fw-normal">November 20, 2023 - PUPQC is proud to announce a pioneering leap into the future of 
+                                                    education as it introduces Virtual Reality (VR) classes. In a bid to enhance the learning experience and embrace cutting-edge technology, 
+                                                    the university is rolling out VR classes across various subjects. Students will now have the opportunity to don VR headsets and embark 
+                                                    on virtual field trips, conduct immersive science experiments, and engage in collaborative projects within a simulated environment. 
+                                                    This transformative initiative is designed to make learning more dynamic and captivating, catering to diverse learning styles. 
+                                                    The VR classes will be initially implemented in select subjects, with plans to expand the program based on its success and 
+                                                    feedback from students and educators. The university believes that integrating VR technology into the curriculum will better 
+                                                    prepare students for the demands of the future workforce and foster a passion for lifelong learning. Principal expressed 
+                                                    enthusiasm about the initiative, stating, "This is a significant step forward in our commitment to providing a 
+                                                    cutting-edge education that prepares students for the challenges and opportunities of tomorrow. Virtual Reality 
+                                                    classes will not only make learning more engaging but also equip our students with valuable skills for the digital age."
+                                                    Parents and guardians are invited to an informational session on November 20, 2023, at 6:30 PM in the PUPQC auditorium,
+                                                     where they can learn more about the benefits and implementation of VR classes. The university administration encourages 
+                                                     all stakeholders to embrace this exciting evolution in education and looks forward to a future where learning knows no 
+                                                     sbounds.</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div><!-- End List group Advanced Content --> 
+                            </div>
+                        </div>
+            </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+{% endblock %}
+
+      
