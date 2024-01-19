@@ -111,7 +111,6 @@
                     <th scope="col">RESULT</th>
                     <th scope="col">RATING</th>
                     <th scope="col">PERCENTAGE</th>
-                    <th scope="col"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -122,16 +121,7 @@
                     <td>89/100</td>
                     <td>4.0</td>
                     <td>89%</td>
-                    <td> 
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" onclick="classredirectToURL()" class="btn btn-success">View</button>
-                        <script>
-                          function classredirectToURL() {
-                              window.location.href = '/TI-Advising-Mentoring/BSIT-3-1/Schedules';
-                          }
-                      </script>
-                      </div>
-                  </td>
+                    
                   </tr>
                   <tr>
                     <th scope="row">2023-2024</th>
@@ -140,11 +130,7 @@
                     <td>99/100</td>
                     <td>4.9</td>
                     <td>99%</td>
-                    <td> 
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button"  class="btn btn-success">View</button>
-                      </div>
-                  </td>
+                    
                   </tr>
                   <tr>
                     <th scope="row">2023-2024</th>
@@ -153,11 +139,7 @@
                     <td>99/100</td>
                     <td>4.9</td>
                     <td>99%</td>
-                    <td> 
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button"  class="btn btn-success">View</button>
-                      </div>
-                  </td>
+                    
                   </tr>
                   <tr>
                     <th scope="row">2023-2024</th>
@@ -166,11 +148,7 @@
                     <td>99/100</td>
                     <td>4.9</td>
                     <td>99%</td>
-                    <td> 
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button"  class="btn btn-success">View</button>
-                      </div>
-                  </td>
+                  
                   </tr>
                 </tbody>
               </table><!-- End Table with stripped rows -->
@@ -286,6 +264,8 @@
           </div>
 
       </div>
+
+      {% endblock %}
       
     </section>
 
@@ -345,9 +325,9 @@
     initializeDataTable('#table2', 'btnPrintDetail2', 'Advising Students', exportColumnsTable2);
     initializeDataTable('#table3', 'btnPrintDetail3', 'Mentoring', exportColumnsTable3);
   });
+  
 </script>
 
-  {% endblock %}
 
 {% endblock %}
 

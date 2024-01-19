@@ -336,7 +336,7 @@ def TI_AMMS():
  
 # ------------------------------------------------------------- 
 
-# ------------------------------- ADVISING MENTORING ----------------------------  
+# ------------------------------- TEACHING EFFECTIVENESS ----------------------------  
 
 @TI.route("/TI-Teaching-Effectiveness", methods=['GET', 'POST'])
 @login_required
@@ -381,3 +381,266 @@ def TI_TE():
 
  
 # ------------------------------------------------------------- 
+# ------------------------------- TEACHING EFFECTIVENESS FORM----------------------------  
+
+@TI.route("/TI-Faculty-Feedback-Form", methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def TI_TEFF():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        
+
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
+        else:
+            ProfilePic=username.ProfilePic
+           
+        
+        # # UPDATE PROFILE BASIC DETAILS
+        
+        # if request.method == 'POST':
+
+        #     # UPDATE BASIC DETAILS
+        #     # VALUES
+        #     FacultyCode = request.form.get('FacultyCode')
+        #     honorific = request.form.get('honorific')
+
+        #     u = update(FISFaculty)
+        #     u = u.values({"FacultyCode": FacultyCode,
+        #                   "honorific": honorific
+        #                   })
+        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
+        #     db.session.execute(u)
+        #     db.session.commit()
+        #     db.session.close()
+        #     return redirect(url_for('PDM.PDM_BD')) 
+                      
+        return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Teaching-Effectiveness-Feedback-Form.html", 
+                               User= username.FirstName + " " + username.LastName,
+                               faculty_code= username.FacultyCode,
+                               user= current_user,
+                               TI="show",
+                               activate_TE="active",
+                               profile_pic=ProfilePic)
+
+ 
+# ------------------------------------------------------------- 
+
+# ------------------------------- CURRICULUM ----------------------------  
+
+@TI.route("/TI-Curriculum", methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def TI_C():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        
+
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
+        else:
+            ProfilePic=username.ProfilePic
+           
+        
+        # # UPDATE PROFILE BASIC DETAILS
+        
+        # if request.method == 'POST':
+
+        #     # UPDATE BASIC DETAILS
+        #     # VALUES
+        #     FacultyCode = request.form.get('FacultyCode')
+        #     honorific = request.form.get('honorific')
+
+        #     u = update(FISFaculty)
+        #     u = u.values({"FacultyCode": FacultyCode,
+        #                   "honorific": honorific
+        #                   })
+        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
+        #     db.session.execute(u)
+        #     db.session.commit()
+        #     db.session.close()
+        #     return redirect(url_for('PDM.PDM_BD')) 
+                      
+        return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Curriculum.html", 
+                               User= username.FirstName + " " + username.LastName,
+                               faculty_code= username.FacultyCode,
+                               user= current_user,
+                               TI="show",
+                               activate_C="active",
+                               profile_pic=ProfilePic)
+
+ 
+@TI.route("/TI-Curriculum-Syllabus", methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def TI_CS():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        import datetime
+
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
+        else:
+            ProfilePic=username.ProfilePic
+           
+        
+        # # UPDATE PROFILE BASIC DETAILS
+        
+        # if request.method == 'POST':
+
+        #     # UPDATE BASIC DETAILS
+        #     # VALUES
+        #     FacultyCode = request.form.get('FacultyCode')
+        #     honorific = request.form.get('honorific')
+
+        #     u = update(FISFaculty)
+        #     u = u.values({"FacultyCode": FacultyCode,
+        #                   "honorific": honorific
+        #                   })
+        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
+        #     db.session.execute(u)
+        #     db.session.commit()
+        #     db.session.close()
+        #     return redirect(url_for('PDM.PDM_BD')) 
+            current_year = datetime.datetime.now().year
+    
+        return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Curriculum-Syllabus.html", 
+                               User= username.FirstName + " " + username.LastName,
+                               faculty_code= username.FacultyCode,
+                               user= current_user,
+                               TI="show",
+                               activate_C="active",
+                               current_year=current_year,
+                               profile_pic=ProfilePic)
+ 
+# ------------------------------------------------------------- 
+
+# ------------------------------- INSTRUCIOTNAL MATERIALS DEVELOPED ----------------------------  
+
+@TI.route("/TI-Instructional-Materials-Developed", methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def TI_IMD():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        
+
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
+        else:
+            ProfilePic=username.ProfilePic
+           
+        
+        # # UPDATE PROFILE BASIC DETAILS
+        
+        # if request.method == 'POST':
+
+        #     # UPDATE BASIC DETAILS
+        #     # VALUES
+        #     FacultyCode = request.form.get('FacultyCode')
+        #     honorific = request.form.get('honorific')
+
+        #     u = update(FISFaculty)
+        #     u = u.values({"FacultyCode": FacultyCode,
+        #                   "honorific": honorific
+        #                   })
+        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
+        #     db.session.execute(u)
+        #     db.session.commit()
+        #     db.session.close()
+        #     return redirect(url_for('PDM.PDM_BD')) 
+                      
+        return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Instructional-Materials-Developed.html", 
+                               User= username.FirstName + " " + username.LastName,
+                               faculty_code= username.FacultyCode,
+                               user= current_user,
+                               TI="show",
+                               activate_IMD="active",
+                               profile_pic=ProfilePic)
+        
+# ------------------------------- SPECIAL PROJECT ----------------------------  
+
+@TI.route("/TI-Special-Project", methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def TI_SP():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        
+
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
+        else:
+            ProfilePic=username.ProfilePic
+           
+        
+        # # UPDATE PROFILE BASIC DETAILS
+        
+        # if request.method == 'POST':
+
+        #     # UPDATE BASIC DETAILS
+        #     # VALUES
+        #     FacultyCode = request.form.get('FacultyCode')
+        #     honorific = request.form.get('honorific')
+
+        #     u = update(FISFaculty)
+        #     u = u.values({"FacultyCode": FacultyCode,
+        #                   "honorific": honorific
+        #                   })
+        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
+        #     db.session.execute(u)
+        #     db.session.commit()
+        #     db.session.close()
+        #     return redirect(url_for('PDM.PDM_BD')) 
+                      
+        return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Special-Project.html", 
+                               User= username.FirstName + " " + username.LastName,
+                               faculty_code= username.FacultyCode,
+                               user= current_user,
+                               TI="show",
+                               activate_SP="active",
+                               profile_pic=ProfilePic)
+        
+# ------------------------------- CAPSTONE ----------------------------  
+
+@TI.route("/TI-Capstone", methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def TI_Caps():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        
+
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
+        else:
+            ProfilePic=username.ProfilePic
+           
+        
+        # # UPDATE PROFILE BASIC DETAILS
+        
+        # if request.method == 'POST':
+
+        #     # UPDATE BASIC DETAILS
+        #     # VALUES
+        #     FacultyCode = request.form.get('FacultyCode')
+        #     honorific = request.form.get('honorific')
+
+        #     u = update(FISFaculty)
+        #     u = u.values({"FacultyCode": FacultyCode,
+        #                   "honorific": honorific
+        #                   })
+        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
+        #     db.session.execute(u)
+        #     db.session.commit()
+        #     db.session.close()
+        #     return redirect(url_for('PDM.PDM_BD')) 
+                      
+        return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Capstone.html", 
+                               User= username.FirstName + " " + username.LastName,
+                               faculty_code= username.FacultyCode,
+                               user= current_user,
+                               TI="show",
+                               activate_Caps="active",
+                               profile_pic=ProfilePic)

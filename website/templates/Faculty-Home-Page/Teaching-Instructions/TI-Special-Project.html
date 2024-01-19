@@ -1,0 +1,188 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Special Project{% endblock %} {% block content%}
+
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<!-- Include DataTables Buttons CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+
+<!-- Include DataTables Print Button JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Special Project</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Teaching Instructions</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    {% block Special_Project %}
+
+    <section class="section">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Special Project</h5>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Title</th>
+                <th scope="col">Due</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>12/15/23</td>
+                <td class="text-decoration-underline"><a href="#">Development of Online Course Modules</a></td>
+                <td></td>
+                <td>on going</td>
+              </tr>
+              <tr>
+                <td>12/15/23</td>
+                <td class="text-decoration-underline"><a href="#">Curriculum Redesign for Inclusivity</a></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td class="text-decoration-underline"><a href="#">Community Engagement through Service Learning</a></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td class="text-decoration-underline"><a href="#">Collaboration with Industry for Research Project</a></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td class="text-decoration-underline"><a href="#">Sustainable Urban Planning: Integrating Green..</a></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- End Bordered Table -->
+      </div>
+</section>
+
+
+<!-- LAHAT NG NASA BABA NITO PRE IS PWEDE GAMITIN PANG ADMIN SIDE. DOON ATA MAGLALAGAY NG SPECIAL PROJECTS SO ITO YUNG PWEDE MO LAGAY DON-->
+<!-- button for pop up modal -->
+<div class="d-flex justify-content-end my-md-2">
+  <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadModal"> -->
+    <!-- <i class="ri-add-line"></i> Add new</button> -->
+</div>
+<!-- end for button -->
+<!-- Modal -->
+<div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadModalLabel">Add New Special Project</h5>
+        <!-- close button -->
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row mb-3">
+            <label for="inputText" class="col-sm-2 col-form-label">Title</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Type</label>
+            <div class="col-sm-10">
+              <select class="form-select" aria-label="Default select example">
+                <option selected>Internal</option>
+                <option value="1">External</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Status</label>
+            <div class="col-sm-10">
+              <select class="form-select" aria-label="Default select example">
+                <option selected>On going</option>
+                <option value="1">Accepted</option>
+                <option value="1">Rejected</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputDate" class="col-sm-2 col-form-label">Start Date</label>
+            <div class="col-sm-10">
+              <input type="date" class="form-control">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputDate" class="col-sm-2 col-form-label">End Date</label>
+            <div class="col-sm-10">
+              <input type="date" class="form-control">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Project Description</label>
+            <div class="col-sm-10">
+              <textarea class="form-control" style="height: 100px"></textarea>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputText" class="col-sm-2 col-form-label">Objectives</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" placeholder="1.">
+                <input type="text" class="form-control" placeholder="2.">
+                <input type="text" class="form-control" placeholder="3.">
+                <input type="text" class="form-control" placeholder="4.">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Rationale</label>
+            <div class="col-sm-10">
+              <textarea class="form-control" style="height: 100px"></textarea>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputNumber" class="col-sm-2 col-form-label">File Upload</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="file" id="formFile">
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="d-flex justify-content-end">
+              <button type="submit" class="btn btn-primary">Submit Form</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end modal HANGGANG DITO LANG PREEEEEEEEEEEEE -->
+
+    {% endblock %}
+
+  </main><!-- End #main -->
+
+{% endblock %}
+
+      

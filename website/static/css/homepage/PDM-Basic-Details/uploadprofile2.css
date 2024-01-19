@@ -39,4 +39,7 @@
   display: inline-flex;
   padding: 0.2em;
   height: 2em;
+  position: relative;
+  left: 20px;
+  bottom: 10px;
 }

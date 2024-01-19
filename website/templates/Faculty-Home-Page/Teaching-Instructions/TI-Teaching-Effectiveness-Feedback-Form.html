@@ -1,0 +1,144 @@
+{% extends "/Faculty-Home-Page/Teaching-Instructions/TI-Teaching-Effectiveness.html" %}{% block title %}Teaching Effectiveness{% endblock %} {% block Teaching_Effectiveness%}
+
+<style>
+  .responsive-table {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -10px; /* Adjust margin as needed */
+  }
+
+  .responsive-table td {
+    flex: 1;
+    padding: 10px; /* Adjust padding as needed */
+    box-sizing: border-box;
+  }
+
+  .responsive-table h6 {
+    margin: 0;
+  }
+  .btnprinter-container {
+    text-align: left;
+  }
+
+  .btnprinter {
+    width: 50px;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .btnprinter i {
+    font-size: 24px; /* You can adjust the font size as needed */
+    color: #000; /* You can set the color as needed */
+  }
+
+  .box {
+    border: 1px solid #ced4da;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+  }
+
+
+  .options {
+    list-style: none;
+    padding-left: 4;
+  }
+
+  .options li {
+    margin-bottom: 5px;
+  }
+</style>
+<div class="container mt-5">
+  <div class="d-grid gap-2 mt-3 col-md-12 d-flex flex-column align-items-end">
+    <button type="button" onclick="redirectToURL()" class="btn btn-primary mt-3 col-md-2">Back</i></button>
+    <script>
+      function redirectToURL() {
+          window.location.href = '/TI-Teaching-Effectiveness';
+      }
+  </script>
+</div>
+  <p>To print the faculty feedback result from this course and section, click the print icon. <button id="btnPrintDetail1" class="btnprinter"><i class="bi bi-printer-fill"></i></button></p>
+  
+  <div class="border p-3">
+    
+    <form>
+      <label><strong>Student Feedback for Faculty Form</strong></label>
+      <br>
+      <br>
+      <h6 style="font-weight: bold;">Course Information:</h6>
+      <div class="form-group">
+        <label>Course Title: </label><br>
+        <label>Instructor's Name: </label><br>
+        <label>Semester/Year: </label><br>
+      </div>
+    
+      <h6 style="font-weight: bold;">Section 1: General Information</h6>
+      <div class="form-group">
+        <label class="question">1. Rate the overall effectiveness of the instructor:</label>
+        <ul class="options">
+          <li><label><input type="radio" name="q1" value="Excellent"> Excellent</label></li>
+          <li><label><input type="radio" name="q1" value="Very Good"> Very Good</label></li>
+          <li><label><input type="radio" name="q1" value="Good"> Good</label></li>
+          <li><label><input type="radio" name="q1" value="Fair"> Fair</label></li>
+          <li><label><input type="radio" name="q1" value="Poor"> Poor</label></li>
+        </ul>
+      </div>
+
+      <div class="form-group">
+        <label class="question">2. How would you rate the clarity of the instructor's communication?</label>
+        <ul class="options">
+          <li><label><input type="radio" name="q2" value="Excellent"> Excellent</label></li>
+          <li><label><input type="radio" name="q2" value="Very Good"> Very Good</label></li>
+          <li><label><input type="radio" name="q2" value="Good"> Good</label></li>
+          <li><label><input type="radio" name="q2" value="Fair"> Fair</label></li>
+          <li><label><input type="radio" name="q2" value="Poor"> Poor</label></li>
+        </ul>
+      </div>
+
+      <!-- Add more questions for Section 1 as needed -->
+
+      <h6 style="font-weight: bold;">Section 2: Teaching Methods and Engagement</h6>
+      <div class="form-group">
+        <label class="question">3. How would you rate the effectiveness of the teaching methods used in this course?</label>
+        <ul class="options">
+          <li><label><input type="radio" name="q3" value="Highly Effective"> Highly Effective</label></li>
+          <li><label><input type="radio" name="q3" value="Effective"> Effective</label></li>
+          <li><label><input type="radio" name="q3" value="Somewhat Effective"> Somewhat Effective</label></li>
+          <li><label><input type="radio" name="q3" value="Not Effective"> Not Effective</label></li>
+          <li><label><input type="radio" name="q3" value="Not Applicable"> Not Applicable</label></li>
+        </ul>
+      </div>
+
+      <div class="form-group">
+        <label class="question">4. Did the instructor encourage class participation and discussions?</label>
+        <ul class="options">
+          <li><label><input type="radio" name="q4" value="Always"> Always</label></li>
+          <li><label><input type="radio" name="q4" value="Often"> Often</label></li>
+          <li><label><input type="radio" name="q4" value="Occasionally"> Occasionally</label></li>
+          <li><label><input type="radio" name="q4" value="Rarely"> Rarely</label></li>
+          <li><label><input type="radio" name="q4" value="Never"> Never</label></li>
+        </ul>
+      </div>
+
+      <div class="form-group">
+        <label class="question">5. Were the instructional materials (e.g., lecture notes, presentations) helpful in understanding the course content?</label>
+        <ul class="options">
+          <li><label><input type="radio" name="q5" value="Very Helpful"> Very Helpful</label></li>
+          <li><label><input type="radio" name="q5" value="Helpful"> Helpful</label></li>
+          <li><label><input type="radio" name="q5" value="Neutral"> Neutral</label></li>
+          <li><label><input type="radio" name="q5" value="Not Helpful"> Not Helpful</label></li>
+        </ul>
+      </div>
+
+      <!-- Add more questions for Section 2 as needed -->
+    </form>
+  </div>
+</div>
+
+
+        
+{% endblock %}
+
+      

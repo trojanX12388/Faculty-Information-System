@@ -1,0 +1,175 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Capstone{% endblock %} {% block content%}
+
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<!-- Include DataTables Buttons CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+
+<!-- Include DataTables Print Button JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+
+<main id="main" class="main">
+
+  {% block Capstone %}
+    <div class="pagetitle">
+      <h1>Capstone</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Teaching Instructions</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="card">
+          <div class="card-body profile-card pt-4 d-flex flex-col align-items-start">
+            <img src="https://lh3.googleusercontent.com/d/{{profile_pic}}" alt="Profile" class="rounded-circle" style="width:150px; height:150px;">
+            <div class="mx-md-3" style="position:relative;left:30px;">
+              <div class="w-100">
+                <br><br>
+                <h4 class="my-0">{{user.FirstName}} {{user.MiddleInitial}} {{user.LastName}}</h4>
+                <small class="text-muted mt-sm-1">{{user.Rank}}</small>
+              </div>
+
+              <style>
+                .responsive-table {
+                  display: flex;
+                  flex-wrap: wrap;
+                  margin: -10px; /* Adjust margin as needed */
+                }
+              
+                .responsive-table td {
+                  flex: 1;
+                  padding: 10px; /* Adjust padding as needed */
+                  box-sizing: border-box;
+                }
+              
+                .responsive-table h6 {
+                  margin: 0;
+                }
+                .btnprinter-container {
+                  text-align: right;
+                }
+              
+                .btnprinter {
+                  width: 50px;
+                  background-color: transparent;
+                  border: none;
+                  padding: 0;
+                  cursor: pointer;
+                }
+              
+                .btnprinter i {
+                  font-size: 24px; /* You can adjust the font size as needed */
+                  color: #000; /* You can set the color as needed */
+                }
+                #table1 thead th {
+                  background-color: #1A2432;
+                  color: white; /* Set text color to white for better visibility */
+                }
+              </style>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">PROJECTS REQUIRED FOR CAPSTONE</h5>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Course</th>
+                <th scope="col">Year</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-decoration-underline"><a href="#">Faculty Information System</a></td>
+                <td>BSIT</a></td>
+                <td>2023-2024</td>
+                <td>On Going</td>
+              </tr>
+              <tr>
+                <td class="text-decoration-underline"><a href="#">Faculty Performance System</a></td>
+                <td>BSIT</td>
+                <td></td>
+                <td>On Going</td>
+              </tr>
+              <tr>
+                <td class="text-decoration-underline"><a href="#">E-Voting System</a></td>
+                <td>BSIT</td>
+                <td></td>
+                <td>On Going</td>
+              </tr>
+              <tr>
+                <td class="text-decoration-underline"><a href="#">Research Information System</a></td>
+                <td>BSIT</td>
+                <td></td>
+                <td>On Going</td>
+              </tr>
+              <tr>
+                <td class="text-decoration-underline"><a href="#">E-Library System</a></td>
+                <td>BSIT</td>
+                <td></td>
+                <td>On Going</td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- End Bordered Table -->
+      </div>
+      
+    </div>
+
+     <!-- List group with Advanced Contents -->
+     <div class="card">
+      <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+        <h5><strong>CAPSTONES</strong></h5>
+      </div>
+      <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="card-title mb-1">Advancements in Artificial Intelligence for Education</h5>
+          </div>
+          <p class="mb-1 text-wrap" id="abstract">Explore and implement cutting-edge artificial intelligence techniques to enhance educational processes. This capstone project could involve developing adaptive learning systems, automated assessment tools, or personalized educational resources.</p>
+        </a>
+        <a href="#" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="card-title mb-1">Sustainable Urban Planning: Integrating Smart Technologies</h5>
+          </div>
+          <p class="mb-1 text-wrap" id="abstract">Investigate the integration of smart technologies in urban planning for sustainability. This project may involve developing solutions for efficient resource management, waste reduction, and enhancing the overall quality of urban life.</p>
+        </a>
+      </div><!-- End List group Advanced Content -->
+      <br><br>
+      </div>
+     
+
+    
+</section>
+
+
+ 
+
+  </main><!-- End #main -->
+
+
+  {% endblock %}
+
+{% endblock %}
+
+      

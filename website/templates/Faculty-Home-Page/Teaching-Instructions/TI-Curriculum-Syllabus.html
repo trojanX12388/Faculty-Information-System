@@ -1,0 +1,71 @@
+{% extends "/Faculty-Home-Page/Teaching-Instructions/TI-Curriculum.html" %}{% block title %}CSICS01 Syllabus{% endblock %} {% block Curriculum%}
+
+<section class="section">
+  <div class="d-flex flex-col">
+    <div class="w-50">
+        <p>If you want to see the course information of this syllabus, click <a class="info text-decoration-underline" href="#">here</a>.</p>
+        <p>To print the syllabus, click the print icon. <a href="#" class="bi bi-printer-fill"></a></p>
+    </div>
+    <div class="w-50 d-flex align-items-start justify-content-end">
+        <button type="button" onclick="redirectToURLCurriculum()" class="btn btn-primary mt-3 col-md-2">Back</button>
+        <script>
+            function redirectToURLCurriculum() {
+                window.location.href = '/TI-Curriculum';
+            }
+        </script>
+    </div>
+  </div>
+  <!-- Default Card -->
+  <div class="card my-md-2">
+    <div class="card-body">
+      <h5 class="card-title">Introduction to Computer Science (CS101)</h5>
+      <h6>Instructor Information:</h6>
+      <p class="bi bi-dot fw-bold">Instructor: <span  class="fw-normal">Jacob Ovalle</span></p>
+      <p class="bi bi-dot fw-bold">Office Hours: <span class="fw-normal">8:00 A.M to 9:00 P.M</span></p>
+      <p class="bi bi-dot fw-bold">Contact: <span class="fw-normal">0985245877/ jacobjacobyOvalle@gmail.com</span></p>
+
+      <h6 class="mt-md-5">Course Description:</h6>
+      <p class="text-wrap">This course serves as an introduction to the fundamental concepts of computer science. Topics include programming fundamentals, algorithms, data structures, and problem-solving techniques. 
+        The course is designed to provide students with a solid foundation for further studies in computer science.</p>
+        <h5 class="fw-bold mt-md-5">Learning Objectives</h5>
+        <p>By the end of the course, students should be able to:</p>
+        <ol class="list-group-numbered">
+          <li class="list-group-item">Understand the basic principles of programming.</li>
+          <li class="list-group-item">Apply algorithmic thinking to solve computational problems.</li>
+          <li class="list-group-item">Implement and analyze fundamental data structures.</li>
+          <li class="list-group-item">Develop and debug simple programs.</li>
+        </ol>
+
+      <h6 class="mt-md-5">Textbook:</h6>
+      <p class="bi bi-dot fw-bold">Title: <span  class="fw-normal">"Introduction to Computer Science: A Programming Approach"</span></p>
+      <p class="bi bi-dot fw-bold">Author: <span class="fw-normal">Leonard Warren</span></p>
+      <p class="bi bi-dot fw-bold">Edition: <span class="fw-normal">7th Edition</span></p>
+      <p class="bi bi-dot fw-bold">Publisher: <span class="fw-normal">BookInk Corp.</span></p>
+
+      <h6 class="mt-md-3">Grading:</h6>
+      <p class="bi bi-dot fw-bold">Assignments: <span  class="fw-normal">40%</span></p>
+      <p class="bi bi-dot fw-bold">Midterm: <span class="fw-normal">20%</span></p>
+      <p class="bi bi-dot fw-bold">Final: <span class="fw-normal">30%</span></p>
+      <p class="bi bi-dot fw-bold">Participation/Attendance: <span class="fw-normal">10%</span></p>
+
+      <h5 class="fw-bold mt-md-5">Course Schedule:</h5>
+      <p class="mt-md-2 fw-bold">Week 1-2: <span class="fw-normal">Introduction to Programming</span></p>
+      <p class="bi bi-dot">Overview of computer science</p>
+      <p class="bi bi-dot">Basics of programming languages</p>
+      <p class="bi bi-dot">Setting up the development environment</p>
+
+      <p class="mt-md-2 fw-bold">Week 3-5: <span class="fw-normal">Algorithms and Problem Solving</span></p>
+      <p class="bi bi-dot">Introduction to algorithms</p>
+      <p class="bi bi-dot">Problem-solving strategies</p>
+      <p class="bi bi-dot">Algorithm design and analysis</p>
+
+      <p class="mt-md-2 fw-bold">Week 6-8: <span class="fw-normal"> Data Structures</span></p>
+      <p class="bi bi-dot">Arrays, linked lists, and stacks</p>
+      <p class="bi bi-dot">Queues and trees</p>
+    </div>
+  </div><!-- End Default Card -->
+</section>
+        
+{% endblock %}
+
+      

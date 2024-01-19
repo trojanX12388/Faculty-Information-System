@@ -1,0 +1,245 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Curriculum{% endblock %} {% block content%}
+
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<!-- Include DataTables Buttons CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+
+<!-- Include DataTables Print Button JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Curriculum</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Teaching Instructions</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    {% block Curriculum %}
+
+    <section class="section">
+      <div class="card">
+          <div class="card-body">
+          <h5 class="card-title">Course Syllabus</h5>
+
+          <!-- List group with Links and buttons -->
+          <div class="list-group text-decoration-underline">
+              <button type="button" onclick="redirectToURLSyllabus()" class="list-group-item list-group-item-action">Introduction to Computer Science (CSICS01)</button>
+                    <script>
+                        function redirectToURLSyllabus() {
+                            window.location.href = '/TI-Curriculum-Syllabus';
+                        }
+                    </script>
+              <button type="button" class="list-group-item list-group-item-action">Computer Organization and Architecture (CSCOA02)</button>
+              <button type="button" class="list-group-item list-group-item-action">Web Development (CSWD03)</button>
+              <button type="button" class="list-group-item list-group-item-action">Operating Systems (CSOS03)</button>
+          </div><!-- End List group with Links and buttons -->
+          </div>
+      </div>
+
+  <div class="d-flex flex-col">
+      <div class="card w-50">
+          <div class="card-body">
+          <h5 class="card-title">COURSE INFORMATION</h5>
+              <p>This section contains all the course information are assigned for you to handle.</p>
+              <div class="dropdown d-flex my-sm-2 justify-content-end">
+                  <select class="form-control w-25" id="sortDropdown" data-toggle="dropdown" onchange="sortData()">BS Information Technology</select>
+              </div>                  
+          <!-- COURSE INFORMATION -->
+              <div class="card-body">
+              <div class="accordion accordion-flush" id="course-info">
+                  <div class="accordion-item">
+                  <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" data-bs-target="#faqsTwo-1" type="button" data-bs-toggle="collapse">
+                          Introduction to Computer Science (CSICS)
+                      </button>
+                  </h2>
+                  <div id="faqsTwo-1" class="accordion-collapse collapse" data-bs-parent="#course-info">
+                      <div class="accordion-body">
+                          <!-- List group with custom content -->
+                          <ol class="list-group list-group-numbered">
+                              <li class="list-group-item d-flex justify-content-between align-items-start">
+                              <div class="ms-2 me-auto">
+                                  <h5 class="fw-bold">Introduction to Computer Science (CS101)</h5>
+                                  <h6 class="bi bi-dot">Overview of computer science fundamentals.</h6>
+                                  <h6 class="bi bi-dot">Introduction to programming concepts using a specific language (e.g., Python).</h6>
+                                  <h6 class="bi bi-dot">Basic problem-solving and algorithm development.</h6>
+                              </div>
+                              </li>
+                              <li class="list-group-item d-flex justify-content-between align-items-start">
+                              <div class="ms-2 me-auto">
+                                  <h5 class="fw-bold">Data Structures and Algorithms (CS201)</h5>
+                                  <h6 class="bi bi-dot">Study of fundamental data structures (arrays, linked lists, trees, etc.).</h6>
+                                  <h6 class="bi bi-dot">Analysis and design of algorithms for problem-solving.</h6>
+                                  <h6 class="bi bi-dot">Implementation of algorithms in a chosen programming language.</h6>
+                              </div>
+                              </li>
+                              <li class="list-group-item d-flex justify-content-between align-items-start">
+                              <div class="ms-2 me-auto">
+                                  <h5 class="fw-bold">Database Management Systems (CS301)</h5>
+                                  <h6 class="bi bi-dot">Principles of database design and management.</h6>
+                                  <h6 class="bi bi-dot">SQL programming for data retrieval and manipulation.</h6>
+                                  <h6 class="bi bi-dot">Introduction to relational database concepts.</h6>
+                              </div>
+                              </li>
+                              <li class="list-group-item d-flex justify-content-between align-items-start">
+                                  <div class="ms-2 me-auto">
+                                      <h5 class="fw-bold">Artificial Intelligence (CS401)</h5>
+                                      <h6 class="bi bi-dot">Overview of artificial intelligence principles.</h6>
+                                      <h6 class="bi bi-dot">Machine learning algorithms and applications.</h6>
+                                      <h6 class="bi bi-dot">Natural language processing and expert systems.</h6>
+                                  </div>
+                              </li>
+                                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                              <div class="ms-2 me-auto">
+                                  <h5 class="fw-bold">Computer Networks (CS501)</h5>
+                                  <h6 class="bi bi-dot">Fundamentals of computer networks and protocols.</h6>
+                                  <h6 class="bi bi-dot">Network architecture and design.</h6>
+                                  <h6 class="bi bi-dot">Network security concepts.</h6>
+                              </div>
+                              </li>
+                              <li class="list-group-item d-flex justify-content-between align-items-start">
+                                  <div class="ms-2 me-auto">
+                                      <h5 class="fw-bold">Operating Systems (CS601)</h5>
+                                      <h6 class="bi bi-dot">Principles of operating systems.</h6>
+                                      <h6 class="bi bi-dot">Process management, memory management, and file systems.</h6>
+                                      <h6 class="bi bi-dot">Introduction to system-level programming.</h6>
+                                  </div>
+                              </li>
+                          </ol><!-- End with custom content -->
+                      </div>
+                  </div>
+                  </div>
+
+                  <div class="accordion-item">
+                  <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" data-bs-target="#faqsTwo-2" type="button" data-bs-toggle="collapse">
+                          Data Structures and Algorithms (CSDSA)
+                      </button>
+                  </h2>
+                  <div id="faqsTwo-2" class="accordion-collapse collapse" data-bs-parent="#course-info">
+                      <div class="accordion-body">
+                      In minus quia impedit est quas deserunt deserunt et. Nulla non quo dolores minima fugiat aut saepe aut inventore. Qui nesciunt odio officia beatae iusto sed voluptatem possimus quas. Officia vitae sit voluptatem nostrum a.
+                      </div>
+                  </div>
+                  </div>
+
+                  <div class="accordion-item">
+                  <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" data-bs-target="#faqsTwo-3" type="button" data-bs-toggle="collapse">
+                          Introduction to Computer Science (CSICS)
+                      </button>
+                  </h2>
+                  <div id="faqsTwo-3" class="accordion-collapse collapse" data-bs-parent="#course-info">
+                      <div class="accordion-body">
+                      Voluptates magni amet enim perspiciatis atque excepturi itaque est. Sit beatae animi incidunt eum repellat sequi ea saepe inventore. Id et vel et et. Nesciunt itaque corrupti quia ducimus. Consequatur maiores voluptatum fuga quod ut non fuga.
+                      </div>
+                  </div>
+                  </div>
+
+                  <div class="accordion-item">
+                  <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" data-bs-target="#faqsTwo-4" type="button" data-bs-toggle="collapse">
+                          Statistics for Computer Scientists (CSSCS)
+                      </button>
+                  </h2>
+                  <div id="faqsTwo-4" class="accordion-collapse collapse" data-bs-parent="#course-info">
+                      <div class="accordion-body">
+                      Numquam ut reiciendis aliquid. Quia veritatis quasi ipsam sed quo ut eligendi ecourse-infot non. Doloremque sed voluptatem at in voluptas aliquid dolorum.
+                      </div>
+                  </div>
+                  </div>
+
+                  <div class="accordion-item">
+                  <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" data-bs-target="#faqsTwo-5" type="button" data-bs-toggle="collapse">
+                          Machine Learning and Data Mining (CSMLDM)
+                      </button>
+                  </h2>
+                  <div id="faqsTwo-5" class="accordion-collapse collapse" data-bs-parent="#course-info">
+                      <div class="accordion-body">
+                      Aut necessitatibus maxime quis dolor et. Nihil laboriosam molestiae qui molestias placeat corrupti non quo accusamus. Nemo qui quis harum enim sed. Aliquam molestias pariatur delectus voluptas quidem qui rerum id quisquam. Perspiciatis voluptatem voluptatem eos. Vel aut minus labore at rerum eos.
+                      </div>
+                  </div>
+                  </div>
+              </div>
+              </div><!-- End F.A.Q Group 2 -->
+          </div>
+      </div>
+      <!-- Default Card -->
+      <div class="card w-50 ms-md-2">
+          <div class="card-body">
+              <h5 class="card-title">Grading Policy</h5>
+              Each course is graded by taking the grade-weighted average of the grades received for the exams and/or assignments within the course. The following points corresponds for the following grades.
+              <!-- Default Table -->
+              <table class="table">
+                  <thead>
+                      <tr>
+                          <th scope="col">PERCENTAGE</th>
+                          <th scope="col">LETTER GRADE</th>
+                          <th scope="col">GRADE POINTS</th>
+                          <th scope="col">STANDARD</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <th>90-100</th>
+                          <td>A</td>
+                          <td>4.00</td>
+                          <td>Excellent</td>
+                      </tr>
+                      <tr>
+                          <th>80-89</th>
+                          <td>B</td>
+                          <td>3.00</td>
+                          <td>Good</td>
+                      </tr>
+                      <tr>
+                          <th>70-79</th>
+                          <td>C</td>
+                          <td>2.00</td>
+                          <td>Satisfactory</td>
+                      </tr>
+                      <tr>
+                          <th>60-69</th>
+                          <td>D</td>
+                          <td>1.00</td>
+                          <td>Poor</td>
+                      </tr>
+                      <tr>
+                          <th>less than 60</th>
+                          <td>F</td>
+                          <td>0.00</td>
+                          <td>Failing</td>
+                      </tr>
+                  </tbody>
+              </table>
+              <!-- End Default Table Example -->
+          </div>
+      </div><!-- End Default Card -->
+  </div>
+</section>
+
+    {% endblock %}
+
+  </main><!-- End #main -->
+
+{% endblock %}
+
+      

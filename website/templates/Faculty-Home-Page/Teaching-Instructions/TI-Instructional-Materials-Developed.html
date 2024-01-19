@@ -1,0 +1,122 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Instructional Materials Developed{% endblock %} {% block content%}
+
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<!-- Include DataTables Buttons CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+
+<!-- Include DataTables Print Button JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Instructional Materials Developed</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Teaching Instructions</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    {% block Instructional_Materials_Developed %}
+
+    <section class="section">
+        <div class="d-flex flex-column align-items-center">
+            <div class="input-group d-flex  mb-2 w-75">
+                <input type="search" class="form-control d-flex justify-content-center" placeholder="Search..." aria-label="Search ">
+                <i class="bi bi-search" style="position: absolute; top: 50%; transform: translateY(-50%); right: 10px;"></i>
+                </span>
+            </div>
+            <div class="col d-flex flex-row mb-4">
+                    <label for="sort">YEAR:</label>
+                    <select class="form-control d-flex w-" id="sortDropdown" onchange="sortData()">
+                    </select>
+                    <label for="sort">TO:</label>
+                    <select class="form-control d-flex w-50" id="sortDropdown" onchange="sortData()">
+                    </select>
+                </div>  
+                <!-- end sort -->
+        </div>
+        <div class="d-flex justify-content-end my-md-2">
+          <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#uploadModal">
+            <i class="bi bi-folder"></i> Upload a File
+          </button>
+        </div>
+            <!-- List group with Advanced Contents -->
+            <div class="card">
+            <div class="list-group">
+              <a href="instructional-materials-2.html" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="card-title mb-1">Introduction to Algorithms</h5>
+                </div>
+                <p class="mb-1 text-wrap" id="abstract">In computer science and related fields, algorithms play a fundamental role in solving computational problems efficiently. Here's a breakdown of what such a module might cover...</p>
+              </a>
+              <a href="instructional-materials-2.html" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="card-title mb-1">Advanced Data Structures and Algorithms</h5>
+                </div>
+                <p class="mb-1 text-wrap" id="abstract">This module would build upon the foundational knowledge gained in an introductory algorithms course and delve deeper into more sophisticated data structures and algorithmic techniques...</p>
+              </a>
+            </div><!-- End List group Advanced Content -->
+            </div>
+      </section>
+
+      <!-- FOR UPLOAD FORM -->
+      <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="uploadModalLabel">Upload new Instructional Materials</h5>
+              <!-- close button -->
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="row mb-3">
+                  <label for="inputText" class="col-sm-2 col-form-label">Title</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control text-wrap">
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="inputPassword" class="col-sm-2 col-form-label">Abstract</label>
+                  <div class="col-sm-10">
+                    <textarea class="form-control" style="height: 100px"></textarea>
+                  </div>
+                <div class="row mb-3">
+                  <label for="inputNumber" class="col-sm-2 col-form-label">File Upload</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="file" id="formFile">
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </div>
+              </form><!-- End General Form Elements -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+    {% endblock %}
+
+  </main><!-- End #main -->
+
+{% endblock %}
+
+      
