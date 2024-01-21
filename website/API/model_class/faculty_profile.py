@@ -31,6 +31,8 @@ class FISFaculty(Base):
     FacultyCode = Column(String)
     Honorific = Column(String)
     Age = Column(Integer)
+    Specialization = Column(String)
+    PreferredSchedule = Column(String)
     
     Email = Column(String)
     ResidentialAddress = Column(String)
@@ -58,6 +60,8 @@ class FISFaculty_Model(BaseModel):
     FacultyCode: int
     Honorific: Optional[str]
     Age: int
+    Specialization: Optional[str]
+    PreferredSchedule: Optional[str]
     Email: str = ""
     ResidentialAddress: str = ""
     MobileNumber: str = ""

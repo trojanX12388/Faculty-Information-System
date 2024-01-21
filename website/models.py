@@ -25,6 +25,8 @@ class FISFaculty(db.Model, UserMixin):
     FacultyCode = db.Column(db.Integer, nullable=False)  # Faculty Code
     Honorific = db.Column(db.String(50))  # Honorific
     Age = db.Column(db.Numeric, nullable=False)  # Age
+    Specialization = db.Column(db.String)  # Specialization
+    PreferredSchedule = db.Column(db.String)  # PreferredSchedule
     
     Email = db.Column(db.String(50), unique=True, nullable=False)  # Email
     ResidentialAddress = db.Column(db.String(50))  # ResidentialAddress
@@ -96,6 +98,8 @@ class FISFaculty(db.Model, UserMixin):
             'FacultyCode': self.FacultyCode,
             'Honorific': self.Honorific,
             'Age': self.Age,
+            'Specialization': self.Specialization,
+            'PreferredSchedule': self.PreferredSchedule,
 
             'Email': self.Email,
             'ResidentialAddress': self.ResidentialAddress,
@@ -174,6 +178,8 @@ class FISAdmin(db.Model, UserMixin):
     FacultyCode = db.Column(db.Integer, nullable=False)  # Faculty Code
     Honorific = db.Column(db.String(50))  # Honorific
     Age = db.Column(db.Numeric, nullable=False)  # Age
+    Specialization = db.Column(db.String)  # Specialization
+    PreferredSchedule = db.Column(db.String)  # PreferredSchedule
     
     Email = db.Column(db.String(50), unique=True, nullable=False)  # Email
     ResidentialAddress = db.Column(db.String(50))  # ResidentialAddress
@@ -224,6 +230,8 @@ class FISAdmin(db.Model, UserMixin):
             'FacultyCode': self.FacultyCode,
             'Honorific': self.Honorific,
             'Age': self.Age,
+            'Specialization': self.Specialization,
+            'PreferredSchedule': self.PreferredSchedule,
 
             'Email': self.Email,
             'ResidentialAddress': self.ResidentialAddress,
@@ -1349,7 +1357,6 @@ class FISMandatoryRequirements(db.Model):
         return str(self.id)  # Convert to string to ensure compatibility  
 
 # ------------------------------------------------
-
 
 def init_db(app):
     db.init_app(app)

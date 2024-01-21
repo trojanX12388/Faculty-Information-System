@@ -413,16 +413,17 @@ def adminH():
         endpoint = '/api/all/FISFaculty'
         url = f'{base_url}{endpoint}'
         
-        api_key = selected_token
+        # api_key = selected_token
 
-        headers = {
-            'Authorization': 'API Key',
-            'token': api_key,  # 'token' key with the API key value
-            'Content-Type': 'application/json'  # Adjust content type as needed
-        }
+        # headers = {
+        #     'Authorization': 'API Key',
+        #     'token': api_key,  # 'token' key with the API key value
+        #     'Content-Type': 'application/json'  # Adjust content type as needed
+        # }
 
         # Make a GET request to the API with the API key in the headers
-        response = requests.get(url, headers=headers)
+        # response = requests.get(url, headers=headers)
+        response = requests.get(url)
         
         total_instructor_I = 0
         total_instructor_II = 0
@@ -624,16 +625,17 @@ def admin_viewFM(faculty_id):
     endpoint = '/api/FISFaculty/'+faculty_id
     url = f'{base_url}{endpoint}'
     
-    api_key = selected_token
+    # api_key = selected_token
 
-    headers = {
-        'Authorization': 'API Key',
-        'token': api_key,  # 'token' key with the API key value
-        'Content-Type': 'application/json'  # Adjust content type as needed
-    }
+    # headers = {
+    #     'Authorization': 'API Key',
+    #     'token': api_key,  # 'token' key with the API key value
+    #     'Content-Type': 'application/json'  # Adjust content type as needed
+    # }
 
     # Make a GET request to the API with the API key in the headers
-    response = requests.get(url, headers=headers)
+    # response = requests.get(url, headers=headers)
+    response = requests.get(url)
     
     if response.status_code == 200:
         # Process the API response data
