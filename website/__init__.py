@@ -5,6 +5,7 @@ from flask_mail import Mail
 from datetime import timedelta
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate 
+from flask_cors import CORS  # Import CORS
 
 from .extensions import db
 
@@ -38,6 +39,13 @@ def create_app():
     app.config['MAIL_USE_TLS']=False
     app.config['MAIL_USE_SSL']=True
     
+    # Enable CORS for all routes
+    CORS(app, origins=["*"],
+         allow_credentials=True,
+         allow_methods=["*"],
+         allow_headers=["*"],
+         expose_headers=["*"],
+         max_age=600)
     
     # UPLOAD CONFIGURATION
     app.config['IMAGE_UPLOADS']='temp/'

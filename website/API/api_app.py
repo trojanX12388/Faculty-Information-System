@@ -12,6 +12,7 @@ load_dotenv()
 
 from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
+from flask_cors import CORS  # Import CORS
 
 # IMPORTING PYDANTIC CLASS
 from pydantic import BaseModel, Field, ValidationError
@@ -55,6 +56,13 @@ from .model_class.pds_model import FISPDS_PersonalDetails_Model,FISPDS_ContactDe
 
 API = Blueprint('API', __name__)
 
+# Enable CORS for all routes
+CORS(app, origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+        expose_headers=["*"],
+        max_age=600)
 
 from sqlalchemy.orm import aliased
 
