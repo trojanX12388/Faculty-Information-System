@@ -90,70 +90,112 @@
           </div>
         </div>
         <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-          <h3><strong>STUDENT FEEDBACK RESULTS</strong></h3>
+          <h3><strong>EVALUATION RESULTS</strong></h3>
         </div>
         <br><br>
         <div class="card-body profile-card pt-4 d-flex flex-column align-items-start" style="text-style: underlined;">
-          <h6><u>Student Faculty Feedback for Faculty Form</u> <a href="/TI-Faculty-Feedback-Form">view</a></h6>
+          <h6><u>Faculty Feedback Form</u> <a href="/TI-Faculty-Feedback-Form">view</a></h6>
         </div>
         <div class="card-body d-flex flex-column justify-content-center">
           <br>
-        
+          <form class="row g-3">
+
+            <div class="col-md-6">
+              <div class="form-floating mb-3">
+                <select class="form-select" id="floatingSelect" aria-label="State">
+                  <option selected="">2019-2020 First Semester</option>
+                  <option value="1">2019-2020 First Semester</option>
+                  <option value="2">2019-2020 Second Semester</option>
+                  <option value="3">2020-2021 First Semester</option>
+                  <option value="4">2020-2021 Second Semester</option>
+                  <option value="5">2021-2022 First Semester</option>
+                  <option value="6">2021-2022 Second Semester</option>
+                </select>
+                <label for="floatingSelect">School Year & Semester</label>
+              </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="d-grid gap-2 mt-3">
+                    <button type="submit" class="btn btn-primary">
+                      <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512" style="fill:#ffffff;position:relative; bottom:2px"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M433.941 129.941l-83.882-83.882A48 48 0 0 0 316.118 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V163.882a48 48 0 0 0-14.059-33.941zM224 416c-35.346 0-64-28.654-64-64 0-35.346 28.654-64 64-64s64 28.654 64 64c0 35.346-28.654 64-64 64zm96-304.52V212c0 6.627-5.373 12-12 12H76c-6.627 0-12-5.373-12-12V108c0-6.627 5.373-12 12-12h228.52c3.183 0 6.235 1.264 8.485 3.515l3.48 3.48A11.996 11.996 0 0 1 320 111.48z"/></svg>
+                      Select</button>
+                </div>
+                <br><br>
+            </div>
+            
+          </form>
           <!-- Advising Table with stripped rows -->
           <div class="d-flex flex-row">
             <div class="table-container">
-              <table id="table1" class="display" style="width:100%">
+              <table id="table1" class="display" style="width:100%; height:440px;">
                 <thead>
                   <tr>
-                    <th scope="col">SCHOOL YEAR</th>
-                    <th scope="col">COURSE/SECTION</th>
-                    <th scope="col">NO. OF STUDENTS</th>
-                    <th scope="col">RESULT</th>
-                    <th scope="col">RATING</th>
-                    <th scope="col">PERCENTAGE</th>
+                    <th></th>
+                    <th>Commitment</th>
+                    <th>Knowledge of Subject</th>
+                    <th>Teaching for Independent Learning</th>
+                    <th>Management of Learning</th>
+                    <th>Rating</th>
+                    <th>Calculated Rating</th>
+                    <th>Verbal Interpretation</th>
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <td>20%</td>
+                    <td>20%</td>
+                    <td>30%</td>
+                    <td>30%</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <th scope="row">2023-2024</th>
-                    <td>BSCS 1-1</td>
-                    <td>36</td>
-                    <td>89/100</td>
-                    <td>4.0</td>
-                    <td>89%</td>
-                    
+                    <th>Director Evaluation</th>
+                    <td>100.0000</td>
+                    <td>100.0000</td>
+                    <td>100.0000</td>
+                    <td>100.0000</td>
+                    <td>100.0000</td>
+                    <td>20.0000</td>
+                    <td>OUTSTANDING</td>
                   </tr>
                   <tr>
-                    <th scope="row">2023-2024</th>
-                    <td>BSCS 1-2</td>
-                    <td>43</td>
-                    <td>99/100</td>
-                    <td>4.9</td>
-                    <td>99%</td>
-                    
+                    <th>Academic Head Evaluation</th>
+                    <td>100.0000</td>
+                    <td>100.0000</td>
+                    <td>100.0000</td>
+                    <td>100.0000</td>
+                    <td>100.0000</td>
+                    <td>10.0000</td>
+                    <td>OUTSTANDING</td>
                   </tr>
                   <tr>
-                    <th scope="row">2023-2024</th>
-                    <td>BSCS 1-2</td>
-                    <td>43</td>
-                    <td>99/100</td>
-                    <td>4.9</td>
-                    <td>99%</td>
-                    
+                    <th>Student Evaluation</th>
+                    <td>78.7160</td>
+                    <td>80.2940</td>
+                    <td>80.4400</td>
+                    <td>80.1840</td>
+                    <td>79.9892</td>
+                    <td>55.9924</td>
+                    <td>VERY SATISFACTORY</td>
                   </tr>
                   <tr>
-                    <th scope="row">2023-2024</th>
-                    <td>BSCS 1-2</td>
-                    <td>43</td>
-                    <td>99/100</td>
-                    <td>4.9</td>
-                    <td>99%</td>
-                  
+                    <th>Self Evaluation</th>
+                    <td>100.0000</td>
+                    <td>100.0000</td>
+                    <td>100.0000</td>
+                    <td>100.0000</td>
+                    <td>100.0000</td>
+                    <td>100.0000</td>
+                    <td>OUTSTANDING</td>
                   </tr>
                 </tbody>
               </table><!-- End Table with stripped rows -->
             </div>
-        
+
             <div class="corner-div-container">
               <div id="__p__result_calculation__numerical_values_based_on_the_qualitative_responses__90___100__excellent_80___89__very_good_70___79__good_60___69__fair_0___59__poor_rating__the_rating_scale_will_be_defined_based_on_the_calculated_average_scores__4_5___5_0__excellent_3_5___4_49__very_good_2_5___3_49__good_1_5___2_49__fair_1_0___1_49__poor_percentage__the_average_score_will_be_converted_to_a_percentage_by_scaling_it_to_the_maximum_possible_score__ex__4_49___89_8_">
                 <strong>Result Calculation:</strong><br />
@@ -166,9 +208,9 @@
         
                 <strong>Rating:</strong><br />
                 The rating scale will be defined based on the calculated average scores.<br />
-                4.5 - 5.0: Excellent<br />
-                3.5 - 4.49: Very Good<br />
-                2.5 - 3.49: Good<br />
+                4.5 - 5.0: Outstanding<br />
+                3.5 - 4.49: Very Satisfactory<br />
+                2.5 - 3.49: Satisfactory<br />
                 1.5 - 2.49: Fair<br />
                 1.0 - 1.49: Poor<br /><br />
         
@@ -181,8 +223,15 @@
           </div>
         
           <br><br>
+          <h6><strong>School Year & Semester:</strong> 2019-2020 First Semester</h6>
+          <h6><strong>Overall Rating (Supervisor Evaluation + Student Evaluation):</strong> 85.9924</h6>
+        <h6><strong>Verbal Interpretation:</strong> Very Satisfactory</h6>
         </div>
         
+        
+        
+
+        <br><br><br><br><br><br>
         <style type="text/css">
           .corner-div-container {
             margin-left: 20px; /* Adjust the margin as needed */
@@ -202,7 +251,6 @@
             color: #000000;
           }
         </style>
-        
           <!-- aAnalytics -->
           <div class="d-flex flex-row my-sm-5">
             <div class="w-50">
@@ -276,7 +324,7 @@
     // Function to initialize DataTable for a given table ID
     function initializeDataTable(tableId, buttonId, title, customExportColumns) {
       var dataTable = $(tableId).DataTable({
-        dom: 'BPlfrtip',
+        dom: 'BP',
         responsive: true,
         columnDefs: [
           {

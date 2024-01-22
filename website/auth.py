@@ -103,7 +103,7 @@ def facultyL():
         Password = request.form.get('password')
 
         entry = session['entry']
-        User = FISFaculty.query.filter_by(Email=Email).first()
+        User = FISFaculty.query.filter_by(Email=Email, IsActive=True).first()
 
         if not User:
             flash('Incorrect Email or Password!', category='error')

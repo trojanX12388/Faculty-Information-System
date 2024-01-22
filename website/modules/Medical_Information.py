@@ -92,10 +92,19 @@ def MI_H():
         #     db.session.commit()
         #     db.session.close()
         #     return redirect(url_for('PDM.PDM_BD')) 
+        # Access weight by iterating over the FISPDS_PersonalDetails relationship
+        
+        for personal_details in username.FISPDS_PersonalDetails:
+            weight = personal_details.weight
+            height = personal_details.height
+            break  # Assuming you want to get the weight from the first entry only
+    
                       
         return render_template("Faculty-Home-Page/Medical-Information/index.html", 
                                User= username.FirstName + " " + username.LastName,
                                faculty_code= username.FacultyCode,
                                user= current_user,
+                               weight = weight,
+                               height = height,
                                profile_pic=ProfilePic)
         

@@ -189,83 +189,109 @@
                   <p class="d-flex align-items-center justify-content-center ">78% of faculty members has an excellent attendance in the month of November, 2024.</p>
               </div>
            
-              <div class="w-75">
-                <div id='calendar'></div>
-              </div>
-             
-
-                
-                <script>
-                  document.addEventListener('DOMContentLoaded', function() {
-                var calendarEl = document.getElementById('calendar');
-            
-                var calendar = new FullCalendar.Calendar(calendarEl, {
-                  plugins: [ 'interaction', 'dayGrid' ],
-                  defaultDate: '2020-02-12',
-                  editable: true,
-                  eventLimit: true, // allow "more" link when too many events
-                  events: [
-                    {
-                      title: 'All Day Event',
-                      start: '2020-02-01'
-                    },
-                    {
-                      title: 'Long Event',
-                      start: '2020-02-07',
-                      end: '2020-02-10'
-                    },
-                    {
-                      groupId: 999,
-                      title: 'Repeating Event',
-                      start: '2020-02-09T16:00:00'
-                    },
-                    {
-                      groupId: 999,
-                      title: 'Repeating Event',
-                      start: '2020-02-16T16:00:00'
-                    },
-                    {
-                      title: 'Conference',
-                      start: '2020-02-11',
-                      end: '2020-02-13'
-                    },
-                    {
-                      title: 'Meeting',
-                      start: '2020-02-12T10:30:00',
-                      end: '2020-02-12T12:30:00'
-                    },
-                    {
-                      title: 'Lunch',
-                      start: '2020-02-12T12:00:00'
-                    },
-                    {
-                      title: 'Meeting',
-                      start: '2020-02-12T14:30:00'
-                    },
-                    {
-                      title: 'Happy Hour',
-                      start: '2020-02-12T17:30:00'
-                    },
-                    {
-                      title: 'Dinner',
-                      start: '2020-02-12T20:00:00'
-                    },
-                    {
-                      title: 'Birthday Party',
-                      start: '2020-02-13T07:00:00'
-                    },
-                    {
-                      title: 'Click for Google',
-                      url: 'http://google.com/',
-                      start: '2020-02-28'
-                    }
-                  ]
+              <style>
+                .fc-daygrid-day.fc-day-today {
+                    background-color: rgba(242, 203, 5, 0.25)!important;
+                }
+                .fc-daygrid-event, .fc-timegrid-event {
+                    border: none;
+                    color: white;
+                }
+                .fc-daygrid-event-dot {
+                    display: none;
+                }
+                .fc-event-time {
+                    padding-left: 5px;
+                }
+                .modal-content {
+                    width: 50%;
+                    margin: 15% auto; /* Adjust the top margin to center vertically */
+                    background-color: white;
+                    padding: 20px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    border-radius: 8px;
+                }
+            </style>
+        </head>
+        <body>
+            <div id="calendar" class="p-4 bg-white rounded-2 shadow"></div>
+        
+            <!-- Modal -->
+            <div id="eventModal" class="modal">
+                <div class="modal-content w-100 max-w-md">
+                    <h2 class="fs-2 fw-semibold mb-4" id="eventTitle"></h2>
+                    <p id="eventStart" class="mb-4"></p>
+                    <p id="eventProject" class="mb-4"></p>
+                    <div style="display: flex; justify-content: flex-end;">
+                        <button type="button" id="closeModal" class="bg-secondary text-white px-4 py-2 rounded-3 mt-4">Close</button>
+                    </div>
+                </div>
+            </div>
+        
+            <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var calendarEl = document.getElementById('calendar');
+        
+                    // Sample data for events
+                    let eventsData = [
+                        {
+                            title: 'Class 1',
+                            start: '2024-09-01',
+                            backgroundColor: '#FF5733', // Different color for each event
+                            extendedProps: {
+                                project: 'Project A',
+                            },
+                        },
+                        {
+                            title: 'Class 2',
+                            start: '2024-09-02',
+                            backgroundColor: '#33FF57',
+                            extendedProps: {
+                                project: 'Project B',
+                            },
+                        },
+                        {
+                            title: 'Meeting 2',
+                            start: '2024-09-03',
+                            backgroundColor: '#5733FF',
+                            extendedProps: {
+                                project: 'Project C',
+                            },
+                        },
+                    ];
+        
+                    var calendar = new FullCalendar.Calendar(calendarEl, {
+                        initialView: 'dayGridMonth',
+                        headerToolbar: {
+                            left: 'prev,next today',
+                            center: 'title',
+                            right: 'dayGridMonth,timeGridWeek,timeGridDay',
+                        },
+                        events: eventsData,
+                        eventClick: function (info) {
+                            // Display event details in a modal
+                            document.getElementById('eventTitle').textContent = info.event.title;
+                            document.getElementById('eventStart').textContent = 'Starts at: ' + info.event.start.toLocaleTimeString();
+                            document.getElementById('eventProject').textContent = 'Project: ' + info.event.extendedProps.project;
+        
+                            // Open the modal
+                            document.getElementById('eventModal').style.display = 'block';
+                        },
+                        eventRender: function(info) {
+                            // Set background color for each event
+                            info.el.style.backgroundColor = info.event.backgroundColor;
+                        },
+                    });
+        
+                    // Close modal when close button is clicked
+                    document.getElementById('closeModal').addEventListener('click', function() {
+                        document.getElementById('eventModal').style.display = 'none';
+                    });
+        
+                    calendar.render();
                 });
-            
-                calendar.render();
-              });
-            
-                </script>
+            </script>
 
         </div>
 </section>

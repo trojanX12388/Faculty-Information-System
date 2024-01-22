@@ -1,0 +1,217 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Research Report{% endblock %} {% block content%}
+
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Research Report</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Research Innovation For Creative Work</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <style>
+        .responsive-table {
+          display: flex;
+          flex-wrap: wrap;
+          margin: -10px; /* Adjust margin as needed */
+        }
+      
+        .responsive-table td {
+          flex: 1;
+          padding: 10px; /* Adjust padding as needed */
+          box-sizing: border-box;
+        }
+      
+        .responsive-table h6 {
+          margin: 0;
+        }
+        .btnprinter-container {
+          text-align: right;
+        }
+      
+        .btnprinter {
+          width: 50px;
+          background-color: transparent;
+          border: none;
+          padding: 0;
+          cursor: pointer;
+        }
+      
+        .btnprinter i {
+          font-size: 24px; /* You can adjust the font size as needed */
+          color: #000; /* You can set the color as needed */
+        }
+      </style>
+
+
+    <section class="section">
+        <div class="row">
+          <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Faculty Research Table Reports</h5>
+
+                <div class="btnprinter-container">
+                    <button id="btnPrintDetail1" class="btnprinter"><i class="bi bi-printer"></i></button>
+                  </div>
+                <br><br>
+
+                <!-- Default Accordion -->
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingSix">
+                          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
+                            <p>Research Production</p>
+                          </button>
+                        </h2>
+                        <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#accordionExample">
+                          <div class="accordion-body">
+                            <!-- Advising Table with stripped rows -->
+            <table id="table1" class="display" style="width:100%"> 
+              <thead>
+                <tr>
+                  <th scope="col">Year</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Co-Researchers</th>
+                  <th scope="col">Fund Source</th>
+                  <th scope="col">Date Started</th>
+                  <th scope="col">Date Completed</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">2018</th>
+                  <td>SAMPLE</td>
+                  <td>ALMA, MONZON, Et Al...</td>
+                  <td>PUPQC</td>
+                  <td>2017</td>
+                  <td>2018</td>
+                </tr>
+              </tbody>
+            </table><!-- End Table with stripped rows -->
+                          </div>
+                        </div>
+                    </div>
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                          <p>Research Presentation</p>
+                      </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                      <div class="accordion-body">
+                        <table id="table1" class="display" style="width:100%"> 
+                            <thead>
+                              <tr>
+                                <th scope="col">Year</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Co-Researchers</th>
+                                <th scope="col">Fund Source</th>
+                                <th scope="col">Date Started</th>
+                                <th scope="col">Date Completed</th>
+                                <th scope="col">Conference Title</th>
+                                <th scope="col">Venue</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row"></th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                              </tr>
+                            </tbody>
+                          </table><!-- End Table with stripped rows -->
+                     </div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                          <p>Research Publication</p>
+                      </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                      <div class="accordion-body">
+                        <table id="table1" class="display" style="width:100%"> 
+                            <thead>
+                              <tr>
+                                <th scope="col">Year</th>
+                                <th scope="col">Title (and DOI)</th>
+                                <th scope="col">Co-Researchers</th>
+                                <th scope="col">Fund Source</th>
+                                <th scope="col">Date Started</th>
+                                <th scope="col">Date Completed</th>
+                                <th scope="col">Date Publication</th>
+                                <th scope="col">Title of the Journal</th>
+                                <th scope="col">Journal Indexing</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row"></th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                              </tr>
+                            </tbody>
+                          </table><!-- End Table with stripped rows -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingFour">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                          <p>Citation</p>
+                      </button>
+                    </h2>
+                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                      <div class="accordion-body">
+                        <table id="table1" class="display" style="width:100%"> 
+                            <thead>
+                                <tr>
+                                  <th scope="col">Year</th>
+                                  <th scope="col">Title (and DOI)</th>
+                                  <th scope="col">Co-Researchers</th>
+                                  <th scope="col">Fund Source</th>
+                                  <th scope="col">Date Started</th>
+                                  <th scope="col">Date Completed</th>
+                                  <th scope="col">Year Cited</th>
+                                  <th scope="col">Title of the Journal and Article that Cited</th>
+                                  <th scope="col">Journal Indexing</th>
+                                </tr>
+                              </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row"></th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                              </tr>
+                            </tbody>
+                          </table><!-- End Table with stripped rows -->
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- End Default Accordion Example -->
+  
+              </div>
+            </div>
+        </div>
+      </section>
+
+  </main><!-- End #main -->
+
+{% endblock %}
+
+      

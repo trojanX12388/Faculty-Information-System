@@ -68,7 +68,7 @@ def R_H():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
         
-
+        
         if username.ProfilePic == None:
             ProfilePic=profile_default
         else:
@@ -93,7 +93,8 @@ def R_H():
         #     db.session.commit()
         #     db.session.close()
         #     return redirect(url_for('PDM.PDM_BD')) 
-                      
+           
+            
         return render_template("Faculty-Home-Page/Records/index.html", 
                                User= username.FirstName + " " + username.LastName,
                                faculty_code= username.FacultyCode,

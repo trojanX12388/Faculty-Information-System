@@ -1,0 +1,68 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Awards & Recognitions{% endblock %} {% block content%}
+
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Awards & Recognitions</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Awards & Recognitions</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row align-items-top">
+        <div class="col-12">
+
+          <div class="card d-flex  p-5 ">
+            <div class="row d-flex flex-column">
+            
+              <div class="d-flex justify-content-end my-md-2">
+                <button type="button" class="btn btn-primary mx-md-2"><i class="bx bxs-pencil"></i>Edit</button>
+              </div>
+
+                <div class="col d-flex flex-column justify-content-center">
+                  <br>
+                    <H3 class="pb-3 d-flex align-self-center justify-content-center font-weight-bold">AWARDS AND RECOGNITION</H3>
+                    <br>
+                    <img class="img-thumbnail d-flex align-self-center" src="https://lh3.googleusercontent.com/d/1ohQBe8o4byYSJ7urQtZnqPkRCl0QYfA-" alt="award_cert image">
+                </div>
+                <div class="row d-flex text-left pt-3">
+                    <h5 class="font-weight-bolder">Award: <span class="font-weight-normal">Exceptional Leadership and Innovation</span></h5>
+                    <h5 class="font-weight-bolder">Award Recipient: <span class="font-weight-normal">{{user.FirstName}} {{user.MiddleInitial}} {{user.LastName}} </span></h5>
+                    <h5 class="font-weight-bolder">Date: <span class="font-weight-normal">August 15, 2023</span></h5>
+                </div>
+                <div>
+                  <br>
+                    <p class="text-wrap">
+                      We are delighted to present the prestigious "Exceptional Leadership and Innovation Award" to Jane Doe, a trailblazer who has made an indelible mark in the field of sustainable technology. This award, bestowed on August 15, 2023, celebrates Jane's remarkable achievements and visionary leadership that have significantly advanced the realm of renewable energy solutions.
+                    </p>
+                </div>
+              </div>
+            </div>
+        
+          </div><!-- End Default Card -->
+
+          <div class="d-grid gap-2 mt-3 col-md-12 d-flex flex-column align-items-end">
+            <button type="button" onclick="redirectToURL()" class="btn btn-primary mt-3 col-md-2">Back</i></button>
+            <script>
+              function redirectToURL() {
+                  window.location.href = '/Awards-Recognitions';
+              }
+          </script>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main><!-- End #main -->
+
+  
+{% endblock %}
+
+      

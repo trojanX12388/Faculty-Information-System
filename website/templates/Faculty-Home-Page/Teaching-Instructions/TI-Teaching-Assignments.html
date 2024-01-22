@@ -99,7 +99,8 @@
                     <th scope="col">COURSE CODE</th>
                     <th scope="col">COURSE TITLE</th>
                     <th scope="col">COURSE</th>
-                    <th scope="col">SECTION</th>
+                    <th scope="col">SEMESTER</th>
+                    <th scope="col">YEAR</th>
                     <th scope="col">STATUS</th>
                     <th scope="col"></th>
                   </tr>
@@ -110,7 +111,8 @@
                     <td>BSCS-0104</td>
                     <td>Bachelor of Science in Computer Science</td>
                     <td>BSCS</td>
-                    <td>1-4</td>
+                    <td>2nd Semester</td>
+                    <td>2024</td>
                     <td>Subject Teacher</td>
                     <td>
                       <div class="d-grid gap-2 mt-3">
@@ -128,7 +130,8 @@
                     <td>BSCS-0201</td>
                     <td>Bachelor of Science in Computer Science</td>
                     <td>BSCS</td>
-                    <td>2-1</td>
+                    <td>2nd Semester</td>
+                    <td>2024</td>
                     <td>Subject Teacher</td>
                     <td>
                       <div class="d-grid gap-2 mt-3">
@@ -141,7 +144,8 @@
                     <td>BSIT-0301</td>
                     <td>Bachelor of Science in Information Technology</td>
                     <td>BSIT</td>
-                    <td>3-1</td>
+                    <td>2nd Semester</td>
+                    <td>2024</td>
                     <td>Subject Teacher</td>
                     <td>
                       <div class="d-grid gap-2 mt-3">
@@ -154,7 +158,8 @@
                     <td>BSIT-0302</td>
                     <td>Bachelor of Science in Information Technology</td>
                     <td>BSIT</td>
-                    <td>3-2</td>
+                    <td>2nd Semester</td>
+                    <td>2024</td>
                     <td>Subject Teacher</td>
                     <td>
                       <div class="d-grid gap-2 mt-3">
@@ -167,7 +172,8 @@
                     <td>BAS-0303</td>
                     <td>Bachelor in Applied Statistics</td>
                     <td>BAS</td>
-                    <td>3-3</td>
+                    <td>2nd Semester</td>
+                    <td>2024</td>
                     <td>Subject Teacher</td>
                     <td>
                       <div class="d-grid gap-2 mt-3">
@@ -180,7 +186,8 @@
                     <td>BSCpE-0304</td>
                     <td>Bachelor of Science in Computer Engineering</td>
                     <td>BSCpE</td>
-                    <td>3-4</td>
+                    <td>2nd Semester</td>
+                    <td>2024</td>
                     <td>Subject Teacher</td>
                     <td>
                       <div class="d-grid gap-2 mt-3">
@@ -193,7 +200,8 @@
                     <td>BSCS-0401</td>
                     <td>Bachelor of Science in Computer Science</td>
                     <td>BSCS</td>
-                    <td>4-1</td>
+                    <td>2nd Semester</td>
+                    <td>2024</td>
                     <td>Subject Teacher</td>
                     <td>
                       <div class="d-grid gap-2 mt-3">
@@ -206,7 +214,8 @@
                     <td>BSIT-0401</td>
                     <td>Bachelor of Science in Information Technology</td>
                     <td>BSIT</td>
-                    <td>4-1</td>
+                    <td>2nd Semester</td>
+                    <td>2024</td>
                     <td>Subject Teacher</td>
                     <td>
                       <div class="d-grid gap-2 mt-3">
@@ -246,6 +255,8 @@
                     <th scope="col">ACTIVITY</th>
                     <th scope="col">TIME</th>
                     <th scope="col">DAY</th>
+                    <th scope="col">SEMESTER</th>
+                    <th scope="col">YEAR</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -257,6 +268,8 @@
                     <td>Hands On Coding Exercises</td>
                     <td>7:00-10:00 A.M</td>
                     <td>Wednesday</td>
+                    <td>2nd Semester</td>
+                    <td>2024</td>
                   </tr>
                   <tr>
                     <th scope="row">COMLAB 102</th>
@@ -266,6 +279,8 @@
                     <td>Project Documentation</td>
                     <td>8:30-11:30 A.M</td>
                     <td>Saturday</td>
+                    <td>2nd Semester</td>
+                    <td>2024</td>
                   </tr>
                   <tr>
                     <th scope="row">COMLAB 101</th>
@@ -275,6 +290,8 @@
                     <td>Hands On Coding Exercises</td>
                     <td>12:00-3:00 P.M</td>
                     <td>Tuesday</td>
+                    <td>2nd Semester</td>
+                    <td>2024</td>
                   </tr>
                   <tr>
                     <th scope="row">ROOM 205</th>
@@ -284,6 +301,8 @@
                     <td>Presentations</td>
                     <td>4:30-8:30 P.M</td>
                     <td>Tuesday</td>
+                    <td>2nd Semester</td>
+                    <td>2024</td>
                   </tr>
                   <tr>
                     <th scope="row">ROOM 205</th>
@@ -293,6 +312,8 @@
                     <td>Presentations</td>
                     <td>4:30-8:30 P.M</td>
                     <td>Tuesday</td>
+                    <td>2nd Semester</td>
+                    <td>2024</td>
                   </tr>
                 </tbody>
               </table>
@@ -352,8 +373,8 @@
       }
   
       // Customize your export options for each table
-      var exportColumnsTable1 = [ 0, 1, 2, 3, 4, 5 ];
-      var exportColumnsTable2 = [ 0, 1, 2, 3, 4, 5, 6 ];
+      var exportColumnsTable1 = [ 0, 1, 2, 3, 4, 5, 6 ];
+      var exportColumnsTable2 = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   
       // Initialize DataTables for each table
       initializeDataTable('#table1', 'btnPrintDetail1', 'Teaching Assignments Schedules', exportColumnsTable1);

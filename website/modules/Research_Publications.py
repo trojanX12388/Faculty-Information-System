@@ -56,114 +56,6 @@ profile_default='14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08'
 # -------------------------------------------------------------
 
 
-                                               
-
-
-# ------------------------------- COLLABORATION AND RESEARCH OPPORTUNITIES ----------------------------  
-
-@RP.route("/RP-collaboration-research-opportunities", methods=['GET', 'POST'])
-@login_required
-@Check_Token
-def RP_CRO():
-    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
-        
-
-        if username.ProfilePic == None:
-            ProfilePic=profile_default
-        else:
-            ProfilePic=username.ProfilePic
-           
-        
-        # # UPDATE PROFILE BASIC DETAILS
-        
-        # if request.method == 'POST':
-
-        #     # UPDATE BASIC DETAILS
-        #     # VALUES
-        #     FacultyCode = request.form.get('FacultyCode')
-        #     honorific = request.form.get('honorific')
-
-        #     u = update(FISFaculty)
-        #     u = u.values({"FacultyCode": FacultyCode,
-        #                   "honorific": honorific
-        #                   })
-        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
-        #     db.session.execute(u)
-        #     db.session.commit()
-        #     db.session.close()
-        #     return redirect(url_for('PDM.PDM_BD')) 
-        
-        gatch = FISFaculty.query.filter_by(FacultyId='10016').first() 
-        dem = FISFaculty.query.filter_by(FacultyId='10001').first() 
-        che = FISFaculty.query.filter_by(FacultyId='10009').first() 
-        drew = FISFaculty.query.filter_by(FacultyId='10021').first() 
-        celeste = FISFaculty.query.filter_by(FacultyId='10030').first() 
-        berna = FISFaculty.query.filter_by(FacultyId='10008').first() 
-                      
-        return render_template("Faculty-Home-Page/Research-Publications/Collaboration-Research-Opportunities.html", 
-                               User= username.FirstName + " " + username.LastName,
-                               faculty_code= username.FacultyCode,
-                               user= current_user,
-                               gatch = gatch,
-                               dem = dem,
-                               che = che,
-                               drew = drew,
-                               celeste = celeste,
-                               berna = berna,
-                               profile_pic=ProfilePic,
-                               RP="show",
-                               activate_CRO= "active")
-
-
- 
-# ------------------------------------------------------------- THESIS ----------------------------------------------------
-# ------------------------------------------------------------- 
-
-@RP.route("/RP-Thesis", methods=['GET', 'POST'])
-@login_required
-@Check_Token
-def RP_T():
-    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
-        
-
-        if username.ProfilePic == None:
-            ProfilePic=profile_default
-        else:
-            ProfilePic=username.ProfilePic
-           
-        
-        # # UPDATE PROFILE BASIC DETAILS
-        
-        # if request.method == 'POST':
-
-        #     # UPDATE BASIC DETAILS
-        #     # VALUES
-        #     FacultyCode = request.form.get('FacultyCode')
-        #     honorific = request.form.get('honorific')
-
-        #     u = update(FISFaculty)
-        #     u = u.values({"FacultyCode": FacultyCode,
-        #                   "honorific": honorific
-        #                   })
-        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
-        #     db.session.execute(u)
-        #     db.session.commit()
-        #     db.session.close()
-        #     return redirect(url_for('PDM.PDM_BD')) 
-                      
-        return render_template("Faculty-Home-Page/Research-Publications/Thesis.html", 
-                               User= username.FirstName + " " + username.LastName,
-                               faculty_code= username.FacultyCode,
-                               user= current_user,
-                               profile_pic=ProfilePic,
-                               RP="show",
-                               activate_T= "active")
-
- 
-# ------------------------------------------------------------- 
-
 # ------------------------------------------------------------- RESEARCH UTILIZATION ----------------------------------------------------
 # ------------------------------------------------------------- 
 
@@ -210,61 +102,17 @@ def RP_RU():
 
  
 # ------------------------------------------------------------- 
+                                               
 
-# ------------------------------------------------------------- DISSERTATION ----------------------------------------------------
-# ------------------------------------------------------------- 
-
-@RP.route("/RP-Dissertation", methods=['GET', 'POST'])
-@login_required
-@Check_Token
-def RP_D():
-    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
-        
-
-        if username.ProfilePic == None:
-            ProfilePic=profile_default
-        else:
-            ProfilePic=username.ProfilePic
-           
-        
-        # # UPDATE PROFILE BASIC DETAILS
-        
-        # if request.method == 'POST':
-
-        #     # UPDATE BASIC DETAILS
-        #     # VALUES
-        #     FacultyCode = request.form.get('FacultyCode')
-        #     honorific = request.form.get('honorific')
-
-        #     u = update(FISFaculty)
-        #     u = u.values({"FacultyCode": FacultyCode,
-        #                   "honorific": honorific
-        #                   })
-        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
-        #     db.session.execute(u)
-        #     db.session.commit()
-        #     db.session.close()
-        #     return redirect(url_for('PDM.PDM_BD')) 
-                      
-        return render_template("Faculty-Home-Page/Research-Publications/Dissertation.html", 
-                               User= username.FirstName + " " + username.LastName,
-                               faculty_code= username.FacultyCode,
-                               user= current_user,
-                               profile_pic=ProfilePic,
-                               RP="show",
-                               activate_D= "active")
 
  
+# ------------------------------------------------------------- RESEARCH REPORT ----------------------------------------------------
 # ------------------------------------------------------------- 
 
-# ------------------------------------------------------------- MASTERS THESIS ----------------------------------------------------
-# ------------------------------------------------------------- 
-
-@RP.route("/RP-Master-Thesis", methods=['GET', 'POST'])
+@RP.route("/RP-Research-Report", methods=['GET', 'POST'])
 @login_required
 @Check_Token
-def RP_MT():
+def RP_T():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
         
@@ -294,13 +142,13 @@ def RP_MT():
         #     db.session.close()
         #     return redirect(url_for('PDM.PDM_BD')) 
                       
-        return render_template("Faculty-Home-Page/Research-Publications/Master-Thesis.html", 
+        return render_template("Faculty-Home-Page/Research-Publications/Research-Report.html", 
                                User= username.FirstName + " " + username.LastName,
                                faculty_code= username.FacultyCode,
                                user= current_user,
                                profile_pic=ProfilePic,
                                RP="show",
-                               activate_MT= "active")
+                               activate_R= "active")
 
  
 # ------------------------------------------------------------- 

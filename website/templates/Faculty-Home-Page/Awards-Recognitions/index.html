@@ -1,6 +1,23 @@
 {% extends "/Faculty-Home-Page/base.html" %}{% block title %}Awards & Recognitions{% endblock %} {% block content%}
 
 
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<!-- Include DataTables Buttons CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+
+<!-- Include DataTables Print Button JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+
 <main id="main" class="main">
 
     <div class="pagetitle">
@@ -15,48 +32,209 @@
     </div><!-- End Page Title -->
 
     <section class="section">
-      <div class="row align-items-top">
-        <div class="col-12">
+      <style>
+        .responsive-table {
+          display: flex;
+          flex-wrap: wrap;
+          margin: -10px; /* Adjust margin as needed */
+        }
+      
+        .responsive-table td {
+          flex: 1;
+          padding: 10px; /* Adjust padding as needed */
+          box-sizing: border-box;
+        }
+      
+        .responsive-table h6 {
+          margin: 0;
+        }
+        .btnprinter-container {
+          text-align: right;
+        }
+      
+        .btnprinter {
+          width: 50px;
+          background-color: transparent;
+          border: none;
+          padding: 0;
+          cursor: pointer;
+        }
+      
+        .btnprinter i {
+          font-size: 24px; /* You can adjust the font size as needed */
+          color: #000; /* You can set the color as needed */
+        }
+      </style>
+              <div class="card">
+                <div class="card-body">
+                  <div class="card-body profile-card pt-4 d-flex flex-column align-items-start">
+                    <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                      <h5><strong>Awards Received and Recognitions</strong></h5>
+                    </div>
+                  </div>
+    
+                  <div class="d-flex justify-content-end my-md-2">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#awardModal"><i class="bx bx-plus"></i> Add New</button>
+                  </div>
 
-          <div class="card d-flex  p-5 ">
-            <div class="row d-flex flex-column">
-                <div class="col d-flex flex-row">
-                    <label for="yearDropdown">Sort:</label>
-                    <select class="form-control" id="yearDropdown" onchange="sortData()">
-                      <option value="">All Years</option>
-                      <option value="2023">2023</option>
-                      <option value="2022">2022</option>
-                      <option value="2021">2021</option>
-                      <!-- Add more years as needed -->
-                    </select>
-                </div>
-                <div class="col d-flex flex-column justify-content-center">
                   <br>
-                    <H3 class="pb-3 d-flex align-self-center justify-content-center font-weight-bold">AWARDS AND RECOGNITION</H3>
-                    <br>
-                    <img class="img-thumbnail d-flex align-self-center" src="https://lh3.googleusercontent.com/d/1ohQBe8o4byYSJ7urQtZnqPkRCl0QYfA-" alt="award_cert image">
-                </div>
-                <div class="row d-flex text-left pt-3">
-                    <h5 class="font-weight-bolder">Award: <span class="font-weight-normal">Exceptional Leadership and Innovation</span></h5>
-                    <h5 class="font-weight-bolder">Award Recipient: <span class="font-weight-normal">{{user.first_name}} {{user.middle_initial}} {{user.last_name}} </span></h5>
-                    <h5 class="font-weight-bolder">Date: <span class="font-weight-normal">August 15, 2023</span></h5>
-                </div>
-                <div>
+                
+                  <!-- Table with stripped rows -->
+                  <table id="table1" class="display" style="width:100%">
+                    <thead>
+                      <tr>
+                        <th scope="col">Award/Recognition Title</th>
+                        <th scope="col">Award Recipient</th>
+                        <th scope="col">Date Received</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td scope="row">Exceptional Leadership and Innovation</td>
+                        <td>{{user.FirstName}} {{user.MiddleInitial}} {{user.LastName}}</td>
+                        <td>09/15/2023</td>
+                        <td> 
+                          <div class="d-grid gap-2 mt-3">
+                            <button type="button" onclick="classredirectToURL()" class="btn btn-success">View</i></button>
+                            <script>
+                              function classredirectToURL() {
+                                  window.location.href = '/Awards-Recognitions-View/0001';
+                              }
+                          </script>
+                          </div>
+                      </td>
+                      </tr>
+                      <tr>
+                        <td scope="row">SAMPLE</td>
+                        <td>Alma A. Fernandez</td>
+                        <td>09/15/2023</td>
+                        <td> 
+                          <div class="d-grid gap-2 mt-3">
+                            <button type="button" class="btn btn-success">View</i></button>
+                          </div>
+                      </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <!-- End Table with stripped rows -->
                   <br>
-                    <p class="text-wrap">
-                      We are delighted to present the prestigious "Exceptional Leadership and Innovation Award" to Jane Doe, a trailblazer who has made an indelible mark in the field of sustainable technology. This award, bestowed on August 15, 2023, celebrates Jane's remarkable achievements and visionary leadership that have significantly advanced the realm of renewable energy solutions.
-                    </p>
+                  <br>
+               
                 </div>
               </div>
+    
             </div>
-        
-          </div><!-- End Default Card -->
+    
+        </section>
+    
+      </main><!-- End #main -->
 
+       <!-- Committee Modal -->
+  <div class="modal fade" id="awardModal" tabindex="-1" aria-labelledby="awardModalModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="uploadModalLabel">Add new Committee Role</h5>
+          <!-- close button -->
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="row mb-3">
+              <label for="inputText" class="col-sm-2 col-form-label">Title</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control">
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="inputPassword" class="col-sm-2 col-form-label">Abstract</label>
+              <div class="col-sm-10">
+                <textarea class="form-control" style="height: 100px"></textarea>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="inputDate" class="col-sm-2 col-form-label">Member Since</label>
+              <div class="col-sm-10">
+                <input type="date" class="form-control">
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="inputText" class="col-sm-2 col-form-label">Responsibilities</label>
+              <div class="col-sm-10">
+                  <input type="text" class="form-control" placeholder="1.">
+                  <input type="text" class="form-control" placeholder="2.">
+                  <input type="text" class="form-control" placeholder="3.">
+                  <input type="text" class="form-control" placeholder="4.">
+                  <input type="text" class="form-control" placeholder="5.">
+                  <small class="text-decoration-underline"><a href="">add more</a></small>      
+                  <!-- dito pre sa add more, kung pwede sana is mag add siya ng input type for responsibility, if ever na need pa ng mas marami -->
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
+    </div>
+  </div>
+<!-- END OF MODAL -->
+    
+      <script>
+        $(document).ready(function() {
+          // Function to initialize DataTable for a given table ID
+          function initializeDataTable(tableId, buttonId, title, customExportColumns) {
+            var dataTable = $(tableId).DataTable({
+              dom: 'BPlfrtip',
+              responsive: true,
+              columnDefs: [
+                {
+                  searchPanes: {
+                    show: true
+                  },
+                  targets: [0]
+                },
+                {
+                  searchPanes: {
+                    show: false
+                  },
+                  targets: [2]
+                }
+              ],
+              buttons: [
+                {
+                  extend: 'print',
+                  class: 'buttons-print',
+                  title: title, // Set the title for each table
+                  messageBottom: null,
+                  exportOptions: {
+                    columns: customExportColumns
+                  },
+                  text: 'Print'
+                }
+              ]
+            });
+      
+             // Initially hide the DataTables print button
+            dataTable.buttons('.buttons-print').nodes().addClass('d-none');
+      
+            $('#' + buttonId).on('click', function() {
+              // Trigger the DataTables print button click
+              dataTable.buttons('.buttons-print').trigger();
+            });
+          }
+      
+          // Customize your export options for each table
+          var exportColumnsTable1 = [ 0, 1, 2, 3, 4, 5 ];
+      
+          // Initialize DataTables for each table
+          initializeDataTable('#table1', 'btnPrintDetail1', 'BSIT-3-1 Class Schedules', exportColumnsTable1);
+        });
+      </script>
 
-    </section>
-
-  </main><!-- End #main -->
 
 {% endblock %}
 
