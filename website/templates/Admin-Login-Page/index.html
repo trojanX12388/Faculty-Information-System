@@ -7,7 +7,7 @@
       <div class="row justify-content-center">
         <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
-          <form id="loginForm" method="POST" action"/admin-login" autocomplete="off">
+          <form id="loginForm" method="POST" action"/admin-login" autocomplete="off"> 
              
             <input autocomplete="false" name="hidden" type="text" style="display:none;">
             <div class="d-flex justify-content-center py-4">
@@ -19,7 +19,7 @@
               </a>
             </div><!-- End Logo -->
 
-            <div class="card mb-3">
+            <div class="card mb-3" style="border-width:3px;">
 
               <div class="card-body">
 
@@ -27,18 +27,16 @@
                   <h5 class="card-title text-center pb-0 fs-4">Admin Login</h5>
                 </div>
 
-                <form class="row g-3 needs-validation" novalidate>
-
                   <div class="col-12 my-md-3">
-                    <label for="yourUsername" class="form-label">Username</label>
-                    <div class="input-group has-validation" data-validate = "Valid email is required: ex@webmail.com">
-                      <input type="text" name="email" class="form-control" id="email" autocomplete="off" placeholder="your@email.com" required>
-                      <div class="invalid-feedback">Please enter your username.</div>
+                    <label for="yourUsername" class="form-label"><strong>Email</strong></label>
+                    <div class="input-group has-validation" data-validate = "Valid email is required: example@webmail.com">
+                      <input type="text" name="email" class="form-control" id="email" autocomplete="off" placeholder="Enter your Email" required>
+                      <div class="invalid-feedback">Please enter your webmail.</div>
                     </div>
                   </div>
 
                   <div class="col-12 mt-md-3">
-                      Date of Birth:
+                  <strong>Date of Birth:</strong>
                     
                    <!-- Date of Birth Dropdowns in a Single Row -->
                     <div class="dob-inputs d-flex justify-content-between mt-md-2">
@@ -216,22 +214,22 @@
 
                   <div class="col-12 my-md-3" data-validate="Password is required">
                     <div class="d-flex justify-content-between">
-                      <label for="yourPassword" class="form-label d-flex">Password</label>
+                      <label for="yourPassword" class="form-label d-flex"><strong>Password</strong></label>
                       <a href="#" class="text-muted text-decoration-noned-flex" data-target="#exampleModal" data-toggle="modal" >I forgot password</a>
                     </div>
-                    <input type="password" name="password" class="form-control" id="password" autocomplete="off" placeholder="your password" required>
+                    <input type="password" name="password" class="form-control" id="password" autocomplete="off" placeholder="Enter your Password" required>
                     <div class="invalid-feedback">Please enter your password!</div>
                   </div>
 
                   <div class="col-12 my-md-3">
                      {# TOO MANY ATTEMPTS TIMER#} 
                      <span id="manyAttempt" style="display: none; color: #8B0000;">Many incorrect attempt... Please wait for <span id="countdownDisplay" style="font-size: 14px;"></span> seconds before trying again.</span>
-                    <button class="btn btn-primary w-100" type="submit" id="submitBtn">Login</button>
+                    <button class="btn btn-primary w-100" type="submit" id="submitBtn"><strong>Login</strong></button>
                   </div>
 
                   <div class="col-12">
                   <a href="/" class="bi bi-arrow-left">
-                    <button type="button" class="btn btn-danger w-100"> Back
+                    <button type="button" class="btn btn-danger w-100"><strong>Back</strong>
                     <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"></path>
                     </button>
                   </a>
@@ -259,7 +257,6 @@
               {% endif %}
             {% endwith %}
 
-          </form>
   
           <div class="login100-more" style="background-image: url({{url_for('static', filename='images/Default-Images/pupqc-statue.png')}});">
           </div>

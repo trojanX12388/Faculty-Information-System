@@ -42,20 +42,20 @@
 					  <div class="d-flex flex-column align-items-center justify-content-center">
 		  
 						<div class="d-flex justify-content-center py-4">
-						  <a href="/" class="logo d-flex align-items-center w-auto">
+						  <a href="/" class="logo d-flex align-items-center w-auto text-decoration-none">
 							<img src="{{ url_for('static', filename='images/Default-Images/pupqc-logo.png')}}" style="width:50px;height:50px;">
 							<h4 class="d-flex ms-sm-1">Faculty Information System</h4>
 						  </a>
 						</div><!-- End Logo -->
 		  
-						<div class="welcome card mb-3 px-md-5">
+						<div class="welcome card mb-3 px-md-5" style="border-width:3px;">
 						  <div class="card-body">
 							<div class="pb-2 mb-md-3">
 							  <h3 class="card-title text-center">Log in as</h3>
 							</div>
 							  <div class="mx-lg-5">
-								  <a href="/faculty-login"><button type="button" class="btn btn-primary w-100 my-md-2">Faculty</button></a>
-								  <a href="/admin-login"><button type="button" class="btn btn-primary w-100 my-md-2">Admin</button></a>
+								  <a href="/faculty-login"><button type="button" class="btn btn-primary w-100 my-md-2"><strong>Faculty</strong></button></a>
+								  <a href="/admin-login"><button type="button" class="btn btn-danger w-100 my-md-2"><strong>Admin</strong></button></a>
 							  </div>
 		  
 						  </div>
