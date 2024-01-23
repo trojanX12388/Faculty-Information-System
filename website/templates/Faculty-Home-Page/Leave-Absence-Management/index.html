@@ -1,0 +1,360 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Leave of Absence Management{% endblock %} {% block content%}
+
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<!-- Include DataTables Buttons CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+
+<!-- Include DataTables Print Button JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+
+<main id="main" class="main">
+
+  {% block Mandatory_Requirements %}
+    <div class="pagetitle">
+      <h1>Leave of Absence Management</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Leave of Absence Management</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+          <!-- calendar -->
+          <div class="card m-sm-2">
+              <div class="card-body">
+                <style>
+                  .fc-daygrid-day.fc-day-today {
+                      background-color: rgba(242, 203, 5, 0.25)!important;
+                  }
+                  .fc-daygrid-event, .fc-timegrid-event {
+                      border: none;
+                      color: white;
+                  }
+                  .fc-daygrid-event-dot {
+                      display: none;
+                  }
+                  .fc-event-time {
+                      padding-left: 5px;
+                  }
+                  .modal-content {
+                      
+                      margin: 15% auto; /* Adjust the top margin to center vertically */
+                      background-color: white;
+                      padding: 20px;
+                      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                      border-radius: 8px;
+                  }
+              </style>
+          </head>
+
+              <div id="calendar" class="p-4 bg-white rounded-2 shadow"></div>
+              
+              <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#addrecord"><i class="bi bi-plus-circle"></i> Request Leave</button>
+              </div>
+             
+    
+                   <!-- Add Record Modal-->
+    
+                   <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="addrecord" id="addrecord" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">Request Leave Form</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+    
+                  <form action="/Leave-Absence-Management/add-record" method="POST" enctype="multipart/form-data" accept-charset="utf-8" class="row g-3">
+    
+                            <div class="col-md-12">
+                              <div class="form-floating">
+                                <select class="form-select" name="type" aria-label="Level">
+                                  <option value="1">Parental Leave</option>
+                                  <option value="2">Vacation Leave</option>
+                                  <option value="3">Personal or Family Leave</option>
+                                  <option value="4">Sick Leave</option>
+                                  <option value="3">Sabbatical Leave</option>
+                                  <option value="3">Funeral Leave</option>
+                                  <option value="3">Military Leave</option>
+                                  <option value="3">Professional Development Leave</option>
+                                  <option value="3">Administrative Leave</option>
+                                  <option value="3">Unpaid Leave of Absence</option>
+                                </select>
+                                <label for="floatingschool_name">Type of Leave</label>
+                              </div>
+                          </div> 
+                          <div class="col-md-12">
+                            <div class="form-floating">
+                              <input type="date" name="date"  class="form-control" id="floating_from" placeholder="From" required>
+                              <label for="floating_level">Date of Leave</label>
+                            </div>
+                        </div> 
+                        <div class="col-md-12">
+                          <div class="form-floating">
+                            <textarea name="description" type="text" class="form-control " id="remarks" value="" style="height: 100px"></textarea>
+                            <label for="floating_level">Description</label>
+                          </div>
+                      </div> 
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
+                          <button type="submit" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Request</button>
+                  </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div><!-- End Add Record Modal-->
+          
+                  <!-- Modal -->
+                <div id="eventModal" class="modal">
+                  <div class="modal-content w-100 max-w-md">
+                      <h2 class="fs-2 fw-semibold mb-4" id="eventTitle"></h2>
+                      <p id="eventStart" class="mb-4"></p>
+                      <p id="eventType" class="mb-4"></p>
+                      <p id="eventDate" class="mb-4"></p>
+                      <p id="eventDescription" class="mb-4"></p>
+                      <p id="eventStatus" class="mb-4"></p>
+                      <div style="display: flex; justify-content: flex-end;">
+                          <button type="button" id="closeModal" class="bg-secondary text-white px-4 py-2 rounded-3 mt-4">Close</button>
+                      </div>
+                  </div>
+                </div>
+
+                <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+                <script>
+                  document.addEventListener('DOMContentLoaded', function() {
+                      var calendarEl = document.getElementById('calendar');
+
+                      // Sample data for events
+                      let eventsData = [
+                      {
+                          title: 'Sick Leave',
+                          start: '2024-01-06',
+                          backgroundColor: '#FF5733', // Different color for each event
+                          extendedProps: {
+                              type: 'Sick Leave',
+                              description: 'A sample of leave',
+                              status: 'Approved',
+                          },
+                      },
+                      {
+                          title: 'Class 2',
+                          start: '2024-09-02',
+                          backgroundColor: '#33FF57',
+                          extendedProps: {
+                            type: 'Sick Leave',
+                            description: 'A sample of leave',
+                            status: 'Approved',
+                          },
+                      },
+                      {
+                          title: 'Meeting 2',
+                          start: '2024-09-03',
+                          backgroundColor: '#5733FF',
+                          extendedProps: {
+                            type: 'Sick Leave',
+                            description: 'A sample of leave',
+                            status: 'Approved',
+                          },
+                      },
+                  ];
+
+                  var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay',
+                    },
+                    events: eventsData,
+                    eventClick: function(info) {
+                      // Display event details in a modal
+                      document.getElementById('eventTitle').textContent = info.event.title;
+                      document.getElementById('eventType').textContent = 'Type of Leave: ' + info.event.extendedProps.type;
+                      document.getElementById('eventDate').textContent = 'Date of Request: ' + info.event.start.toLocaleDateString();
+                      document.getElementById('eventDescription').textContent = 'Description: ' + info.event.extendedProps.description;
+                      document.getElementById('eventStatus').textContent = 'Status: ' + info.event.extendedProps.status;
+
+                      // Open the modal
+                      document.getElementById('eventModal').style.display = 'block';
+                  },
+                    eventRender: function(info) {
+                        // Set background color for each event
+                        info.el.style.backgroundColor = info.event.backgroundColor;
+                    },
+                });
+
+                // Close modal when close button is clicked
+                document.getElementById('closeModal').addEventListener('click', function() {
+                    document.getElementById('eventModal').style.display = 'none';
+                });
+
+                calendar.render();
+                });
+                </script>
+
+             
+              </div>
+          </div>
+          <div class="d-flex flex-row w-100">
+              <!-- Analytics -->
+              <div class="card w-50 me-md-1 d-flex px-md-3">
+                  <h5 class="card-title">Attendance Status</h5>
+                  <div class="card-body">
+                      <!-- Donut Chart -->
+                      <div id="donutChart"></div>
+                      <script>
+                        document.addEventListener("DOMContentLoaded", () => {
+                            new ApexCharts(document.querySelector("#donutChart"), {
+                                series: [99, 1], // Modify the values to represent the percentage of present and leave
+                                chart: {
+                                    height: 350,
+                                    type: 'donut',
+                                    toolbar: {
+                                        show: true
+                                    }
+                                },
+                                labels: ['Present', 'Leave'], // Add labels for present and leave
+                            }).render();
+                        });
+                    </script>
+                      <!-- End Donut Chart -->
+                  </div>
+                  <p class="d-flex justify-content-center align-items-end m-md-3">You have 1 leave on the month of January.</p>
+              </div>
+              <!-- Table -->
+              <div class="card w-50 ms-md-1">
+                  <div class="card-body">
+                      <h5 class="card-title">Type of Leave Table</h5>
+                      <!-- Bordered Table -->
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th scope="col">Purpose of Leave</th>
+                            <th scope="col">Number of Filed Leave</th>
+                            <th scope="col">Number of Approved Leave</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Parental Leave</td>
+                            <td>0</td>
+                            <td>0</td>
+                          </tr>
+                          <tr>
+                            <td>Vacation Leave</td>
+                            <td>0</td>
+                            <td>0</td>
+                          </tr>
+                          <tr>
+                            <td>Personal or Family Leave</td>
+                            <td>0</td>
+                            <td>0</td>
+                          </tr>
+                          <tr>
+                            <td>Sick Leave</td>
+                            <td>1</td>
+                            <td>1</td>
+                          </tr>
+                          <tr>
+                            <td>Sabbatical Leave</td>
+                            <td>0</td>
+                            <td>0</td>
+                          </tr>
+                          <tr>
+                            <td>Funeral Leave</td>
+                            <td>0</td>
+                            <td>0</td>
+                          </tr>
+                          <tr>
+                            <td>Military Leave</td>
+                            <td>0</td>
+                            <td>0</td>
+                          </tr>
+                          <tr>
+                            <td>Professional Development Leave</td>
+                            <td>0</td>
+                            <td>0</td>
+                          </tr>
+                          <tr>
+                            <td>Administrative Leave</td>
+                            <td>0</td>
+                            <td>0</td>
+                          </tr>
+                          <tr>
+                            <td>Unpaid Leave of Absence</td>
+                            <td>0</td>
+                            <td>0</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+          <!-- bottom table -->
+          <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Leave Requests</h5> 
+                
+                <!-- Default Table -->
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">No.</th>
+                      <th scope="col">Type of Leave</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Time</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>Sick Leave</td>
+                      <td>01/06/24</td>
+                      <td>6:00am</td>
+                      <td><span class="badge bg-success">Approved</span></td>
+                    </tr>
+                    <tr>
+                      <th scope="row"></th>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <!-- End Default Table Example -->
+              </div>
+            </div>
+      </div>
+  </section>
+
+
+ 
+
+  </main><!-- End #main -->
+
+
+  {% endblock %}
+
+{% endblock %}
+
+      

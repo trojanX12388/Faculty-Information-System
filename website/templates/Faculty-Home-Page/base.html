@@ -365,7 +365,7 @@
       </li><!-- End ATTENDANCE MANAGEMENT Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-register.html">
+        <a class="nav-link collapsed" href="/Leave-Absence-Management">
           <i class="bi bi-person-dash-fill"></i>
           <span>LEAVE OF ABSENCE MANAGEMENT</span>
         </a>
@@ -375,24 +375,24 @@
         <a class="nav-link collapsed" data-bs-target="#schedule-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-clock-fill"></i><span>SCHEDULE MANAGEMENT</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="schedule-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <ul id="schedule-nav" class="nav-content collapse {{ SM }}" data-bs-parent="#sidebar-nav">
           <li>
-            <a href="forms-elements.html">
+            <a href="/SM-Campus-Schedule" class="{{activate_CS}}">
+              <i class="bi bi-circle"></i><span>Campus Schedule</span>
+            </a>
+          </li>
+          <li>
+            <a href="/SM-University-Schedule" class="{{activate_US}}">
+              <i class="bi bi-circle"></i><span>University Schedule</span>
+            </a>
+          </li>
+          <li>
+            <a href="/SM-Class-Schedule" class="{{activate_ClS}}">
               <i class="bi bi-circle"></i><span>Class Schedule</span>
             </a>
           </li>
           <li>
-            <a href="forms-elements.html">
-              <i class="bi bi-circle"></i><span>Scheduled Programs</span>
-            </a>
-          </li>
-          <li>
-            <a href="forms-elements.html">
-              <i class="bi bi-circle"></i><span>Scheduled Activities</span>
-            </a>
-          </li>
-          <li>
-            <a href="forms-elements.html">
+            <a href="/SM-Scheduled-Events" class="{{activate_SE}}">
               <i class="bi bi-circle"></i><span>Scheduled Events</span>
             </a>
           </li>
@@ -437,38 +437,18 @@
         </a>
         <ul id="professional-nav" class="nav-content collapse {{ PD }}" data-bs-parent="#sidebar-nav">
           <li>
-            <a href="forms-elements.html" class="{{activate_W}}">
+            <a href="/PD-Workshops" class="{{activate_W}}">
               <i class="bi bi-circle"></i><span>Workshops</span>
             </a>
           </li>
           <li>
-            <a href="forms-elements.html" class="{{activate_E}}">
-              <i class="bi bi-circle"></i><span>Enhancements</span>
+            <a href="/PD-Trainings" class="{{activate_T}}">
+              <i class="bi bi-circle"></i><span>Trainings</span>
             </a>
           </li>
           <li>
-            <a href="forms-elements.html" class="{{activate_CD}}">
-              <i class="bi bi-circle"></i><span>Continuing Development</span>
-            </a>
-          </li>
-          <li>
-            <a href="forms-elements.html" class="{{activate_EQ}}">
-              <i class="bi bi-circle"></i><span>Educational Qualifications</span>
-            </a>
-          </li>
-          <li>
-              <a href="/PD-Self-Assessment-Tests" class="{{activate_SAT}}">
-              <i class="bi bi-circle"></i><span>Self-Assessment Tests</span>
-            </a>
-          </li>
-          <li>
-            <a href="forms-elements.html" class="{{activate_PD}}">
-              <i class="bi bi-circle"></i><span>Personal Development</span>
-            </a>
-          </li>
-          <li>
-            <a href="forms-elements.html" class="{{activate_T}}">
-              <i class="bi bi-circle"></i><span>Training</span>
+            <a href="/PD-Seminars" class="{{activate_S}}">
+              <i class="bi bi-circle"></i><span>Seminars</span>
             </a>
           </li>
         </ul>

@@ -23,7 +23,7 @@ from website.models import FISFaculty
 from website.Token.token_check import Check_Token
 
 # WEB AUTH ROUTES URL
-PD = Blueprint('PD', __name__)
+SM = Blueprint('SM', __name__)
 
 # -------------------------------------------------------------
 
@@ -56,14 +56,14 @@ profile_default='14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08'
 # -------------------------------------------------------------
 
 
-#                                                    PROFESSIONAL DEVELOPMENT
+#                                                    SCHEDULE MANAGEMENT ROUTE
+        
+# ------------------------------- CAMPUS SCHEDULE ----------------------------  
 
-# ------------------------------- WORKSHOPS ----------------------------  
-
-@PD.route("/PD-Workshops", methods=['GET', 'POST'])
+@SM.route("/SM-Campus-Schedule", methods=['GET', 'POST'])
 @login_required
 @Check_Token
-def PD_W():
+def SM_CS():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
         
@@ -80,11 +80,11 @@ def PD_W():
 
         #     # UPDATE BASIC DETAILS
         #     # VALUES
-        #     faculty_code = request.form.get('faculty_code')
+        #     FacultyCode = request.form.get('FacultyCode')
         #     honorific = request.form.get('honorific')
 
         #     u = update(FISFaculty)
-        #     u = u.values({"faculty_code": faculty_code,
+        #     u = u.values({"FacultyCode": FacultyCode,
         #                   "honorific": honorific
         #                   })
         #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
@@ -93,23 +93,20 @@ def PD_W():
         #     db.session.close()
         #     return redirect(url_for('PDM.PDM_BD')) 
                       
-        return render_template("Faculty-Home-Page/Professional-Development/PD-Workshops.html", 
+        return render_template("Faculty-Home-Page/Schedule-Management/SM-Campus-Schedule.html", 
                                User= username.FirstName + " " + username.LastName,
                                faculty_code= username.FacultyCode,
                                user= current_user,
-                               profile_pic=ProfilePic,
-                               PD="show",
-                               activate_W= "active")
+                               SM="show",
+                               activate_CS= "active",
+                               profile_pic=ProfilePic)
+        
+# ------------------------------- UNVIERSITY SCHEDULE ----------------------------  
 
- 
-# ------------------------------------------------------------- 
-
-# ------------------------------- TRAININGS ----------------------------  
-
-@PD.route("/PD-Trainings", methods=['GET', 'POST'])
+@SM.route("/SM-University-Schedule", methods=['GET', 'POST'])
 @login_required
 @Check_Token
-def PD_T():
+def SM_US():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
         
@@ -126,11 +123,11 @@ def PD_T():
 
         #     # UPDATE BASIC DETAILS
         #     # VALUES
-        #     faculty_code = request.form.get('faculty_code')
+        #     FacultyCode = request.form.get('FacultyCode')
         #     honorific = request.form.get('honorific')
 
         #     u = update(FISFaculty)
-        #     u = u.values({"faculty_code": faculty_code,
+        #     u = u.values({"FacultyCode": FacultyCode,
         #                   "honorific": honorific
         #                   })
         #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
@@ -139,23 +136,20 @@ def PD_T():
         #     db.session.close()
         #     return redirect(url_for('PDM.PDM_BD')) 
                       
-        return render_template("Faculty-Home-Page/Professional-Development/PD-Trainings.html", 
+        return render_template("Faculty-Home-Page/Schedule-Management/SM-University-Schedule.html", 
                                User= username.FirstName + " " + username.LastName,
                                faculty_code= username.FacultyCode,
                                user= current_user,
-                               profile_pic=ProfilePic,
-                               PD="show",
-                               activate_T= "active")
+                               SM="show",
+                               activate_US= "active",
+                               profile_pic=ProfilePic)
 
- 
-# ------------------------------------------------------------- 
+# ------------------------------- CLASS SCHEDULE ----------------------------  
 
-# ------------------------------- SEMINARS ----------------------------  
-
-@PD.route("/PD-Seminars", methods=['GET', 'POST'])
+@SM.route("/SM-Class-Schedule", methods=['GET', 'POST'])
 @login_required
 @Check_Token
-def PD_S():
+def SM_ClS():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
         
@@ -172,11 +166,11 @@ def PD_S():
 
         #     # UPDATE BASIC DETAILS
         #     # VALUES
-        #     faculty_code = request.form.get('faculty_code')
+        #     FacultyCode = request.form.get('FacultyCode')
         #     honorific = request.form.get('honorific')
 
         #     u = update(FISFaculty)
-        #     u = u.values({"faculty_code": faculty_code,
+        #     u = u.values({"FacultyCode": FacultyCode,
         #                   "honorific": honorific
         #                   })
         #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
@@ -185,13 +179,56 @@ def PD_S():
         #     db.session.close()
         #     return redirect(url_for('PDM.PDM_BD')) 
                       
-        return render_template("Faculty-Home-Page/Professional-Development/PD-Seminars.html", 
+        return render_template("Faculty-Home-Page/Schedule-Management/SM-Class-Schedule.html", 
                                User= username.FirstName + " " + username.LastName,
                                faculty_code= username.FacultyCode,
                                user= current_user,
-                               profile_pic=ProfilePic,
-                               PD="show",
-                               activate_S= "active")
+                               SM="show",
+                               activate_ClS= "active",
+                               profile_pic=ProfilePic)
+        
+# ------------------------------- SCHEDULED EVENTS ----------------------------  
 
- 
-# ------------------------------------------------------------- 
+@SM.route("/SM-Scheduled-Events", methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def SM_SE():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        
+
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
+        else:
+            ProfilePic=username.ProfilePic
+           
+        
+        # # UPDATE PROFILE BASIC DETAILS
+        
+        # if request.method == 'POST':
+
+        #     # UPDATE BASIC DETAILS
+        #     # VALUES
+        #     FacultyCode = request.form.get('FacultyCode')
+        #     honorific = request.form.get('honorific')
+
+        #     u = update(FISFaculty)
+        #     u = u.values({"FacultyCode": FacultyCode,
+        #                   "honorific": honorific
+        #                   })
+        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
+        #     db.session.execute(u)
+        #     db.session.commit()
+        #     db.session.close()
+        #     return redirect(url_for('PDM.PDM_BD')) 
+                      
+        return render_template("Faculty-Home-Page/Schedule-Management/SM-Scheduled-Events.html", 
+                               User= username.FirstName + " " + username.LastName,
+                               faculty_code= username.FacultyCode,
+                               user= current_user,
+                               SM="show",
+                               activate_SE= "active",
+                               profile_pic=ProfilePic)
+        
+        
+        

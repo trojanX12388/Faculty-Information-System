@@ -1,0 +1,239 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Campus Schedule{% endblock %} {% block content%}
+
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<!-- Include DataTables Buttons CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+
+<!-- Include DataTables Print Button JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+
+<main id="main" class="main">
+
+  {% block Mandatory_Requirements %}
+    <div class="pagetitle">
+      <h1>Campus Schedule</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Schedule Management</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+          <!-- calendar -->
+          <div class="card m-sm-2">
+              <div class="card-body">
+                <style>
+                  .fc-daygrid-day.fc-day-today {
+                      background-color: rgba(242, 203, 5, 0.25)!important;
+                  }
+                  .fc-daygrid-event, .fc-timegrid-event {
+                      border: none;
+                      color: white;
+                  }
+                  .fc-daygrid-event-dot {
+                      display: none;
+                  }
+                  .fc-event-time {
+                      padding-left: 5px;
+                  }
+                  .modal-content {
+                     
+                      margin: 15% auto; /* Adjust the top margin to center vertically */
+                      background-color: white;
+                      padding: 20px;
+                      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                      border-radius: 8px;
+                  }
+                  .btnprinter-container {
+                    text-align: right;
+                  }
+                
+                  .btnprinter {
+                    width: 50px;
+                    background-color: transparent;
+                    border: none;
+                    padding: 0;
+                    cursor: pointer;
+                  }
+                
+                  .btnprinter i {
+                    font-size: 24px; /* You can adjust the font size as needed */
+                    color: #000; /* You can set the color as needed */
+                  }
+              </style>
+          </head>
+
+          <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+            <h5><strong>Campus Schedules</strong></h5>
+          </div>
+
+          <!-- Add a Print button -->
+          <div class="btnprinter-container">
+            <button id="btnPrintDetail2" class="btnprinter" onclick="printCalendar()"><i class="bi bi-printer"></i></button>
+          </div>
+
+              <div id="calendar" class="p-4 bg-white rounded-2 shadow"></div>
+              
+                  <!-- Modal -->
+                <div id="eventModal" class="modal">
+                  <div class="modal-content w-100 max-w-md">
+                      <h2 class="fs-2 fw-semibold mb-4" id="eventTitle"></h2>
+                      <p id="eventStart" class="mb-4"></p>
+                      <p id="eventType" class="mb-4"></p>
+                      <p id="eventDate" class="mb-4"></p>
+                      <p id="eventDescription" class="mb-4"></p>
+                      <p id="eventStatus" class="mb-4"></p>
+                      <div style="display: flex; justify-content: flex-end;">
+                          <button type="button" id="closeModal" class="bg-secondary text-white px-4 py-2 rounded-3 mt-4">Close</button>
+                      </div>
+                  </div>
+                </div>
+
+                <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+                <script>
+                  document.addEventListener('DOMContentLoaded', function() {
+                      var calendarEl = document.getElementById('calendar');
+
+                      // Sample data for events
+                      let eventsData = [
+                      {
+                          title: 'BSIT 4-1',
+                          start: '2024-01-06',
+                          backgroundColor: '#FF5733', // Different color for each event
+                          extendedProps: {
+                              type: 'Database Management',
+                              description: 'A sample of leave',
+                              status: 'Approved',
+                          },
+                      },
+                      {
+                        title: 'BSIT 4-1',
+                        start: '2024-01-05',
+                        backgroundColor: '#FF5733', // Different color for each event
+                        extendedProps: {
+                            type: 'Database Management',
+                            description: 'A sample of leave',
+                            status: 'Approved',
+                        },
+                    },
+                    {
+                      title: 'BSIT 3-1',
+                      start: '2024-01-03',
+                      backgroundColor: '#5733FF', // Different color for each event
+                      extendedProps: {
+                          type: 'Programming 3',
+                          description: 'A sample of leave',
+                          status: 'Approved',
+                      },
+                  },
+                  {
+                    title: 'BSIT 4-1',
+                    start: '2024-01-08',
+                    backgroundColor: '#FF5733', // Different color for each event
+                    extendedProps: {
+                        type: 'Web Dev',
+                        description: 'A sample of leave',
+                        status: 'Approved',
+                    },
+                },
+                  {
+                    title: 'BSIT 3-1',
+                    start: '2024-01-10',
+                    backgroundColor: '#5733FF', // Different color for each event
+                    extendedProps: {
+                        type: 'Programming 3',
+                        description: 'A sample of leave',
+                        status: 'Approved',
+                    },
+                },
+                      {
+                          title: 'Class 2',
+                          start: '2024-09-02',
+                          backgroundColor: '#33FF57',
+                          extendedProps: {
+                            type: 'Sick Leave',
+                            description: 'A sample of leave',
+                            status: 'Approved',
+                          },
+                      },
+                      {
+                          title: 'Meeting 2',
+                          start: '2024-09-03',
+                          backgroundColor: '#5733FF',
+                          extendedProps: {
+                            type: 'Sick Leave',
+                            description: 'A sample of leave',
+                            status: 'Approved',
+                          },
+                      },
+                  ];
+
+                  var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay',
+                    },
+                    events: eventsData,
+                    eventClick: function(info) {
+                      // Display event details in a modal
+                      document.getElementById('eventTitle').textContent = info.event.title;
+                      document.getElementById('eventType').textContent = 'Type of Leave: ' + info.event.extendedProps.type;
+                      document.getElementById('eventDate').textContent = 'Date of Request: ' + info.event.start.toLocaleDateString();
+                      document.getElementById('eventDescription').textContent = 'Description: ' + info.event.extendedProps.description;
+                      document.getElementById('eventStatus').textContent = 'Status: ' + info.event.extendedProps.status;
+
+                      // Open the modal
+                      document.getElementById('eventModal').style.display = 'block';
+                  },
+                    eventRender: function(info) {
+                        // Set background color for each event
+                        info.el.style.backgroundColor = info.event.backgroundColor;
+                    },
+                });
+
+                // Close modal when close button is clicked
+                document.getElementById('closeModal').addEventListener('click', function() {
+                    document.getElementById('eventModal').style.display = 'none';
+                });
+
+                calendar.render();
+                });
+                </script>
+
+             
+
+             
+              </div>
+          </div>
+    
+      </div>
+  </section>
+
+
+ 
+
+  </main><!-- End #main -->
+
+
+  {% endblock %}
+
+{% endblock %}
+
+      

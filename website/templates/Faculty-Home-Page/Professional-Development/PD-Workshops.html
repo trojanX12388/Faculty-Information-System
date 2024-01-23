@@ -1,0 +1,258 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Workshops{% endblock %} {% block content%}
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<!-- Include DataTables Buttons CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+
+<!-- Include DataTables Print Button JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Workshops</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Professional Development</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <style>
+      .responsive-table {
+        display: flex;
+        flex-wrap: wrap;
+        margin: -10px; /* Adjust margin as needed */
+      }
+    
+      .responsive-table td {
+        flex: 1;
+        padding: 10px; /* Adjust padding as needed */
+        box-sizing: border-box;
+        background-color: #f2f2f2 !important; /* !important to override DataTables styles */
+      }
+    
+      .responsive-table h6 {
+        margin: 0;
+      }
+    
+      .btnprinter-container {
+        text-align: right;
+      }
+    
+      .btnprinter {
+        width: 50px;
+        background-color: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+      }
+    
+      .btnprinter i {
+        font-size: 24px; /* You can adjust the font size as needed */
+        color: #000; /* You can set the color as needed */
+      }
+    </style>
+
+
+    <section class="section">
+      <div class="row">
+                <div class="d-flex flex-column align-items-cente">
+                  <br><br><br>
+
+                  <div class="list-group">
+
+                  <table id="table3" class="display" style="width:100%"> <!-- Mentoring Table with stripped rows -->
+                    <thead>
+                      
+                    </thead>
+                    <tbody>
+                      
+                      <tr>
+                        <td>
+                          <a href="#" class="list-group-item list-group-item-action mb-md-2">
+                            <div class="d-flex">
+                              <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="card-title">Assessment and Feedback Techniquest</h5>
+                                    <div class="d-flex align-items-center">
+                                        <h6 class="text-muted">Upcoming</h6>
+                                    </div>
+                                </div>
+                                  <div class="card-subtitle d-flex mb-3">
+                                      <p class="col-md-2 bi bi-geo-alt-fill">PUP Quezon City</p> 
+                                      <p class="col-md-2 bi bi-calendar-event-fill fw-bold">Start Date: <span class="fw-normal">Date here</span></p> 
+                                      <p class="col-md-2 bi bi-clock-fill fw-bold">Time: <span class="fw-normal">Time here</span></p>
+                                  </div>
+                                    <p class="bi bi-dot">Overview of diverse assessment methods.</p>
+                                    <p class="bi bi-dot">Strategies for providing constructive feedback.</p>
+                                    <p class="bi bi-dot">Creating assessment tools that align with learning objectives.</p>
+                              </div>
+                          </div>
+                          </a>
+                        </td>
+                        
+                      </tr>
+                      <tr>
+                        <td>
+                          <a href="#" class="list-group-item list-group-item-action mb-md-2">
+                            <div class="d-flex">
+                              <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="card-title">Innovation in Sustainable Energy Research Grant</h5>
+                                    <div class="d-flex align-items-center">
+                                        <h6 class="text-muted">On going</h6>
+                                    </div>
+                                </div>
+                                  <div class="card-subtitle d-flex mb-3">
+                                      <p class="col-md-2 bi bi-geo-alt-fill">PUP Sta. Mesa Manila</p> 
+                                      <p class="col-md-2 bi bi-calendar-event-fill fw-bold">Start Date: <span class="fw-normal">Date here</span></p> 
+                                      <p class="col-md-2 bi bi-clock-fill fw-bold">Time: <span class="fw-normal">Time here</span></p>
+                                  </div>
+                                    <p class="bi bi-dot">Overview of the latest educational technologies.</p>
+                                    <p class="bi bi-dot">Hands-on sessions for using tools like online collaboration platforms, educational apps, and learning management systems.</p>
+                                    <p class="bi bi-dot">Strategies for integrating technology to enhance teaching and learning.</p>
+                              </div>
+                          </div>
+                          </a>
+                        </td>
+                        
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <a href="#" class="list-group-item list-group-item-action mb-md-2">
+                            <div class="d-flex">
+                              <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="card-title">Effective Classroom Management</h5>
+                                    <div class="d-flex align-items-center">
+                                        <h6 class="text-muted">Pre-registration</h6>
+                                    </div>
+                                </div>
+                                  <div class="card-subtitle d-flex mb-3">
+                                      <p class="col-md-2 bi bi-geo-alt-fill">PUP San Juan Campus</p> 
+                                      <p class="col-md-2 bi bi-calendar-event-fill fw-bold">Start Date: <span class="fw-normal">Date here</span></p> 
+                                      <p class="col-md-2 bi bi-clock-fill fw-bold">Time: <span class="fw-normal">Time here</span></p>
+                                  </div>
+                                    <p class="bi bi-dot">Techniques for creating a positive and inclusive classroom environment.</p>
+                                    <p class="bi bi-dot">Strategies for handling diverse student needs and behaviors.</p>
+                                    <p class="bi bi-dot">Role-playing scenarios to practice effective classroom management.</p>
+                              </div>
+                          </div>
+                          </a>
+                        </td>
+                        
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <a href="#" class="list-group-item list-group-item-action mb-md-2">
+                            <div class="d-flex">
+                              <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="card-title">Active Learning Strategies</h5>
+                                    <div class="d-flex align-items-center">
+                                        <h6 class="text-muted">Upcoming</h6>
+                                    </div>
+                                </div>
+                                  <div class="card-subtitle d-flex mb-3">
+                                      <p class="col-md-2 bi bi-geo-alt-fill">PUP San Juan Campus</p> 
+                                      <p class="col-md-2 bi bi-calendar-event-fill fw-bold">Start Date: <span class="fw-normal">Date here</span></p> 
+                                      <p class="col-md-2 bi bi-clock-fill fw-bold">Time: <span class="fw-normal">Time here</span></p>
+                                  </div>
+                                    <p class="bi bi-dot">Introduction to various active learning methods.</p>
+                                    <p class="bi bi-dot">Workshop on designing and implementing interactive activities in lectures.</p>
+                                    <p class="bi bi-dot">Group discussions on best practices for promoting student engagement.to enhance teaching and learning.</p>
+                              </div>
+                          </div>
+                          </a>
+                        </td>
+                        
+                      </tr>
+
+                    </tbody>
+                  </table> 
+                  
+                </div>
+
+                </div>
+
+            </div>
+     
+    </section>
+
+  </main><!-- End #main -->
+
+  
+ <script>
+  $(document).ready(function() {
+    // Function to initialize DataTable for a given table ID
+    function initializeDataTable(tableId, buttonId, title, customExportColumns) {
+      var dataTable = $(tableId).DataTable({
+        dom: 'BPlfrtip',
+        responsive: true,
+        columnDefs: [
+          {
+            searchPanes: {
+              show: true
+            },
+            targets: [0]
+          },
+          {
+            searchPanes: {
+              show: false
+            },
+            targets: [0]
+          }
+        ],
+        buttons: [
+          {
+            extend: 'print',
+            class: 'buttons-print',
+            title: title, // Set the title for each table
+            messageBottom: null,
+            exportOptions: {
+              columns: customExportColumns
+            },
+            text: 'Print'
+          }
+        ]
+      });
+
+       // Initially hide the DataTables print button
+      dataTable.buttons('.buttons-print').nodes().addClass('d-none');
+
+      $('#' + buttonId).on('click', function() {
+        // Trigger the DataTables print button click
+        dataTable.buttons('.buttons-print').trigger();
+      });
+    }
+
+    // Customize your export options for each table
+    var exportColumnsTable1 = [ 0];
+    var exportColumnsTable2 = [ 0];
+    var exportColumnsTable3 = [ 0];
+
+    // Initialize DataTables for each table
+    initializeDataTable('#table1', 'btnPrintDetail1', 'Advising Classes', exportColumnsTable1);
+    initializeDataTable('#table2', 'btnPrintDetail2', 'Advising Students', exportColumnsTable2);
+    initializeDataTable('#table3', 'btnPrintDetail3', 'Mentoring', exportColumnsTable3);
+  });
+</script>
+
+{% endblock %}
+
+      

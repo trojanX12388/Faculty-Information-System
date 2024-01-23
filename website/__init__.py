@@ -106,6 +106,12 @@ def create_app():
     from .modules.Attendance_Management import AM
     app.register_blueprint(AM, url_prefix='/')
     
+    from .modules.Leave_Absence_Management import LAM
+    app.register_blueprint(LAM, url_prefix='/')
+    
+    from .modules.Schedule_Management import SM
+    app.register_blueprint(SM, url_prefix='/')
+    
     # LOADING LOGIN MANAGER CACHE
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login_denied'

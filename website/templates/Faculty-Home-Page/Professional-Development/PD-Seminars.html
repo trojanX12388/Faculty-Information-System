@@ -1,0 +1,214 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Seminars{% endblock %} {% block content%}
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<!-- Include DataTables Buttons CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+
+<!-- Include DataTables Print Button JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Seminars</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Professional Development</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <style>
+      .responsive-table {
+        display: flex;
+        flex-wrap: wrap;
+        margin: -10px; /* Adjust margin as needed */
+      }
+    
+      .responsive-table td {
+        flex: 1;
+        padding: 10px; /* Adjust padding as needed */
+        box-sizing: border-box;
+        background-color: #f2f2f2 !important; /* !important to override DataTables styles */
+      }
+    
+      .responsive-table h6 {
+        margin: 0;
+      }
+    
+      .btnprinter-container {
+        text-align: right;
+      }
+    
+      .btnprinter {
+        width: 50px;
+        background-color: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+      }
+    
+      .btnprinter i {
+        font-size: 24px; /* You can adjust the font size as needed */
+        color: #000; /* You can set the color as needed */
+      }
+    </style>
+
+
+    <section class="section">
+      <div class="row">
+                <div class="d-flex flex-column align-items-cente">
+                  <br><br><br>
+          <!-- Default Accordion -->
+          <div class="accordion" id="accordionExample">
+  
+                  <table id="table3" class="display" style="width:100%"> <!-- Mentoring Table with stripped rows -->
+                    <thead>
+                      
+                    </thead>
+                    <tbody>
+                      
+                      <tr>
+                        <td>
+                          <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                  <div class="col">
+                                      <a class="">Effective Communication</a>
+                                  </div>
+                              </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                              <div class="accordion-body">
+                                  <div class="card-subtitle d-flex justify-content-between">
+                                      <p class="col-md-2 fw-bold bi bi-people-fill">Sessions Attended: <span class="fw-normal">12</span></p> 
+                                      <p class="col-md-2 fw-bold bi bi-layers-fill">Category: <span class="fw-normal">Interpersonal Skills</span></p> 
+                                      <p class="col-md-2 fw-bold bi bi-card-checklist">Score: <span class="fw-normal">62%</span></p>
+                                      <p class="col-md-2 fw-bold bi bi-briefcase-fill">Remarks: <span class="fw-normal fw-italicize">Fair</span></p>
+                                  </div>
+                                  <div class="my-md-3">
+                                      <p class="bi bi-dot">Clear and concise communication skills for effective teaching.</p>
+                                      <p class="bi bi-dot">Ability to explain complex concepts in an accessible manner.</p>
+                                  </div>
+                                  <em><a href="#" class="text-muted text-decoration-underline">more info>></a></em>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                  <div class="col">
+                                      <a class="">IMs Development</a>
+                                  </div>
+                              </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                              <div class="accordion-body">
+                                  <div class="card-subtitle d-flex justify-content-between">
+                                      <p class="col-md-2 fw-bold bi bi-people-fill">Sessions Attended: <span class="fw-normal">12</span></p> 
+                                      <p class="col-md-2 fw-bold bi bi-layers-fill">Category: <span class="fw-normal">Interpersonal Skills</span></p> 
+                                      <p class="col-md-2 fw-bold bi bi-card-checklist">Score: <span class="fw-normal">62%</span></p>
+                                      <p class="col-md-2 fw-bold bi bi-briefcase-fill">Remarks: <span class="fw-normal fw-italicize">Fair</span></p>
+                                  </div>
+                                  <div class="my-md-3">
+                                      <p class="bi bi-dot">Clear and concise communication skills for effective teaching.</p>
+                                      <p class="bi bi-dot">Ability to explain complex concepts in an accessible manner.</p>
+                                  </div>
+                                  <em><a href="#" class="text-muted text-decoration-underline">more info>></a></em>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        
+                      </tr>
+
+                    
+                    </tbody>
+                  </table> 
+               </div>
+                    
+                </div>
+
+            </div>
+     
+    </section>
+
+  </main><!-- End #main -->
+
+  
+ <script>
+  $(document).ready(function() {
+    // Function to initialize DataTable for a given table ID
+    function initializeDataTable(tableId, buttonId, title, customExportColumns) {
+      var dataTable = $(tableId).DataTable({
+        dom: 'BPlfrtip',
+        responsive: true,
+        columnDefs: [
+          {
+            searchPanes: {
+              show: true
+            },
+            targets: [0]
+          },
+          {
+            searchPanes: {
+              show: false
+            },
+            targets: [0]
+          }
+        ],
+        buttons: [
+          {
+            extend: 'print',
+            class: 'buttons-print',
+            title: title, // Set the title for each table
+            messageBottom: null,
+            exportOptions: {
+              columns: customExportColumns
+            },
+            text: 'Print'
+          }
+        ]
+      });
+
+       // Initially hide the DataTables print button
+      dataTable.buttons('.buttons-print').nodes().addClass('d-none');
+
+      $('#' + buttonId).on('click', function() {
+        // Trigger the DataTables print button click
+        dataTable.buttons('.buttons-print').trigger();
+      });
+    }
+
+    // Customize your export options for each table
+    var exportColumnsTable1 = [ 0];
+    var exportColumnsTable2 = [ 0];
+    var exportColumnsTable3 = [ 0];
+
+    // Initialize DataTables for each table
+    initializeDataTable('#table1', 'btnPrintDetail1', 'Advising Classes', exportColumnsTable1);
+    initializeDataTable('#table2', 'btnPrintDetail2', 'Advising Students', exportColumnsTable2);
+    initializeDataTable('#table3', 'btnPrintDetail3', 'Mentoring', exportColumnsTable3);
+  });
+</script>
+
+{% endblock %}
+
+      
