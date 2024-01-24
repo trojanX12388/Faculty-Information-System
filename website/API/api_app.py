@@ -14,6 +14,7 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 from flask_cors import CORS  # Import CORS
 
+
 # IMPORTING PYDANTIC CLASS
 from pydantic import BaseModel, Field, ValidationError
 from typing import Optional
@@ -42,11 +43,15 @@ from .model_class.faculty_profile import FISFaculty
 # PDS
 from .model_class.pds_model import FISPDS_PersonalDetails,FISPDS_ContactDetails
 
+# LOAD EVALUATION
+from .model_class.evaluations import FISEvaluations
+
 # LOAD PYDANTIC MODELS
 from .model_class.faculty_profile import FISFaculty_Model
 # PDS 
 from .model_class.pds_model import FISPDS_PersonalDetails_Model,FISPDS_ContactDetails_Model
-
+# LOAD EVALUATION MODELS
+from .model_class.evaluations import FISEvaluations_Model
 
 # ---------------------------------------------------------
 
@@ -409,3 +414,90 @@ def get_pds_contact_details(FacultyId):
             db.commit()
             db.close()
             return jsonify({'result': True})
+        
+        
+# FACULTY DATA 
+# -------------------------------------------------------------------------
+def convert_to_percentage(grade):
+            # No need to multiply by 100
+            return '{:.2f}'.format(grade)
+            
+def convert_to_interpretation(grade):
+    # Legend for conversion
+    legend = {
+        (4.5, 5.0): 'Outstanding',
+        (3.5, 4.49): 'Very Satisfactory',
+        (2.5, 3.49): 'Satisfactory',
+        (1.5, 2.49): 'Fair',
+        (1.0, 1.49): 'Poor'
+    }
+
+    # Iterate through legend and find the corresponding range
+    for key, value in legend.items():
+        if key[0] <= grade <= key[1]:
+            return value
+
+    return None  # Handle the case where the grade doesn't fall into any range
+
+@API.route('/api/FISFaculty/Evaluations', methods=['GET'])
+def get_all_faculty_evaluations():
+    try:
+        db = SessionLocal()
+        faculty_profiles = db.query(FISEvaluations).all()
+        profiles = []
+
+        for faculty in faculty_profiles:
+            faculty_record = db.query(FISFaculty).filter_by(FacultyId=faculty.FacultyId).first()
+            faculty_type = faculty_record.FacultyType
+            if faculty_record:
+                faculty_data = FISEvaluations_Model.from_orm(faculty).dict()
+                faculty_data['Id'] = faculty_data['FacultyId']
+                faculty_data['FacultyName'] = f"{faculty_record.LastName}, {faculty_record.FirstName} {faculty_record.MiddleInitial}"
+
+                # Calculate average ratings for peer, student, director, acad_head
+                peer_avg = (faculty_data['peer_a'] + faculty_data['peer_b'] + faculty_data['peer_c'] + faculty_data['peer_d']) / 4
+                student_avg = (faculty_data['student_a'] + faculty_data['student_b'] + faculty_data['student_c'] + faculty_data['student_d']) / 4
+                director_avg = (faculty_data['director_a'] + faculty_data['director_b'] + faculty_data['director_c'] + faculty_data['director_d']) / 4
+                acad_head_avg = (faculty_data['acad_head_a'] + faculty_data['acad_head_b'] + faculty_data['acad_head_c'] + faculty_data['acad_head_d']) / 4
+                self_avg = (faculty_data['self_a'] + faculty_data['self_b'] + faculty_data['self_c'] + faculty_data['self_d']) / 4
+
+                # Calculate supervisor average
+                supervisor_avg = (acad_head_avg + director_avg) / 2
+
+                # Add calculated averages to the dictionary
+                faculty_data['Supervisor Rating'] = convert_to_percentage(supervisor_avg)
+                faculty_data['Supervisor Interpretation'] = convert_to_interpretation(supervisor_avg)
+                faculty_data['Students Rating'] = convert_to_percentage(student_avg)
+                faculty_data['Students Interpretation'] = convert_to_interpretation(student_avg)
+                faculty_data['Peer Rating'] = convert_to_percentage(peer_avg)
+                faculty_data['Peer Interpretation'] = convert_to_interpretation(peer_avg)
+                faculty_data['Self Rating'] = convert_to_percentage(self_avg)
+                faculty_data['Self Interpretation'] = convert_to_interpretation(self_avg)
+                faculty_data['FacultyType'] = faculty_type
+                faculty_data['Semester'] = faculty_data['semester']  # Assuming 'semester' is already a field in FISEvaluations_Model
+                faculty_data['Year'] = faculty_data['school_year'].strftime("%Y-%m-%d %H:%M:%S.%f%z")
+
+                # Exclude unwanted fields
+                unwanted_fields = [
+                    'id', 'FacultyId', 'acad_head', 'acad_head_a', 'acad_head_b', 'acad_head_c', 'acad_head_d',
+                    'director', 'director_a', 'director_b', 'director_c', 'director_d',
+                    'self', 'self_a', 'self_b', 'self_c', 'self_d',
+                    'peer', 'peer_a', 'peer_b', 'peer_c', 'peer_d',
+                    'student', 'student_a', 'student_b', 'student_c', 'student_d',
+                    'school_year','semester','is_delete'
+                ]
+
+                for field in unwanted_fields:
+                    if field in faculty_data:
+                        del faculty_data[field]
+
+                profiles.append(faculty_data)
+
+        db.close()
+
+        return jsonify({'data': profiles})
+
+    except ValidationError as e:
+        return jsonify({'error': f'Validation error: {e}'})
+
+# ---------------------------------------------------------

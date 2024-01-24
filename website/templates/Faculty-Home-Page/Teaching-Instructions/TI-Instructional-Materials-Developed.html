@@ -30,26 +30,12 @@
         </ol>
       </nav>
     </div><!-- End Page Title -->
+    
 
     {% block Instructional_Materials_Developed %}
 
     <section class="section">
-        <div class="d-flex flex-column align-items-center">
-            <div class="input-group d-flex  mb-2 w-75">
-                <input type="search" class="form-control d-flex justify-content-center" placeholder="Search..." aria-label="Search ">
-                <i class="bi bi-search" style="position: absolute; top: 50%; transform: translateY(-50%); right: 10px;"></i>
-                </span>
-            </div>
-            <div class="col d-flex flex-row mb-4">
-                    <label for="sort">YEAR:</label>
-                    <select class="form-control d-flex w-" id="sortDropdown" onchange="sortData()">
-                    </select>
-                    <label for="sort">TO:</label>
-                    <select class="form-control d-flex w-50" id="sortDropdown" onchange="sortData()">
-                    </select>
-                </div>  
-                <!-- end sort -->
-        </div>
+       
         <div class="d-flex justify-content-end my-md-2">
           <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#uploadModal">
             <i class="bi bi-folder"></i> Upload a File
@@ -57,21 +43,119 @@
         </div>
             <!-- List group with Advanced Contents -->
             <div class="card">
+              <div class="card-body profile-card">
             <div class="list-group">
-              <a href="instructional-materials-2.html" class="list-group-item list-group-item-action">
-                <div class="d-flex w-100 justify-content-between">
-                  <h5 class="card-title mb-1">Introduction to Algorithms</h5>
-                </div>
-                <p class="mb-1 text-wrap" id="abstract">In computer science and related fields, algorithms play a fundamental role in solving computational problems efficiently. Here's a breakdown of what such a module might cover...</p>
-              </a>
-              <a href="instructional-materials-2.html" class="list-group-item list-group-item-action">
-                <div class="d-flex w-100 justify-content-between">
-                  <h5 class="card-title mb-1">Advanced Data Structures and Algorithms</h5>
-                </div>
-                <p class="mb-1 text-wrap" id="abstract">This module would build upon the foundational knowledge gained in an introductory algorithms course and delve deeper into more sophisticated data structures and algorithmic techniques...</p>
-              </a>
+               <!-- Table with stripped rows -->
+               <br><br>
+               <h6 class="">Click the button 
+                <button type="button" class="btn btn-sm btn-outline-primary rounded-pill"><i class="bi bi-file-earmark-text" style="position:relative;bottom:3px"></i></button>
+                  to edit the record, or  
+                  <button type="button" class="btn btn-sm btn-outline-danger rounded-pill"><i class="bi bi-trash" style="position:relative;bottom:3px"></i></button> 
+                  to delete the record.
+                </h6>
+                <br><br>
+            <table id="table1" class="display" style="width:100%">
+              <thead>
+                <tr>
+                  <th class="w-80" scope="col"></th>
+                  <th scope="col" class="w-20">Action</th>
+                </tr>
+              </thead>
+             
+              <tbody>
+             {% for data in user.FISInstructionalMaterialsDeveloped %}
+         
+             {% if data.id != None %}
+            
+                <tr>
+                  <th scope="row">
+                    <a href="https://drive.google.com/file/d/{{data.file_id}}/view" class="list-group-item list-group-item-action">
+                      <div class="d-flex w-100 justify-content-between">
+                        <h5 class="card-title mb-1">{{data.title}}</h5>
+                      </div>
+                      <p class="mb-1 text-wrap" id="abstract">{{data.abstract}}</p>
+                    </a>
+                  </th>
+
+                  <td>
+                    <button type="submit" class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#d{{data.id}}"><i class="bi bi-trash"></i></button>
+                    <button type="button" class="btn btn-outline-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#{{data.id}}"><i class="bi bi-file-earmark-text"></i></button>
+                </td>
+                </tr>
+
+                <!-- Edit Record Modal-->
+
+                <div class="modal fade" id="{{data.id}}" tabindex="-1">
+                  <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Edit Instructional Material</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+
+                <form action="/TI-Instructional-Materials-Developed" method="POST" enctype="multipart/form-data" accept-charset="utf-8" class="row g-3">
+                        <br>
+                          <div class="col-md-10">
+                            <div class="form-floating">
+                              <input type="text" name="title" class="form-control" id="floatingName" placeholder="Title" value="{{data.title}}" required>
+                              <label for="floatingName">Title</label>
+                            </div>
+                          </div>
+                          <br>
+                          <div class="col-md-10">
+                            <div class="form-floating">
+                              <textarea type="text" name="abstract" class="form-control" value="{{data.abstract}}" required style="height: 100px">{{data.abstract}}</textarea>
+                              <label for="floatingEmail">Abstract</label>
+                            </div>
+                        </div> 
+                      </div>
+                      <div class="modal-footer">
+                        <input type="hidden" name="id" value="{{data.id}}"></input>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Update</button>
+                      </div>
+                </form>
+                    </div>
+                  </div>
+                </div><!-- End Edit Record Modal-->
+              
+
+                <!-- Delete Record Modal-->
+              
+                <div class="modal fade" id="d{{data.id}}" tabindex="-1">
+                  <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Delete Instructional Material</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                      <form action="/TI-Instructional-Materials-Developed/delete-record" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+                          <input type="hidden" name="id" value="{{data.id}}"></input>
+                        <h5 class="modal-title">Are you sure you want to delete this Instructional Material?</h5>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
+                          <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Confirm</button>
+                        </div>
+                    </form>
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- End Delete Record Modal-->
+
+                {% else %}
+           
+                {% endif %}
+
+
+             {% endfor %}  
+             </tbody>
+            </table>
+              
             </div><!-- End List group Advanced Content -->
             </div>
+          </div>
       </section>
 
       <!-- FOR UPLOAD FORM -->
@@ -84,22 +168,27 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <form>
+              <form action="/TI-Instructional-Materials-Developed/add-record" method="POST" enctype="multipart/form-data" accept-charset="utf-8" >
                 <div class="row mb-3">
                   <label for="inputText" class="col-sm-2 col-form-label">Title</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control text-wrap">
+                    <input type="text" name="title" class="form-control text-wrap" required>
                   </div>
                 </div>
                 <div class="row mb-3">
                   <label for="inputPassword" class="col-sm-2 col-form-label">Abstract</label>
                   <div class="col-sm-10">
-                    <textarea class="form-control" style="height: 100px"></textarea>
+                    <textarea class="form-control" name="abstract" style="height: 100px" required></textarea>
                   </div>
+                </div>
                 <div class="row mb-3">
-                  <label for="inputNumber" class="col-sm-2 col-form-label">File Upload</label>
+                  <label for="inputNumber" class="col-sm-2 col-form-label">File Upload <br><strong>(PDF FORMAT)</strong></label>
                   <div class="col-sm-10">
-                    <input class="form-control" type="file" id="formFile">
+                    <span id="fileNameDisplay"></span>
+                    <button type="button" id="btnup" class="btn btn-warning btn-sm" onclick="document.getElementById('fileup').click()">Browse File</button>
+                    <input type="file" value="" name="fileup" id="fileup" hidden required></input>
+                    <input type="text" id="base64" name="base64" hidden></input>
+                    
                   </div>
                 </div>
                 <div class="row mb-3">
@@ -116,6 +205,87 @@
     {% endblock %}
 
   </main><!-- End #main -->
+
+
+  <script>
+    $(document).ready(function() {
+      // Function to initialize DataTable for a given table ID
+      function initializeDataTable(tableId, buttonId, title, customExportColumns) {
+        var dataTable = $(tableId).DataTable({
+          dom: 'BPlfrtip',
+          responsive: true,
+          columnDefs: [
+            {
+              searchPanes: {
+                show: true
+              },
+              targets: [0]
+            },
+            {
+              searchPanes: {
+                show: false
+              },
+              targets: [0]
+            }
+          ],
+          buttons: [
+            {
+              extend: 'print',
+              class: 'buttons-print',
+              title: title, // Set the title for each table
+              messageBottom: null,
+              exportOptions: {
+                columns: customExportColumns
+              },
+              text: 'Print'
+            }
+          ]
+        });
+  
+         // Initially hide the DataTables print button
+        dataTable.buttons('.buttons-print').nodes().addClass('d-none');
+  
+        $('#' + buttonId).on('click', function() {
+          // Trigger the DataTables print button click
+          dataTable.buttons('.buttons-print').trigger();
+        });
+      }
+  
+      // Customize your export options for each table
+      var exportColumnsTable1 = [ 0, 1 ];
+  
+      // Initialize DataTables for each table
+      initializeDataTable('#table1', 'btnPrintDetail1', 'Sudent Schedules<br><br><h6>2021-0021-CM</h6><h6>Mabini, Vincent Rodhy</h6><br><br>', exportColumnsTable1);
+    });
+  </script>
+
+  <script>
+    $('#fileup').change(function () {
+        async function toBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function Main() {
+            const fileInput = document.querySelector('#fileup');
+            const file = fileInput.files[0];
+            
+            // Display the file name
+            const fileNameDisplay = document.getElementById('fileNameDisplay');
+            fileNameDisplay.textContent = file.name;
+
+            // Convert file to base64
+            const value = await toBase64(file);
+            document.getElementById("base64").setAttribute('value', value);
+        }
+
+        Main();
+    });
+</script>
 
 {% endblock %}
 

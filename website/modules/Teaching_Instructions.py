@@ -7,6 +7,7 @@ from urllib.request import urlretrieve
 from cryptography.fernet import Fernet
 import rsa
 
+
 import os
 import os.path
 
@@ -17,7 +18,7 @@ from website.models import db
 from sqlalchemy import update
 
 # LOADING MODEL CLASSES
-from website.models import FISFaculty,FISTeachingAssignments,FISAdvisingClasses_Schedule,FISEvaluations
+from website.models import FISFaculty,FISTeachingAssignments,FISAdvisingClasses_Schedule,FISEvaluations,FISInstructionalMaterialsDeveloped
 
 # LOADING FUNCTION CHECK TOKEN
 from website.Token.token_check import Check_Token
@@ -792,32 +793,31 @@ def TI_CS():
 def TI_IMD():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
-        
 
         if username.ProfilePic == None:
             ProfilePic=profile_default
         else:
             ProfilePic=username.ProfilePic
+            
+         # UPDATE 
+        
+        if request.method == 'POST':
+         
+            # VALUES
            
-        
-        # # UPDATE PROFILE BASIC DETAILS
-        
-        # if request.method == 'POST':
+            title = request.form.get('title')
+            abstract = request.form.get('abstract')
+            id = request.form.get('id')
 
-        #     # UPDATE BASIC DETAILS
-        #     # VALUES
-        #     FacultyCode = request.form.get('FacultyCode')
-        #     honorific = request.form.get('honorific')
-
-        #     u = update(FISFaculty)
-        #     u = u.values({"FacultyCode": FacultyCode,
-        #                   "honorific": honorific
-        #                   })
-        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
-        #     db.session.execute(u)
-        #     db.session.commit()
-        #     db.session.close()
-        #     return redirect(url_for('PDM.PDM_BD')) 
+            u = update(FISInstructionalMaterialsDeveloped)
+            u = u.values({"title": title,
+                          "abstract": abstract
+                          })
+            u = u.where(FISInstructionalMaterialsDeveloped.id == id)
+            db.session.execute(u)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('TI.TI_IMD'))
                       
         return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Instructional-Materials-Developed.html", 
                                User= username.FirstName + " " + username.LastName,
@@ -826,6 +826,88 @@ def TI_IMD():
                                TI="show",
                                activate_IMD="active",
                                profile_pic=ProfilePic)
+
+        
+@TI.route("/TI-Instructional-Materials-Developed/add-record", methods=['GET', 'POST'])
+@login_required
+def TI_IMDadd():
+        
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        
+        title = request.form.get('title')
+        abstract = request.form.get('abstract')
+        
+        file =  request.form.get('base64')
+        ext = request.files.get('fileup')
+        ext = ext.filename
+        
+        id = f'{str(username.FacultyId)}{str(title)}'
+        
+        # INSTRUCTIONAL MATERIAL FOLDER ID
+        folder = '1pAV7w6lXy6_EP6AswA34OP0-PogVg8KG'
+        
+        
+        url = """data:application/pdf;base64,{}""".format(file)
+                
+        filename, m = urlretrieve(url)
+    
+        file_list = drive.ListFile({'q': "'%s' in parents and trashed=false"%(folder)}).GetList()
+        try:
+            for file1 in file_list:
+                if file1['title'] == str(id):
+                    file1.Delete()                
+        except:
+            pass
+        # CONFIGURE FILE FORMAT AND NAME
+        file1 = drive.CreateFile(metadata={
+            "title": ""+ str(id),
+            "parents": [{"id": folder}],
+            "mimeType": "application/pdf"
+            })
+        
+        # GENERATE FILE AND UPLOAD
+        file1.SetContentFile(filename)
+        file1.Upload()
+        
+        add_record = FISInstructionalMaterialsDeveloped(title=title,abstract=abstract,file_id='%s'%(file1['id']),FacultyId = current_user.FacultyId)
+        
+        db.session.add(add_record)
+        db.session.commit()
+        db.session.close()
+        
+        return redirect(url_for('TI.TI_IMD'))
+            
+           
+@TI.route("/TI-Instructional-Materials-Developed/delete-record", methods=['GET', 'POST'])
+@login_required
+def TI_IMDdel():
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+
+        id = request.form.get('id')
+        
+        
+        data = FISInstructionalMaterialsDeveloped.query.filter_by(id=id).first() 
+        
+        if data:
+            id = f'{str(username.FacultyId)}{str(data.title)}'
+        
+            # INSTRUCTIONAL MATERIAL FOLDER ID
+            folder = '1pAV7w6lXy6_EP6AswA34OP0-PogVg8KG'
+        
+            # CLEAR PROFILE PIC
+            file_list = drive.ListFile({'q': "'%s' in parents and trashed=false"%(folder)}).GetList()
+            try:
+                for file1 in file_list:
+                    if file1['title'] == str(id):
+                        file1.Delete()                
+            except:
+                pass
+
+            db.session.delete(data)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('TI.TI_IMD'))        
+
         
 # ------------------------------- SPECIAL PROJECT ----------------------------  
 

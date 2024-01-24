@@ -78,6 +78,8 @@ class FISFaculty(db.Model, UserMixin):
     FISTeachingAssignments = db.relationship('FISTeachingAssignments')
     FISMandatoryRequirements = db.relationship('FISMandatoryRequirements')
     
+    FISInstructionalMaterialsDeveloped = db.relationship('FISInstructionalMaterialsDeveloped')
+    
     
     # TOKEN
     FISLoginToken = db.relationship('FISLoginToken')
@@ -933,7 +935,7 @@ class FISEvaluations(db.Model):
     student_b = db.Column(db.Float)
     student_c = db.Column(db.Float)
     student_d = db.Column(db.Float)
-    school_year = db.Column(db.String)
+    school_year = db.Column(db.DateTime(timezone=True))
     semester = db.Column(db.String)
     is_delete = db.Column(db.Boolean, default=False) 
     
@@ -969,6 +971,37 @@ class FISEvaluations(db.Model):
             'student_d': self.student_d,
             'school_year': self.school_year,
             'semester': self.semester,
+            'is_delete': self.is_delete
+        }
+        
+    def get_id(self):
+        return str(self.id)  # Convert to string to ensure compatibility  
+
+# ------------------------------------------------
+
+# ------------------------------------------------
+# INSTRUCTIONAL MATERIALS DEVELOPED
+  
+class FISInstructionalMaterialsDeveloped(db.Model):
+    __tablename__ = 'FISInstructionalMaterialsDeveloped'
+
+    id = db.Column(db.Integer, primary_key=True)  # DataID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    title = db.Column(db.String) 
+    abstract = db.Column(db.String)
+    file_id = db.Column(db.String)
+    is_delete = db.Column(db.Boolean, default=False) 
+    
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
+            'title': self.title,
+            'abstract': self.abstract,
+            'file_id': self.file_id,
             'is_delete': self.is_delete
         }
         
