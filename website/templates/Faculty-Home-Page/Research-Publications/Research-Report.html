@@ -1,5 +1,21 @@
 {% extends "/Faculty-Home-Page/base.html" %}{% block title %}Research Report{% endblock %} {% block content%}
 
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<!-- Include DataTables Buttons CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+
+<!-- Include DataTables Print Button JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
 
 <main id="main" class="main">
 
@@ -71,7 +87,7 @@
                         <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#accordionExample">
                           <div class="accordion-body">
                             <!-- Advising Table with stripped rows -->
-            <table id="table1" class="display" style="width:100%"> 
+            <table id="table" class="display" style="width:100%"> 
               <thead>
                 <tr>
                   <th scope="col">Year</th>
@@ -104,7 +120,7 @@
                     </h2>
                     <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                       <div class="accordion-body">
-                        <table id="table1" class="display" style="width:100%"> 
+                        <table id="table" class="display" style="width:100%"> 
                             <thead>
                               <tr>
                                 <th scope="col">Year</th>
@@ -139,7 +155,7 @@
                     </h2>
                     <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                       <div class="accordion-body">
-                        <table id="table1" class="display" style="width:100%"> 
+                        <table id="table1" class="display no-wrap" style="width:100%"> 
                             <thead>
                               <tr>
                                 <th scope="col">Year</th>
@@ -151,17 +167,31 @@
                                 <th scope="col">Date Publication</th>
                                 <th scope="col">Title of the Journal</th>
                                 <th scope="col">Journal Indexing</th>
+                                <th scope="col">Online Link</th>
                               </tr>
                             </thead>
                             <tbody>
+                              {% for data in research_publication %}
+         
+                              {% if data.id != None %}
                               <tr>
-                                <th scope="row"></th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <th class="w-30" scope="row">{{data.date_publish.strftime('%Y').split('-')[0]}}</th>
+                                <td class="w-50">{{data.title}}</td>
+                                <td class="w-50"></td>
+                                <td class="w-50"></td>
+                                <td class="w-50"></td>
+                                <td class="w-50"></td>
+                                <td class="w-50">{{data.date_publish}}</td>
+                                <td class="w-50"></td>
+                                <td class="w-50">{{data.category}}</td>
+                                <td class="w-50"><a href="{{data.file_path}}">View</a></td>
                               </tr>
+                              {% else %}
+           
+                              {% endif %}
+              
+              
+                           {% endfor %}  
                             </tbody>
                           </table><!-- End Table with stripped rows -->
                       </div>
@@ -175,7 +205,7 @@
                     </h2>
                     <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
                       <div class="accordion-body">
-                        <table id="table1" class="display" style="width:100%"> 
+                        <table id="table" class="display" style="width:100%"> 
                             <thead>
                                 <tr>
                                   <th scope="col">Year</th>
@@ -211,6 +241,62 @@
       </section>
 
   </main><!-- End #main -->
+
+
+  <script>
+    $(document).ready(function() {
+      // Function to initialize DataTable for a given table ID
+      function initializeDataTable(tableId, buttonId, title, customExportColumns) {
+        var dataTable = $(tableId).DataTable({
+          dom: 'BPlfrtip',
+          responsive: true,
+          columnDefs: [
+            {
+              searchPanes: {
+                show: true
+              },
+              targets: [0]
+            },
+            {
+              searchPanes: {
+                show: false
+              },
+              targets: [2]
+            }
+          ],
+          buttons: [
+            {
+              extend: 'print',
+              class: 'buttons-print',
+              title: title, // Set the title for each table
+              messageBottom: null,
+              exportOptions: {
+                columns: customExportColumns
+              },
+              text: 'Print'
+            }
+          ]
+        });
+  
+         // Initially hide the DataTables print button
+        dataTable.buttons('.buttons-print').nodes().addClass('d-none');
+  
+        $('#' + buttonId).on('click', function() {
+          // Trigger the DataTables print button click
+          dataTable.buttons('.buttons-print').trigger();
+        });
+      }
+  
+      // Customize your export options for each table
+      var exportColumnsTable1 = [ 0, 1, 2, 3, 4, 5, 6 ];
+      var exportColumnsTable2 = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
+  
+      // Initialize DataTables for each table
+      initializeDataTable('#table1', 'btnPrintDetail1', 'Teaching Assignments Schedules', exportColumnsTable1);
+      initializeDataTable('#table2', 'btnPrintDetail2', 'Teaching Assignments Activities', exportColumnsTable2);
+    });
+  </script>
+
 
 {% endblock %}
 

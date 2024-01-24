@@ -106,123 +106,36 @@
                   </tr>
                 </thead>
                 <tbody>
+                  {% for data in user.FISTeachingAssignments %}
+         
+                  {% if data.id != None %}
+                   
                   <tr>
-                    <th scope="row">COMLAB 101</th>
-                    <td>BSCS-0104</td>
-                    <td>Bachelor of Science in Computer Science</td>
-                    <td>BSCS</td>
-                    <td>2nd Semester</td>
-                    <td>2024</td>
+                    <th scope="row">{{data.id}}</th>
+                    <td>{{data.code}}</td>
+                    <td>Introduction to Programming</td>
+                    <td>{{data.course}}</td>
+                    <td>{{data.semester}}</td>
+                    <td>2023-2024</td>
                     <td>Subject Teacher</td>
                     <td>
                       <div class="d-grid gap-2 mt-3">
-                        <button type="button" onclick="redirectToURL()" class="btn btn-success rounded-pill">Schedule</i></button>
+                        <button type="button" onclick="redirectToURL{{data.id}}()" class="btn btn-success rounded-pill">Schedule</i></button>
                         <script>
-                          function redirectToURL() {
-                              window.location.href = '/TI-Teaching-Assignments/BSCS-0104/Schedules';
+                          function redirectToURL{{data.id}}() {
+                              window.location.href = '/TI-Teaching-Assignments/{{data.id}}/Schedules';
                           }
                       </script>
                       </div>
                     </td>
                   </tr>
-                  <tr>
-                    <th scope="row">COMLAB 102</th>
-                    <td>BSCS-0201</td>
-                    <td>Bachelor of Science in Computer Science</td>
-                    <td>BSCS</td>
-                    <td>2nd Semester</td>
-                    <td>2024</td>
-                    <td>Subject Teacher</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">Schedule</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">COMLAB 101</th>
-                    <td>BSIT-0301</td>
-                    <td>Bachelor of Science in Information Technology</td>
-                    <td>BSIT</td>
-                    <td>2nd Semester</td>
-                    <td>2024</td>
-                    <td>Subject Teacher</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">Schedule</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">ROOM 205</th>
-                    <td>BSIT-0302</td>
-                    <td>Bachelor of Science in Information Technology</td>
-                    <td>BSIT</td>
-                    <td>2nd Semester</td>
-                    <td>2024</td>
-                    <td>Subject Teacher</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">Schedule</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">ROOM 203</th>
-                    <td>BAS-0303</td>
-                    <td>Bachelor in Applied Statistics</td>
-                    <td>BAS</td>
-                    <td>2nd Semester</td>
-                    <td>2024</td>
-                    <td>Subject Teacher</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">Schedule</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">ROOM 202</th>
-                    <td>BSCpE-0304</td>
-                    <td>Bachelor of Science in Computer Engineering</td>
-                    <td>BSCpE</td>
-                    <td>2nd Semester</td>
-                    <td>2024</td>
-                    <td>Subject Teacher</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">Schedule</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">ROOM 104</th>
-                    <td>BSCS-0401</td>
-                    <td>Bachelor of Science in Computer Science</td>
-                    <td>BSCS</td>
-                    <td>2nd Semester</td>
-                    <td>2024</td>
-                    <td>Subject Teacher</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">Schedule</i></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">COMLAB 101</th>
-                    <td>BSIT-0401</td>
-                    <td>Bachelor of Science in Information Technology</td>
-                    <td>BSIT</td>
-                    <td>2nd Semester</td>
-                    <td>2024</td>
-                    <td>Subject Teacher</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-success rounded-pill">Schedule</i></button>
-                      </div>
-                    </td>
-                  </tr>
+                  {% else %}
+           
+                  {% endif %}
+  
+  
+               {% endfor %}  
+                 
                 </tbody>
               </table>
               <!-- End Table with stripped rows -->
@@ -260,61 +173,30 @@
                   </tr>
                 </thead>
                 <tbody>
+                  
+                  {% for data1 in user.FISTeachingActivities %}
+         
+                  {% if data1.id != None %}
+                   
                   <tr>
-                    <th scope="row">COMLAB 101</th>
-                    <td>BSCS-0104</td>
-                    <td>BSCS 1-4</td>
-                    <td>Introduction to Programming</td>
-                    <td>Hands On Coding Exercises</td>
-                    <td>7:00-10:00 A.M</td>
-                    <td>Wednesday</td>
-                    <td>2nd Semester</td>
-                    <td>2024</td>
+                    <th scope="row">{{data1.classid}}</th>
+                    <td>{{data1.code}}</td>
+                    <td>{{data1.course}} {{data1.section}}</td>
+                    <td>{{data1.subject}}</td>
+                    <td>{{data1.activity}}</td>
+                    <td>{{data1.time}}</td>
+                    <td>{{data1.day}}</td>
+                    <td>{{data1.semester}}</td>
+                    <td>{{data1.year}}</td>
                   </tr>
-                  <tr>
-                    <th scope="row">COMLAB 102</th>
-                    <td>BSCS-0201</td>
-                    <td>BSCS 2-1</td>
-                    <td>Computer Organization and Architecture</td>
-                    <td>Project Documentation</td>
-                    <td>8:30-11:30 A.M</td>
-                    <td>Saturday</td>
-                    <td>2nd Semester</td>
-                    <td>2024</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">COMLAB 101</th>
-                    <td>BSIT-0301</td>
-                    <td>BSCS 3-1</td>
-                    <td>Web Development</td>
-                    <td>Hands On Coding Exercises</td>
-                    <td>12:00-3:00 P.M</td>
-                    <td>Tuesday</td>
-                    <td>2nd Semester</td>
-                    <td>2024</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">ROOM 205</th>
-                    <td>BSIT-0302</td>
-                    <td>BSCS 3-2</td>
-                    <td>Operating Systems</td>
-                    <td>Presentations</td>
-                    <td>4:30-8:30 P.M</td>
-                    <td>Tuesday</td>
-                    <td>2nd Semester</td>
-                    <td>2024</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">ROOM 205</th>
-                    <td>BSIT-0302</td>
-                    <td>BSCS 3-2</td>
-                    <td>Operating Systems</td>
-                    <td>Presentations</td>
-                    <td>4:30-8:30 P.M</td>
-                    <td>Tuesday</td>
-                    <td>2nd Semester</td>
-                    <td>2024</td>
-                  </tr>
+                  {% else %}
+           
+                  {% endif %}
+  
+  
+               {% endfor %}  
+                 
+                 
                 </tbody>
               </table>
               <!-- End Table with stripped rows -->
@@ -380,6 +262,7 @@
       initializeDataTable('#table1', 'btnPrintDetail1', 'Teaching Assignments Schedules', exportColumnsTable1);
       initializeDataTable('#table2', 'btnPrintDetail2', 'Teaching Assignments Activities', exportColumnsTable2);
     });
+    
   </script>
 
 {% endblock %}

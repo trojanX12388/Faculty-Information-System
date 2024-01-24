@@ -91,6 +91,7 @@
         </div>
         <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
           <h3><strong>EVALUATION RESULTS</strong></h3>
+          <h6><strong>{{item_id.school_year}} {{item_id.semester}}</strong></h6>
         </div>
         <br><br>
         <div class="card-body profile-card pt-4 d-flex flex-column align-items-start" style="text-style: underlined;">
@@ -98,18 +99,20 @@
         </div>
         <div class="card-body d-flex flex-column justify-content-center">
           <br>
-          <form class="row g-3">
+
+          <form class="row g-3" action="/TI-Teaching-Effectiveness" method="POST" id="yourFormId">
 
             <div class="col-md-6">
               <div class="form-floating mb-3">
-                <select class="form-select" id="floatingSelect" aria-label="State">
-                  <option selected="">2019-2020 First Semester</option>
-                  <option value="1">2019-2020 First Semester</option>
-                  <option value="2">2019-2020 Second Semester</option>
-                  <option value="3">2020-2021 First Semester</option>
-                  <option value="4">2020-2021 Second Semester</option>
-                  <option value="5">2021-2022 First Semester</option>
-                  <option value="6">2021-2022 Second Semester</option>
+                <select class="form-select" id="select" name="select" aria-label="State" required>
+                  <option value=''>Select School Year & Semester</option>
+                  {% for data in user.FISEvaluations %}
+                    {% if data.id != None %}
+                      <option value="{{data.id}}">{{data.school_year}} {{data.semester}}</option>
+                    {% else %}
+                      
+                    {% endif %}
+                  {% endfor %}  
                 </select>
                 <label for="floatingSelect">School Year & Semester</label>
               </div>
@@ -125,6 +128,18 @@
             </div>
             
           </form>
+
+          <script>
+            document.getElementById('yourFormId').addEventListener('submit', function (event) {
+              var selectElement = document.getElementById('select');
+              
+              if (selectElement.value === '') {
+                alert('Please select a value for School Year & Semester');
+                event.preventDefault(); // Prevent the form from submitting
+              }
+            });
+          </script>
+
           <!-- Advising Table with stripped rows -->
           <div class="d-flex flex-row">
             <div class="table-container">
@@ -132,8 +147,8 @@
                 <thead>
                   <tr>
                     <th></th>
-                    <th>Commitment</th>
-                    <th>Knowledge of Subject</th>
+                    <th>Commitment<br><br></th>
+                    <th>Knowledge of Subject<br><br></th>
                     <th>Teaching for Independent Learning</th>
                     <th>Management of Learning</th>
                     <th>Rating</th>
@@ -141,12 +156,22 @@
                     <th>Verbal Interpretation</th>
                   </tr>
                   <tr>
+                    <th>Legend</th>
+                    <th>(A)</th>
+                    <th>(B)</th>
+                    <th>(C)</th>
+                    <th>(D)</th>
+                    <th>(E)</th>
+                    <th>(F)</th>
                     <th></th>
-                    <td>20%</td>
-                    <td>20%</td>
-                    <td>30%</td>
-                    <td>30%</td>
+                  </tr>
+                  <tr>
                     <td></td>
+                    <td>20%</td>
+                    <td>20%</td>
+                    <td>30%</td>
+                    <td>30%</td>
+                    <td>(A+B+C+D)/4</td>
                     <td></td>
                     <td></td>
                   </tr>
@@ -154,43 +179,43 @@
                 <tbody>
                   <tr>
                     <th>Director Evaluation</th>
-                    <td>100.0000</td>
-                    <td>100.0000</td>
-                    <td>100.0000</td>
-                    <td>100.0000</td>
-                    <td>100.0000</td>
-                    <td>20.0000</td>
-                    <td>OUTSTANDING</td>
+                    <td>{{calc_data.director_a}}</td>
+                    <td>{{calc_data.director_b}}</td>
+                    <td>{{calc_data.director_c}}</td>
+                    <td>{{calc_data.director_d}}</td>
+                    <td>{{calc_data.director_ave}}</td>
+                    <td><p>(E)*20%</p><br><strong>{{calc_data.director_calc}}</strong></td>
+                    <td>{{calc_data.director_interpret}}</td>
                   </tr>
                   <tr>
                     <th>Academic Head Evaluation</th>
-                    <td>100.0000</td>
-                    <td>100.0000</td>
-                    <td>100.0000</td>
-                    <td>100.0000</td>
-                    <td>100.0000</td>
-                    <td>10.0000</td>
-                    <td>OUTSTANDING</td>
+                    <td>{{calc_data.acad_head_a}}</td>
+                    <td>{{calc_data.acad_head_b}}</td>
+                    <td>{{calc_data.acad_head_c}}</td>
+                    <td>{{calc_data.acad_head_d}}</td>
+                    <td>{{calc_data.acad_head_ave}}</td>
+                    <td><p>(E)*10%</p><br><strong>{{calc_data.acad_head_calc}}</strong></td>
+                    <td>{{calc_data.acad_head_interpret}}</td>
                   </tr>
                   <tr>
                     <th>Student Evaluation</th>
-                    <td>78.7160</td>
-                    <td>80.2940</td>
-                    <td>80.4400</td>
-                    <td>80.1840</td>
-                    <td>79.9892</td>
-                    <td>55.9924</td>
-                    <td>VERY SATISFACTORY</td>
+                    <td>{{calc_data.student_a}}</td>
+                    <td>{{calc_data.student_b}}</td>
+                    <td>{{calc_data.student_c}}</td>
+                    <td>{{calc_data.student_d}}</td>
+                    <td>{{calc_data.student_ave}}</td>
+                    <td><p>(E)*70%</p><br><strong>{{calc_data.student_calc}}</strong></td>
+                    <td>{{calc_data.student_interpret}}</td>
                   </tr>
                   <tr>
                     <th>Self Evaluation</th>
-                    <td>100.0000</td>
-                    <td>100.0000</td>
-                    <td>100.0000</td>
-                    <td>100.0000</td>
-                    <td>100.0000</td>
-                    <td>100.0000</td>
-                    <td>OUTSTANDING</td>
+                    <td>{{calc_data.self_a}}</td>
+                    <td>{{calc_data.self_b}}</td>
+                    <td>{{calc_data.self_c}}</td>
+                    <td>{{calc_data.self_d}}</td>
+                    <td>{{calc_data.self_ave}}</td>
+                    <td><p>(E)*100%</p><br><strong>{{calc_data.self_calc}}</strong></td>
+                    <td>{{calc_data.self_interpret}}</td>
                   </tr>
                 </tbody>
               </table><!-- End Table with stripped rows -->
@@ -223,9 +248,9 @@
           </div>
         
           <br><br>
-          <h6><strong>School Year & Semester:</strong> 2019-2020 First Semester</h6>
-          <h6><strong>Overall Rating (Supervisor Evaluation + Student Evaluation):</strong> 85.9924</h6>
-        <h6><strong>Verbal Interpretation:</strong> Very Satisfactory</h6>
+          <h6>School Year & Semester: <strong>{{item_id.school_year}} {{item_id.semester}}</strong></h6>
+          <h6>Overall Rating (Supervisor Evaluation + Student Evaluation): <strong>{{calc_data.general_rating}}</strong></h6>
+        <h6>Verbal Interpretation: <strong>{{calc_data.general_interpret}}</strong></h6>
         </div>
         
         

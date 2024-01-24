@@ -66,6 +66,8 @@ class FISFaculty(db.Model, UserMixin):
     FISConferences = db.relationship('FISConferences')
     
     FISAdvising = db.relationship('FISAdvising')
+    FISAdvisingClasses = db.relationship('FISAdvisingClasses')
+    FISAdvisingClasses_Schedule = db.relationship('FISAdvisingClasses_Schedule')
     FISMentoring = db.relationship('FISMentoring')
     FISCommittee = db.relationship('FISCommittee')
     FISCollaborationOpportunities = db.relationship('FISCollaborationOpportunities')
@@ -75,6 +77,7 @@ class FISFaculty(db.Model, UserMixin):
     FISAssignmentTypes = db.relationship('FISAssignmentTypes')
     FISTeachingAssignments = db.relationship('FISTeachingAssignments')
     FISMandatoryRequirements = db.relationship('FISMandatoryRequirements')
+    
     
     # TOKEN
     FISLoginToken = db.relationship('FISLoginToken')
@@ -140,6 +143,8 @@ class FISFaculty(db.Model, UserMixin):
             'FISAnnouncement': self.FISAnnouncement,
             'FISResearchProjects': self.FISResearchProjects,
             'FISAdvising': self.FISAdvising,
+            'FISAdvisingClasses': self.FISAdvisingClasses,
+            'FISAdvisingClasses_Schedule': self.FISAdvisingClasses_Schedule,
             'FISMentoring': self.FISMentoring,
             'FISCommittee': self.FISCommittee,
             'FISCollaborationOpportunities': self.FISCollaborationOpportunities,
@@ -903,16 +908,67 @@ class FISEvaluations(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
-    feedback = db.Column(db.String) 
+    acad_head = db.Column(db.Float)
+    acad_head_a = db.Column(db.Float) 
+    acad_head_b = db.Column(db.Float) 
+    acad_head_c = db.Column(db.Float)
+    acad_head_d = db.Column(db.Float) 
+    director = db.Column(db.Float) 
+    director_a = db.Column(db.Float)
+    director_b = db.Column(db.Float)
+    director_c = db.Column(db.Float)
+    director_d = db.Column(db.Float)
+    self = db.Column(db.Float)
+    self_a = db.Column(db.Float)
+    self_b = db.Column(db.Float)
+    self_c = db.Column(db.Float)
+    self_d = db.Column(db.Float)
+    peer = db.Column(db.Float)
+    peer_a = db.Column(db.Float)
+    peer_b = db.Column(db.Float)
+    peer_c = db.Column(db.Float)
+    peer_d = db.Column(db.Float)
+    student = db.Column(db.Float)
+    student_a = db.Column(db.Float)
+    student_b = db.Column(db.Float)
+    student_c = db.Column(db.Float)
+    student_d = db.Column(db.Float)
+    school_year = db.Column(db.String)
+    semester = db.Column(db.String)
     is_delete = db.Column(db.Boolean, default=False) 
     
-
     def to_dict(self):
         return {
             'id': self.id,
             'FacultyId': self.FacultyId,
             # 'AdminId': self.AdminId,
-            'feedback': self.feedback,
+            'acad_head': self.acad_head,
+            'acad_head_a': self.acad_head_a,
+            'acad_head_b': self.acad_head_b,
+            'acad_head_c': self.acad_head_c,
+            'acad_head_d': self.acad_head_d,
+            'director': self.director,
+            'director_a': self.director_a,
+            'director_b': self.director_b,
+            'director_c': self.director_c,
+            'director_d': self.director_d,
+            'self': self.self,
+            'self_a': self.self_a,
+            'self_b': self.self_b,
+            'self_c': self.self_c,
+            'self_d': self.self_d,
+            'peer': self.peer,
+            'peer_a': self.peer_a,
+            'peer_b': self.peer_b,
+            'peer_c': self.peer_c,
+            'peer_d': self.peer_d,
+            'student': self.student,
+            'student_a': self.student_a,
+            'student_b': self.student_b,
+            'student_c': self.student_c,
+            'student_d': self.student_d,
+            'school_year': self.school_year,
+            'semester': self.semester,
             'is_delete': self.is_delete
         }
         
@@ -1051,7 +1107,9 @@ class FISAdvising(db.Model):
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     student_id = db.Column(db.String(50)) 
-    role = db.Column(db.String(50)) 
+    coursecode = db.Column(db.String(50)) 
+    subject = db.Column(db.String(50)) 
+    status = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
     
 
@@ -1233,11 +1291,16 @@ class FISTeachingActivities(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    classid = db.Column(db.String(50)) 
     code = db.Column(db.String(50)) 
     course = db.Column(db.String(50)) 
     section = db.Column(db.String(50)) 
     subject = db.Column(db.String(50)) 
-    status = db.Column(db.String(50)) 
+    activity = db.Column(db.String(50)) 
+    time = db.Column(db.String(50)) 
+    day = db.Column(db.String(50)) 
+    semester = db.Column(db.String(50)) 
+    year = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
     
 
@@ -1246,11 +1309,15 @@ class FISTeachingActivities(db.Model):
             'id': self.id,
             'FacultyId': self.FacultyId,
             # 'AdminId': self.AdminId,
+            'classid': self.classid,
             'code': self.code,
             'course': self.course,
             'section': self.section,
             'subject': self.subject,
-            'status': self.status,
+            'time': self.time,
+            'day': self.day,
+            'semester': self.semester,
+            'year': self.year,
             'is_delete': self.is_delete
         }
         
@@ -1332,6 +1399,86 @@ class FISTeachingAssignments(db.Model):
 # ------------------------------------------------
 
 # ------------------------------------------------
+# ADVISING CLASSES
+  
+class FISAdvisingClasses(db.Model):
+    __tablename__ = 'FISAdvisingClasses'
+
+    id = db.Column(db.Integer, primary_key=True)  # DataID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    classroomid = db.Column(db.String(50)) 
+    code = db.Column(db.String(50)) 
+    activity = db.Column(db.String(50))
+    course = db.Column(db.String(50)) 
+    section = db.Column(db.String(50)) 
+    status = db.Column(db.String(50)) 
+    is_delete = db.Column(db.Boolean, default=False) 
+    
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
+            'classroomid': self.classroomid,
+            'code': self.code,
+            'activity': self.activity,
+            'course': self.course,
+            'section': self.section,
+            'status': self.status,
+            'is_delete': self.is_delete
+        }
+        
+    def get_id(self):
+        return str(self.id)  # Convert to string to ensure compatibility  
+
+# ------------------------------------------------
+
+
+# ------------------------------------------------
+# ADVISING CLASS SCHEDULE
+  
+class FISAdvisingClasses_Schedule(db.Model):
+    __tablename__ = 'FISAdvisingClasses_Schedule'
+
+    id = db.Column(db.Integer, primary_key=True)  # DataID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    classid = db.Column(db.Integer, db.ForeignKey('FISAdvisingClasses.id'), nullable=True)  # ClassID
+    course = db.Column(db.String(50)) 
+    section = db.Column(db.String(50)) 
+    time = db.Column(db.String(50)) 
+    day = db.Column(db.String(50)) 
+    topic = db.Column(db.String(50)) 
+    semester = db.Column(db.String(50)) 
+    year = db.Column(db.String(50)) 
+    is_delete = db.Column(db.Boolean, default=False) 
+    
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
+            'classid': self.classid,
+            'course': self.course,
+            'section': self.section,
+            'time': self.time,
+            'day': self.day,
+            'topic': self.topic,
+            'semester': self.semester,
+            'year': self.year,
+            'is_delete': self.is_delete
+        }
+        
+    def get_id(self):
+        return str(self.id)  # Convert to string to ensure compatibility  
+
+# ------------------------------------------------
+
+
+# ------------------------------------------------
 # MANDATORY REQUIREMENTS
   
 class FISMandatoryRequirements(db.Model):
@@ -1357,6 +1504,127 @@ class FISMandatoryRequirements(db.Model):
         return str(self.id)  # Convert to string to ensure compatibility  
 
 # ------------------------------------------------
+
+# INTEGRATED TABLES
+
+
+# Student Users
+class Student(db.Model): # (class SPSStudent) In DJANGO you must set the name directly here 
+    __tablename__ = 'SPSStudent' # Set the name of table in database (Available for FLASK framework)
+
+    StudentId = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    StudentNumber = db.Column(db.String(30), unique=True, nullable=False)  # UserID
+    FirstName = db.Column(db.String(50), nullable=False)  # First Name
+    LastName = db.Column(db.String(50), nullable=False)  # Last Name
+    MiddleName = db.Column(db.String(50))  # Middle Name
+    Email = db.Column(db.String(50), unique=True, nullable=False)  # Email
+    Password = db.Column(db.String(256), nullable=False)  # Password
+    Gender = db.Column(db.Integer, nullable=True)  # Gender
+    DateOfBirth = db.Column(db.Date)  # DateOfBirth
+    PlaceOfBirth = db.Column(db.String(50))  # PlaceOfBirth
+    ResidentialAddress = db.Column(db.String(50))  # ResidentialAddress
+    MobileNumber = db.Column(db.String(11))  # MobileNumber
+    IsOfficer = db.Column(db.Boolean, default=False)
+    Token = db.Column(db.String(128))  # This is for handling reset password 
+    TokenExpiration = db.Column(db.DateTime) # This is for handling reset password 
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+    # IsBridging
+    
+    def to_dict(self):
+        full_name = self.LastName + ', ' + self.FirstName + ' ' + self.MiddleName
+        return {
+            'StudentId': self.StudentId,
+            'StudentNumber': self.StudentNumber,
+            'Name': full_name,
+            'Email': self.Email,
+            'Gender': "Male" if self.Gender == 1 else "Female",
+            'DateOfBirth': self.DateOfBirth,
+            'PlaceOfBirth': self.PlaceOfBirth,
+            'ResidentialAddress': self.ResidentialAddress,
+            'MobileNumber': self.MobileNumber,
+            'IsOfficer': self.IsOfficer
+        }
+
+    def get_id(self):
+        return str(self.StudentId)  # Convert to string to ensure compatibility
+
+    def get_user_id(self):
+        return self.StudentId
+    
+# Course List
+class Course(db.Model):
+    __tablename__ = 'SPSCourse'
+
+    CourseId = db.Column(db.Integer, primary_key=True, autoincrement=True) # Unique Identifier
+    CourseCode = db.Column(db.String(10), unique=True) # Course Code - (BSIT, BSHM, BSCS)
+    Name = db.Column(db.String(200)) # (Name of Course (Bachelor of Science in Information Technology)
+    Description = db.Column(db.String(200)) # Description of course
+    IsValidPUPQCCourses = db.Column(db.Boolean, default=True) # APMS are handling different courses so there are specific courses available in QC Only
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+
+    def to_dict(self):
+        return {
+            'CourseId': self.CourseId,
+            'CourseCode': self.CourseCode,
+            'Name': self.Name,
+            'Description': self.Description,
+            'IsValidPUPQCCourses': self.IsValidPUPQCCourses
+        }
+
+# Subject List
+class Subject(db.Model):
+    __tablename__ = 'SPSSubject'
+
+    SubjectId = db.Column(db.Integer, primary_key=True, autoincrement=True)  
+    SubjectCode = db.Column(db.String(20), unique=True) # Subject Code (COMP 20333, GEED 10013, ...)
+    Name = db.Column(db.String(200)) # Subject Name
+    Description = db.Column(db.String(200)) # Description of Subject
+    Units = db.Column(db.Float) # Units of Subjects
+    IsNSTP = db.Column(db.Boolean, default=False) # NSTP Cheker
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+    # ForBridging
+
+    def to_dict(self):
+        return {
+            'SubjectId': self.SubjectId,
+            'SubjectCode': self.SubjectCode,
+            'Name': self.Name,
+            'Description': self.Description,
+            'Units': self.Units,
+            'IsNSTP': self.IsNSTP,
+        }
+
+
+
+class Users(db.Model):
+    __tablename__ = "RISUsers"
+
+    id = db.Column(db.String, primary_key=True)
+    faculty_id = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)
+
+    # PANG CONNECT=================
+    
+    faculty = db.relationship('FISFaculty')
+    faculty_research_papers = db.relationship('FacultyResearchPaper')
+
+    def get_id(self):
+        return str(self.id)  # Convert to string to ensure compatibility
+
+class FacultyResearchPaper(db.Model):
+    __tablename__ = 'RISfaculty_research_papers'
+
+    id = db.Column(db.String, primary_key=True, nullable=False)
+    title = db.Column(db.String)
+    content = db.Column(db.String)
+    abstract = db.Column(db.String)
+    file_path = db.Column(db.String)
+    date_publish = db.Column(db.Date)
+    category = db.Column(db.String)
+    publisher = db.Column(db.String)
+    user_id = db.Column(db.String, db.ForeignKey('RISUsers.id'), default=None)
 
 def init_db(app):
     db.init_app(app)

@@ -17,7 +17,7 @@ from website.models import db
 from sqlalchemy import update
 
 # LOADING MODEL CLASSES
-from website.models import FISFaculty
+from website.models import FISFaculty,FISTeachingAssignments,FISAdvisingClasses_Schedule,FISEvaluations
 
 # LOADING FUNCTION CHECK TOKEN
 from website.Token.token_check import Check_Token
@@ -107,12 +107,13 @@ def TI_TA():
 
 # ------------------------------- TEACHING ASSIGNMENTS SCHEDULES----------------------------  
 
-@TI.route("/TI-Teaching-Assignments/BSCS-0104/Schedules", methods=['GET', 'POST'])
+@TI.route("/TI-Teaching-Assignments/<id>/Schedules", methods=['GET', 'POST'])
 @login_required
 @Check_Token
-def TI_TAS():
+def TI_TAS(id):
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        item = FISTeachingAssignments.query.filter_by(id=id).first() 
         
 
         if username.ProfilePic == None:
@@ -145,6 +146,7 @@ def TI_TAS():
                                faculty_code= username.FacultyCode,
                                user= current_user,
                                TI="show",
+                               item=item,
                                activate_TA="active",
                                profile_pic=ProfilePic)
 
@@ -160,7 +162,6 @@ def TI_TAS():
 def TI_AM():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
-        
 
         if username.ProfilePic == None:
             ProfilePic=profile_default
@@ -200,14 +201,15 @@ def TI_AM():
 
 # ------------------------------- ADVISING CLASS SCHEDULES----------------------------  
 
-@TI.route("/TI-Advising-Mentoring/BSIT-3-1/Schedules", methods=['GET', 'POST'])
+@TI.route("/TI-Advising-Mentoring/<classid>/Schedules", methods=['GET', 'POST'])
 @login_required
 @Check_Token
-def TI_AMCS():
+def TI_AMCS(classid):
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
-        
-
+        item = FISAdvisingClasses_Schedule.query.filter_by(FacultyId=current_user.FacultyId, id=classid).all()
+        print(item)
+    
         if username.ProfilePic == None:
             ProfilePic=profile_default
         else:
@@ -238,6 +240,7 @@ def TI_AMCS():
                                faculty_code= username.FacultyCode,
                                user= current_user,
                                TI="show",
+                               item = item,
                                activate_AdM="active",
                                profile_pic=ProfilePic)
 
@@ -342,45 +345,250 @@ def TI_AMMS():
 @login_required
 @Check_Token
 def TI_TE():
-    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT   
+        from sqlalchemy import desc
         
+        def convert_to_percentage(grade):
+            # Assuming the maximum grade is 5.0
+            max_grade = 5.0
 
+            # Perform linear conversion
+            percentage = (grade / max_grade) * 100
+
+            # Round the result to two decimal places
+            return '{:.4f}'.format(percentage)
+        
+        def convert_to_interpretation(grade):
+            # Legend for conversion
+            legend = {
+                (4.5, 5.0): 'Outstanding',
+                (3.5, 4.49): 'Very Satisfactory',
+                (2.5, 3.49): 'Satisfactory',
+                (1.5, 2.49): 'Fair',
+                (1.0, 1.49): 'Poor'
+            }
+
+            # Iterate through legend and find the corresponding range
+            for key, value in legend.items():
+                if key[0] <= grade <= key[1]:
+                    return value
+
+            return None  # Handle the case where the grade doesn't fall into any range
+        
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        year_sem = FISEvaluations.query.filter_by(FacultyId=current_user.FacultyId).order_by(desc(FISEvaluations.id)).first()
+
+        acad_head_a = year_sem.acad_head_a
+        acad_head_b = year_sem.acad_head_b
+        acad_head_c = year_sem.acad_head_c
+        acad_head_d = year_sem.acad_head_d
+        director = year_sem.director
+        director_a = year_sem.director_a
+        director_b = year_sem.director_b
+        director_c = year_sem.director_c
+        director_d = year_sem.director_d
+        self = year_sem.self
+        self_a = year_sem.self_a
+        self_b = year_sem.self_b
+        self_c = year_sem.self_c
+        self_d = year_sem.self_d
+        peer = year_sem.peer
+        peer_a = year_sem.peer_a
+        peer_b = year_sem.peer_b
+        peer_c = year_sem.peer_c
+        peer_d = year_sem.peer_d
+        student = year_sem.student
+        student_a = year_sem.student_a
+        student_b = year_sem.student_b
+        student_c = year_sem.student_c
+        student_d = year_sem.student_d
+        
+        # Calculate the average of acad_head_a, acad_head_b, acad_head_c, and acad_head_d
+        acad_head_ave = (acad_head_a + acad_head_b + acad_head_c + acad_head_d) / 4
+        director_ave = (director_a + director_b + director_c + director_d) / 4
+        self_ave = (self_a + self_b + self_c + self_d) / 4
+        peer_ave = (peer_a + peer_b + peer_c + peer_d) / 4
+        student_ave = (student_a + student_b + student_c + student_d) / 4
+        
+        print(director_ave)
+        
+         # CALCULATED RATING
+        acad_head_calc = (acad_head_ave) * 0.10
+        director_calc = (director_ave) * 0.20
+        self_calc = (self_ave) * 1.0
+        peer_calc = (peer_ave) * 0.20
+        student_calc = (student_ave) * 0.70
+        
+        general_rating = (acad_head_calc) + (director_calc) + (student_calc)
+        
+        calc_data = {
+                        'acad_head_a': convert_to_percentage(acad_head_a),
+                        'acad_head_b': convert_to_percentage(acad_head_b),
+                        'acad_head_c': convert_to_percentage(acad_head_c),
+                        'acad_head_d': convert_to_percentage(acad_head_d),
+                        'acad_head_ave': convert_to_percentage(acad_head_ave),
+                        'acad_head_calc': convert_to_percentage(acad_head_calc),
+                        'acad_head_interpret': convert_to_interpretation(acad_head_ave),
+                        
+                        
+                        'director': convert_to_percentage(director),
+                        'director_a': convert_to_percentage(director_a),
+                        'director_b': convert_to_percentage(director_b),
+                        'director_c': convert_to_percentage(director_c),
+                        'director_d': convert_to_percentage(director_d),
+                        'director_ave': convert_to_percentage(director_ave),
+                        'director_calc': convert_to_percentage(director_calc),
+                        'director_interpret': convert_to_interpretation(director_ave),
+                        
+                        'self': convert_to_percentage(self),
+                        'self_a': convert_to_percentage(self_a),
+                        'self_b': convert_to_percentage(self_b),
+                        'self_c': convert_to_percentage(self_c),
+                        'self_d': convert_to_percentage(self_d),
+                        'self_ave': convert_to_percentage(self_ave),
+                        'self_calc': convert_to_percentage(self_calc),
+                        'self_interpret': convert_to_interpretation(self_ave),
+                        
+                        'peer': convert_to_percentage(peer),
+                        'peer_a': convert_to_percentage(peer_a),
+                        'peer_b': convert_to_percentage(peer_b),
+                        'peer_c': convert_to_percentage(peer_c),
+                        'peer_d': convert_to_percentage(peer_d),
+                        'peer_ave': convert_to_percentage(peer_ave),
+                        'peer_calc': convert_to_percentage(peer_calc),
+                        'peer_interpret': convert_to_interpretation(peer_ave),
+                        
+                        'student': convert_to_percentage(student),
+                        'student_a': convert_to_percentage(student_a),
+                        'student_b': convert_to_percentage(student_b),
+                        'student_c': convert_to_percentage(student_c),
+                        'student_d': convert_to_percentage(student_d),
+                        'student_ave': convert_to_percentage(student_ave),
+                        'student_calc': convert_to_percentage(student_calc),
+                        'student_interpret': convert_to_interpretation(student_ave),
+                        
+                        'general_rating': convert_to_percentage(general_rating),
+                        'general_interpret': convert_to_interpretation(general_rating),
+                        
+                    }
+        
         if username.ProfilePic == None:
             ProfilePic=profile_default
         else:
             ProfilePic=username.ProfilePic
+            
+        if request.method == 'POST':
+        
+            select = request.form.get('select')
+            year_sem = FISEvaluations.query.filter_by(FacultyId=current_user.FacultyId, id=select).first()
            
-        
-        # # UPDATE PROFILE BASIC DETAILS
-        
-        # if request.method == 'POST':
-
-        #     # UPDATE BASIC DETAILS
-        #     # VALUES
-        #     FacultyCode = request.form.get('FacultyCode')
-        #     honorific = request.form.get('honorific')
-
-        #     u = update(FISFaculty)
-        #     u = u.values({"FacultyCode": FacultyCode,
-        #                   "honorific": honorific
-        #                   })
-        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
-        #     db.session.execute(u)
-        #     db.session.commit()
-        #     db.session.close()
-        #     return redirect(url_for('PDM.PDM_BD')) 
+            acad_head_a = year_sem.acad_head_a
+            acad_head_b = year_sem.acad_head_b
+            acad_head_c = year_sem.acad_head_c
+            acad_head_d = year_sem.acad_head_d
+            director = year_sem.director
+            director_a = year_sem.director_a
+            director_b = year_sem.director_b
+            director_c = year_sem.director_c
+            director_d = year_sem.director_d
+            self = year_sem.self
+            self_a = year_sem.self_a
+            self_b = year_sem.self_b
+            self_c = year_sem.self_c
+            self_d = year_sem.self_d
+            peer = year_sem.peer
+            peer_a = year_sem.peer_a
+            peer_b = year_sem.peer_b
+            peer_c = year_sem.peer_c
+            peer_d = year_sem.peer_d
+            student = year_sem.student
+            student_a = year_sem.student_a
+            student_b = year_sem.student_b
+            student_c = year_sem.student_c
+            student_d = year_sem.student_d
+            
+            # Calculate the average of acad_head_a, acad_head_b, acad_head_c, and acad_head_d
+            acad_head_ave = (acad_head_a + acad_head_b + acad_head_c + acad_head_d) / 4
+            director_ave = (director_a + director_b + director_c + director_d) / 4
+            self_ave = (self_a + self_b + self_c + self_d) / 4
+            peer_ave = (peer_a + peer_b + peer_c + peer_d) / 4
+            student_ave = (student_a + student_b + student_c + student_d) / 4
+            
+            print(director_ave)
+            
+            # CALCULATED RATING
+            acad_head_calc = (acad_head_ave) * 0.10
+            director_calc = (director_ave) * 0.20
+            self_calc = (self_ave) * 1.0
+            peer_calc = (peer_ave) * 0.20
+            student_calc = (student_ave) * 0.70
+            
+            general_rating = (acad_head_calc) + (director_calc) + (student_calc)
+            
+            calc_data = {
+                            'acad_head_a': convert_to_percentage(acad_head_a),
+                            'acad_head_b': convert_to_percentage(acad_head_b),
+                            'acad_head_c': convert_to_percentage(acad_head_c),
+                            'acad_head_d': convert_to_percentage(acad_head_d),
+                            'acad_head_ave': convert_to_percentage(acad_head_ave),
+                            'acad_head_calc': convert_to_percentage(acad_head_calc),
+                            'acad_head_interpret': convert_to_interpretation(acad_head_ave),
+                            
+                            
+                            'director': convert_to_percentage(director),
+                            'director_a': convert_to_percentage(director_a),
+                            'director_b': convert_to_percentage(director_b),
+                            'director_c': convert_to_percentage(director_c),
+                            'director_d': convert_to_percentage(director_d),
+                            'director_ave': convert_to_percentage(director_ave),
+                            'director_calc': convert_to_percentage(director_calc),
+                            'director_interpret': convert_to_interpretation(director_ave),
+                            
+                            'self': convert_to_percentage(self),
+                            'self_a': convert_to_percentage(self_a),
+                            'self_b': convert_to_percentage(self_b),
+                            'self_c': convert_to_percentage(self_c),
+                            'self_d': convert_to_percentage(self_d),
+                            'self_ave': convert_to_percentage(self_ave),
+                            'self_calc': convert_to_percentage(self_calc),
+                            'self_interpret': convert_to_interpretation(self_ave),
+                            
+                            'peer': convert_to_percentage(peer),
+                            'peer_a': convert_to_percentage(peer_a),
+                            'peer_b': convert_to_percentage(peer_b),
+                            'peer_c': convert_to_percentage(peer_c),
+                            'peer_d': convert_to_percentage(peer_d),
+                            'peer_ave': convert_to_percentage(peer_ave),
+                            'peer_calc': convert_to_percentage(peer_calc),
+                            'peer_interpret': convert_to_interpretation(peer_ave),
+                            
+                            'student': convert_to_percentage(student),
+                            'student_a': convert_to_percentage(student_a),
+                            'student_b': convert_to_percentage(student_b),
+                            'student_c': convert_to_percentage(student_c),
+                            'student_d': convert_to_percentage(student_d),
+                            'student_ave': convert_to_percentage(student_ave),
+                            'student_calc': convert_to_percentage(student_calc),
+                            'student_interpret': convert_to_interpretation(student_ave),
+                            
+                            'general_rating': convert_to_percentage(general_rating),
+                            'general_interpret': convert_to_interpretation(general_rating),
+                            
+                        }
                       
         return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Teaching-Effectiveness.html", 
                                User= username.FirstName + " " + username.LastName,
                                faculty_code= username.FacultyCode,
                                user= current_user,
                                TI="show",
+                               item_id = year_sem,
+                               calc_data = calc_data,
                                activate_TE="active",
                                profile_pic=ProfilePic)
 
  
 # ------------------------------------------------------------- 
+
 # ------------------------------- TEACHING EFFECTIVENESS FORM----------------------------  
 
 @TI.route("/TI-Faculty-Feedback-Form", methods=['GET', 'POST'])

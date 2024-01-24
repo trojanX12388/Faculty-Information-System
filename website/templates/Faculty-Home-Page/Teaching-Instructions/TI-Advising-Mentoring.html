@@ -124,63 +124,36 @@
                 </tr>
               </thead>
               <tbody>
+                {% for data1 in user.FISAdvisingClasses %}
+         
+                {% if data1.id != None %}
+              
                 <tr>
-                  <th scope="row">COMLAB 101</th>
-                  <td>BSIT-0301</td>
-                  <td>Specialization or Elective Choices</td>
-                  <td>BSIT</td>
-                  <td>3-1</td>
-                  <td>ADVISING</td>
+                  <th scope="row">{{data1.classroomid}}</th>
+                  <td>{{data1.code}}</td>
+                  <td>{{data1.activity}}</td>
+                  <td>{{data1.course}}</td>
+                  <td>{{data1.section}}</td>
+                  <td>{{data1.status}}</td>
                   <td> 
                     <div class="d-grid gap-2 mt-3">
-                      <button type="button" onclick="classredirectToURL()" class="btn btn-success">Schedule</i></button>
+                      <button type="button" onclick="classredirectToURL{{data1.id}}()" class="btn btn-success">Schedule</i></button>
                       <script>
-                        function classredirectToURL() {
-                            window.location.href = '/TI-Advising-Mentoring/BSIT-3-1/Schedules';
+                        function classredirectToURL{{data1.id}}() {
+                            window.location.href = '/TI-Advising-Mentoring/{{data1.id}}/Schedules';
                         }
                     </script>
                     </div>
                 </td>
                 </tr>
-                <tr>
-                  <th scope="row">ROOM 203</th>
-                  <td>BAS-0303</td>
-                  <td>Certifications and Professional Exams</td>
-                  <td>BAS</td>
-                  <td>3-1</td>
-                  <td>ADVISING</td>
-                  <td> 
-                    <div class="d-grid gap-2 mt-3">
-                      <button type="button" class="btn btn-success">Schedule</i></button>
-                  </div>
-                </td>
-                </tr>
-                <tr>
-                  <th scope="row">COMLAB 101</th>
-                  <td>BSCS-0401</td>
-                  <td>Career Guidance in Computer Science</td>
-                  <td>BSCS</td>
-                  <td>4-1</td>
-                  <td>ADVISING</td>
-                  <td> 
-                    <div class="d-grid gap-2 mt-3">
-                      <button type="button" class="btn btn-success">Schedule</i></button>
-                  </div>
-                </td>
-                </tr>
-                <tr>
-                  <th scope="row">LAB 101</th>
-                  <td>BSIT-0401</td>
-                  <td>Soft Skills Development</td>
-                  <td>BSIT</td>
-                  <td>4-1</td>
-                  <td>ADVISING</td>
-                  <td> 
-                    <div class="d-grid gap-2 mt-3">
-                      <button type="button" class="btn btn-success">Schedule</i></button>
-                  </div>
-                </td>
-                </tr>
+                
+                {% else %}
+         
+                {% endif %}
+
+
+             {% endfor %}  
+               
               </tbody>
             </table><!-- End Table with stripped rows -->
           </div>

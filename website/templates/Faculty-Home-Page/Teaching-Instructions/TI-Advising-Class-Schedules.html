@@ -107,46 +107,25 @@
                   </tr>
                 </thead>
                 <tbody>
+                  {% for data1 in item %}
+         
+                  {% if data1.id != None %}
+                
                   <tr>
-                    <th scope="row">BSIT 3-1</th>
-                    <td>1:00-3:00 P.M</td>
-                    <td>Monday</td>
-                    <td>Selecting Specialization and Elective Choices</td>
-                    <td>2</td>
-                    <td>2024</td>
+                    <th scope="row">{{data1.course}} {{data1.section}}</th>
+                    <td>{{data1.time}}</td>
+                    <td>{{data1.day}}</td>
+                    <td>{{data1.topic}}</td>
+                    <td>{{data1.semester}}</td>
+                    <td>{{data1.year}}</td>
                   </tr>
-                  <tr>
-                    <th scope="row">BSIT 3-1</th>
-                    <td>8:30-11:30 A.M</td>
-                    <td>Saturday</td>
-                    <td>Introduction to Certification and Professional Examination</td>
-                    <td>2</td>
-                    <td>2024</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">BSIT 3-1</th>
-                    <td>12:00-3:00 P.M</td>
-                    <td>Tuesday</td>
-                    <td>Building a Portfolio</td>
-                    <td>2</td>
-                    <td>2024</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">BSIT 3-1</th>
-                    <td>4:30-8:30 P.M</td>
-                    <td>Tuesday</td>
-                    <td>Skill Development</td>
-                    <td>2</td>
-                    <td>2024</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">BSIT 3-1</th>
-                    <td>5:00-7:00 P.M</td>
-                    <td>Wednesday</td>
-                    <td>Statistical Inference</td>
-                    <td>2</td>
-                    <td>2024</td>
-                  </tr>
+                  
+                  {% else %}
+           
+                  {% endif %}
+  
+  
+               {% endfor %}  
                 </tbody>
               </table>
               <!-- End Table with stripped rows -->

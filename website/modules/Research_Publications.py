@@ -17,7 +17,7 @@ from website.models import db
 from sqlalchemy import update
 
 # LOADING MODEL CLASSES
-from website.models import FISFaculty
+from website.models import FISFaculty,FacultyResearchPaper,Users
 
 # LOADING FUNCTION CHECK TOKEN
 from website.Token.token_check import Check_Token
@@ -115,6 +115,9 @@ def RP_RU():
 def RP_T():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        risid = Users.query.filter_by(faculty_id=current_user.FacultyId).first() 
+       
+        research_publication = FacultyResearchPaper.query.filter_by(user_id=risid.id).all()
         
 
         if username.ProfilePic == None:
@@ -148,6 +151,7 @@ def RP_T():
                                user= current_user,
                                profile_pic=ProfilePic,
                                RP="show",
+                               research_publication = research_publication,
                                activate_R= "active")
 
  
