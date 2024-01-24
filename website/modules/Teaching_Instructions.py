@@ -376,106 +376,166 @@ def TI_TE():
             return None  # Handle the case where the grade doesn't fall into any range
         
         username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
-        year_sem = FISEvaluations.query.filter_by(FacultyId=current_user.FacultyId).order_by(desc(FISEvaluations.id)).first()
-
-        acad_head_a = year_sem.acad_head_a
-        acad_head_b = year_sem.acad_head_b
-        acad_head_c = year_sem.acad_head_c
-        acad_head_d = year_sem.acad_head_d
-        director = year_sem.director
-        director_a = year_sem.director_a
-        director_b = year_sem.director_b
-        director_c = year_sem.director_c
-        director_d = year_sem.director_d
-        self = year_sem.self
-        self_a = year_sem.self_a
-        self_b = year_sem.self_b
-        self_c = year_sem.self_c
-        self_d = year_sem.self_d
-        peer = year_sem.peer
-        peer_a = year_sem.peer_a
-        peer_b = year_sem.peer_b
-        peer_c = year_sem.peer_c
-        peer_d = year_sem.peer_d
-        student = year_sem.student
-        student_a = year_sem.student_a
-        student_b = year_sem.student_b
-        student_c = year_sem.student_c
-        student_d = year_sem.student_d
-        
-        # Calculate the average of acad_head_a, acad_head_b, acad_head_c, and acad_head_d
-        acad_head_ave = (acad_head_a + acad_head_b + acad_head_c + acad_head_d) / 4
-        director_ave = (director_a + director_b + director_c + director_d) / 4
-        self_ave = (self_a + self_b + self_c + self_d) / 4
-        peer_ave = (peer_a + peer_b + peer_c + peer_d) / 4
-        student_ave = (student_a + student_b + student_c + student_d) / 4
-        
-        print(director_ave)
-        
-         # CALCULATED RATING
-        acad_head_calc = (acad_head_ave) * 0.10
-        director_calc = (director_ave) * 0.20
-        self_calc = (self_ave) * 1.0
-        peer_calc = (peer_ave) * 0.20
-        student_calc = (student_ave) * 0.70
-        
-        general_rating = (acad_head_calc) + (director_calc) + (student_calc)
-        
-        calc_data = {
-                        'acad_head_a': convert_to_percentage(acad_head_a),
-                        'acad_head_b': convert_to_percentage(acad_head_b),
-                        'acad_head_c': convert_to_percentage(acad_head_c),
-                        'acad_head_d': convert_to_percentage(acad_head_d),
-                        'acad_head_ave': convert_to_percentage(acad_head_ave),
-                        'acad_head_calc': convert_to_percentage(acad_head_calc),
-                        'acad_head_interpret': convert_to_interpretation(acad_head_ave),
-                        
-                        
-                        'director': convert_to_percentage(director),
-                        'director_a': convert_to_percentage(director_a),
-                        'director_b': convert_to_percentage(director_b),
-                        'director_c': convert_to_percentage(director_c),
-                        'director_d': convert_to_percentage(director_d),
-                        'director_ave': convert_to_percentage(director_ave),
-                        'director_calc': convert_to_percentage(director_calc),
-                        'director_interpret': convert_to_interpretation(director_ave),
-                        
-                        'self': convert_to_percentage(self),
-                        'self_a': convert_to_percentage(self_a),
-                        'self_b': convert_to_percentage(self_b),
-                        'self_c': convert_to_percentage(self_c),
-                        'self_d': convert_to_percentage(self_d),
-                        'self_ave': convert_to_percentage(self_ave),
-                        'self_calc': convert_to_percentage(self_calc),
-                        'self_interpret': convert_to_interpretation(self_ave),
-                        
-                        'peer': convert_to_percentage(peer),
-                        'peer_a': convert_to_percentage(peer_a),
-                        'peer_b': convert_to_percentage(peer_b),
-                        'peer_c': convert_to_percentage(peer_c),
-                        'peer_d': convert_to_percentage(peer_d),
-                        'peer_ave': convert_to_percentage(peer_ave),
-                        'peer_calc': convert_to_percentage(peer_calc),
-                        'peer_interpret': convert_to_interpretation(peer_ave),
-                        
-                        'student': convert_to_percentage(student),
-                        'student_a': convert_to_percentage(student_a),
-                        'student_b': convert_to_percentage(student_b),
-                        'student_c': convert_to_percentage(student_c),
-                        'student_d': convert_to_percentage(student_d),
-                        'student_ave': convert_to_percentage(student_ave),
-                        'student_calc': convert_to_percentage(student_calc),
-                        'student_interpret': convert_to_interpretation(student_ave),
-                        
-                        'general_rating': convert_to_percentage(general_rating),
-                        'general_interpret': convert_to_interpretation(general_rating),
-                        
-                    }
-        
         if username.ProfilePic == None:
             ProfilePic=profile_default
         else:
             ProfilePic=username.ProfilePic
+            
+        # VERIFYING IF DATA OF CURRENT USER EXISTS
+        if current_user.FISEvaluations:
+        
+            year_sem = FISEvaluations.query.filter_by(FacultyId=current_user.FacultyId).order_by(desc(FISEvaluations.id)).first()
+
+            acad_head_a = year_sem.acad_head_a
+            acad_head_b = year_sem.acad_head_b
+            acad_head_c = year_sem.acad_head_c
+            acad_head_d = year_sem.acad_head_d
+            director = year_sem.director
+            director_a = year_sem.director_a
+            director_b = year_sem.director_b
+            director_c = year_sem.director_c
+            director_d = year_sem.director_d
+            self = year_sem.self
+            self_a = year_sem.self_a
+            self_b = year_sem.self_b
+            self_c = year_sem.self_c
+            self_d = year_sem.self_d
+            peer = year_sem.peer
+            peer_a = year_sem.peer_a
+            peer_b = year_sem.peer_b
+            peer_c = year_sem.peer_c
+            peer_d = year_sem.peer_d
+            student = year_sem.student
+            student_a = year_sem.student_a
+            student_b = year_sem.student_b
+            student_c = year_sem.student_c
+            student_d = year_sem.student_d
+            
+            # Calculate the average of acad_head_a, acad_head_b, acad_head_c, and acad_head_d
+            acad_head_ave = (acad_head_a + acad_head_b + acad_head_c + acad_head_d) / 4
+            director_ave = (director_a + director_b + director_c + director_d) / 4
+            self_ave = (self_a + self_b + self_c + self_d) / 4
+            peer_ave = (peer_a + peer_b + peer_c + peer_d) / 4
+            student_ave = (student_a + student_b + student_c + student_d) / 4
+            
+            print(director_ave)
+            
+            # CALCULATED RATING
+            acad_head_calc = (acad_head_ave) * 0.10
+            director_calc = (director_ave) * 0.20
+            self_calc = (self_ave) * 1.0
+            peer_calc = (peer_ave) * 0.20
+            student_calc = (student_ave) * 0.70
+            
+            general_rating = (acad_head_calc) + (director_calc) + (student_calc)
+            
+            calc_data = {
+                            'acad_head_a': convert_to_percentage(acad_head_a),
+                            'acad_head_b': convert_to_percentage(acad_head_b),
+                            'acad_head_c': convert_to_percentage(acad_head_c),
+                            'acad_head_d': convert_to_percentage(acad_head_d),
+                            'acad_head_ave': convert_to_percentage(acad_head_ave),
+                            'acad_head_calc': convert_to_percentage(acad_head_calc),
+                            'acad_head_interpret': convert_to_interpretation(acad_head_ave),
+                            
+                            
+                            'director': convert_to_percentage(director),
+                            'director_a': convert_to_percentage(director_a),
+                            'director_b': convert_to_percentage(director_b),
+                            'director_c': convert_to_percentage(director_c),
+                            'director_d': convert_to_percentage(director_d),
+                            'director_ave': convert_to_percentage(director_ave),
+                            'director_calc': convert_to_percentage(director_calc),
+                            'director_interpret': convert_to_interpretation(director_ave),
+                            
+                            'self': convert_to_percentage(self),
+                            'self_a': convert_to_percentage(self_a),
+                            'self_b': convert_to_percentage(self_b),
+                            'self_c': convert_to_percentage(self_c),
+                            'self_d': convert_to_percentage(self_d),
+                            'self_ave': convert_to_percentage(self_ave),
+                            'self_calc': convert_to_percentage(self_calc),
+                            'self_interpret': convert_to_interpretation(self_ave),
+                            
+                            'peer': convert_to_percentage(peer),
+                            'peer_a': convert_to_percentage(peer_a),
+                            'peer_b': convert_to_percentage(peer_b),
+                            'peer_c': convert_to_percentage(peer_c),
+                            'peer_d': convert_to_percentage(peer_d),
+                            'peer_ave': convert_to_percentage(peer_ave),
+                            'peer_calc': convert_to_percentage(peer_calc),
+                            'peer_interpret': convert_to_interpretation(peer_ave),
+                            
+                            'student': convert_to_percentage(student),
+                            'student_a': convert_to_percentage(student_a),
+                            'student_b': convert_to_percentage(student_b),
+                            'student_c': convert_to_percentage(student_c),
+                            'student_d': convert_to_percentage(student_d),
+                            'student_ave': convert_to_percentage(student_ave),
+                            'student_calc': convert_to_percentage(student_calc),
+                            'student_interpret': convert_to_interpretation(student_ave),
+                            
+                            'general_rating': convert_to_percentage(general_rating),
+                            'general_interpret': convert_to_interpretation(general_rating),
+                            
+                        }
+            
+        else:
+            calc_data = {
+                            'acad_head_a': '',
+                            'acad_head_b': '',
+                            'acad_head_c': '',
+                            'acad_head_d': '',
+                            'acad_head_ave': '',
+                            'acad_head_calc': '',
+                            'acad_head_interpret': '',
+                            
+                            
+                            'director': '',
+                            'director_a': '',
+                            'director_b': '',
+                            'director_c': '',
+                            'director_d': '',
+                            'director_ave': '',
+                            'director_calc': '',
+                            'director_interpret': '',
+                            
+                            'self': '',
+                            'self_a': '',
+                            'self_b': '',
+                            'self_c': '',
+                            'self_d': '',
+                            'self_ave': '',
+                            'self_calc': '',
+                            'self_interpret': '',
+                            
+                            'peer': '',
+                            'peer_a': '',
+                            'peer_b': '',
+                            'peer_c': '',
+                            'peer_d': '',
+                            'peer_ave': '',
+                            'peer_calc': '',
+                            'peer_interpret': '',
+                            
+                            'student': '',
+                            'student_a': '',
+                            'student_b': '',
+                            'student_c': '',
+                            'student_d': '',
+                            'student_ave': '',
+                            'student_calc': '',
+                            'student_interpret': '',
+                            
+                            'general_rating': '',
+                            'general_interpret': '',
+                            
+                        }
+            year_sem =  {'FISEvaluations':
+                    {
+                    'Remarks':""
+                    }
+                    }
             
         if request.method == 'POST':
         
