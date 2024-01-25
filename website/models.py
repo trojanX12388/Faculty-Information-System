@@ -78,7 +78,11 @@ class FISFaculty(db.Model, UserMixin):
     FISTeachingAssignments = db.relationship('FISTeachingAssignments')
     FISMandatoryRequirements = db.relationship('FISMandatoryRequirements')
     
+    FISAdvisingStudent = db.relationship('FISAdvisingStudent')
+    FISMentoringStudent = db.relationship('FISMentoringStudent')
     FISInstructionalMaterialsDeveloped = db.relationship('FISInstructionalMaterialsDeveloped')
+    FISSpecialProject = db.relationship('FISSpecialProject')
+    FISCapstone = db.relationship('FISCapstone')
     
     
     # TOKEN
@@ -156,6 +160,11 @@ class FISFaculty(db.Model, UserMixin):
             'FISAssignmentTypes': self.FISAssignmentTypes,
             'FISTeachingAssignments': self.FISTeachingAssignments,
             'FISMandatoryRequirements': self.FISMandatoryRequirements,
+            
+            'FISAdvisingStudent': self.FISAdvisingStudent,
+            'FISMentoringStudent': self.FISMentoringStudent,
+            'FISSpecialProject': self.FISSpecialProject,
+            'FISCapstone': self.FISCapstone,
             
             'FISLoginToken': self.FISLoginToken,
 
@@ -1010,6 +1019,38 @@ class FISInstructionalMaterialsDeveloped(db.Model):
 
 # ------------------------------------------------
 
+
+# ------------------------------------------------
+# CAPSTONE
+  
+class FISCapstone(db.Model):
+    __tablename__ = 'FISCapstone'
+
+    id = db.Column(db.Integer, primary_key=True)  # DataID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    title = db.Column(db.String) 
+    abstract = db.Column(db.String)
+    file_id = db.Column(db.String)
+    is_delete = db.Column(db.Boolean, default=False) 
+    
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
+            'title': self.title,
+            'abstract': self.abstract,
+            'file_id': self.file_id,
+            'is_delete': self.is_delete
+        }
+        
+    def get_id(self):
+        return str(self.id)  # Convert to string to ensure compatibility  
+
+# ------------------------------------------------
+
 # ------------------------------------------------
 # AWARDS
   
@@ -1502,6 +1543,133 @@ class FISAdvisingClasses_Schedule(db.Model):
             'topic': self.topic,
             'semester': self.semester,
             'year': self.year,
+            'is_delete': self.is_delete
+        }
+        
+    def get_id(self):
+        return str(self.id)  # Convert to string to ensure compatibility  
+
+# ------------------------------------------------
+
+
+# ------------------------------------------------
+# ADVISING STUDENT
+  
+class FISAdvisingStudent(db.Model):
+    __tablename__ = 'FISAdvisingStudent'
+
+    id = db.Column(db.Integer, primary_key=True)  # DataID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    StudentId = db.Column(db.Integer, db.ForeignKey('SPSStudent.StudentId'), nullable=True)
+    course = db.Column(db.String(50))
+    section = db.Column(db.String(50)) 
+    subject = db.Column(db.String(50))
+    topic = db.Column(db.String(50))
+    time = db.Column(db.String(50))
+    day = db.Column(db.String(50))
+    semester = db.Column(db.String(50))
+    year = db.Column(db.String(50))
+    status = db.Column(db.String(50)) 
+    is_delete = db.Column(db.Boolean, default=False) 
+    
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
+            'StudentId': self.StudentId,
+            'course': self.course,
+            'section': self.section,
+            'subject': self.subject,
+            'topic': self.topic,
+            'time': self.time,
+            'day': self.day,
+            'semester': self.semester,
+            'year': self.year,
+            'status': self.status,
+            'is_delete': self.is_delete
+        }
+        
+    def get_id(self):
+        return str(self.id)  # Convert to string to ensure compatibility  
+
+# ------------------------------------------------
+
+
+# ------------------------------------------------
+# MENTORING STUDENT
+  
+class FISMentoringStudent(db.Model):
+    __tablename__ = 'FISMentoringStudent'
+
+    id = db.Column(db.Integer, primary_key=True)  # DataID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    StudentId = db.Column(db.Integer, db.ForeignKey('SPSStudent.StudentId'), nullable=True)
+    course = db.Column(db.String(50))
+    section = db.Column(db.String(50)) 
+    course_title = db.Column(db.String(50))
+    topic = db.Column(db.String(50))
+    time = db.Column(db.String(50))
+    day = db.Column(db.String(50))
+    semester = db.Column(db.String(50))
+    year = db.Column(db.String(50))
+    status = db.Column(db.String(50)) 
+    is_delete = db.Column(db.Boolean, default=False) 
+    
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
+            'StudentId': self.StudentId,
+            'course': self.course,
+            'section': self.section,
+            'course_title': self.course_title,
+            'topic': self.topic,
+            'time': self.time,
+            'day': self.day,
+            'semester': self.semester,
+            'year': self.year,
+            'status': self.status,
+            'is_delete': self.is_delete
+        }
+        
+    def get_id(self):
+        return str(self.id)  # Convert to string to ensure compatibility  
+
+# ------------------------------------------------
+
+# ------------------------------------------------
+# SPECIAL PROJECT
+  
+class FISSpecialProject(db.Model):
+    __tablename__ = 'FISSpecialProject'
+
+    id = db.Column(db.Integer, primary_key=True)  # DataID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    date = db.Column(db.Date, default=datetime.now) 
+    title = db.Column(db.String) 
+    due = db.Column(db.Date) 
+    status = db.Column(db.String(50),default="On Going") 
+    file_id = db.Column(db.String)
+    is_delete = db.Column(db.Boolean, default=False) 
+    
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'FacultyId': self.FacultyId,
+            # 'AdminId': self.AdminId,
+            'date': self.date,
+            'title': self.title,
+            'due': self.due,
+            'status': self.status,
+            'file_id': self.file_id,
             'is_delete': self.is_delete
         }
         

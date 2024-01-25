@@ -140,7 +140,7 @@
                       <button type="button" onclick="classredirectToURL{{data1.id}}()" class="btn btn-success">Schedule</i></button>
                       <script>
                         function classredirectToURL{{data1.id}}() {
-                            window.location.href = '/TI-Advising-Mentoring/{{data1.id}}/Schedules';
+                            window.location.href = '/TI-Advising-Class/{{data1.id}}/Schedules';
                         }
                     </script>
                     </div>
@@ -182,49 +182,26 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">2021-0021-CM</th>
-                      <td>Mabini, Vincent Rodhy</td>
-                      <td>BAS-0303</td>
-                      <td>Statistical Inference</td>
-                      <td>ADVISING</td>
-                      <td> 
-                        <div class="d-grid gap-2 mt-3">
-                          <button type="button" onclick="studentredirectToURL()" class="btn btn-success">Schedule</i></button>
-                          <script>
-                            function studentredirectToURL() {
-                                window.location.href = '/TI-Advising-Mentoring/2021-0021-CM/Schedules';
-                            }
-                        </script>
-                        </div>
-                    </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">2021-0126-CM</th>
-                      <td>Chu, Kimmy</td>
-                      <td>BAS-0303</td>
-                      <td>Statistical Inference</td>
-                      <td>ADVISING</td>
-                      <td> 
-                        <div class="d-grid gap-2 mt-3">
-                          <button type="button" class="btn btn-success">Schedule</i></button>
-                      </div>
-                    </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">2021-0052-CM</th>
-                      <td>Ong, Darrel Michael</td>
-                      <td>BSCpE-0304</td>
-                      <td>Probability and Statistics</td>
-                      <td>ADVISING</td>
-                      <td> 
-                        <div class="d-grid gap-2 mt-3">
-                          <button type="button" class="btn btn-success">Schedule</i></button>
-                      </div>
-                    </td>
-                    </tr>
-                    
-                  </tbody>
+                    {% for student in students %}
+                        <tr>
+                            <th scope="row">{{ student.StudentNumber }}</th>
+                            <td>{{ student.FullName }}</td>
+                            <td>{{ student.CourseSection }}</td>
+                            <td>{{ student.Subject }}</td>
+                            <td>{{ student.Status }}</td>
+                            <td> 
+                                <div class="d-grid gap-2 mt-3">
+                                    <button type="button" onclick="studentredirectToURL{{ student.Id }}()" class="btn btn-success">Schedule</button>
+                                    <script>
+                                        function studentredirectToURL{{ student.Id }}() {
+                                            window.location.href = '/TI-Advising-Student/{{ student.Id }}/Schedules';
+                                        }
+                                    </script>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
                 </table> 
               </div> 
           </div>

@@ -87,8 +87,8 @@
               </div>
 
               <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-                <h5>2021-0021-CM</h5>
-                <h5>Mabini, Vincent Rodhy</h5>
+                <h5>{{sched.CourseSection}}</h5>
+                <h5>{{sched.FullName}}</h5>
               </div>
               <div class="btnprinter-container">
                 <button id="btnPrintDetail1" class="btnprinter"><i class="bi bi-printer"></i></button>
@@ -108,38 +108,16 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row">BAS 3-1</th>
-                    <td>Statistical Computing</td>
-                    <td>1:00-3:00 P.M</td>
-                    <td>Monday</td>
-                    <td>2</td>
-                    <td>2024</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">BAS 3-1</th>
-                    <td>Multivariate Analysis</td>
-                    <td>10:00-11:00 A.M</td>
-                    <td>Monday</td>
-                    <td>2</td>
-                    <td>2024</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">BAS 3-1</th>
-                    <td>Multivariate Analysis</td>
-                    <td>11:30-12:30 P.M</td>
-                    <td>Tuesday</td>
-                    <td>2</td>
-                    <td>2024</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">BAS 3-1</th>
-                    <td>Complexity Theory</td>
-                    <td>6:00-7:00 A.M</td>
-                    <td>Tuesday</td>
-                    <td>2</td>
-                    <td>2024</td>
-                  </tr>
+                  {% for student in students %}
+                        <tr>
+                            <th scope="row">{{ student.StudentNumber }}</th>
+                            <td>{{ student.FullName }}</td>
+                            <td>{{ student.CourseSection }}</td>
+                            <td>{{ student.Subject }}</td>
+                            <td>{{ student.Status }}</td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
               </table>
               <!-- End Table with stripped rows -->

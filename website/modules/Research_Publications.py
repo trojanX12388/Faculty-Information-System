@@ -118,7 +118,6 @@ def RP_T():
         risid = Users.query.filter_by(faculty_id=current_user.FacultyId).first() 
        
         research_publication = FacultyResearchPaper.query.filter_by(user_id=risid.id).all()
-        
 
         if username.ProfilePic == None:
             ProfilePic=profile_default

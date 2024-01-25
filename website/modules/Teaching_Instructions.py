@@ -18,7 +18,7 @@ from website.models import db
 from sqlalchemy import update
 
 # LOADING MODEL CLASSES
-from website.models import FISFaculty,FISTeachingAssignments,FISAdvisingClasses_Schedule,FISEvaluations,FISInstructionalMaterialsDeveloped
+from website.models import FISFaculty, FISTeachingAssignments, FISAdvisingClasses_Schedule, FISEvaluations, FISInstructionalMaterialsDeveloped, FISAdvisingStudent, Student, FISSpecialProject, FISCapstone
 
 # LOADING FUNCTION CHECK TOKEN
 from website.Token.token_check import Check_Token
@@ -162,79 +162,55 @@ def TI_TAS(id):
 @Check_Token
 def TI_AM():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+    username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+    advising_students = FISAdvisingStudent.query.filter_by(FacultyId=current_user.FacultyId).all() 
 
-        if username.ProfilePic == None:
-            ProfilePic=profile_default
-        else:
-            ProfilePic=username.ProfilePic
-           
-        
-        # # UPDATE PROFILE BASIC DETAILS
-        
-        # if request.method == 'POST':
+    students = []
+    for data2 in advising_students:
+        student = Student.query.filter_by(StudentId=data2.StudentId).first()
+        if student:
+            students.append({
+                'StudentNumber': student.StudentNumber,
+                'FullName': f"{student.LastName}, {student.FirstName} {student.MiddleName}",
+                'CourseSection': f"{data2.course}/{data2.section}",
+                'Subject': data2.subject,
+                'Status': data2.status,
+                'Id': data2.id
+            })
 
-        #     # UPDATE BASIC DETAILS
-        #     # VALUES
-        #     FacultyCode = request.form.get('FacultyCode')
-        #     honorific = request.form.get('honorific')
+    if username.ProfilePic is None:
+        ProfilePic = profile_default
+    else:
+        ProfilePic = username.ProfilePic
 
-        #     u = update(FISFaculty)
-        #     u = u.values({"FacultyCode": FacultyCode,
-        #                   "honorific": honorific
-        #                   })
-        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
-        #     db.session.execute(u)
-        #     db.session.commit()
-        #     db.session.close()
-        #     return redirect(url_for('PDM.PDM_BD')) 
-                      
-        return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Advising-Mentoring.html", 
-                               User= username.FirstName + " " + username.LastName,
-                               faculty_code= username.FacultyCode,
-                               user= current_user,
-                               TI="show",
-                               activate_AdM="active",
-                               profile_pic=ProfilePic)
-
+    return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Advising-Mentoring.html", 
+                           User=username.FirstName + " " + username.LastName,
+                           faculty_code=username.FacultyCode,
+                           user=current_user,
+                           TI="show",
+                           students=students,
+                           activate_AdM="active",
+                           profile_pic=ProfilePic)
  
 # ------------------------------------------------------------- 
 
 # ------------------------------- ADVISING CLASS SCHEDULES----------------------------  
 
-@TI.route("/TI-Advising-Mentoring/<classid>/Schedules", methods=['GET', 'POST'])
+@TI.route("/TI-Advising-Class/<classid>/Schedules", methods=['GET', 'POST'])
 @login_required
 @Check_Token
 def TI_AMCS(classid):
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
         item = FISAdvisingClasses_Schedule.query.filter_by(FacultyId=current_user.FacultyId, id=classid).all()
-        print(item)
-    
+
         if username.ProfilePic == None:
             ProfilePic=profile_default
         else:
             ProfilePic=username.ProfilePic
            
         
-        # # UPDATE PROFILE BASIC DETAILS
-        
-        # if request.method == 'POST':
-
-        #     # UPDATE BASIC DETAILS
-        #     # VALUES
-        #     FacultyCode = request.form.get('FacultyCode')
-        #     honorific = request.form.get('honorific')
-
-        #     u = update(FISFaculty)
-        #     u = u.values({"FacultyCode": FacultyCode,
-        #                   "honorific": honorific
-        #                   })
-        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
-        #     db.session.execute(u)
-        #     db.session.commit()
-        #     db.session.close()
-        #     return redirect(url_for('PDM.PDM_BD')) 
+       
                       
         return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Advising-Class-Schedules.html", 
                                User= username.FirstName + " " + username.LastName,
@@ -250,10 +226,10 @@ def TI_AMCS(classid):
 
 # ------------------------------- ADVISING STUDENT SCHEDULES----------------------------  
 
-@TI.route("/TI-Advising-Mentoring/2021-0021-CM/Schedules", methods=['GET', 'POST'])
+@TI.route("/TI-Advising-Student/<StudentId>/Schedules", methods=['GET', 'POST'])
 @login_required
 @Check_Token
-def TI_AMSS():
+def TI_AMSS(StudentId):
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
         
@@ -263,31 +239,29 @@ def TI_AMSS():
         else:
             ProfilePic=username.ProfilePic
            
-        
-        # # UPDATE PROFILE BASIC DETAILS
-        
-        # if request.method == 'POST':
+        advising_students = FISAdvisingStudent.query.filter_by(FacultyId=current_user.FacultyId,id=StudentId).all() 
 
-        #     # UPDATE BASIC DETAILS
-        #     # VALUES
-        #     FacultyCode = request.form.get('FacultyCode')
-        #     honorific = request.form.get('honorific')
+        sched = []
+        for data2 in advising_students:
+            student = Student.query.filter_by(StudentId=data2.StudentId).first()
+            if student:
+                sched.append({
+                    'StudentNumber': student.StudentNumber,
+                    'FullName': f"{student.LastName}, {student.FirstName} {student.MiddleName}",
+                    'CourseSection': f"{data2.course}/{data2.section}",
+                    'Subject': data2.subject,
+                    'Status': data2.status,
+                    'Id': data2.id
+                })
 
-        #     u = update(FISFaculty)
-        #     u = u.values({"FacultyCode": FacultyCode,
-        #                   "honorific": honorific
-        #                   })
-        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
-        #     db.session.execute(u)
-        #     db.session.commit()
-        #     db.session.close()
-        #     return redirect(url_for('PDM.PDM_BD')) 
+    
                       
         return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Advising-Student-Schedules.html", 
                                User= username.FirstName + " " + username.LastName,
                                faculty_code= username.FacultyCode,
                                user= current_user,
                                TI="show",
+                               sched = sched,
                                activate_AdM="active",
                                profile_pic=ProfilePic)
 
@@ -419,7 +393,6 @@ def TI_TE():
             peer_ave = (peer_a + peer_b + peer_c + peer_d) / 4
             student_ave = (student_a + student_b + student_c + student_d) / 4
             
-            print(director_ave)
             
             # CALCULATED RATING
             acad_head_calc = (acad_head_ave) * 0.10
@@ -532,11 +505,11 @@ def TI_TE():
                             'general_interpret': '',
                             
                         }
-            year_sem =  {'FISEvaluations':
-                    {
-                    'Remarks':""
+            year_sem = {
+                    'Remarks':"",
+                    'school_year':None,
                     }
-                    }
+                    
             
         if request.method == 'POST':
         
@@ -575,7 +548,7 @@ def TI_TE():
             peer_ave = (peer_a + peer_b + peer_c + peer_d) / 4
             student_ave = (student_a + student_b + student_c + student_d) / 4
             
-            print(director_ave)
+
             
             # CALCULATED RATING
             acad_head_calc = (acad_head_ave) * 0.10
@@ -925,24 +898,6 @@ def TI_SP():
             ProfilePic=username.ProfilePic
            
         
-        # # UPDATE PROFILE BASIC DETAILS
-        
-        # if request.method == 'POST':
-
-        #     # UPDATE BASIC DETAILS
-        #     # VALUES
-        #     FacultyCode = request.form.get('FacultyCode')
-        #     honorific = request.form.get('honorific')
-
-        #     u = update(FISFaculty)
-        #     u = u.values({"FacultyCode": FacultyCode,
-        #                   "honorific": honorific
-        #                   })
-        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
-        #     db.session.execute(u)
-        #     db.session.commit()
-        #     db.session.close()
-        #     return redirect(url_for('PDM.PDM_BD')) 
                       
         return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Special-Project.html", 
                                User= username.FirstName + " " + username.LastName,
@@ -951,6 +906,87 @@ def TI_SP():
                                TI="show",
                                activate_SP="active",
                                profile_pic=ProfilePic)
+        
+       
+@TI.route("/TI-Special-Project/add-record", methods=['GET', 'POST'])
+@login_required
+def TI_SPadd():
+        
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        
+        title = request.form.get('title')
+        status = request.form.get('status')
+        due = request.form.get('due_date')
+        
+        file =  request.form.get('base64')
+        ext = request.files.get('fileup')
+        ext = ext.filename
+        
+        id = f'{str(username.FacultyId)}{str(title)}'
+        
+        # SPECIAL PROJECT FOLDER ID
+        folder = '1DhQuE0zHYxK5lzeHUNKpnncOyZe_KThb'
+        
+        
+        url = """data:application/pdf;base64,{}""".format(file)
+                
+        filename, m = urlretrieve(url)
+    
+        file_list = drive.ListFile({'q': "'%s' in parents and trashed=false"%(folder)}).GetList()
+        try:
+            for file1 in file_list:
+                if file1['title'] == str(id):
+                    file1.Delete()                
+        except:
+            pass
+        # CONFIGURE FILE FORMAT AND NAME
+        file1 = drive.CreateFile(metadata={
+            "title": ""+ str(id),
+            "parents": [{"id": folder}],
+            "mimeType": "application/pdf"
+            })
+        
+        # GENERATE FILE AND UPLOAD
+        file1.SetContentFile(filename)
+        file1.Upload()
+        
+        add_record = FISSpecialProject(title=title,status=status,due=due,file_id='%s'%(file1['id']),FacultyId = current_user.FacultyId)
+        
+        db.session.add(add_record)
+        db.session.commit()
+        db.session.close()
+        
+        return redirect(url_for('TI.TI_SP'))
+            
+           
+@TI.route("/TI-Special-Project/delete-record", methods=['GET', 'POST'])
+@login_required
+def TI_SPdel():
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+
+        id = request.form.get('id')
+        
+        
+        data = FISSpecialProject.query.filter_by(id=id).first() 
+        
+        if data:
+            id = f'{str(username.FacultyId)}{str(data.title)}'
+        
+            # SPECIAL PROJECT FOLDER ID
+            folder = '1DhQuE0zHYxK5lzeHUNKpnncOyZe_KThb'
+        
+            file_list = drive.ListFile({'q': "'%s' in parents and trashed=false"%(folder)}).GetList()
+            try:
+                for file1 in file_list:
+                    if file1['title'] == str(id):
+                        file1.Delete()                
+            except:
+                pass
+
+            db.session.delete(data)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('TI.TI_SP'))                
         
 # ------------------------------- CAPSTONE ----------------------------  
 
@@ -968,24 +1004,25 @@ def TI_Caps():
             ProfilePic=username.ProfilePic
            
         
-        # # UPDATE PROFILE BASIC DETAILS
+         # UPDATE 
         
-        # if request.method == 'POST':
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            title = request.form.get('title')
+            abstract = request.form.get('abstract')
+            id = request.form.get('id')
 
-        #     # UPDATE BASIC DETAILS
-        #     # VALUES
-        #     FacultyCode = request.form.get('FacultyCode')
-        #     honorific = request.form.get('honorific')
-
-        #     u = update(FISFaculty)
-        #     u = u.values({"FacultyCode": FacultyCode,
-        #                   "honorific": honorific
-        #                   })
-        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
-        #     db.session.execute(u)
-        #     db.session.commit()
-        #     db.session.close()
-        #     return redirect(url_for('PDM.PDM_BD')) 
+            u = update(FISCapstone)
+            u = u.values({"title": title,
+                          "abstract": abstract
+                          })
+            u = u.where(FISCapstone.id == id)
+            db.session.execute(u)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('TI.TI_Caps'))
                       
         return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Capstone.html", 
                                User= username.FirstName + " " + username.LastName,
@@ -994,6 +1031,86 @@ def TI_Caps():
                                TI="show",
                                activate_Caps="active",
                                profile_pic=ProfilePic)
+
+      
+@TI.route("/TI-Capstone/add-record", methods=['GET', 'POST'])
+@login_required
+def TI_Capsadd():
+        
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        
+        title = request.form.get('title')
+        abstract = request.form.get('abstract')
+        
+        file =  request.form.get('base64')
+        ext = request.files.get('fileup')
+        ext = ext.filename
+        
+        id = f'{str(username.FacultyId)}{str(title)}'
+        
+       # CAPSTONE FOLDER ID
+        folder = '1kG_rx1cqzFhrix6zYK5Gnv4B0MQniKQv'
+        
+        
+        url = """data:application/pdf;base64,{}""".format(file)
+                
+        filename, m = urlretrieve(url)
+    
+        file_list = drive.ListFile({'q': "'%s' in parents and trashed=false"%(folder)}).GetList()
+        try:
+            for file1 in file_list:
+                if file1['title'] == str(id):
+                    file1.Delete()                
+        except:
+            pass
+        # CONFIGURE FILE FORMAT AND NAME
+        file1 = drive.CreateFile(metadata={
+            "title": ""+ str(id),
+            "parents": [{"id": folder}],
+            "mimeType": "application/pdf"
+            })
+        
+        # GENERATE FILE AND UPLOAD
+        file1.SetContentFile(filename)
+        file1.Upload()
+        
+        add_record = FISCapstone(title=title,abstract=abstract,file_id='%s'%(file1['id']),FacultyId = current_user.FacultyId)
+        
+        db.session.add(add_record)
+        db.session.commit()
+        db.session.close()
+        
+        return redirect(url_for('TI.TI_Caps'))
+            
+           
+@TI.route("/TI-Capstone/delete-record", methods=['GET', 'POST'])
+@login_required
+def TI_Capsdel():
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+
+        id = request.form.get('id')
+        
+        
+        data = FISCapstone.query.filter_by(id=id).first() 
+        
+        if data:
+            id = f'{str(username.FacultyId)}{str(data.title)}'
+        
+            # CAPSTONE FOLDER ID
+            folder = '1kG_rx1cqzFhrix6zYK5Gnv4B0MQniKQv'
+        
+            file_list = drive.ListFile({'q': "'%s' in parents and trashed=false"%(folder)}).GetList()
+            try:
+                for file1 in file_list:
+                    if file1['title'] == str(id):
+                        file1.Delete()                
+            except:
+                pass
+
+            db.session.delete(data)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('TI.TI_Caps'))  
         
 # ------------------------------- SERVICES ----------------------------  
 

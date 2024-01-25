@@ -91,7 +91,11 @@
         </div>
         <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
           <h3><strong>EVALUATION RESULTS</strong></h3>
-          <h6><strong>{{item_id.school_year}} {{item_id.semester}}</strong></h6>
+          {% if item_id.school_year != None %}
+          <h6><strong>{{ item_id.school_year.strftime('%Y') }} {{item_id.semester}} Semester</strong></h6>
+          {% else %}
+          <h6><strong>No School Year Assigned.</strong></h6>
+          {% endif %}
         </div>
         <br><br>
         <div class="card-body profile-card pt-4 d-flex flex-column align-items-start" style="text-style: underlined;">
@@ -108,7 +112,7 @@
                   <option value=''>Select School Year & Semester</option>
                   {% for data in user.FISEvaluations %}
                     {% if data.id != None %}
-                      <option value="{{data.id}}">{{data.school_year}} {{data.semester}}</option>
+                      <option value="{{data.id}}">{{ data.school_year.strftime('%Y') }} {{data.semester}} Semester</option>
                     {% else %}
                       
                     {% endif %}
@@ -248,9 +252,19 @@
           </div>
         
           <br><br>
-          <h6>School Year & Semester: <strong>{{item_id.school_year}} {{item_id.semester}}</strong></h6>
+          
+                    
+                     
+                    
+              {% if item_id.school_year != None %}
+          <h6>School Year & Semester: <strong>{{ item_id.school_year.strftime('%Y') }} {{item_id.semester}} Semester</strong></h6>
           <h6>Overall Rating (Supervisor Evaluation + Student Evaluation): <strong>{{calc_data.general_rating}}</strong></h6>
         <h6>Verbal Interpretation: <strong>{{calc_data.general_interpret}}</strong></h6>
+        {% else %}
+        <h6>School Year & Semester: <strong></strong></h6>
+        <h6>Overall Rating (Supervisor Evaluation + Student Evaluation): <strong></strong></h6>
+      <h6>Verbal Interpretation: <strong></strong></h6>   
+          {% endif %}
         </div>
         
         

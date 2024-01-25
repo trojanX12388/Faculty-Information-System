@@ -34,154 +34,270 @@
     {% block Special_Project %}
 
     <section class="section">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Special Project</h5>
-          <table class="table table-bordered">
+       
+      <div class="d-flex justify-content-end my-md-2">
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#uploadModal">
+          <i class="bi bi-folder"></i> Upload a File
+        </button>
+      </div>
+          <!-- List group with Advanced Contents -->
+          <div class="card">
+            <div class="card-body profile-card">
+          <div class="list-group">
+             <!-- Table with stripped rows -->
+             <br><br>
+             <h6 class="">Click the button 
+              <button type="button" class="btn btn-sm btn-outline-primary rounded-pill"><i class="bi bi-file-earmark-text" style="position:relative;bottom:3px"></i></button>
+                to edit the record, or  
+                <button type="button" class="btn btn-sm btn-outline-danger rounded-pill"><i class="bi bi-trash" style="position:relative;bottom:3px"></i></button> 
+                to delete the record.
+              </h6>
+              <br><br>
+          <table id="table1" class="display" style="width:100%">
             <thead>
               <tr>
                 <th scope="col">Date</th>
-                <th scope="col">Title</th>
-                <th scope="col">Due</th>
-                <th scope="col">Status</th>
+                <th scope="col" >Title</th>
+                <th scope="col" >Due</th>
+                <th scope="col" >Status</th>
+                <th scope="col">Action</th>
               </tr>
             </thead>
+           
             <tbody>
+           {% for data in user.FISSpecialProject %}
+       
+           {% if data.id != None %}
+          
               <tr>
-                <td>12/15/23</td>
-                <td class="text-decoration-underline"><a href="#">Development of Online Course Modules</a></td>
-                <td></td>
-                <td>on going</td>
+                <th scope="row">{{data.date}}</th>
+                <td ><a href="https://drive.google.com/file/d/{{data.file_id}}/view">{{data.title}}</a></td>
+                <td>{{data.due}}</td>
+                <td>{{data.status}}</td>
+                <td>
+                  <button type="submit" class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#d{{data.id}}"><i class="bi bi-trash"></i></button>
+              </td>
               </tr>
-              <tr>
-                <td>12/15/23</td>
-                <td class="text-decoration-underline"><a href="#">Curriculum Redesign for Inclusivity</a></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td class="text-decoration-underline"><a href="#">Community Engagement through Service Learning</a></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td class="text-decoration-underline"><a href="#">Collaboration with Industry for Research Project</a></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td class="text-decoration-underline"><a href="#">Sustainable Urban Planning: Integrating Green..</a></td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
+
+              <!-- Edit Record Modal-->
+
+              <div class="modal fade" id="{{data.id}}" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Edit Instructional Material</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+              <form action="/TI-Special-Project" method="POST" enctype="multipart/form-data" accept-charset="utf-8" class="row g-3">
+                      <br>
+                        <div class="col-md-10">
+                          <div class="form-floating">
+                            <input type="text" name="title" class="form-control" id="floatingName" placeholder="Title" value="{{data.title}}" required>
+                            <label for="floatingName">Title</label>
+                          </div>
+                        </div>
+                        <br>
+                        <div class="col-md-10">
+                          <div class="form-floating">
+                            <textarea type="text" name="abstract" class="form-control" value="{{data.abstract}}" required style="height: 100px">{{data.abstract}}</textarea>
+                            <label for="floatingEmail">Abstract</label>
+                          </div>
+                      </div> 
+                    </div>
+                    <div class="modal-footer">
+                      <input type="hidden" name="id" value="{{data.id}}"></input>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
+                      <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Update</button>
+                    </div>
+              </form>
+                  </div>
+                </div>
+              </div><!-- End Edit Record Modal-->
+            
+
+              <!-- Delete Record Modal-->
+            
+              <div class="modal fade" id="d{{data.id}}" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Delete Special Project</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    <form action="/TI-Special-Project/delete-record" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+                        <input type="hidden" name="id" value="{{data.id}}"></input>
+                      <h5 class="modal-title">Are you sure you want to delete this Special Project?</h5>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Confirm</button>
+                      </div>
+                  </form>
+                    </div>
+                  </div>
+                </div>
+              </div><!-- End Delete Record Modal-->
+
+              {% else %}
+         
+              {% endif %}
+
+
+           {% endfor %}  
+           </tbody>
           </table>
-          <!-- End Bordered Table -->
-      </div>
-</section>
+            
+          </div><!-- End List group Advanced Content -->
+          </div>
+        </div>
+    </section>
 
+    <!-- FOR UPLOAD FORM -->
+    <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="uploadModalLabel">Add Special Project</h5>
+            <!-- close button -->
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="/TI-Special-Project/add-record" method="POST" enctype="multipart/form-data" accept-charset="utf-8" >
+              <div class="row mb-3">
+                <label for="inputText" class="col-sm-1 col-form-label">Title</label>
+                <div class="col-sm-10">
+                  <input type="text" name="title" class="form-control text-wrap" required>
+                </div>
+              </div>
+             <br>
 
-<!-- LAHAT NG NASA BABA NITO PRE IS PWEDE GAMITIN PANG ADMIN SIDE. DOON ATA MAGLALAGAY NG SPECIAL PROJECTS SO ITO YUNG PWEDE MO LAGAY DON-->
-<!-- button for pop up modal -->
-<div class="d-flex justify-content-end my-md-2">
-  <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadModal"> -->
-    <!-- <i class="ri-add-line"></i> Add new</button> -->
-</div>
-<!-- end for button -->
-<!-- Modal -->
-<div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="uploadModalLabel">Add New Special Project</h5>
-        <!-- close button -->
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="row mb-3">
-            <label for="inputText" class="col-sm-2 col-form-label">Title</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label class="col-sm-2 col-form-label">Type</label>
-            <div class="col-sm-10">
-              <select class="form-select" aria-label="Default select example">
-                <option selected>Internal</option>
-                <option value="1">External</option>
-              </select>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label class="col-sm-2 col-form-label">Status</label>
-            <div class="col-sm-10">
-              <select class="form-select" aria-label="Default select example">
-                <option selected>On going</option>
-                <option value="1">Accepted</option>
-                <option value="1">Rejected</option>
-              </select>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputDate" class="col-sm-2 col-form-label">Start Date</label>
-            <div class="col-sm-10">
-              <input type="date" class="form-control">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputDate" class="col-sm-2 col-form-label">End Date</label>
-            <div class="col-sm-10">
-              <input type="date" class="form-control">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputPassword" class="col-sm-2 col-form-label">Project Description</label>
-            <div class="col-sm-10">
-              <textarea class="form-control" style="height: 100px"></textarea>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputText" class="col-sm-2 col-form-label">Objectives</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" placeholder="1.">
-                <input type="text" class="form-control" placeholder="2.">
-                <input type="text" class="form-control" placeholder="3.">
-                <input type="text" class="form-control" placeholder="4.">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputPassword" class="col-sm-2 col-form-label">Rationale</label>
-            <div class="col-sm-10">
-              <textarea class="form-control" style="height: 100px"></textarea>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputNumber" class="col-sm-2 col-form-label">File Upload</label>
-            <div class="col-sm-10">
-              <input class="form-control" type="file" id="formFile">
-            </div>
-          </div>
+                <div class="form-floating">
+                  <select class="form-select" value="On Going" name="status" aria-label="Level">
+                    <option value="On Going">On Going</option>
+                    <option value="Finished">Finished</option>
+                    <option value="Waiting">Waiting</option>
+                  </select>
+                  <label for="floatingschool_name">Status</label>
+                </div>
 
-          <div class="row mb-3">
-            <div class="d-flex justify-content-end">
-              <button type="submit" class="btn btn-primary">Submit Form</button>
-            </div>
+                <br>
+
+              <h5 class="modal-title">Due Date</h5>
+                      
+                        <div class="form-floating">
+                          <input type="date" name="due_date"  class="form-control" id="floating_from" placeholder="From" required>
+                          <label for="floating_level">Due Date</label>
+                        </div>
+
+                  <br><br>
+              <div class="row mb-3">
+                <label for="inputNumber" class="col-sm-2 col-form-label">File Upload <br><strong>(PDF FORMAT)</strong></label>
+                <div class="col-sm-10">
+                  <br>
+                  <span id="fileNameDisplay"></span>
+                  <button type="button" id="btnup" class="btn btn-warning btn-sm" onclick="document.getElementById('fileup').click()">Browse File</button>
+                  <input type="file" value="" name="fileup" id="fileup" hidden required></input>
+                  <input type="text" id="base64" name="base64" hidden></input>
+                  
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="d-flex justify-content-end">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+              </div>
+            </form><!-- End General Form Elements -->
           </div>
-        </form>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-<!-- end modal HANGGANG DITO LANG PREEEEEEEEEEEEE -->
 
-    {% endblock %}
+  {% endblock %}
 
-  </main><!-- End #main -->
+</main><!-- End #main -->
+
+
+<script>
+  $(document).ready(function() {
+    // Function to initialize DataTable for a given table ID
+    function initializeDataTable(tableId, buttonId, title, customExportColumns) {
+      var dataTable = $(tableId).DataTable({
+        dom: 'BPlfrtip',
+        responsive: true,
+        columnDefs: [
+          {
+            searchPanes: {
+              show: true
+            },
+            targets: [0]
+          },
+          {
+            searchPanes: {
+              show: false
+            },
+            targets: [0]
+          }
+        ],
+        buttons: [
+          {
+            extend: 'print',
+            class: 'buttons-print',
+            title: title, // Set the title for each table
+            messageBottom: null,
+            exportOptions: {
+              columns: customExportColumns
+            },
+            text: 'Print'
+          }
+        ]
+      });
+
+       // Initially hide the DataTables print button
+      dataTable.buttons('.buttons-print').nodes().addClass('d-none');
+
+      $('#' + buttonId).on('click', function() {
+        // Trigger the DataTables print button click
+        dataTable.buttons('.buttons-print').trigger();
+      });
+    }
+
+    // Customize your export options for each table
+    var exportColumnsTable1 = [ 0, 1 , 2, 3, 4];
+
+    // Initialize DataTables for each table
+    initializeDataTable('#table1', 'btnPrintDetail1', 'Sudent Schedules<br><br><h6>2021-0021-CM</h6><h6>Mabini, Vincent Rodhy</h6><br><br>', exportColumnsTable1);
+  });
+</script>
+
+<script>
+  $('#fileup').change(function () {
+      async function toBase64(file) {
+          return new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = () => resolve(reader.result.split(',')[1]);
+              reader.onerror = error => reject(error);
+              reader.readAsDataURL(file);
+          });
+      }
+
+      async function Main() {
+          const fileInput = document.querySelector('#fileup');
+          const file = fileInput.files[0];
+          
+          // Display the file name
+          const fileNameDisplay = document.getElementById('fileNameDisplay');
+          fileNameDisplay.textContent = file.name;
+
+          // Convert file to base64
+          const value = await toBase64(file);
+          document.getElementById("base64").setAttribute('value', value);
+      }
+
+      Main();
+  });
+</script>
 
 {% endblock %}
 
