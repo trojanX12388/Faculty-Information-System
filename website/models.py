@@ -74,7 +74,7 @@ class FISFaculty(db.Model, UserMixin):
     FISProfessionalDevelopment = db.relationship('FISProfessionalDevelopment')
     FISFeedback = db.relationship('FISFeedback')
     FISTeachingActivities = db.relationship('FISTeachingActivities')
-    FISAssignmentTypes = db.relationship('FISAssignmentTypes')
+    FISSubjectAssigned = db.relationship('FISSubjectAssigned')
     FISTeachingAssignments = db.relationship('FISTeachingAssignments')
     FISMandatoryRequirements = db.relationship('FISMandatoryRequirements')
     
@@ -157,7 +157,7 @@ class FISFaculty(db.Model, UserMixin):
             'FISProfessionalDevelopment': self.FISProfessionalDevelopment,
             'FISFeedback': self.FISFeedback,
             'FISTeachingActivities': self.FISTeachingActivities,
-            'FISAssignmentTypes': self.FISAssignmentTypes,
+            'FISSubjectAssigned': self.FISSubjectAssigned,
             'FISTeachingAssignments': self.FISTeachingAssignments,
             'FISMandatoryRequirements': self.FISMandatoryRequirements,
             
@@ -1403,16 +1403,18 @@ class FISTeachingActivities(db.Model):
 # ------------------------------------------------
 # ASSIGNMENT TYPES
   
-class FISAssignmentTypes(db.Model):
-    __tablename__ = 'FISAssignmentTypes'
+class FISSubjectAssigned(db.Model):
+    __tablename__ = 'FISSubjectAssigned'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True) # FacultyID
     # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
-    course = db.Column(db.String(50)) 
-    section = db.Column(db.String(50)) 
-    subject = db.Column(db.String(50)) 
-    activity = db.Column(db.String(50)) 
+    subject_a = db.Column(db.String(50)) 
+    subject_b = db.Column(db.String(50)) 
+    subject_c = db.Column(db.String(50))
+    subject_d = db.Column(db.String(50)) 
+    subject_e = db.Column(db.String(50)) 
+    semester = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
     
 
@@ -1421,10 +1423,12 @@ class FISAssignmentTypes(db.Model):
             'id': self.id,
             'FacultyId': self.FacultyId,
             # 'AdminId': self.AdminId,
-            'course': self.course,
-            'section': self.section,
-            'subject': self.subject,
-            'activity': self.activity,
+            'subject_a': self.subject_a,
+            'subject_b': self.subject_b,
+            'subject_c': self.subject_c,
+            'subject_d': self.subject_d,
+            'subject_e': self.subject_e,
+            'semester': self.semester,
             'is_delete': self.is_delete
         }
         

@@ -57,20 +57,42 @@
 
           <div class="d-block mt-md-3">
             <br>
-            <table class="row-border">
+            <table class="responsive-table">
+              {% for subjects in user.FISSubjectAssigned %}
+     
+              {% if subjects.id != None %}
               <tr>
-                <td><h6>RESEARCH PROFESSOR</h6></td>
-                <td style="padding: 0 2em;"><h6>PROGRAMMING PROFESSOR</h6></td>
+                <td><h6>{{subjects.subject_a}} Professor</h6></td>
+                <td style="padding: 0 2em;"><h6>{{subjects.subject_b}} Professor</h6></td>
                 <td style="padding: 0 2em;"><h6></h6></td>
               </tr>
               <tr>
-                <td><h6>STATISTICS PROFESSOR</h6></td>
+                <td><h6>{{subjects.subject_c}} Professor</h6></td>
                 <td style="padding: 0 2em;"><h6></h6></td>
               </tr>
               <tr>
-                <td><h6>COMPUTER SCIENCE PROFESSOR</h6></td>
+                <td><h6>{{subjects.subject_d}} Professor</h6></td>
                 <td style="padding: 0 2em;"><h6></h6></td>
               </tr>
+              {% else %}
+              <tr>
+                <td><h6></h6></td>
+                <td style="padding: 0 2em;"><h6></h6></td>
+                <td style="padding: 0 2em;"><h6></h6></td>
+              </tr>
+              <tr>
+                <td><h6></h6></td>
+                <td style="padding: 0 2em;"><h6></h6></td>
+              </tr>
+              <tr>
+                <td><h6></h6></td>
+                <td style="padding: 0 2em;"><h6></h6></td>
+              </tr>
+     
+              {% endif %}
+
+
+           {% endfor %}  
             </table>
             <br>
           </div>
