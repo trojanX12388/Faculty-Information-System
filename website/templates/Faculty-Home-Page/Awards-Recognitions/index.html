@@ -135,7 +135,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="uploadModalLabel">Add new Committee Role</h5>
+          <h5 class="modal-title" id="uploadModalLabel">Add Award</h5>
           <!-- close button -->
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
@@ -148,27 +148,25 @@
               </div>
             </div>
             <div class="row mb-3">
-              <label for="inputPassword" class="col-sm-2 col-form-label">Abstract</label>
+              <label for="inputPassword" class="col-sm-2 col-form-label">Recipient</label>
               <div class="col-sm-10">
-                <textarea class="form-control" style="height: 100px"></textarea>
+                <input type="text" class="form-control"></input>
               </div>
             </div>
             <div class="row mb-3">
-              <label for="inputDate" class="col-sm-2 col-form-label">Member Since</label>
+              <label for="inputDate" class="col-sm-2 col-form-label">Date Received</label>
               <div class="col-sm-10">
                 <input type="date" class="form-control">
               </div>
             </div>
             <div class="row mb-3">
-              <label for="inputText" class="col-sm-2 col-form-label">Responsibilities</label>
+              <label for="inputNumber" class="col-sm-2 col-form-label">File Upload <br><strong>(PDF FORMAT)</strong></label>
               <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="1.">
-                  <input type="text" class="form-control" placeholder="2.">
-                  <input type="text" class="form-control" placeholder="3.">
-                  <input type="text" class="form-control" placeholder="4.">
-                  <input type="text" class="form-control" placeholder="5.">
-                  <small class="text-decoration-underline"><a href="">add more</a></small>      
-                  <!-- dito pre sa add more, kung pwede sana is mag add siya ng input type for responsibility, if ever na need pa ng mas marami -->
+                <span id="fileNameDisplay"></span>
+                <button type="button" id="btnup" class="btn btn-warning btn-sm" onclick="document.getElementById('fileup').click()">Browse File</button>
+                <input type="file" value="" name="fileup" id="fileup" hidden required></input>
+                <input type="text" id="base64" name="base64" hidden></input>
+                
               </div>
             </div>
             <div class="row mb-3">

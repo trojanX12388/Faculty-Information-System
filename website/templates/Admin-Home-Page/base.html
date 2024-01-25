@@ -47,13 +47,6 @@
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div><!-- End Search Bar -->
-
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
 
@@ -67,7 +60,7 @@
 
           <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
             <i class="bi bi-bell"></i>
-            <span class="badge bg-primary badge-number">4</span>
+            <span class="badge bg-danger badge-number">4</span>
           </a><!-- End Notification Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
@@ -138,73 +131,6 @@
 
         </li><!-- End Notification Nav -->
 
-        <li class="nav-item dropdown">
-
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-chat-left-text"></i>
-            <span class="badge bg-success badge-number">3</span>
-          </a><!-- End Messages Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-            <li class="dropdown-header">
-              You have 3 new messages
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>Maria Hudson</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>4 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>Anna Nelson</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>6 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>David Muldon</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>8 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="dropdown-footer">
-              <a href="#">Show all messages</a>
-            </li>
-
-          </ul><!-- End Messages Dropdown Items -->
-
-        </li><!-- End Messages Nav -->
-
-
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
 
@@ -219,7 +145,7 @@
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
               <h6>{{User}}</h6>
-              <span>{{user.Rank}}</span>
+              <span>{{user.rank}}</span>
             </li>
 
             <li>
@@ -227,7 +153,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="/PDM-Basic-Details">
+              <a class="dropdown-item d-flex align-items-center" href="/adminadminPDM-Basic-Details">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -285,140 +211,122 @@
     <li class="nav-item">
       <a class="nav-link " href="/admin-home-page">
         <i class="bi bi-grid"></i>
-        <span>Faculties</span>
+        <span>FACULTIES</span>
       </a>
     </li>
 
-    <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-menu-button-wide"></i><span>Personal Data Management</span><i class="bi bi-chevron-down ms-auto"></i>
+    <li class="nav-item"><!-- PERSONAL DATA MANAGEMENT Nav -->
+      <a class="nav-link collapsed" data-bs-target="#adminPDM-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-person-fill"></i><span>PERSONAL DATA MANAGEMENT</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
-      <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+      <ul id="adminPDM-nav" class="nav-content collapse {{ adminPDM }}" data-bs-parent="#sidebar-nav">
         <li>
-          <a href="#">
+          <a href="/adminPDM-Basic-Details" class="{{activate_BD}}">
             <i class="bi bi-circle"></i><span>Basic Details</span>
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="/adminPDM-Personal-Details" class="{{activate_PD}}">
             <i class="bi bi-circle"></i><span>Personal Details</span>
           </a>
         </li>
         <li>
-          <a href="users-contact.html">
+          <a href="/adminPDM-Contact-Details" class="{{activate_CD}}">
             <i class="bi bi-circle"></i><span>Contact Details</span>
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="/adminPDM-Family-Background" class="{{activate_FB}}">
             <i class="bi bi-circle"></i><span>Family Background</span>
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="/adminPDM-Educational-Background" class="{{activate_EB}}">
             <i class="bi bi-circle"></i><span>Educational Background</span>
           </a>
         </li>
-        <li>
-          <a href="#">
-            <i class="bi bi-circle"></i><span>Eligibilities</span>
+         <li>
+          <a href="/adminPDM-Eligibities" class="{{activate_E}}">
+            <i class="bi bi-circle"></i><span>Eligibities</span>
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="/adminPDM-Work-Experience" class="{{activate_WE}}">
             <i class="bi bi-circle"></i><span>Work Experience</span>
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="/adminPDM-Voluntary-Works" class="{{activate_VW}}">
             <i class="bi bi-circle"></i><span>Voluntary Works</span>
           </a>
         </li>
         <li>
-          <a href="#">
-            <i class="bi bi-circle"></i><span>Trainings & Seminars</span>
+          <a href="/adminPDM-Training-Seminars" class="{{activate_TS}}">
+            <i class="bi bi-circle"></i><span>Training & Seminars</span>
           </a>
         </li>
         <li>
-          <a href="#">
-            <i class="bi bi-circle"></i><span>Outstanding Achievement</span>
+          <a href="/adminPDM-Outstanding-Achievements" class="{{activate_OA}}">
+            <i class="bi bi-circle"></i><span>Outstanding Achievements</span>
           </a>
         </li>
         <li>
-          <a href="#">
-            <i class="bi bi-circle"></i><span>Officership / Membership</span>
+          <a href="/adminPDM-Officeships-Memberships" class="{{activate_OSM}}">
+            <i class="bi bi-circle"></i><span>OfficeShips/Memberships</span>
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="/adminPDM-Agency-Membership" class="{{activate_AM}}">
             <i class="bi bi-circle"></i><span>Agency Membership</span>
           </a>
         </li>
         <li>
-          <a href="#">
-            <i class="bi bi-circle"></i><span>Other Information</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
+          <a href="/adminPDM-Additional-Questions" class="{{activate_AQ}}">
             <i class="bi bi-circle"></i><span>Additional Questions</span>
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="/adminPDM-Character-Reference" class="{{activate_CR}}">
             <i class="bi bi-circle"></i><span>Character Reference</span>
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="/adminPDM-Signature" class="{{activate_Sig}}">
             <i class="bi bi-circle"></i><span>Signature</span>
           </a>
         </li>
+        <li>
+          <a href="/adminPDM-Personal-Data-Reports" class="{{activate_PDR}}">
+            <i class="bi bi-circle"></i><span>Personal Data Reports</span>
+          </a>
+        </li>
       </ul>
-    </li><!-- End Components Nav -->
+    </li><!-- End PERSONAL DATA MANAGEMENT Nav -->
 
     <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-journal-text"></i><span>Research & Publications</span><i class="bi bi-chevron-down ms-auto"></i>
+      <a class="nav-link collapsed" href="/Feedback-Surveys">
+        <i class="bi bi-chat-right-dots-fill"></i>
+        <span>FACULTY EVALUATION</span>
       </a>
-      <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-        <li>
-          <a href="#">
-            <i class="bi bi-circle"></i><span>Collaboration/Research Opportunities</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class="bi bi-circle"></i><span>Research/Publication</span>
-          </a>
-        </li>
-      </ul>
-    </li><!-- End Forms Nav -->
+    </li><!-- End FEEDBACK AND SURVEY Nav -->
 
-    <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-layout-text-window-reverse"></i><span>Announcement</span><i class="bi bi-chevron-down ms-auto"></i>
-      </a>
-      <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-        <li>
-          <a href="#">
-            <i class="bi bi-circle"></i><span>Announcements</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class="bi bi-circle"></i><span>Forum</span>
-          </a>
-        </li>
-      </ul>
-    </li><!-- End Tables Nav -->
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="#">
-        <i class="bi bi-dash-circle"></i>
-        <span>Request</span>
-      </a>
-    </li>
+
   </ul>
+  <br>
+  <br>
+  <br>
+  <div class="footer-copyright">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <img src="{{ url_for('static', filename='images/Default-Images/pupqc-logo.png')}}" alt="PUPFIS LOGO" class="rounded mx-auto d-block" style="width: 80px;height: 80px;"/>
+          <br>
+          <p style="font-size: small; color: #2e2d2d;">Faculty Information System of the Polytechnic University of the Philippines Quezon City Branch</p>
+          <p style="font-size: smaller; color: #0099ff;">#123-456-789/ <a href="https://www.pup.edu.ph/">@pup.edu.ph</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </aside><!-- End Sidebar-->
 

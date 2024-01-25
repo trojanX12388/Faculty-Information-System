@@ -94,7 +94,6 @@
                   <div class="modal-content w-100 max-w-md">
                       <h2 class="fs-2 fw-semibold mb-4" id="eventTitle"></h2>
                       <p id="eventStart" class="mb-4"></p>
-                      <p id="eventType" class="mb-4"></p>
                       <p id="eventDate" class="mb-4"></p>
                       <p id="eventDescription" class="mb-4"></p>
                       <p id="eventStatus" class="mb-4"></p>
@@ -112,75 +111,76 @@
                       // Sample data for events
                       let eventsData = [
                       {
-                          title: 'BSIT 4-1',
-                          start: '2024-01-06',
-                          backgroundColor: '#FF5733', // Different color for each event
-                          extendedProps: {
-                              type: 'Database Management',
-                              description: 'A sample of leave',
-                              status: 'Approved',
-                          },
-                      },
-                      {
-                        title: 'BSIT 4-1',
-                        start: '2024-01-05',
-                        backgroundColor: '#FF5733', // Different color for each event
+                        title: 'Semester Start - BSIT 4-1',
+                        start: '2024-02-10',
+                        backgroundColor: '#FF5733',
                         extendedProps: {
-                            type: 'Database Management',
-                            description: 'A sample of leave',
+                            scheduleType: 'Academic',
+                            description: 'Start of the semester for BSIT 4-1',
                             status: 'Approved',
                         },
                     },
                     {
-                      title: 'BSIT 3-1',
-                      start: '2024-01-03',
-                      backgroundColor: '#5733FF', // Different color for each event
-                      extendedProps: {
-                          type: 'Programming 3',
-                          description: 'A sample of leave',
-                          status: 'Approved',
-                      },
-                  },
-                  {
-                    title: 'BSIT 4-1',
-                    start: '2024-01-08',
-                    backgroundColor: '#FF5733', // Different color for each event
-                    extendedProps: {
-                        type: 'Web Dev',
-                        description: 'A sample of leave',
-                        status: 'Approved',
-                    },
-                },
-                  {
-                    title: 'BSIT 3-1',
-                    start: '2024-01-10',
-                    backgroundColor: '#5733FF', // Different color for each event
-                    extendedProps: {
-                        type: 'Programming 3',
-                        description: 'A sample of leave',
-                        status: 'Approved',
-                    },
-                },
-                      {
-                          title: 'Class 2',
-                          start: '2024-09-02',
-                          backgroundColor: '#33FF57',
-                          extendedProps: {
-                            type: 'Sick Leave',
-                            description: 'A sample of leave',
+                        title: 'Classes Begin - BSIT 4-1',
+                        start: '2024-02-09',
+                        backgroundColor: '#FF5733',
+                        extendedProps: {
+                            scheduleType: 'Academic',
+                            description: 'Beginning of regular classes for BSIT 4-1',
                             status: 'Approved',
-                          },
-                      },
-                      {
-                          title: 'Meeting 2',
-                          start: '2024-09-03',
-                          backgroundColor: '#5733FF',
-                          extendedProps: {
-                            type: 'Sick Leave',
-                            description: 'A sample of leave',
+                        },
+                    },
+                    {
+                        title: 'Programming 3 Exam - BSIT 3-1',
+                        start: '2024-02-07',
+                        backgroundColor: '#5733FF',
+                        extendedProps: {
+                            scheduleType: 'Academic',
+                            description: 'Programming 3 exam for BSIT 3-1',
                             status: 'Approved',
-                          },
-                      },
+                        },
+                    },
+                    {
+                        title: 'Web Dev Project Deadline - BSIT 4-1',
+                        start: '2024-02-12',
+                        backgroundColor: '#FF5733',
+                        extendedProps: {
+                            scheduleType: 'Academic',
+                            description: 'Deadline for Web Development projects (BSIT 4-1)',
+                            status: 'Approved',
+                        },
+                    },
+                    {
+                        title: 'Programming 3 Lecture - BSIT 3-1',
+                        start: '2024-02-14',
+                        backgroundColor: '#5733FF',
+                        extendedProps: {
+                            scheduleType: 'Academic',
+                            description: 'Programming 3 lecture for BSIT 3-1',
+                            status: 'Approved',
+                        },
+                    },
+                    {
+                        title: 'Class 2',
+                        start: '2024-09-15',
+                        backgroundColor: '#33FF57',
+                        extendedProps: {
+                            scheduleType: 'Non-Academic',
+                            description: 'Class 2 non-academic event',
+                            status: 'Approved',
+                        },
+                    },
+                    {
+                        title: 'Meeting 2',
+                        start: '2024-09-16',
+                        backgroundColor: '#5733FF',
+                        extendedProps: {
+                            scheduleType: 'Non-Academic',
+                            description: 'Meeting 2 non-academic event',
+                            status: 'Approved',
+                        },
+                    },
+                
                   ];
 
                   var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -194,8 +194,7 @@
                     eventClick: function(info) {
                       // Display event details in a modal
                       document.getElementById('eventTitle').textContent = info.event.title;
-                      document.getElementById('eventType').textContent = 'Type of Leave: ' + info.event.extendedProps.type;
-                      document.getElementById('eventDate').textContent = 'Date of Request: ' + info.event.start.toLocaleDateString();
+                      document.getElementById('eventDate').textContent = 'Date of Event: ' + info.event.start.toLocaleDateString();
                       document.getElementById('eventDescription').textContent = 'Description: ' + info.event.extendedProps.description;
                       document.getElementById('eventStatus').textContent = 'Status: ' + info.event.extendedProps.status;
 

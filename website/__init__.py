@@ -112,6 +112,11 @@ def create_app():
     from .modules.Schedule_Management import SM
     app.register_blueprint(SM, url_prefix='/')
     
+    # ADMIN ROUTES
+    
+    from .modules.adminPDM import adminPDM
+    app.register_blueprint(adminPDM, url_prefix='/')
+    
     # LOADING LOGIN MANAGER CACHE
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login_denied'

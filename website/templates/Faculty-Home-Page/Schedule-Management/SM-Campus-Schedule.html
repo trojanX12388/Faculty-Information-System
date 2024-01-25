@@ -112,75 +112,71 @@
                       // Sample data for events
                       let eventsData = [
                       {
-                          title: 'BSIT 4-1',
-                          start: '2024-01-06',
-                          backgroundColor: '#FF5733', // Different color for each event
-                          extendedProps: {
-                              type: 'Database Management',
-                              description: 'A sample of leave',
-                              status: 'Approved',
-                          },
-                      },
-                      {
-                        title: 'BSIT 4-1',
-                        start: '2024-01-05',
-                        backgroundColor: '#FF5733', // Different color for each event
+                        title: 'Database Management Workshop',
+                        start: '2024-01-06',
+                        backgroundColor: '#FF5733',
                         extendedProps: {
-                            type: 'Database Management',
+                            campusEvent: true,
+                            type: 'Workshop',
+                            description: 'Learn about Database Management',
+                            status: 'Approved',
+                        },
+                    },
+                    {
+                        title: 'Programming 3 Seminar',
+                        start: '2024-01-05',
+                        backgroundColor: '#5733FF',
+                        extendedProps: {
+                            campusEvent: true,
+                            type: 'Seminar',
+                            description: 'Explore Programming 3 concepts',
+                            status: 'Approved',
+                        },
+                    },
+                    {
+                        title: 'Web Development Session',
+                        start: '2024-01-03',
+                        backgroundColor: '#FF5733',
+                        extendedProps: {
+                            campusEvent: true,
+                            type: 'Session',
+                            description: 'Introduction to Web Development',
+                            status: 'Approved',
+                        },
+                    },
+                    {
+                        title: 'Programming 3 Workshop',
+                        start: '2024-01-08',
+                        backgroundColor: '#5733FF',
+                        extendedProps: {
+                            campusEvent: true,
+                            type: 'Workshop',
+                            description: 'Hands-on Programming 3 experience',
+                            status: 'Approved',
+                        },
+                    },
+                    {
+                        title: 'Sick Leave - Class 2',
+                        start: '2024-09-02',
+                        backgroundColor: '#33FF57',
+                        extendedProps: {
+                            campusEvent: true,
+                            type: 'Sick Leave',
                             description: 'A sample of leave',
                             status: 'Approved',
                         },
                     },
                     {
-                      title: 'BSIT 3-1',
-                      start: '2024-01-03',
-                      backgroundColor: '#5733FF', // Different color for each event
-                      extendedProps: {
-                          type: 'Programming 3',
-                          description: 'A sample of leave',
-                          status: 'Approved',
-                      },
-                  },
-                  {
-                    title: 'BSIT 4-1',
-                    start: '2024-01-08',
-                    backgroundColor: '#FF5733', // Different color for each event
-                    extendedProps: {
-                        type: 'Web Dev',
-                        description: 'A sample of leave',
-                        status: 'Approved',
-                    },
-                },
-                  {
-                    title: 'BSIT 3-1',
-                    start: '2024-01-10',
-                    backgroundColor: '#5733FF', // Different color for each event
-                    extendedProps: {
-                        type: 'Programming 3',
-                        description: 'A sample of leave',
-                        status: 'Approved',
-                    },
-                },
-                      {
-                          title: 'Class 2',
-                          start: '2024-09-02',
-                          backgroundColor: '#33FF57',
-                          extendedProps: {
+                        title: 'Sick Leave - Meeting 2',
+                        start: '2024-09-03',
+                        backgroundColor: '#5733FF',
+                        extendedProps: {
+                            campusEvent: true,
                             type: 'Sick Leave',
                             description: 'A sample of leave',
                             status: 'Approved',
-                          },
-                      },
-                      {
-                          title: 'Meeting 2',
-                          start: '2024-09-03',
-                          backgroundColor: '#5733FF',
-                          extendedProps: {
-                            type: 'Sick Leave',
-                            description: 'A sample of leave',
-                            status: 'Approved',
-                          },
-                      },
+                        },
+                    },
                   ];
 
                   var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -194,8 +190,8 @@
                     eventClick: function(info) {
                       // Display event details in a modal
                       document.getElementById('eventTitle').textContent = info.event.title;
-                      document.getElementById('eventType').textContent = 'Type of Leave: ' + info.event.extendedProps.type;
-                      document.getElementById('eventDate').textContent = 'Date of Request: ' + info.event.start.toLocaleDateString();
+                      document.getElementById('eventType').textContent = 'Title: ' + info.event.extendedProps.type;
+                      document.getElementById('eventDate').textContent = 'Date Schedule: ' + info.event.start.toLocaleDateString();
                       document.getElementById('eventDescription').textContent = 'Description: ' + info.event.extendedProps.description;
                       document.getElementById('eventStatus').textContent = 'Status: ' + info.event.extendedProps.status;
 

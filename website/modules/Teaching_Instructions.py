@@ -161,7 +161,7 @@ def TI_TAS(id):
 @login_required
 @Check_Token
 def TI_AM():
-    print(current_user.FISSubjectAssigned)
+    
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
     username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
     advising_students = FISAdvisingStudent.query.filter_by(FacultyId=current_user.FacultyId).all() 
