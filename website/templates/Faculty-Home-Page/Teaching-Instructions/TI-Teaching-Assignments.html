@@ -113,36 +113,48 @@
 
               </div>
             
-              <table id="table1" class="display" style="width:100%">
+              <table id="table1" class="display">
                 <thead>
                     <tr>
-                        <th scope="col">CLASSROOM ID</th>
-                        <th scope="col">COURSE CODE</th>
-                        <th scope="col">COURSE TITLE</th>
-                        <th scope="col">COURSE</th>
-                        <th scope="col">SEMESTER</th>
-                        <th scope="col">YEAR</th>
-                        <th scope="col">STATUS</th>
+                        <th>Room Name</th>
+                        <th>Course Code</th>
+                        <th>Course Description</th>
+                        <th>Class Name</th>
+                        <th>Units</th>
+                        <th>Lecture</th>
+                        <th>Lab</th>
+                        <th>Semester</th>
+                        <th>Academic Year</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for data in api_data.data %}
                         {% if data.facultyname == user.FirstName + " " + user.LastName %}
                             <tr>
-                                <th scope="row">{{ data.id }}</th>
+                                <td>{{ data.roomname }}</td>
                                 <td>{{ data.course_code }}</td>
                                 <td>{{ data.course_description }}</td>
-                                <td>{{ data.course }}</td>
-                                <td>{{ data.semester_id }}</td>
-                                <td>{{ data.acadyear_id }}</td>
-                                <td>Subject Teacher</td>
+                                <td>{{ data.classname }}</td>
+                                <td>{{ data.units }}</td>
+                                <td>{{ data.lec }}</td>
+                                <td>{{ data.lab }}</td>
+                                
+                                {% for sem in semester.data %}
+                                    {% if sem.id == data.semester_id %}
+                                        <td>{{ sem.name }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                                
+                                {% for year in acad_year.data %}
+                                    {% if year.id == data.acadyear_id %}
+                                        <td>{{ year.name }}</td>
+                                    {% endif %}
+                                {% endfor %}
                             </tr>
                         {% endif %}
                     {% endfor %}
                 </tbody>
             </table>
-              <!-- End Table with stripped rows -->
-
             </div>
           </div>
 
@@ -197,7 +209,7 @@
       }
   
       // Customize your export options for each table
-      var exportColumnsTable1 = [ 0, 1, 2, 3, 4, 5, 6 ];
+      var exportColumnsTable1 = [ 0, 1, 2, 3, 4, 5, 6 , 7, 8 ];
       var exportColumnsTable2 = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
   
       // Initialize DataTables for each table
