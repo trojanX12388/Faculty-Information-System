@@ -81,10 +81,8 @@
               <!-- List group with Advanced Contents -->
               <br><br>
               <div class="list-group">
-                {% if faculty_roles != None %}
-                  <div class="d-flex w-100 justify-content-between">
-                    <h5><strong>{{user.FirstName}} {{user.LastName}}</strong> As Incident Investigator</h5>
-                  </div>
+               
+                 
                    <!-- Advising Table with stripped rows -->
                    <br><br>
                <table class="table datatable"> 
@@ -94,11 +92,12 @@
                     <th scope="col">Time</th>
                     <th scope="col">Complainant</th>
                     <th scope="col">Decription</th>
+                    <th scope="col">Role</th>
                     <th scope="col">Status</th>
                   </tr>
                 </thead>
                 <tbody>
-
+                  {% if faculty_roles != None %}
                     {% for data in faculty_roles %}
 
                     {% if data.id != None %}
@@ -107,6 +106,7 @@
                       <td class="w-50">{{data.Time}}</td>
                       <th class="w-30" scope="row">{{data.FirstName}} {{data.LastName}}</th>
                       <td class="w-50">{{data.Description}}</td>
+                      <td class="w-50">Incident Investigator</td>
                       <td class="w-50">{{data.Status}}</td>
                     </tr>
                     {% else %}
