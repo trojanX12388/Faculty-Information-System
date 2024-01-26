@@ -439,11 +439,22 @@ def convert_to_interpretation(grade):
 
     return None  # Handle the case where the grade doesn't fall into any range
 
+
 @API.route('/api/FISFaculty/Evaluations', methods=['GET'])
 def get_all_faculty_evaluations():
     try:
+        # Get query parameters for pagination
+        page = int(request.args.get('page', 1))
+        per_page = int(request.args.get('per_page', 200))
+
+        # Calculate offset based on page and per_page values
+        offset = (page - 1) * per_page
+
         db = SessionLocal()
-        faculty_profiles = db.query(FISEvaluations).all()
+
+        # Query only the required subset of data based on offset and per_page
+        faculty_profiles = db.query(FISEvaluations).offset(offset).limit(per_page).all()
+
         profiles = []
 
         for faculty in faculty_profiles:
