@@ -1,7 +1,10 @@
 from datetime import datetime, timezone
 from sqlalchemy import inspect
-from werkzeug.security import generate_password_hash
+from flask_jwt_extended import create_access_token, decode_token
+from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime, timedelta
 from flask_login import UserMixin
+import ast
 
 from .extensions import db
 
@@ -69,7 +72,7 @@ class FISFaculty(db.Model, UserMixin):
     FISAdvisingClasses = db.relationship('FISAdvisingClasses')
     FISAdvisingClasses_Schedule = db.relationship('FISAdvisingClasses_Schedule')
     FISMentoring = db.relationship('FISMentoring')
-    FISCommittee = db.relationship('FISCommittee')
+    FISFacultyRoles = db.relationship('FISFacultyRoles')
     FISCollaborationOpportunities = db.relationship('FISCollaborationOpportunities')
     FISProfessionalDevelopment = db.relationship('FISProfessionalDevelopment')
     FISFeedback = db.relationship('FISFeedback')
@@ -152,7 +155,7 @@ class FISFaculty(db.Model, UserMixin):
             'FISAdvisingClasses': self.FISAdvisingClasses,
             'FISAdvisingClasses_Schedule': self.FISAdvisingClasses_Schedule,
             'FISMentoring': self.FISMentoring,
-            'FISCommittee': self.FISCommittee,
+            'FISFacultyRoles': self.FISFacultyRoles,
             'FISCollaborationOpportunities': self.FISCollaborationOpportunities,
             'FISProfessionalDevelopment': self.FISProfessionalDevelopment,
             'FISFeedback': self.FISFeedback,
@@ -1238,16 +1241,22 @@ class FISMentoring(db.Model):
 # ------------------------------------------------
 
 # ------------------------------------------------
-# COMMITTEES
+# FACULTY ROLES
   
-class FISCommittee(db.Model):
-    __tablename__ = 'FISCommittee'
+class FISFacultyRoles(db.Model):
+    __tablename__ = 'FISFacultyRoles'
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
-    committee_name = db.Column(db.String(50)) 
-    role = db.Column(db.String(50)) 
+    role_name = db.Column(db.String(50)) 
+    abstract = db.Column(db.String(50)) 
+    date = db.Column(db.Date) 
+    resp_a = db.Column(db.String(50)) 
+    resp_b = db.Column(db.String(50))  
+    resp_c = db.Column(db.String(50))  
+    resp_d = db.Column(db.String(50))  
+    resp_e = db.Column(db.String(50))   
     is_delete = db.Column(db.Boolean, default=False) 
     
 
@@ -1256,8 +1265,14 @@ class FISCommittee(db.Model):
             'id': self.id,
             'FacultyId': self.FacultyId,
             # 'AdminId': self.AdminId,
-            'committee_name': self.committee_name,
-            'role': self.role,
+            'role_name': self.role_name,
+            'abstract': self.abstract,
+            'date': self.date,
+            'resp_a': self.resp_a,
+            'resp_b': self.resp_b,
+            'resp_c': self.resp_c,
+            'resp_d': self.resp_d,
+            'resp_e': self.resp_e,
             'is_delete': self.is_delete
         }
         
@@ -1757,26 +1772,6 @@ class Student(db.Model): # (class SPSStudent) In DJANGO you must set the name di
     def get_user_id(self):
         return self.StudentId
     
-# Course List
-class Course(db.Model):
-    __tablename__ = 'SPSCourse'
-
-    CourseId = db.Column(db.Integer, primary_key=True, autoincrement=True) # Unique Identifier
-    CourseCode = db.Column(db.String(10), unique=True) # Course Code - (BSIT, BSHM, BSCS)
-    Name = db.Column(db.String(200)) # (Name of Course (Bachelor of Science in Information Technology)
-    Description = db.Column(db.String(200)) # Description of course
-    IsValidPUPQCCourses = db.Column(db.Boolean, default=True) # APMS are handling different courses so there are specific courses available in QC Only
-    created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
-
-    def to_dict(self):
-        return {
-            'CourseId': self.CourseId,
-            'CourseCode': self.CourseCode,
-            'Name': self.Name,
-            'Description': self.Description,
-            'IsValidPUPQCCourses': self.IsValidPUPQCCourses
-        }
 
 # Subject List
 class Subject(db.Model):
@@ -1802,8 +1797,310 @@ class Subject(db.Model):
             'IsNSTP': self.IsNSTP,
         }
 
+# ESIS MODULE INTEGRATION 
+# ----------------------------
+class Role(db.Model):
+    __tablename__ = 'ESISRole'
+
+    RoleId = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    RoleName = db.Column(db.String(20), nullable=False)
+    User = db.relationship("ESISUser", back_populates='Role')
+
+class ESISUser(db.Model):
+    __tablename__ = 'ESISUser'
+
+    UserId = db.Column(db.String(36), primary_key=True) 
+    RoleId = db.Column(db.Integer, db.ForeignKey('ESISRole.RoleId', ondelete='CASCADE'), nullable=False)
+    StudentId =  db.Column(db.Integer, db.ForeignKey('SPSStudent.StudentId', ondelete='CASCADE'), unique=True)
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId', ondelete='CASCADE'), unique=True)
+    BeneficiaryId = db.Column(db.Integer, db.ForeignKey('ESISBeneficiary.BeneficiaryId', ondelete='CASCADE'), unique=True)
+    Student =  db.relationship("Student", backref="ESISUser")
+    Faculty =  db.relationship("FISFaculty", backref="ESISUser")
+    Beneficiary =  db.relationship("Beneficiary", backref="ESISUser")
+    Role = db.relationship("Role", back_populates='User')
+    Registration = db.relationship('Registration', back_populates='User')
+    Certificate = db.relationship("Certificate", back_populates="User")
+    Attendance = db.relationship("Attendance", back_populates="User")
+    Question = db.relationship('Question', back_populates='Creator')
+    Evaluation = db.relationship('Evaluation', back_populates='Creator')
+    
+    def get_id(self):
+        return self.UserId
 
 
+class Activity(db.Model):
+    __tablename__ = 'ESISActivity'
+
+    ActivityId = db.Column(db.Integer, primary_key=True)
+    ActivityName = db.Column(db.String(255), nullable=False)
+    Date = db.Column(db.Date, index=True, nullable=False)
+    StartTime = db.Column(db.Time, nullable=False)
+    EndTime = db.Column(db.Time, nullable=False)
+    Description = db.Column(db.Text, nullable=False)
+    ImageUrl = db.Column(db.Text)
+    ImageFileId = db.Column(db.Text)
+    Speaker = db.Column(db.JSON, nullable=False)
+    LocationId = db.Column(db.Integer, db.ForeignKey('ESISLocation.LocationId', ondelete='CASCADE'))
+    ProjectId = db.Column(db.Integer, db.ForeignKey('ESISProject.ProjectId', ondelete='CASCADE'), nullable=False)
+    Project = db.relationship('Project', back_populates='Activity', passive_deletes='all')
+    Location = db.relationship('Location', back_populates='Activity', passive_deletes='all')
+    Evaluation = db.relationship("Evaluation", back_populates='Activity', cascade='all, delete-orphan', lazy=True)
+    Attendance = db.relationship('Attendance', back_populates='Activity', cascade='all, delete-orphan')
+
+
+class Location(db.Model):
+    __tablename__ = 'ESISLocation'
+
+    LocationId = db.Column(db.Integer, primary_key=True)
+    LocationName = db.Column(db.String(55), nullable=False)
+    Longitude = db.Column(db.String(55), nullable=False)
+    Latitude = db.Column(db.String(55), nullable=False)
+    Activity = db.relationship('Activity', back_populates='Location')
+
+
+class Response(db.Model):
+    __tablename__ = 'ESISResponse'
+
+    ResponseId = db.Column(db.Integer, primary_key=True)
+    BeneficiaryId = db.Column(db.Integer, db.ForeignKey('ESISBeneficiary.BeneficiaryId'))
+    EvaluationId = db.Column(db.Integer, db.ForeignKey('ESISEvaluation.EvaluationId', ondelete='CASCADE'), nullable=False)
+    QuestionId = db.Column(db.Integer, db.ForeignKey('ESISQuestion.QuestionId'), nullable=False)
+    Text = db.Column(db.Text)
+    Num = db.Column(db.Integer)
+    Beneficiary = db.relationship("Beneficiary", back_populates="EvaluationResponse")
+    Evaluation = db.relationship("Evaluation", back_populates="Response", passive_deletes=True)
+    Question = db.relationship("Question", back_populates="Response", passive_deletes=True)
+
+    def responsesList(self):
+        return ast.literal_eval(self.Responses)
+
+
+class Budget(db.Model):
+    __tablename__ = 'ESISProjectBudget'
+
+    BudgetId = db.Column(db.Integer, primary_key=True)
+    FundType = db.Column(db.String(20), nullable=False)
+    Amount = db.Column(db.Numeric(12, 2), nullable=False)
+    ProjectId = db.Column(db.Integer, db.ForeignKey('ESISProject.ProjectId', ondelete='CASCADE'), nullable=False)
+    CollaboratorId = db.Column(db.Integer, db.ForeignKey('ESISCollaborator.CollaboratorId', ondelete='CASCADE'))
+    Project = db.relationship("Project", back_populates="Budget", passive_deletes=True)
+    Collaborator = db.relationship("Collaborator", back_populates="Budget", passive_deletes=True)
+    
+class Item(db.Model):
+    __tablename__ = 'ESISItem'
+
+    ItemId = db.Column(db.Integer, primary_key=True)
+    ItemName = db.Column(db.String(50), nullable=False)
+    Amount = db.Column(db.Numeric(12, 2), nullable=False)
+    IsPurchased = db.Column(db.Boolean, nullable=False, default=0)
+    DatePurchased = db.Column(db.DateTime)
+    ReceiptUrl = db.Column(db.Text)
+    ReceiptId = db.Column(db.Text)
+    ProjectId = db.Column(db.Integer, db.ForeignKey('ESISProject.ProjectId', ondelete='CASCADE'), nullable=False)
+    Project = db.relationship("Project", back_populates="Item", passive_deletes=True)
+    
+class Evaluation(db.Model):
+    __tablename__ = 'ESISEvaluation'
+
+    EvaluationId = db.Column(db.Integer, primary_key=True)
+    EvaluationName = db.Column(db.Text, nullable=False)
+    ActivityId = db.Column(db.Integer, db.ForeignKey('ESISActivity.ActivityId', ondelete='CASCADE'), nullable=False)
+    State = db.Column(db.Integer, nullable=False)
+    Questions = db.Column(db.Text, nullable=False)
+    CreatedAt = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+    CreatorId = db.Column(db.String(36), db.ForeignKey('ESISUser.UserId', ondelete='CASCADE'), nullable=False)
+    Activity = db.relationship("Activity", back_populates="Evaluation", passive_deletes=True)
+    Response = db.relationship("Response", back_populates="Evaluation", cascade='all, delete-orphan')
+    Creator = db.relationship("ESISUser", back_populates="Evaluation", passive_deletes=True)
+
+    def questionsList(self):
+        return ast.literal_eval(self.Questions)
+
+
+class Question(db.Model):
+    __tablename__ = 'ESISQuestion'
+
+    QuestionId = db.Column(db.Integer, primary_key=True)
+    Text = db.Column(db.Text, nullable=False)
+    State = db.Column(db.Integer, nullable=False)
+    Type = db.Column(db.Integer, nullable=False)
+    Required = db.Column(db.Integer, nullable=False)
+    CreatorId = db.Column(db.String(36), db.ForeignKey('ESISUser.UserId', ondelete='CASCADE'), nullable=False)
+    Responses = db.Column(db.Text, nullable=False)
+    Creator = db.relationship("ESISUser", back_populates="Question", passive_deletes=True)
+    Response = db.relationship("Response", back_populates="Question",  cascade='all, delete-orphan')
+
+    def responsesList(self):
+        return ast.literal_eval(self.Responses)
+
+class Attendance(db.Model):
+    __tablename__ = 'ESISAttendance'
+
+    AttendanceId = db.Column(db.Integer, primary_key=True)
+    UserId = db.Column(db.String(36), db.ForeignKey('ESISUser.UserId'), nullable=False)
+    ActivityId = db.Column(db.Integer, db.ForeignKey('ESISActivity.ActivityId', ondelete='CASCADE'), nullable=False)
+    Activity = db.relationship("Activity", back_populates="Attendance", passive_deletes=True)
+    User = db.relationship("ESISUser", back_populates="Attendance")
+
+    # Create the unique constraint
+    __table_args__ = (db.UniqueConstraint("UserId", "ActivityId", name="unique_user_activity"),)
+
+class Certificate(db.Model):
+    __tablename__ = 'ESISCertificate'
+
+    CertificateId = db.Column(db.Integer, primary_key=True)
+    CertificateUrl = db.Column(db.Text)
+    CertificateFileId = db.Column(db.Text)
+    UserId = db.Column(db.String(36), db.ForeignKey('ESISUser.UserId'), nullable=False)
+    ProjectId = db.Column(db.Integer, db.ForeignKey('ESISProject.ProjectId', ondelete='CASCADE'), nullable=False)
+    User = db.relationship("ESISUser", back_populates="Certificate", passive_deletes=True)
+    Project = db.relationship("Project", back_populates="Certificate", passive_deletes=True)
+
+
+class Beneficiary(db.Model):
+    __tablename__ = 'ESISBeneficiary'
+
+    BeneficiaryId = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    FirstName = db.Column(db.String(50), nullable=False)  # First Name
+    LastName = db.Column(db.String(50), nullable=False)  # Last Name
+    MiddleName = db.Column(db.String(50))  # Middle Name
+    Email = db.Column(db.String(50), unique=True, nullable=False)  # Email
+    Password = db.Column(db.String(256), nullable=False)  # Password
+    Gender = db.Column(db.Integer, nullable=False)  # Gender: 1 if Male 2 if Female 3 if Others
+    DateOfBirth = db.Column(db.Date, nullable=False)  # DateOfBirth
+    PlaceOfBirth = db.Column(db.String(50), nullable=False)  # PlaceOfBirth
+    ResidentialAddress = db.Column(db.String(50), nullable=False)  # ResidentialAddress
+    MobileNumber = db.Column(db.String(11), nullable=False)  # MobileNumber
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+    EvaluationResponse = db.relationship("Response", back_populates="Beneficiary")
+
+    @property
+    def password_hash(self):
+        return self.password_hash
+
+    @password_hash.setter
+    def password_hash(self, plain_text_password):
+        self.Password = generate_password_hash(plain_text_password)
+
+    def check_password_correction(self, attempted_password):
+        return check_password_hash(self.Password, attempted_password)
+    
+    def get_reset_password_token(self, expires_in=10):
+        return create_access_token(identity={'reset_password': self.BeneficiaryId},expires_delta=timedelta(minutes=expires_in))
+
+    @staticmethod
+    def verify_reset_password_token(token):
+        try:
+            decoded_token = decode_token(token)
+            user_id= decoded_token['sub']['reset_password']
+        except:
+            return
+        return Beneficiary.query.get(user_id)
+
+class ExtensionProgram(db.Model):
+    __tablename__ = 'ESISExtensionProgram'
+
+    ExtensionProgramId = db.Column(db.Integer, primary_key=True)
+    Name = db.Column(db.String(255), nullable=False)
+    Rationale = db.Column(db.Text, nullable=False)
+    ImageUrl = db.Column(db.Text)
+    ImageFileId = db.Column(db.Text)
+    AgendaId = db.Column(db.Integer, db.ForeignKey('ESISAgenda.AgendaId', ondelete='CASCADE'), nullable=False)
+    ProgramId = db.Column(db.Integer, db.ForeignKey('SPSCourse.CourseId', ondelete='CASCADE'), nullable=False)
+    Agenda = db.relationship("Agenda", back_populates='ExtensionPrograms', lazy=True, passive_deletes=True)
+    Program = db.relationship("Course", backref='ExtensionProgram')
+    Projects = db.relationship("Project", back_populates='ExtensionProgram', cascade='all, delete-orphan')
+
+
+class Registration(db.Model):
+    __tablename__ = 'ESISRegistration'
+
+    RegistrationId = db.Column(db.Integer, primary_key=True)
+    RegistrationDate = db.Column(db.Date, default=datetime.utcnow, nullable=False)
+    IsAssigned = db.Column(db.Boolean, default=False, nullable=False)
+    ProjectId = db.Column(db.Integer, db.ForeignKey('ESISProject.ProjectId', ondelete='CASCADE'), nullable=False)
+    UserId = db.Column(db.String(36), db.ForeignKey('ESISUser.UserId', ondelete='CASCADE'), nullable=False)
+    User = db.relationship('ESISUser', back_populates='Registration', passive_deletes=True)
+
+class Project(db.Model):
+    __tablename__ = 'ESISProject'
+
+    ProjectId = db.Column(db.Integer, primary_key=True)
+    Title = db.Column(db.String(255), nullable=False)
+    Implementer = db.Column(db.String(255), nullable=False)
+    LeadProponentId = db.Column(db.String(36), db.ForeignKey('ESISUser.UserId', ondelete='CASCADE'), nullable=False)
+    CollaboratorId = db.Column(db.Integer, db.ForeignKey('ESISCollaborator.CollaboratorId', ondelete='CASCADE'), nullable=False)
+    ProjectTeam = db.Column(db.JSON, nullable=False)
+    TargetGroup= db.Column(db.String(255), nullable=False)
+    ProjectType = db.Column(db.String(100), nullable=False)
+    StartDate = db.Column(db.Date)
+    EndDate = db.Column(db.Date)
+    ImpactStatement = db.Column(db.Text, nullable=False)
+    Objectives = db.Column(db.Text, nullable=False)
+    ImageUrl = db.Column(db.Text)
+    ImageFileId = db.Column(db.Text)
+    ProjectProposalUrl = db.Column(db.Text, nullable=False)
+    ProjectProposalFileId = db.Column(db.Text, nullable=False)
+    ExtensionProgramId = db.Column(db.Integer, db.ForeignKey('ESISExtensionProgram.ExtensionProgramId', ondelete='CASCADE'), nullable=False)
+    LeadProponent = db.relationship('ESISUser', backref='Project', lazy=True, passive_deletes=True)
+    Collaborator = db.relationship("Collaborator", back_populates='Projects', lazy=True)
+    ExtensionProgram = db.relationship("ExtensionProgram", back_populates='Projects', lazy=True, passive_deletes=True)
+    Registration = db.relationship('Registration', backref='Project', cascade='all, delete-orphan', passive_deletes=True)
+    Certificate = db.relationship('Certificate', back_populates='Project', cascade='all, delete-orphan')
+    Activity = db.relationship("Activity", back_populates="Project", cascade='all, delete-orphan')
+    Budget = db.relationship('Budget', back_populates='Project', cascade='all, delete-orphan')
+    Item = db.relationship('Item', back_populates='Project', cascade='all, delete-orphan')
+
+    def totalBudget(self):
+        # Calculates and returns the total budget for the project.
+        return sum(budget.Amount for budget in self.Budget)
+
+# Course List
+class Course(db.Model):
+    __tablename__ = 'SPSCourse'
+
+    CourseId = db.Column(db.Integer, primary_key=True, autoincrement=True) # Unique Identifier
+    CourseCode = db.Column(db.String(10), unique=True) # Course Code - (BSIT, BSHM, BSCS)
+    Name = db.Column(db.String(200)) # (Name of Course (Bachelor of Science in Information Technology)
+    Description = db.Column(db.String(200)) # Description of course
+    IsValidPUPQCCourses = db.Column(db.Boolean, default=True) # APMS are handling different courses so there are specific courses available in QC Only
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+
+    def to_dict(self):
+        return {
+            'CourseId': self.CourseId,
+            'CourseCode': self.CourseCode,
+            'Name': self.Name,
+            'Description': self.Description,
+            'IsValidPUPQCCourses': self.IsValidPUPQCCourses
+        }
+
+
+class Agenda(db.Model):
+    __tablename__ = 'ESISAgenda'
+
+    AgendaId = db.Column(db.Integer, primary_key=True)
+    AgendaName = db.Column(db.String(255), nullable=False)
+    ExtensionPrograms = db.relationship("ExtensionProgram", back_populates='Agenda', lazy=True)
+
+
+class Collaborator(db.Model):
+    __tablename__ = 'ESISCollaborator'
+
+    CollaboratorId = db.Column(db.Integer, primary_key=True)
+    Organization = db.Column(db.String(100), nullable=False)
+    Location = db.Column(db.String(255), nullable=False)
+    SignedMOAUrl = db.Column(db.Text, nullable=False)
+    SignedMOAFileId = db.Column(db.Text, nullable=False)
+    Projects = db.relationship("Project", back_populates='Collaborator', lazy=True)
+    Budget = db.relationship('Budget', back_populates='Collaborator', cascade='all, delete-orphan')
+
+# ----------------------------
+
+# RIS MODULE INTEGRATION
+  
 class Users(db.Model):
     __tablename__ = "RISUsers"
 

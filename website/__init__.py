@@ -79,8 +79,8 @@ def create_app():
     from .modules.Teaching_Instructions import TI
     app.register_blueprint(TI, url_prefix='/')
     
-    from .modules.Records import records
-    app.register_blueprint(records, url_prefix='/')
+    from .modules.Extension_Projects import EP
+    app.register_blueprint(EP, url_prefix='/')
     
     from .modules.Committee_Administrative_Role import CAR
     app.register_blueprint(CAR, url_prefix='/')

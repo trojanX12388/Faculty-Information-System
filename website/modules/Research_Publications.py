@@ -117,8 +117,12 @@ def RP_T():
         username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
         risid = Users.query.filter_by(faculty_id=current_user.FacultyId).first() 
        
-        research_publication = FacultyResearchPaper.query.filter_by(user_id=risid.id).all()
-
+        if risid == Users.query.filter_by(faculty_id=current_user.FacultyId).first():
+            research_publication = FacultyResearchPaper.query.filter_by(user_id=risid.id).all()
+        
+        else:
+            research_publication =  {None}
+        
         if username.ProfilePic == None:
             ProfilePic=profile_default
         else:

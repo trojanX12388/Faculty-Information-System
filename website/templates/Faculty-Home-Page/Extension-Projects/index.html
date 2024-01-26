@@ -1,0 +1,72 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Extension Projects{% endblock %} {% block content%}
+
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Extension Projects</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Extension Projects</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+
+          <div class="card">
+            <div class="card-body d-flex flex-column justify-content-center">
+              <h5 class="card-title">Extension Projects</h5>
+
+              <!-- Advising Table with stripped rows -->
+              <table class="table datatable"> 
+                <thead>
+                  <tr>
+                    <th scope="col">PROJECT TITLE</th>
+                    <th scope="col">FACULTY NAME</th>
+                    <th scope="col">START DATE</th>
+                    <th scope="col">END DATE</th>
+                    <th scope="col">AGENCY PARTER</th>
+                    <th scope="col">PROPOSAL ONLINE LINK</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if project != None %}
+
+                    {% for data in project %}
+
+                    {% if data.id != None %}
+                    <tr>
+                      <td class="w-50">{{data.Title}}</td>
+                      <td class="w-50">{{user.LastName}}, {{user.FirstName}} {{user.MiddleInitial}}</td>
+                      <th class="w-30" scope="row">{{data.StartDate.strftime('%Y').split('-')[0]}}</th>
+                      <td class="w-50">{{data.EndDate.strftime('%Y').split('-')[0]}}</td>
+                      <td class="w-50">{{data.Collaborator.Organization}}</td>
+                      <td class="w-50"><a href="{{data.ProjectProposalUrl}}">View</a></td>
+                    </tr>
+                    {% else %}
+ 
+                    {% endif %}
+    
+    
+                 {% endfor %}  
+
+                 {% else %}
+                
+                 {% endif %}
+                </tbody>
+              </table><!-- End Table with stripped rows -->
+            </div>
+          </div>
+    
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+{% endblock %}
+
+      
