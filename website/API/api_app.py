@@ -495,7 +495,7 @@ def get_all_faculty_evaluations():
 
         db.close()
 
-        return jsonify({'data': profiles})
+        return jsonify(profiles)
 
     except ValidationError as e:
         return jsonify({'error': f'Validation error: {e}'})
