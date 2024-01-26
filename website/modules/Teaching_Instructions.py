@@ -83,6 +83,40 @@ def TI_TA():
         api_data = api_response.json()
     else:
         api_data = {"message": "Failed to fetch data", "data": []}
+        
+    # Fetch API data semester
+    api_url1 = "https://schedulerserver-6e565d991c10.herokuapp.com/semesters/getsemester"  # Replace with the actual API endpoint
+    api_response1 = requests.get(api_url1)
+    
+    if api_response1.status_code == 200:
+        semester = api_response1.json()
+    else:
+        semester = {"message": "Failed to fetch data", "data": []}
+        
+    # Fetch API data acad year
+    api_url2 = "https://schedulerserver-6e565d991c10.herokuapp.com/academicyears/getacadyr"  # Replace with the actual API endpoint
+    api_response2 = requests.get(api_url2)
+    
+    if api_response2.status_code == 200:
+        acad_year = api_response2.json()
+    else:
+        acad_year = {"message": "Failed to fetch data", "data": []}
+   
+    # # Fetch API data for Classroom
+    # api_url1 = "https://schedulerserver-6e565d991c10.herokuapp.com/rooms/getrooms"  # Replace with the actual API endpoint
+    # headers = {
+    #     'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJpbnRlZ3JhdGlvbkBnbWFpbC5jb20iLCJ1c2VydHlwZSI6InN0YWZmIiwiZXhwIjoxNzA4NzA1Mjc5fQ.vBx_831N2vKXv913WShd4TmX_olT-XuHm7DNfTov2bI'
+    # }
+
+    # # Make a GET request to the API with the API key in the headers
+    # api_response1 = requests.get(api_url1, headers=headers)
+    
+    # if api_response1.status_code == 200:
+    #     rooms = api_response1.json()
+    # else:
+    #     rooms = {"message": "Failed to fetch data", "data": []}
+        
+    # print(rooms)
 
     return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Teaching-Assignments.html", 
                            User=username.FirstName + " " + username.LastName,
@@ -91,7 +125,10 @@ def TI_TA():
                            TI="show",
                            activate_TA="active",
                            profile_pic=ProfilePic,
-                           api_data=api_data)
+                           api_data=api_data,
+                           semester = semester,
+                           acad_year = acad_year,
+                           )
  
 # ------------------------------------------------------------- 
 
