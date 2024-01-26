@@ -115,13 +115,14 @@ def RP_RU():
 def RP_T():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        
         risid = Users.query.filter_by(faculty_id=current_user.FacultyId).first() 
        
-        if risid == Users.query.filter_by(faculty_id=current_user.FacultyId).first():
+        if risid is not None:
             research_publication = FacultyResearchPaper.query.filter_by(user_id=risid.id).all()
         
         else:
-            research_publication =  {None}
+            research_publication =  None
         
         if username.ProfilePic == None:
             ProfilePic=profile_default

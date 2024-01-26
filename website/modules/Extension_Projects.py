@@ -68,13 +68,12 @@ def R_H():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
         
-        ESISid = ESISUser.query.filter_by(FacultyId=current_user.FacultyId).first() 
-        print(ESISid)
-        
-        if ESISid == ESISUser.query.filter_by(FacultyId=current_user.FacultyId).first():
+        ESISid = ESISUser.query.filter_by(FacultyId=current_user.FacultyId).first()
+
+        if ESISid is not None:
             project = Project.query.filter_by(LeadProponentId=ESISid.UserId).all()
         else:
-            project =  {None}
+            project = None
         
         if username.ProfilePic == None:
             ProfilePic=profile_default
@@ -106,7 +105,7 @@ def R_H():
                                User= username.FirstName + " " + username.LastName,
                                faculty_code= username.FacultyCode,
                                user= current_user,
-                               project = project,
+                               project=project, 
                                profile_pic=ProfilePic)
 
  

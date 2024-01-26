@@ -17,7 +17,7 @@ from website.models import db
 from sqlalchemy import update
 
 # LOADING MODEL CLASSES
-from website.models import FISFaculty
+from website.models import FISFaculty, IncidentReport, Student
 
 # LOADING FUNCTION CHECK TOKEN
 from website.Token.token_check import Check_Token
@@ -67,6 +67,22 @@ profile_default='14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08'
 def CAR_H():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        roles = IncidentReport.query.join(Student, IncidentReport.StudentId == Student.StudentId).\
+            add_columns(
+                IncidentReport.Date,
+                IncidentReport.Time,
+                IncidentReport.Description,
+                IncidentReport.Status,
+                Student.FirstName,
+                Student.LastName
+            ).\
+            filter(IncidentReport.InvestigatorId == current_user.FacultyId).all()
+    
+        if roles is not None:
+                faculty_roles = roles
+            
+        else:
+            faculty_roles = None
         
 
         if username.ProfilePic == None:
@@ -98,6 +114,7 @@ def CAR_H():
                                User= username.FirstName + " " + username.LastName,
                                faculty_code= username.FacultyCode,
                                user= current_user,
+                               faculty_roles = faculty_roles,
                                profile_pic=ProfilePic)
 
  

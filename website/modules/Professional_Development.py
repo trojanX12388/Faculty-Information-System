@@ -5,10 +5,12 @@ from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 from urllib.request import urlretrieve
 from cryptography.fernet import Fernet
+from datetime import datetime
 import rsa
 
 import os
 import os.path
+import requests
 
 load_dotenv()
 
@@ -112,7 +114,22 @@ def PD_W():
 def PD_T():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
-        
+        url = 'https://acmis.onrender.com/api/faculty/certificate/records/?format=json'
+        response = requests.get(url)
+    
+        if response.status_code == 200:
+            # Process the API response data
+            api_data = response.json()
+
+            # Filter the data for the person named "Alma Fernandez"
+            records = [record for record in api_data if record.get('first_name', '') == current_user.FirstName and record.get('last_name', '') == current_user.LastName]
+
+        # Format the date in the desired format
+        for record in records:
+            date_str = record.get('date', '')
+            if date_str:
+                formatted_date = datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%S%z').strftime('%B %d, %Y')
+                record['date'] = formatted_date
 
         if username.ProfilePic == None:
             ProfilePic=profile_default
@@ -144,8 +161,7 @@ def PD_T():
                                faculty_code= username.FacultyCode,
                                user= current_user,
                                profile_pic=ProfilePic,
-                               PD="show",
-                               activate_T= "active")
+                               records = records)
 
  
 # ------------------------------------------------------------- 

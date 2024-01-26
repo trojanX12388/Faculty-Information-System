@@ -1728,6 +1728,69 @@ class FISMandatoryRequirements(db.Model):
 # INTEGRATED TABLES
 
 
+# STUDENT COUNCIL INTEGRATION
+
+       
+class IncidentReport(db.Model):
+    __tablename__ = 'SCDSIncidentReport'
+    
+    Id = db.Column(db.Integer, primary_key=True, nullable=False) #ReportID
+    Date = db.Column(db.String(20), nullable=False) #Date
+    Time = db.Column(db.String(20), nullable=False) #Time
+    IncidentId = db.Column(db.Integer, db.ForeignKey('SCDSIncidentType.IncidentTypeId', ondelete="CASCADE")) #IncidentTypeID
+    LocationId = db.Column(db.Integer, db.ForeignKey('SCDSLocation.LocationId', ondelete="CASCADE")) #LocationID
+    StudentId = db.Column(db.Integer, db.ForeignKey('SPSStudent.StudentId', ondelete="CASCADE")) #StudentID
+    ComplainantId = db.Column(db.Integer, db.ForeignKey('SPSStudent.StudentId', ondelete="CASCADE")) #ComplainantID
+    InvestigatorId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId', ondelete="CASCADE"), nullable=True) #InvestigatorID
+    Description = db.Column(db.Text, nullable=False) #Description
+    Status = db.Column(db.String(20), nullable=False, default='pending') #Status
+    IsAccessible = db.Column(db.Boolean, nullable=False, default=False) #IsAccessible
+    
+    def to_dict(self):
+        return {
+            'Date': self.Date,
+            'Time': self.Time,
+            'IncidentId': self.IncidentId,
+            'LocationId': self.LocationId,
+            'StudentId': self.StudentId,
+            'ComplainantID': self.ComplainantId,
+            'InvestigatorId': self.InvestigatorId,
+            'Description': self.Description,
+            'Status': self.Status,
+            'IsAccessible': self.IsAccessible
+        }
+        
+class ViolationForm(db.Model):
+    __tablename__ = 'SCDSViolationForm'
+    
+    ViolationId = db.Column(db.Integer, primary_key=True, autoincrement=True) #ViolationFormID
+    Date = db.Column(db.String(20), nullable=False) #Date
+    Time = db.Column(db.String(20), nullable=False) #Time
+    LocationId = db.Column(db.Integer, db.ForeignKey('SCDSLocation.LocationId', ondelete="CASCADE")) #LocationID
+    StudentId = db.Column(db.Integer, db.ForeignKey('SPSStudent.StudentId', ondelete="CASCADE")) #StudentID
+    IncidentId = db.Column(db.Integer, db.ForeignKey('SCDSIncidentType.IncidentTypeId', ondelete="CASCADE")) #IncidentTypeID
+    ComplainantId = db.Column(db.Integer, db.ForeignKey('SPSStudent.StudentId', ondelete="CASCADE")) #ComplainantID
+    Description = db.Column(db.Text, nullable=False) #Description
+    Status = db.Column(db.String(20), nullable=False, default='pending') #Status
+    IsAccessible = db.Column(db.Boolean, nullable=False, default=False) #IsAccessible
+        
+    def to_dict(self):
+        return {
+            'ViolationId': self.ViolationId,
+            'Date': self.Date,
+            'Time': self.Time,
+            'LocationId': self.LocationId,
+            'StudentId': self.StudentId,
+            'IncidentID': self.IncidentId,
+            'ComplainantID': self.ComplainantId,
+            'Description': self.Description,
+            'Status': self.Status,
+            'IsAccessible': self.IsAccessible
+        }
+
+
+
+
 # Student Users
 class Student(db.Model): # (class SPSStudent) In DJANGO you must set the name directly here 
     __tablename__ = 'SPSStudent' # Set the name of table in database (Available for FLASK framework)

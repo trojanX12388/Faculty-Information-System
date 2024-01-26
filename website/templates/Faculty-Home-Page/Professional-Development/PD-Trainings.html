@@ -1,4 +1,4 @@
-{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Traings{% endblock %} {% block content%}
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Professional Development{% endblock %} {% block content%}
 
 <!-- Include jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -20,7 +20,7 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Trainings</h1>
+      <h1>Professional Development</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item">Homepage</li>
@@ -74,68 +74,27 @@
          
           <div class="list-group">
   
-                  <table id="table3" class="display" style="width:100%"> <!-- Mentoring Table with stripped rows -->
-                    <thead>
-                      
-                    </thead>
-                    <tbody>
-                      
-                      <tr>
-                        <td>
-                          <a href="#" class="list-group-item list-group-item-action mb-md-2">
-                            <div class="d-flex">
-                              <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <h5 class="card-title">Virtual Class Operating with Zoom Meeting Training</h5>
-                                    <div class="d-flex align-items-center">
-                                        <h6 class="text-muted">Continuing</h6>
-                                    </div>
-                                </div>
-                                  <div class="card-subtitle d-flex mb-3">
-                                      <p class="col-md-2 bi bi-geo-alt-fill">PUP Sta. Mesa Manila</p> 
-                                      <p class="col-md-2 bi bi-calendar-event-fill fw-bold">Start Date: <span class="fw-normal">Date here</span></p> 
-                                      <p class="col-md-2 bi bi-clock-fill fw-bold">Time: <span class="fw-normal">Time here</span></p>
-                                  </div>
-                                    <p class="bi bi-dot">Learn the essentials of operating Zoom for virtual classes.</p>
-                                    <p class="bi bi-dot">Master scheduling, security features, and troubleshooting.</p>
-                                    <p class="bi bi-dot">Explore interactive tools for a dynamic online learning environment.</p>
-                                    <p class="bi bi-dot">Understand how to utilize breakout rooms, polls, and chat functions effectively.</p>
-                              </div>
-                          </div>
-                          </a>
-                        </td>
-                        
-                      </tr>
-                      <tr>
-                        <td>
-                          <a href="#" class="list-group-item list-group-item-action mb-md-2">
-                            <div class="d-flex">
-                              <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <h5 class="card-title">Thesis Development Training</h5>
-                                    <div class="d-flex align-items-center">
-                                        <h6 class="text-muted">Continuing</h6>
-                                    </div>
-                                </div>
-                                  <div class="card-subtitle d-flex mb-3">
-                                      <p class="col-md-2 bi bi-geo-alt-fill">PUP San Juan Campus</p> 
-                                      <p class="col-md-2 bi bi-calendar-event-fill fw-bold">Start Date: <span class="fw-normal">Date here</span></p> 
-                                      <p class="col-md-2 bi bi-clock-fill fw-bold">Time: <span class="fw-normal">Time here</span></p>
-                                  </div>
-                                    <p class="bi bi-dot">Explore the fundamentals of thesis development and research design.</p>
-                                    <p class="bi bi-dot">Understand the importance of a well-defined research topic and objectives.</p>
-                                    <p class="bi bi-dot">Learn techniques for synthesizing and critically evaluating existing research.</p>
-                                    <p class="bi bi-dot">Enhance presentation skills for a successful thesis defense.</p>
-                              </div>
-                          </div>
-                          </a>
-                        </td>
-                        
-                      </tr>
-
-                    
-                    </tbody>
-                  </table> 
+                <!-- Advising Table with stripped rows -->
+                <table class="table datatable"> 
+                  <thead>
+                    <tr>
+                      <th scope="col">FACULTY NAME</th>
+                      <th scope="col">AWARD RECIEVED</th>
+                      <th scope="col">CERTIFYING</th>
+                      <th scope="col">DATE RECIEVED</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for record in records %}
+                        <tr>
+                            <td>{{ record.first_name }} {{ record.last_name }}</td>
+                            <td>{{ record.award_recieved }}</td>
+                            <td>{{ record.certifying_body }}</td>
+                            <td>{{ record.date }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                </table><!-- End Table with stripped rows -->
                </div>
                     
                 </div>

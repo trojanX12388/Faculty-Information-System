@@ -79,14 +79,54 @@
                 <h3><strong>FACULTY ROLES</strong></h3>
               </div>
               <!-- List group with Advanced Contents -->
+              <br><br>
               <div class="list-group">
-                <a href="/CAR-Committee-Roles" class="list-group-item list-group-item-action">
+                {% if faculty_roles != None %}
                   <div class="d-flex w-100 justify-content-between">
-                    <h5 class="card-title">Curriculum Development Committee</h5>
+                    <h5><strong>{{user.FirstName}} {{user.LastName}}</strong> As Incident Investigator</h5>
                   </div>
-                    <p class="mb-1">Jacob Ovalle is a member of a committee responsible for reviewing and refining the literature curriculum.</p>
-                      </a>
+                   <!-- Advising Table with stripped rows -->
+                   <br><br>
+               <table class="table datatable"> 
+                <thead>
+                  <tr>
+                    <th scope="col">Incident Date</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Complainant</th>
+                    <th scope="col">Decription</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                    {% for data in faculty_roles %}
+
+                    {% if data.id != None %}
+                    <tr>
+                      <td class="w-50">{{data.Date}}</td>
+                      <td class="w-50">{{data.Time}}</td>
+                      <th class="w-30" scope="row">{{data.FirstName}} {{data.LastName}}</th>
+                      <td class="w-50">{{data.Description}}</td>
+                      <td class="w-50">{{data.Status}}</td>
+                    </tr>
+                    {% else %}
+ 
+                    {% endif %}
+    
+    
+                 {% endfor %}  
+
+                
+                </tbody>
+              </table><!-- End Table with stripped rows -->
+              {% else %}
+              <div class="d-flex w-100 justify-content-between">
+                <h5><strong>{{user.FirstName}} {{user.LastName}}</strong> has No Roles</h5>
+              </div>
+      
+              {% endif %}
               </div><!-- End List group Advanced Content -->
+             
             
             </div>
             <br><br>
@@ -103,59 +143,7 @@
 
   </main><!-- End #main -->
 
-  <!-- Committee Modal -->
-  <div class="modal fade" id="committeeModal" tabindex="-1" aria-labelledby="committeeModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="uploadModalLabel">Add new Committee Role</h5>
-          <!-- close button -->
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="row mb-3">
-              <label for="inputText" class="col-sm-2 col-form-label">Title</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control">
-              </div>
-            </div>
-            <div class="row mb-3">
-              <label for="inputPassword" class="col-sm-2 col-form-label">Abstract</label>
-              <div class="col-sm-10">
-                <textarea class="form-control" style="height: 100px"></textarea>
-              </div>
-            </div>
-            <div class="row mb-3">
-              <label for="inputDate" class="col-sm-2 col-form-label">Member Since</label>
-              <div class="col-sm-10">
-                <input type="date" class="form-control">
-              </div>
-            </div>
-            <div class="row mb-3">
-              <label for="inputText" class="col-sm-2 col-form-label">Responsibilities</label>
-              <div class="col-sm-10">
-                  <input type="text" class="form-control" placeholder="1.">
-                  <input type="text" class="form-control" placeholder="2.">
-                  <input type="text" class="form-control" placeholder="3.">
-                  <input type="text" class="form-control" placeholder="4.">
-                  <input type="text" class="form-control" placeholder="5.">
-                  <small class="text-decoration-underline"><a href="">add more</a></small>      
-                  <!-- dito pre sa add more, kung pwede sana is mag add siya ng input type for responsibility, if ever na need pa ng mas marami -->
-              </div>
-            </div>
-            <div class="row mb-3">
-              <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-primary">Submit</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
+ 
 
 <script>
   $(document).ready(function() {
