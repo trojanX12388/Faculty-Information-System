@@ -113,114 +113,35 @@
 
               </div>
             
-              <!-- Table with stripped rows -->
               <table id="table1" class="display" style="width:100%">
                 <thead>
-                  <tr>
-                    <th scope="col">CLASSROOM ID</th>
-                    <th scope="col">COURSE CODE</th>
-                    <th scope="col">COURSE TITLE</th>
-                    <th scope="col">COURSE</th>
-                    <th scope="col">SEMESTER</th>
-                    <th scope="col">YEAR</th>
-                    <th scope="col">STATUS</th>
-                    <th scope="col"></th>
-                  </tr>
+                    <tr>
+                        <th scope="col">CLASSROOM ID</th>
+                        <th scope="col">COURSE CODE</th>
+                        <th scope="col">COURSE TITLE</th>
+                        <th scope="col">COURSE</th>
+                        <th scope="col">SEMESTER</th>
+                        <th scope="col">YEAR</th>
+                        <th scope="col">STATUS</th>
+                        <th scope="col"></th>
+                    </tr>
                 </thead>
                 <tbody>
-                  {% for data in user.FISTeachingAssignments %}
-         
-                  {% if data.id != None %}
-                   
-                  <tr>
-                    <th scope="row">{{data.id}}</th>
-                    <td>{{data.code}}</td>
-                    <td>Introduction to Programming</td>
-                    <td>{{data.course}}</td>
-                    <td>{{data.semester}}</td>
-                    <td>2023-2024</td>
-                    <td>Subject Teacher</td>
-                    <td>
-                      <div class="d-grid gap-2 mt-3">
-                        <button type="button" onclick="redirectToURL{{data.id}}()" class="btn btn-success rounded-pill">Schedule</i></button>
-                        <script>
-                          function redirectToURL{{data.id}}() {
-                              window.location.href = '/TI-Teaching-Assignments/{{data.id}}/Schedules';
-                          }
-                      </script>
-                      </div>
-                    </td>
-                  </tr>
-                  {% else %}
-           
-                  {% endif %}
-  
-  
-               {% endfor %}  
-                 
+                    {% for data in api_data.data %}
+                        {% if data.facultyname == user.FirstName + " " + user.LastName %}
+                            <tr>
+                                <th scope="row">{{ data.id }}</th>
+                                <td>{{ data.course_code }}</td>
+                                <td>{{ data.course_description }}</td>
+                                <td>{{ data.course }}</td>
+                                <td>{{ data.semester_id }}</td>
+                                <td>{{ data.acadyear_id }}</td>
+                                <td>Subject Teacher</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
                 </tbody>
-              </table>
-              <!-- End Table with stripped rows -->
-
-            </div>
-          </div>
-
-        
-
-          <div class="card">
-            <div class="card-body">
-              <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-                <h5><strong>TEACHING ASSIGNMENT ACTIVITIES</strong></h5>
-              </div>
-              <div class="card-body profile-card pt-4 d-flex flex-column align-items-end">
-                <div class="btnprinter-container">
-              <button id="btnPrintDetail2" class="btnprinter"><i class="bi bi-printer"></i></button>
-            </div>
-            <br>
-              </div>
-
-              <!-- Table with stripped rows -->
-              <table id="table2" class="display" style="width:100%">
-                <thead>
-                  <tr>
-                    <th scope="col">CLASSROOM ID</th>
-                    <th scope="col">COURSE CODE</th>
-                    <th scope="col">COURSE/SECTION</th>
-                    <th scope="col">COURSE SUBJECT</th>
-                    <th scope="col">ACTIVITY</th>
-                    <th scope="col">TIME</th>
-                    <th scope="col">DAY</th>
-                    <th scope="col">SEMESTER</th>
-                    <th scope="col">YEAR</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  
-                  {% for data1 in user.FISTeachingActivities %}
-         
-                  {% if data1.id != None %}
-                   
-                  <tr>
-                    <th scope="row">{{data1.classid}}</th>
-                    <td>{{data1.code}}</td>
-                    <td>{{data1.course}} {{data1.section}}</td>
-                    <td>{{data1.subject}}</td>
-                    <td>{{data1.activity}}</td>
-                    <td>{{data1.time}}</td>
-                    <td>{{data1.day}}</td>
-                    <td>{{data1.semester}}</td>
-                    <td>{{data1.year}}</td>
-                  </tr>
-                  {% else %}
-           
-                  {% endif %}
-  
-  
-               {% endfor %}  
-                 
-                 
-                </tbody>
-              </table>
+            </table>
               <!-- End Table with stripped rows -->
 
             </div>

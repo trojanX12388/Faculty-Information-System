@@ -61,48 +61,37 @@ profile_default='14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08'
 
 
 # ------------------------------- TEACHING ASSIGNMENTS ----------------------------  
+import requests
 
 @TI.route("/TI-Teaching-Assignments", methods=['GET', 'POST'])
 @login_required
 @Check_Token
 def TI_TA():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
-        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
-        
+    username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
 
-        if username.ProfilePic == None:
-            ProfilePic=profile_default
-        else:
-            ProfilePic=username.ProfilePic
-           
-        
-        # # UPDATE PROFILE BASIC DETAILS
-        
-        # if request.method == 'POST':
+    if username.ProfilePic == None:
+        ProfilePic = profile_default
+    else:
+        ProfilePic = username.ProfilePic
 
-        #     # UPDATE BASIC DETAILS
-        #     # VALUES
-        #     FacultyCode = request.form.get('FacultyCode')
-        #     honorific = request.form.get('honorific')
+    # Fetch API data
+    api_url = "https://schedulerserver-6e565d991c10.herokuapp.com/facultyloadings/getfacultyloading"  # Replace with the actual API endpoint
+    api_response = requests.get(api_url)
+    
+    if api_response.status_code == 200:
+        api_data = api_response.json()
+    else:
+        api_data = {"message": "Failed to fetch data", "data": []}
 
-        #     u = update(FISFaculty)
-        #     u = u.values({"FacultyCode": FacultyCode,
-        #                   "honorific": honorific
-        #                   })
-        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
-        #     db.session.execute(u)
-        #     db.session.commit()
-        #     db.session.close()
-        #     return redirect(url_for('PDM.PDM_BD')) 
-                      
-        return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Teaching-Assignments.html", 
-                               User= username.FirstName + " " + username.LastName,
-                               faculty_code= username.FacultyCode,
-                               user= current_user,
-                               TI="show",
-                               activate_TA="active",
-                               profile_pic=ProfilePic)
-
+    return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Teaching-Assignments.html", 
+                           User=username.FirstName + " " + username.LastName,
+                           faculty_code=username.FacultyCode,
+                           user=current_user,
+                           TI="show",
+                           activate_TA="active",
+                           profile_pic=ProfilePic,
+                           api_data=api_data)
  
 # ------------------------------------------------------------- 
 
