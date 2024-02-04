@@ -77,3 +77,4 @@ PyJWT
 
 Flask-Migrate
 Flask-Script
+sqlmodel
