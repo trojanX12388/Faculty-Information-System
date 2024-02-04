@@ -1265,9 +1265,9 @@ def PDM_AM():
             # Decrypt the sensitive data
             GSIShex_bytes = bytes.fromhex(fetch.GSIS[2:])
             PAGIBIGhex_bytes = bytes.fromhex(fetch.PAGIBIG[2:])
-            PHILHEALTHhex_bytes = bytes.fromhex(fetch.PAGIBIG[2:])
-            SSShex_bytes = bytes.fromhex(fetch.PAGIBIG[2:])
-            TINhex_bytes = bytes.fromhex(fetch.PAGIBIG[2:])
+            PHILHEALTHhex_bytes = bytes.fromhex(fetch.PHILHEALTH[2:])
+            SSShex_bytes = bytes.fromhex(fetch.SSS[2:])
+            TINhex_bytes = bytes.fromhex(fetch.TIN[2:])
         
             # Decrypt the ciphertext
             GSISdecrypted_data = cipher.decrypt(GSIShex_bytes)
@@ -1952,6 +1952,80 @@ def PDM_PDR():
                                age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                activate_PDR="active")
     
+@PDM.route('/PDM-Personal-Data-Reports/PDS-Export')
+@login_required
+@Check_Token
+def PDS_Export():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+    username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+    PersonalDetails = FISPDS_PersonalDetails.query.filter_by(FacultyId=current_user.FacultyId).first() 
+    ContactDetails = FISPDS_ContactDetails.query.filter_by(FacultyId=current_user.FacultyId).first() 
+    
+    # Generate a Fernet key
+    key_bytes = os.getenv('Symmetric_Key').encode('utf-8')
+    fernet_key = (key_bytes)
+    cipher = Fernet(fernet_key)
+
+    # VERIFYING IF DATA OF CURRENT USER EXISTS
+    if current_user.FISPDS_AgencyMembership:
+        data = current_user
+        fetch = FISPDS_AgencyMembership.query.filter_by(FacultyId=current_user.FacultyId).first()
+        
+        # Decrypt the sensitive data
+        GSIShex_bytes = bytes.fromhex(fetch.GSIS[2:])
+        PAGIBIGhex_bytes = bytes.fromhex(fetch.PAGIBIG[2:])
+        PHILHEALTHhex_bytes = bytes.fromhex(fetch.PHILHEALTH[2:])
+        SSShex_bytes = bytes.fromhex(fetch.SSS[2:])
+        TINhex_bytes = bytes.fromhex(fetch.TIN[2:])
+    
+        # Decrypt the ciphertext
+        GSISdecrypted_data = cipher.decrypt(GSIShex_bytes)
+        PAGIBIGdecrypted_data = cipher.decrypt(PAGIBIGhex_bytes)
+        PHILHEALTHdecrypted_data = cipher.decrypt(PHILHEALTHhex_bytes)
+        SSSdecrypted_data = cipher.decrypt(SSShex_bytes)
+        TINdecrypted_data = cipher.decrypt(TINhex_bytes)
+        
+        # Decode the decrypted data to utf-8
+        decrypted_GSIS = GSISdecrypted_data.decode('utf-8')
+        decrypted_PAGIBIG = PAGIBIGdecrypted_data.decode('utf-8')
+        decrypted_PHILHEALTH = PHILHEALTHdecrypted_data.decode('utf-8')
+        decrypted_SSS = SSSdecrypted_data.decode('utf-8')
+        decrypted_TIN = TINdecrypted_data.decode('utf-8')
+        
+    else:
+        data =  {'FISPDS_AgencyMembership':
+                {
+                'Remarks':""
+                }
+                }
+        # Decrypt the sensitive data
+        decrypted_GSIS = ""
+        decrypted_PAGIBIG = ""
+        decrypted_PHILHEALTH = ""
+        decrypted_SSS = ""
+        decrypted_TIN = ""
+    
+    if username.ProfilePic == None:
+        ProfilePic=profile_default
+    else:
+        ProfilePic=username.ProfilePic
+            
+    return render_template('Faculty-Home-Page/Personal-Data-Management-Page/PDS/index.html',
+                        User=username.FirstName + " " + username.LastName, 
+                        profile_pic=ProfilePic,
+                        PDM="show",
+                        user = current_user,
+                        PersonalDetails = PersonalDetails,
+                        ContactDetails = ContactDetails,
+                        age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
+                        decrypted_GSIS = decrypted_GSIS,
+                        decrypted_PAGIBIG = decrypted_PAGIBIG,
+                        decrypted_PHILHEALTH = decrypted_PHILHEALTH,
+                        decrypted_SSS = decrypted_SSS,
+                        decrypted_TIN = decrypted_TIN,
+                        
+                        )
+
 # ------------------------------- END OF PDM PERSONAL DATA REPORTS  ---------------------------- 
  
 # ------------------------------------------------------------- 

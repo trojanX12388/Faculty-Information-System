@@ -61,5 +61,5 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
 });
 
 function resetEntrySession() {
-    // Reset entry session logic
+    localStorage.setItem('entry', 3); // Reset attempts in localStorage
 }

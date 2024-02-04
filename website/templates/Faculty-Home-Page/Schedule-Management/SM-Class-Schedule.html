@@ -77,10 +77,134 @@
                   }
               </style>
           </head>
-
           <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
             <h5><strong>Class Schedules</strong></h5>
-          </div>
+        </div>
+        <div id="classScheduleTableBody"></div>
+        
+        <script>
+            // Function to format time as HH:mm
+            function formatTime(timeString) {
+                const time = new Date(timeString);
+                const hours = time.getHours().toString().padStart(2, '0');
+                const minutes = time.getMinutes().toString().padStart(2, '0');
+                return `${hours}:${minutes}`;
+            }
+        
+            $('#searchButton').on('click', function () {
+                // Get selected values and names from dropdowns
+                const academicYearId = $('#academicyearDropdown option:selected').data('id');
+                const semesterId = $('#semesterDropdown option:selected').data('id');
+                const programId = $('#programDropdown option:selected').data('id');
+                const classId = $('#classDropdown option:selected').data('id');
+        
+                // Make a request to get academic year name
+                $.ajax({
+                    url: `https://schedulerserver-6e565d991c10.herokuapp.com/academicyears/getacadyr?id=${academicYearId}`,
+                    type: 'GET',
+                    success: function (academicYearData) {
+                        const academicYearName = academicYearData.name;
+        
+                        // Make a request to get semester name
+                        $.ajax({
+                            url: `https://schedulerserver-6e565d991c10.herokuapp.com/semesters/getsemester?id=${semesterId}`,
+                            type: 'GET',
+                            success: function (semesterData) {
+                                const semesterName = semesterData.name;
+        
+                                // Make a request to get program/course name
+                                $.ajax({
+                                    url: `https://schedulerserver-6e565d991c10.herokuapp.com/courses/getcourse?id=${programId}`,
+                                    type: 'GET',
+                                    success: function (programData) {
+                                        const programName = programData.name || programData.code;
+        
+                                        // Make a request to get class name
+                                        $.ajax({
+                                            url: `https://schedulerserver-6e565d991c10.herokuapp.com/classes/getclass?id=${classId}`,
+                                            type: 'GET',
+                                            success: function (classData) {
+                                                const className = classData.classname;
+        
+                                                // Make a request to get filtered schedule data
+                                                $.ajax({
+                                                    url: "https://schedulerserver-6e565d991c10.herokuapp.com/manageschedules/filtersched",
+                                                    type: 'GET',
+                                                    data: {
+                                                        acadyear_id: academicYearId,
+                                                        semester_id: semesterId,
+                                                        course_id: programId,
+                                                        class_id: classId
+                                                    },
+                                                    headers: {
+                                                        'Authorization': `Bearer ${getToken()}`
+                                                    },
+                                                    success: function (response) {
+                                                        // Populate the table with the filtered data
+                                                        populateScheduleTable(response, academicYearName, semesterName, programName, className);
+                                                    },
+                                                    error: function (xhr, status, error) {
+                                                        console.log('Error fetching filtered schedule data:', xhr.responseText);
+                                                    }
+                                                });
+                                            },
+                                            error: function (xhr, status, error) {
+                                                console.log('Error fetching class data:', xhr.responseText);
+                                            }
+                                        });
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.log('Error fetching program data:', xhr.responseText);
+                                    }
+                                });
+                            },
+                            error: function (xhr, status, error) {
+                                console.log('Error fetching semester data:', xhr.responseText);
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('Error fetching academic year data:', xhr.responseText);
+                    }
+                });
+            });
+        
+            // Function to populate the table
+            function populateScheduleTable(data, academicYearName, semesterName, programName, className) {
+                const scheduleTableBody = $('#classScheduleTableBody');
+                scheduleTableBody.empty(); // Clear existing rows
+        
+                if (data && data.length > 0) {
+                    data.forEach(function (schedule) {
+                        // Shorten day and format time
+                        const shortenedDay = schedule.day.substring(0, 3);
+                        const formattedTime = `${formatTime(schedule.start_time)} - ${formatTime(schedule.end_time)}`;
+        
+                        // Make a separate request to get room details based on room_id (if needed)
+        
+                        // Append the row to the table
+                        scheduleTableBody.append(`
+                            <tr>
+                                <td class="text-center"></td>
+                                <td>${schedule.subject_code}</td>
+                                <td>${schedule.subject_name}</td>
+                                <td class="text-center">${schedule.lecture_hours}</td>
+                                <td class="text-center">${schedule.lab_hours}</td>
+                                <td class="text-center">${schedule.units}</td>
+                                <td class="text-center">${shortenedDay} ${formattedTime}</td>
+                                <td class="text-center">${roomNumber}</td>
+                                <td class="text-center">${academicYearName}</td>
+                                <td class="text-center">${semesterName}</td>
+                                <td class="text-center">${programName}</td>
+                                <td class="text-center">${className}</td>
+                            </tr>
+                        `);
+                    });
+                } else {
+                    console.log('No schedule data found.');
+                }
+            }
+        </script>
 
           <!-- Add a Print button -->
           <div class="btnprinter-container">
@@ -237,7 +361,18 @@
  
 
   </main><!-- End #main -->
+  <script>
+    $(document).ready(function () {
+        // Call populateScheduleTable with sample data (replace with your actual data)
+        const sampleData = [
+            { subject_code: 'CS101', subject_name: 'Introduction to Computer Science', lecture_hours: 3, lab_hours: 2, units: 4, day: 'Monday', start_time: '08:00:00', end_time: '10:00:00' },
+            // Add more sample data as needed
+        ];
 
+        // Call populateScheduleTable with the sample data
+        populateScheduleTable(sampleData, '2022-2023', 'Fall Semester', 'BSIT', 'Class A');
+    });
+</script>
 
   {% endblock %}
 

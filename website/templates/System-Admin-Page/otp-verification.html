@@ -1,4 +1,4 @@
-{% extends "base.html" %}{% block title %}System Admin Page{% endblock %} {% block content%}
+{% extends "base.html" %}{% block title %}OTP Verification{% endblock %} {% block content%}
 
   <body>
 
@@ -24,39 +24,24 @@
               <div class="card-body">
 
                 <div class="pt-4 pb-2">
-                  <h5 class="card-title text-center pb-0 fs-4">System Admin Login</h5>
+                  <h5 class="card-title text-center pb-0 fs-4">OTP Verification!</h5>
                 </div>
 
-                  <div class="col-12 my-md-3">
-                    <label for="yourUsername" class="form-label"><strong>ID</strong></label>
-                    <div class="input-group has-validation" data-validate = "System Admin ID is required!">
-                      <input type="text" name="id" class="form-control" id="id" autocomplete="off" placeholder="System Admin ID" required>
-                      <div class="invalid-feedback">Please enter System Admin ID.</div>
-                    </div>
+                <div class="col-12 my-md-3 text-center">
+                  <p class="mb-0"><strong>Please enter the OTP Code sent in the FIS System Admin Email</strong></p>
+                  <br>
+                  <div class="input-group has-validation" data-validate="OTP Code is required!">
+                      <input type="text" name="otp_code" class="form-control text-center" id="otp_code" autocomplete="off" placeholder="OTP Code" required>
+                      <div class="invalid-feedback">Please enter OTP Code.</div>
                   </div>
-
-                  <div class="col-12 my-md-3" data-validate="Password is required">
-                    <div class="d-flex justify-content-between">
-                      <label for="yourPassword" class="form-label d-flex"><strong>Password</strong></label>
-                     
-                    </div>
-                    <input type="password" name="password" class="form-control" id="password" autocomplete="off" placeholder="Password" required>
-                    <div class="invalid-feedback">Please enter your password.</div>
-                  </div>
+              </div>
 
                   <div class="col-12 my-md-3">
                      {# TOO MANY ATTEMPTS TIMER#} 
                      <span id="manyAttempt" style="display: none; color: #8B0000;">Many incorrect attempt... Please wait for <span id="countdownDisplay" style="font-size: 14px;"></span> seconds before trying again.</span>
-                    <button class="btn btn-primary w-100" type="submit" id="submitBtn"><strong>Login</strong></button>
+                    <button class="btn btn-primary w-100" type="submit" id="submitBtn"><strong>Verify OTP</strong></button>
                   </div>
 
-                  <div class="col-12">
-                  <a href="/" class="bi bi-arrow-left">
-                    <button type="button" class="btn btn-danger w-100"><strong>Back</strong>
-                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"></path>
-                    </button>
-                  </a>
-                </div>
                 </form>
 
           </div>

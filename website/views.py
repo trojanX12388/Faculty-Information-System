@@ -15,6 +15,9 @@ def home():
     elif current_user.__class__.__name__ == "FISAdmin":     
         return redirect(url_for('auth.adminH'))
     
+    elif current_user.__class__.__name__ == "FISSystemAdmin":     
+        return redirect(url_for('auth.sysadminH'))
+    
     # IF NO ACTIVE SESSION, REDIRECT TO MAIN PAGE
     else:
         return render_template("base.html")
@@ -28,6 +31,9 @@ def facultyL():
     
     elif current_user.__class__.__name__ == "FISAdmin":     
         return redirect(url_for('auth.adminH'))
+    
+    elif current_user.__class__.__name__ == "FISSystemAdmin":     
+        return redirect(url_for('auth.sysadminH'))
     
     # IF NO ACTIVE SESSION, REDIRECT TO MAIN PAGE
     else:
@@ -44,7 +50,56 @@ def adminL():
     elif current_user.__class__.__name__ == "FISAdmin":     
         return redirect(url_for('auth.adminH'))
     
+    elif current_user.__class__.__name__ == "FISSystemAdmin":     
+        return redirect(url_for('auth.sysadminH'))
+    
     # IF NO ACTIVE SESSION, REDIRECT TO MAIN PAGE
     else:
         return render_template("Admin-Login-Page/index.html")
+    
+
+# SYSTEM ADMIN PAGE
+
+@views.route("/auth/sysadmin/login")
+def sysadminL():
+    # CHECKING ACTIVE SESSIONS
+    session['otp_gained'] = False
+    session['sysadminid'] = None
+    
+    if current_user.__class__.__name__ == "FISFaculty":     
+        return redirect(url_for('auth.facultyH'))
+    
+    elif current_user.__class__.__name__ == "FISAdmin":     
+        return redirect(url_for('auth.adminH'))
+    
+    elif current_user.__class__.__name__ == "FISSystemAdmin":     
+        return redirect(url_for('auth.sysadminH'))
+    
+    # IF NO ACTIVE SESSION, REDIRECT TO MAIN PAGE
+    else:
+        return render_template("System-Admin-Page/index.html")
+    
+
+@views.route("/auth/sysadmin/otp-verification")
+def sysadminOTP():
+    is_otp_gained = session['otp_gained']
+    id = session['sysadminid'] 
+    
+    if is_otp_gained == True and  id != None :
+        # CHECKING ACTIVE SESSIONS
+        if current_user.__class__.__name__ == "FISFaculty":     
+            return redirect(url_for('auth.facultyH'))
+        
+        elif current_user.__class__.__name__ == "FISAdmin":     
+            return redirect(url_for('auth.adminH'))
+        
+        elif current_user.__class__.__name__ == "FISSystemAdmin":     
+            return redirect(url_for('auth.sysadminH'))
+        
+        # IF NO ACTIVE SESSION, REDIRECT TO MAIN PAGE
+        else:
+            return render_template("System-Admin-Page/otp-verification.html")
+    
+    else:
+        return redirect(url_for('views.sysadminL'))
     

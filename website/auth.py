@@ -16,7 +16,7 @@ load_dotenv()
 # IMPORT LOCAL FUNCTIONS
 from .API.authentication import *
 from .Token.token_gen import *
-from .Token.token_check import Check_Token
+from .Token.token_check import Check_Token, SysCheck_Token
 
 # IMPORT SMTP EMAILING FUNCTIONS
 
@@ -29,7 +29,7 @@ from .models import db
 from sqlalchemy import update
 
 # LOADING MODEL CLASSES
-from .models import FISFaculty, FISAdmin, FISLoginToken
+from .models import FISFaculty, FISAdmin, FISLoginToken, FISSystemAdmin
 
 
 # LOAD JWT MODULE
@@ -201,6 +201,7 @@ def login_error_modal():
 @auth.route("/logout")
 @login_required
 def Logout():
+    session['entry'] = 3
     
     # # REVOKE USER TOKEN FROM ALL BROWSERS
     # token_list = current_user.FISLoginToken  # This returns a list of FISLoginToken objects
@@ -217,7 +218,7 @@ def Logout():
     #     pass
     
     logout_user()
-    session['entry'] = 3
+  
     flash('Logged Out Successfully!', category='success')
     return redirect(url_for('auth.facultyL')) 
 
@@ -742,6 +743,7 @@ def adminRP():
 @auth.route("/admin-logout")
 @login_required
 def adminLogout():
+    session['entry'] = 3
     
     # # REVOKE USER TOKEN FROM ALL BROWSERS
     # token_list = current_user.FISLoginToken  # This returns a list of FISLoginToken objects
@@ -758,6 +760,202 @@ def adminLogout():
     #     pass
     
     logout_user()
-    session['entry'] = 3
     flash('Logged Out Successfully!', category='success')
     return redirect(url_for('auth.adminL')) 
+
+
+
+# ------------------- SYSTEM ADMIN -----------------------
+
+
+# SYSTEM ADMIN PAGE ROUTE
+
+@auth.route('/auth/sysadmin/login', methods=['GET', 'POST'])
+def sysadminL():
+    import random
+
+    session['otp_gained'] = False
+    session['sysadminid'] = None
+    
+    def generate_random_6_digit():
+        return random.randint(100000, 999999)
+    
+    def send_otp_email(otp, Email):
+        subject = 'SYSTEM ADMIN OTP CODE'
+        sender = ("PUPQC FIS", "fis.pupqc2023@gmail.com")
+        recipients = [Email]
+
+        msg = Message(subject, sender=sender, recipients=recipients)
+        
+        # Construct the HTML body with the OTP code in bold
+        msg.html = render_template(
+        'Email/otp-code-msg.html',
+        otp=otp
+        )
+    
+        # Send the email
+        mail.send(msg)
+    
+    
+    if request.method == 'POST':
+        id = request.form.get('id')
+        Password = request.form.get('password')
+
+        User = FISSystemAdmin.query.filter_by(SystemAdminId=id).first()
+
+        if not User:
+            flash('Incorrect ID or Password!', category='error')
+        else:
+            
+            if check_password_hash(User.Password,Password):
+                    session['otp_gained'] = True
+                    session['sysadminid'] = id
+                    
+                    random_number = generate_random_6_digit()
+                    
+                    Email = "fis.pupqc2023@gmail.com"  # Replace with the actual recipient's email
+                    send_otp_email(random_number, Email)
+
+                    if FISSystemAdmin.query.filter_by(SystemAdminId=id).first():
+                            u = update(FISSystemAdmin)
+                            u = u.values({"otp_code": random_number})
+                            u = u.where(FISSystemAdmin.SystemAdminId == User.SystemAdminId)
+                            db.session.execute(u)
+                            db.session.commit()
+                            db.session.close()
+                            
+                    else:
+                        add_record = FISSystemAdmin( otp_code = random_number, SystemAdminId = current_user.SystemAdminId)
+                    
+                        db.session.add(add_record)
+                        db.session.commit()
+                        db.session.close()
+             
+             
+             
+                    return redirect(url_for('auth.sysadminLotp'))   
+                    
+            else:
+                    flash('Invalid Credentials! Please Try again...', category='error')
+               
+                  
+    return render_template("System-Admin-Page/index.html")
+
+
+# SYSTEM ADMIN OTP LOGIN
+
+@auth.route('/auth/sysadmin/otp-verification', methods=['GET', 'POST'])
+def sysadminLotp():
+    is_otp_gained = session['otp_gained']
+    id = session['sysadminid'] 
+    
+    if is_otp_gained == True and id != None:
+      
+        if request.method == 'POST':
+            otp_code = request.form.get('otp_code')
+            
+            User = FISSystemAdmin.query.filter_by(SystemAdminId=id).first()
+
+            if not User:
+                flash('Incorrect ID or Password!', category='error')
+            else:
+                    
+                if User.otp_code == otp_code:
+                        login_user(User, remember=False)
+                        session['otp_gained'] = False
+                        session['sysadminid'] = None
+                        
+                        access_token = generate_access_token(User.SystemAdminId)
+                        refresh_token = generate_refresh_token(User.SystemAdminId)
+                        
+                        if FISSystemAdmin.query.filter_by(SystemAdminId=current_user.SystemAdminId).first():
+                            u = update(FISSystemAdmin)
+                            u = u.values({"access_token": access_token,
+                                        "refresh_token": refresh_token
+                                        })
+                            u = u.where(FISSystemAdmin.SystemAdminId == User.SystemAdminId)
+                            db.session.execute(u)
+                            db.session.commit()
+                            db.session.close()
+                            
+                        else:
+                            add_record = FISSystemAdmin(   access_token = access_token,
+                                                        refresh_token = refresh_token,
+                                                        SystemAdminId = current_user.SystemAdminId)
+                        
+                            db.session.add(add_record)
+                            db.session.commit()
+                            db.session.close()
+
+                        return redirect(url_for('auth.sysadminH'))   
+                        
+                else:
+                        flash('Invalid OTP Code! Please Try again...', category='error')
+               
+                  
+        return render_template("System-Admin-Page/otp-verification.html")
+    
+    else:
+        return redirect(url_for('auth.sysadminL')) 
+
+
+# SYSTEM ADMIN OTP LOGIN
+
+@auth.route('/auth/sysadmin/homepage', methods=['GET', 'POST'])
+@login_required
+@SysCheck_Token
+def sysadminH():
+    
+    # alma = generate_password_hash('password123')
+    # print(alma)
+    
+    
+    if request.method == 'POST':
+        id = request.form.get('id')
+        Password = request.form.get('password')
+
+        User = FISSystemAdmin.query.filter_by(SystemAdminId=id).first()
+
+        if not User:
+            flash('Incorrect ID or Password!', category='error')
+        else:
+                
+            if check_password_hash(User.Password,Password):
+                    access_token = generate_access_token(User.SystemAdminId)
+                    refresh_token = generate_refresh_token(User.SystemAdminId)
+                    
+                    if FISSystemAdmin.query.filter_by(SystemAdminId=current_user.SystemAdminId).first():
+                        u = update(FISSystemAdmin)
+                        u = u.values({"access_token": access_token,
+                                    "refresh_token": refresh_token
+                                    })
+                        u = u.where(FISSystemAdmin.SystemAdminId == User.SystemAdminId)
+                        db.session.execute(u)
+                        db.session.commit()
+                        db.session.close()
+                        
+                    else:
+                        add_record = FISSystemAdmin(   access_token = access_token,
+                                                    refresh_token = refresh_token,
+                                                    AdminId = current_user.SystemAdminId)
+                    
+                        db.session.add(add_record)
+                        db.session.commit()
+                        db.session.close()
+             
+                    return redirect(url_for('auth.sysadminH'))   
+                    
+            else:
+                    flash('Invalid Credentials! Please Try again...', category='error')
+               
+                  
+    return render_template("System-Admin-Page/index.html")
+
+# FACULTY LOGOUT ROUTE
+@auth.route("/auth/sysadmin/logout")
+@login_required
+def sysadminLogout():
+    session['entry'] = 3
+    logout_user()
+    flash('Logged Out Successfully!', category='success')
+    return redirect(url_for('auth.sysadminL')) 

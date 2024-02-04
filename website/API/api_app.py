@@ -445,7 +445,7 @@ def get_all_faculty_evaluations():
     try:
         # Get query parameters for pagination
         page = int(request.args.get('page', 1))
-        per_page = int(request.args.get('per_page', 200))
+        per_page = int(request.args.get('per_page', 300))
 
         # Calculate offset based on page and per_page values
         offset = (page - 1) * per_page
