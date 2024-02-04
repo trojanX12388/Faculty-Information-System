@@ -77,7 +77,3 @@ PyJWT
 
 Flask-Migrate
 Flask-Script
-<<<<<<< HEAD
-sqlmodel
-=======
->>>>>>> d7aab685d1bfcc625407b518f6d51936129390e3
