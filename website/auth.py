@@ -201,7 +201,7 @@ def login_error_modal():
 @auth.route("/logout")
 @login_required
 def Logout():
-    session['entry'] = 3
+    
     
     # # REVOKE USER TOKEN FROM ALL BROWSERS
     # token_list = current_user.FISLoginToken  # This returns a list of FISLoginToken objects
@@ -218,7 +218,8 @@ def Logout():
     #     pass
     
     logout_user()
-  
+    session['entry'] = 3
+    
     flash('Logged Out Successfully!', category='success')
     return redirect(url_for('auth.facultyL')) 
 

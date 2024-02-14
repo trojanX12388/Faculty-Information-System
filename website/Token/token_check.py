@@ -35,7 +35,7 @@ def Check_Token(func):
         else:
             # Handle other user types here if needed
             flash('Unknown user type.', category='error')
-            return redirect(url_for('auth.adminLogout'))
+            return redirect(url_for('admin.adminLogout'))
 
         try:
             decoded = jwt.decode(user_token.access_token, app.config['SECRET_KEY'], algorithms=['HS256'])
@@ -49,7 +49,7 @@ def Check_Token(func):
                 if current_user.__class__.__name__ == "FISFaculty":
                     return redirect(previous_url or url_for('auth.facultyH'))
                 else:
-                    return redirect(previous_url or url_for('auth.adminH'))
+                    return redirect(previous_url or url_for('admin.adminH'))
         
         except jwt.ExpiredSignatureError:
             try:
@@ -61,28 +61,28 @@ def Check_Token(func):
                     if current_user.__class__.__name__ == "FISFaculty":
                         return redirect(url_for('auth.Logout'))
                     else:
-                        return redirect(url_for('auth.adminLogout'))
+                        return redirect(url_for('admin.adminLogout'))
                 else:
                     refresh_token(user_token)
                     previous_url = session.pop('previous_url', None)
                     if current_user.__class__.__name__ == "FISFaculty":
                         return redirect(previous_url or url_for('auth.facultyH'))
                     else:
-                        return redirect(previous_url or url_for('auth.adminH'))
+                        return redirect(previous_url or url_for('admin.adminH'))
             
             except jwt.ExpiredSignatureError:
                 flash('Session Expired. Please Login again.', category='error')
                 if current_user.__class__.__name__ == "FISFaculty":
                     return redirect(url_for('auth.Logout'))
                 else:
-                    return redirect(url_for('auth.adminLogout'))
+                    return redirect(url_for('admin.adminLogout'))
             
             except jwt.InvalidTokenError:
                 flash('Invalid Token. Please Login again.', category='error')
                 if current_user.__class__.__name__ == "FISFaculty":
                     return redirect(url_for('auth.Logout'))
                 else:
-                    return redirect(url_for('auth.adminLogout'))
+                    return redirect(url_for('admin.adminLogout'))
         
         except Exception as e:
             print(f'Error: {str(e)}')
@@ -119,7 +119,7 @@ def refresh_token(user_token):
             if current_user.__class__.__name__ == "FISFaculty":
                 return redirect(url_for('auth.Logout'))
             else:
-                return redirect(url_for('auth.adminLogout'))
+                return redirect(url_for('admin.adminLogout'))
         
         db.session.commit()
         db.session.close()
@@ -128,13 +128,13 @@ def refresh_token(user_token):
         if current_user.__class__.__name__ == "FISFaculty":
             return redirect(url_for('auth.Logout'))
         else:
-            return redirect(url_for('auth.adminLogout'))
+            return redirect(url_for('admin.adminLogout'))
     except jwt.InvalidTokenError:
         flash('Invalid User Token. Please Login again.', category='error')
         if current_user.__class__.__name__ == "FISFaculty":
             return redirect(url_for('auth.Logout'))
         else:
-            return redirect(url_for('auth.adminLogout'))
+            return redirect(url_for('admin.adminLogout'))
         
 
 # ---------------------------------------------------------
@@ -163,9 +163,9 @@ def SysCheck_Token(func):
                 Sysrefresh_token(user_token)
                 previous_url = session.pop('previous_url', None)
                 if current_user.__class__.__name__ == "FISSystemAdmin":
-                    return redirect(previous_url or url_for('auth.sysadminH'))
+                    return redirect(previous_url or url_for('sysadmin.sysadminH'))
                 else:
-                    return redirect(previous_url or url_for('auth.sysadminL'))
+                    return redirect(previous_url or url_for('sysadmin.sysadminL'))
         
         except jwt.ExpiredSignatureError:
             try:
@@ -181,7 +181,7 @@ def SysCheck_Token(func):
                     Sysrefresh_token(user_token)
                     previous_url = session.pop('previous_url', None)
                     if current_user.__class__.__name__ == "FISSystemAdmin":
-                        return redirect(previous_url or url_for('auth.sysadminH'))
+                        return redirect(previous_url or url_for('sysadmin.sysadminH'))
             
             except jwt.ExpiredSignatureError:
                 flash('Session Expired. Please Login again.', category='error')

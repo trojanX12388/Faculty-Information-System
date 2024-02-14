@@ -32,7 +32,7 @@
               <tr>
                 <th scope="row">{{data.school_name}}</th>
                 <td>{{data.level}}</td>
-                <td>{{data.from_date }} - {{data.to_date}} </td>
+                <td>{{data.from_date.month }}/{{data.from_date.day }}/{{data.from_date.year }} - {{data.to_date.month }}/{{data.to_date.day }}/{{data.to_date.year }} </td>
                 <td>
                   <button type="submit" class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#d{{data.id}}"><i class="bi bi-trash"></i></button>
                   <button type="button" class="btn btn-outline-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#{{data.id}}"><i class="bi bi-file-earmark-text"></i></button>
@@ -63,9 +63,11 @@
                           <div class="form-floating">
                             <select class="form-select" name="level" aria-label="Level">
                               <option selected="">{{data.level}}</option>
-                              <option value="Tertiary">Tertiary</option>
+                              <option value="College">College</option>
                               <option value="Secondary">Secondary</option>
                               <option value="Elementary">Elementary</option>
+                              <option value="VOCATIONAL/TRADE COURSE">VOCATIONAL/TRADE COURSE</option>
+                              <option value="GRADUATE STUDIES">GRADUATE STUDIES</option>
                             </select>
                             <label for="floatingschool_name">Level</label>
                           </div>
@@ -157,9 +159,11 @@
                         <div class="col-md-6">
                           <div class="form-floating">
                             <select class="form-select" name="level" aria-label="Level">
-                              <option value="Tertiary">Tertiary</option>
+                              <option value="College">College</option>
                               <option value="Secondary">Secondary</option>
                               <option value="Elementary">Elementary</option>
+                              <option value="VOCATIONAL/TRADE COURSE">VOCATIONAL/TRADE COURSE</option>
+                              <option value="GRADUATE STUDIES">GRADUATE STUDIES</option>
                             </select>
                             <label for="floatingschool_name">Level</label>
                           </div>

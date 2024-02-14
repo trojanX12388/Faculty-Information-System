@@ -345,10 +345,21 @@
 						<td colspan="1" class="s-label border-top-0"></td>
 						<td colspan="1" class="s-label border-top-0"></td>
 					</tr>
+					
+					
 					<tr>
 						<td colspan="1" class="s-label">
 							<span class="count"></span> ELEMENTARY
 						</td>
+						{% if Elementary != None %}
+						<td colspan="4"><strong>{{Elementary.school_name}}</strong></td>
+						<td colspan="2"></td>
+						<td colspan="1"><strong>{{Elementary.from_date}}</strong></td>
+						<td colspan="1"><strong>{{Elementary.to_date}}</strong></td>
+						<td colspan="1"></td>
+						<td colspan="1"></td>
+						<td colspan="1"></td>
+						{% else %}
 						<td colspan="4"></td>
 						<td colspan="2"></td>
 						<td colspan="1"></td>
@@ -356,11 +367,22 @@
 						<td colspan="1"></td>
 						<td colspan="1"></td>
 						<td colspan="1"></td>
+						{% endif %}
 					</tr>
+					
 					<tr>
 						<td colspan="1" class="s-label">
 							<span class="count"></span> SECONDARY
 						</td>
+						{% if Secondary != None %}
+						<td colspan="4"><strong>{{Secondary.school_name}}</strong></td>
+						<td colspan="2"></td>
+						<td colspan="1"><strong>{{Secondary.from_date}}</strong></td>
+						<td colspan="1"><strong>{{Secondary.to_date}}</strong></td>
+						<td colspan="1"></td>
+						<td colspan="1"></td>
+						<td colspan="1"></td>
+						{% else %}
 						<td colspan="4"></td>
 						<td colspan="2"></td>
 						<td colspan="1"></td>
@@ -368,12 +390,23 @@
 						<td colspan="1"></td>
 						<td colspan="1"></td>
 						<td colspan="1"></td>
+						{% endif %}
 					</tr>
+
 					<tr>
 						<td colspan="1" class="s-label">
 							<span class="count"></span> VOCATIONAL/<br>
 							<span class="count"></span> TRADE COURSE
 						</td>
+						{% if Vocational != None %}
+						<td colspan="4"><strong>{{Vocational.school_name}}</strong></td>
+						<td colspan="2"></td>
+						<td colspan="1"><strong>{{Vocational.from_date}}</strong></td>
+						<td colspan="1"><strong>{{Vocational.to_date}}</strong></td>
+						<td colspan="1"></td>
+						<td colspan="1"></td>
+						<td colspan="1"></td>
+						{% else %}
 						<td colspan="4"></td>
 						<td colspan="2"></td>
 						<td colspan="1"></td>
@@ -381,11 +414,21 @@
 						<td colspan="1"></td>
 						<td colspan="1"></td>
 						<td colspan="1"></td>
+						{% endif %}
 					</tr>
 					<tr>
 						<td colspan="1" class="s-label">
 							<span class="count"></span> COLLEGE
 						</td>
+						{% if College != None %}
+						<td colspan="4"><strong>{{College.school_name}}</strong></td>
+						<td colspan="2"></td>
+						<td colspan="1"><strong>{{College.from_date}}</strong></td>
+						<td colspan="1"><strong>{{College.to_date}}</strong></td>
+						<td colspan="1"></td>
+						<td colspan="1"></td>
+						<td colspan="1"></td>
+						{% else %}
 						<td colspan="4"></td>
 						<td colspan="2"></td>
 						<td colspan="1"></td>
@@ -393,11 +436,21 @@
 						<td colspan="1"></td>
 						<td colspan="1"></td>
 						<td colspan="1"></td>
+						{% endif %}
 					</tr>
 					<tr>
 						<td colspan="1" class="s-label">
 							<span class="count"></span> GRADUATE STUDIES
 						</td>
+						{% if Graduate_Studies != None %}
+						<td colspan="4"><strong>{{Graduate_Studies.school_name}}</strong></td>
+						<td colspan="2"></td>
+						<td colspan="1"><strong>{{Graduate_Studies.from_date}}</strong></td>
+						<td colspan="1"><strong>{{Graduate_Studies.to_date}}</strong></td>
+						<td colspan="1"></td>
+						<td colspan="1"></td>
+						<td colspan="1"></td>
+						{% else %}
 						<td colspan="4"></td>
 						<td colspan="2"></td>
 						<td colspan="1"></td>
@@ -405,7 +458,9 @@
 						<td colspan="1"></td>
 						<td colspan="1"></td>
 						<td colspan="1"></td>
+						{% endif %}
 					</tr>
+
 				</tbody>
 
 				<tbody class="table-body">
@@ -418,7 +473,7 @@
 						<td colspan="1" class="text-center"><i><b>SIGNATURE</b></i></td>
 						<td colspan="6"></td>
 						<td colspan="2" class="text-center"><i><b>DATE</b></i></td>
-						<td colspan="3"></td>
+						<td colspan="3"><strong>{{current_date}}</strong></td>
 					</tr>
 					
 				</tbody>
@@ -427,7 +482,10 @@
 			</div>
 			
 			</table>
-			<br><br><br><br><br><br><br>
+
+			<img src="{{signature}}" class="img-fluid rounded-start" alt="wet_signature" style="position:relative;left:170px;bottom:65px; height:100px;width:150px;">
+
+			<br><br><br><br><br>
 
 			<table id="pds-table">
 
@@ -1473,7 +1531,7 @@
 				<!-- End of Page 3 -->
 
 			</table>
-			<br><br><br><br>
+			<br><br><br><br><br><br><br><br>
 		<table id="pds-table">
 				<!-- Q1 -->
 				<tbody class="table-body question-block">
@@ -1622,7 +1680,7 @@
 					</tr>
 					<tr>
 						<td colspan="7" class="s-label">
-							<span class="count"></span> b. Have you resigned from the government service during the three (3)-month period before the last election to promote/actively campaign for a national or local candidate?
+							<span class="count"></span>b. Have you resigned from the government service during the three (3)-month period before the last election to promote/actively campaign for a national or local candidate?
 						</td>
 						<td colspan="2"></td>
 						<td colspan="3"></td>
