@@ -114,8 +114,16 @@ def create_app():
     
     # ADMIN ROUTES
     
+    from .modules.Admin import admin
+    app.register_blueprint(admin, url_prefix='/')
+    
     from .modules.adminPDM import adminPDM
     app.register_blueprint(adminPDM, url_prefix='/')
+    
+    # SYSTEM ADMIN ROUTES
+    
+    from .modules.SystemAdmin import sysadmin
+    app.register_blueprint(sysadmin, url_prefix='/')
     
     # LOADING LOGIN MANAGER CACHE
     login_manager = LoginManager()

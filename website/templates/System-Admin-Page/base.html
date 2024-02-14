@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>{% block title %}System Admin{% endblock %}</title> 
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+   <!-- Favicons -->
+   <link href="{{ url_for('static', filename='images/Default-Images/pupqc-logo.png')}}" rel="icon">
+   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+ 
+   <!-- Google Fonts -->
+   <link href="https://fonts.gstatic.com" rel="preconnect">
+   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  
+  <!-- Vendor CSS Files -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <link href="https://cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link href="https://cdn.remixicon.com/releases/v1.2.2/remixicon.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+ 
+   <!-- Template Main CSS File -->
+ <link rel="stylesheet" href="{{url_for('static', filename='css/homepage/style.css')}}"> {# MAIN HOMEPAGE CSS #}
+ <link rel="stylesheet" href="{{url_for('static', filename='css/homepage/PDM-Basic-Details/uploadprofile.css')}}"> {# UPLOAD PROFILE CSS #}
+ <link rel="stylesheet" href="{{url_for('static', filename='css/homepage/PDM-Basic-Details/uploadprofile2.css')}}"> {# UPLOAD PROFILE SCSS #}
+
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="/faculty-home-page" class="logo d-flex align-items-center">
+        <img src="{{ url_for('static', filename='images/Default-Images/pupqc-logo.png')}}" alt="PUPQC LOGO">
+        <span class="d-none d-lg-block">System Admin</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell"></i>
+            <span class="badge bg-danger badge-number">4</span>
+          </a><!-- End Notification Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+            <li class="dropdown-header">
+              You have 4 new notifications
+              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-exclamation-circle text-warning"></i>
+              <div>
+                <h4>Lorem Ipsum</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>30 min. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-x-circle text-danger"></i>
+              <div>
+                <h4>Atque rerum nesciunt</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>1 hr. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-check-circle text-success"></i>
+              <div>
+                <h4>Sit rerum fuga</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>2 hrs. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-info-circle text-primary"></i>
+              <div>
+                <h4>Dicta reprehenderit</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>4 hrs. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li class="dropdown-footer">
+              <a href="#">Show all notifications</a>
+            </li>
+
+          </ul><!-- End Notification Dropdown Items -->
+
+        </li><!-- End Notification Nav -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+
+        <li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="https://lh3.googleusercontent.com/d/{{profile_pic}}" alt="Profile" class="rounded-circle" style="width:30px;height:30px;">
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{User}}</span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>{{User}}</h6>
+              <span>{{user.SystemAdminId}}</span>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/auth/sysadmin/Settings">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+              </a>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <script>
+              function logout() {
+                  // ... (your existing logout code)
+          
+                  localStorage.setItem('entry', 3);  // Reset entry count to 3 in local storage
+                  // ... (any additional code for logging out)
+              }
+          </script>
+          
+          <!-- Your existing HTML code with the modified logout link -->
+          <li>
+            <a class="dropdown-item d-flex align-items-center" href="/auth/sysadmin/logout" onclick="logout()">
+                  <i class="bi bi-box-arrow-right"></i>
+                  <span>Sign Out</span>
+              </a>
+          </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+ <!-- ======= Sidebar ======= -->
+ <aside id="sidebar" class="sidebar">
+ 
+  <ul class="sidebar-nav" id="sidebar-nav">
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="/auth/sysadmin/homepage">
+        <i class="bi bi-grid"></i>
+        <span>DASHBOARD</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="/auth/sysadmin/Faculty-Management">
+        <i class="bi bi-person-lines-fill"></i>
+        <span>FACULTY MANAGEMENT</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="/auth/sysadmin/Faculty-Resignation">
+        <i class="bi bi-person-dash"></i>
+        <span>RETIREMENT/ RESIGNATION OF FACULTY</span>
+      </a>
+    </li><!-- End FEEDBACK AND SURVEY Nav -->
+
+
+  </ul>
+  <br>
+  <br>
+  <br>
+  <div class="footer-copyright">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <img src="{{ url_for('static', filename='images/Default-Images/pupqc-logo.png')}}" alt="PUPFIS LOGO" class="rounded mx-auto d-block" style="width: 80px;height: 80px;"/>
+          <br>
+          <p style="font-size: small; color: #2e2d2d;">Faculty Information System of the Polytechnic University of the Philippines Quezon City Branch</p>
+          <p style="font-size: smaller; color: #0099ff;">#123-456-789/ <a href="https://www.pup.edu.ph/">@pup.edu.ph</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</aside><!-- End Sidebar-->
+{% block content %}
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<!-- Include DataTables Buttons CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+
+<!-- Include DataTables Print Button JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Dashboard</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/auth/sysadmin/homepage">System Admin</a></li>
+        <li class="breadcrumb-item active">Dashboard</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <style>
+    .responsive-table {
+      display: flex;
+      flex-wrap: wrap;
+      margin: -10px; /* Adjust margin as needed */
+    }
+  
+    .responsive-table td {
+      flex: 1;
+      padding: 10px; /* Adjust padding as needed */
+      box-sizing: border-box;
+    }
+  
+    .responsive-table h6 {
+      margin: 0;
+    }
+    .btnprinter-container {
+      text-align: right;
+    }
+  
+    .btnprinter {
+      width: 50px;
+      background-color: transparent;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+    }
+  
+    .btnprinter i {
+      font-size: 24px; /* You can adjust the font size as needed */
+      color: #000; /* You can set the color as needed */
+    }
+  </style>
+
+  <section class="section dashboard">
+    <div class="row">
+
+      <!-- MENTORING STUDENT Card -->
+      <div class="card">
+        <div class="card-body d-flex flex-column justify-content-center">
+          <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+            <h5><strong>FACULTIES</strong></h5>
+          </div>
+          <div class="btnprinter-container">
+            <button id="btnPrintDetail3" class="btnprinter"><i class="bi bi-printer"></i></button>
+          </div>
+          <br>
+
+          <table id="table3" class="display" style="width:100%; table-layout: fixed;"> <!-- Mentoring Table with stripped rows -->
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Rank</th>
+              </tr>
+            </thead>
+            <tbody id="facultyBody"></tbody>
+    
+          </table> 
+        </div> 
+    </div>
+
+
+     <!-- <table id="facultyTable" class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Rank</th>
+          </tr>
+        </thead>
+        <tbody id="facultyBody"></tbody>
+      </table>
+    </div>
+  -->
+
+  </section>
+</main><!-- End #main -->
+
+<script>
+  // Use jQuery.ajax to get data from the API with headers
+  $.ajax({
+    url: '/api/FISFaculty',
+    type: 'GET',
+    headers: {
+      'Authorization': 'API-Key',
+      'token': '{{ token }}', // Replace ' token ' with the actual token variable
+    },
+    success: function(data) {
+      // Update the HTML content with faculty names in a table
+      const facultyBody = document.getElementById('facultyBody');
+
+      // Assuming each faculty object has properties like "FacultyId" and "FirstName"
+      data.Faculties.forEach(faculty => {
+        // Accessing specific properties
+        const facultyId = faculty.FacultyId;
+        const firstName = faculty.FirstName;
+        const lastName = faculty.LastName;
+        const rank = faculty.Rank;
+
+        // Create a table row with the faculty information
+        const row = facultyBody.insertRow();
+        const cell1 = row.insertCell(0);
+        const cell2 = row.insertCell(1);
+        const cell3 = row.insertCell(2);
+        const cell4 = row.insertCell(3);
+
+        cell1.textContent = facultyId;
+        cell2.textContent = firstName;
+        cell3.textContent = lastName;
+        cell4.textContent = rank;
+      });
+    },
+    error: function(error) {
+      console.error('Error fetching data:', error);
+    }
+  });
+</script>
+
+<script>
+  $(document).ready(function() {
+    // Function to initialize DataTable for a given table ID
+    function initializeDataTable(tableId, buttonId, title, customExportColumns) {
+      var dataTable = $(tableId).DataTable({
+        dom: 'BPlfrtip',
+        responsive: true,
+        columnDefs: [
+          {
+            searchPanes: {
+              show: true
+            },
+            targets: [0]
+          },
+          {
+            searchPanes: {
+              show: false
+            },
+            targets: [2]
+          }
+        ],
+        buttons: [
+          {
+            extend: 'print',
+            class: 'buttons-print',
+            title: title, // Set the title for each table
+            messageBottom: null,
+            exportOptions: {
+              columns: customExportColumns
+            },
+            text: 'Print'
+          }
+        ]
+      });
+
+       // Initially hide the DataTables print button
+      dataTable.buttons('.buttons-print').nodes().addClass('d-none');
+
+      $('#' + buttonId).on('click', function() {
+        // Trigger the DataTables print button click
+        dataTable.buttons('.buttons-print').trigger();
+      });
+    }
+
+    // Customize your export options for each table
+    
+    var exportColumnsTable3 = [ 0, 1, 2, 3 ];
+
+    // Initialize DataTables for each table
+    
+    initializeDataTable('#table3', 'btnPrintDetail3', 'Mentoring', exportColumnsTable3);
+  });
+</script>
+
+{% endblock %}
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy;<strong><span>Copyright PUPQCFIS 2023.</span></strong>. All Rights Reserved
+    </div>
+    
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+  <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+  <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{{ url_for('static', filename='javascript/homepage/main.js')}}"></script>
+  <script src="{{ url_for('static', filename='javascript/homepage/PDM-Basic-Details/uploadprofile.js')}}"></script> {# UPLOAD PROFILE JS #}
+ {#  <script src="{{ url_for('static', filename='javascript/homepage/refresh_token.js')}}"></script> REFRESH TOKEN JS #}
+
+</body>
+
+</html>
