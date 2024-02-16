@@ -13,10 +13,10 @@ def home():
         return redirect(url_for('auth.facultyH'))
     
     elif current_user.__class__.__name__ == "FISAdmin":     
-        return redirect(url_for('auth.adminH'))
+        return redirect(url_for('admin.adminH'))
     
     elif current_user.__class__.__name__ == "FISSystemAdmin":     
-        return redirect(url_for('auth.sysadminH'))
+        return redirect(url_for('sysadmin.sysadminH'))
     
     # IF NO ACTIVE SESSION, REDIRECT TO MAIN PAGE
     else:
@@ -30,10 +30,10 @@ def facultyL():
         return redirect(url_for('auth.facultyH'))
     
     elif current_user.__class__.__name__ == "FISAdmin":     
-        return redirect(url_for('auth.adminH'))
+        return redirect(url_for('admin.adminH'))
     
     elif current_user.__class__.__name__ == "FISSystemAdmin":     
-        return redirect(url_for('auth.sysadminH'))
+        return redirect(url_for('sysadmin.sysadminH'))
     
     # IF NO ACTIVE SESSION, REDIRECT TO MAIN PAGE
     else:
@@ -48,10 +48,10 @@ def adminL():
         return redirect(url_for('auth.facultyH'))
     
     elif current_user.__class__.__name__ == "FISAdmin":     
-        return redirect(url_for('auth.adminH'))
+        return redirect(url_for('admin.adminH'))
     
     elif current_user.__class__.__name__ == "FISSystemAdmin":     
-        return redirect(url_for('auth.sysadminH'))
+        return redirect(url_for('sysadmin.sysadminH'))
     
     # IF NO ACTIVE SESSION, REDIRECT TO MAIN PAGE
     else:
@@ -70,10 +70,10 @@ def sysadminL():
         return redirect(url_for('auth.facultyH'))
     
     elif current_user.__class__.__name__ == "FISAdmin":     
-        return redirect(url_for('auth.adminH'))
+        return redirect(url_for('admin.adminH'))
     
     elif current_user.__class__.__name__ == "FISSystemAdmin":     
-        return redirect(url_for('auth.sysadminH'))
+        return redirect(url_for('sysadmin.sysadminH'))
     
     # IF NO ACTIVE SESSION, REDIRECT TO MAIN PAGE
     else:
@@ -91,10 +91,10 @@ def sysadminOTP():
             return redirect(url_for('auth.facultyH'))
         
         elif current_user.__class__.__name__ == "FISAdmin":     
-            return redirect(url_for('auth.adminH'))
+            return redirect(url_for('admin.adminH'))
         
         elif current_user.__class__.__name__ == "FISSystemAdmin":     
-            return redirect(url_for('auth.sysadminH'))
+            return redirect(url_for('sysadmin.sysadminH'))
         
         # IF NO ACTIVE SESSION, REDIRECT TO MAIN PAGE
         else:

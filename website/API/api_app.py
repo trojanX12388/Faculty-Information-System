@@ -72,7 +72,7 @@ CORS(app, origins=["*"],
 from sqlalchemy.orm import aliased
 
 @API.route('/api/all/FISFaculty', methods=['GET'])
-# @admin_token_required  # Get the API key from the request header
+@admin_token_required  # Get the API key from the request header
 def get_combined_profile():
     # token = request.headers.get('token')  # Get the API key from the request header
     # key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
@@ -126,16 +126,16 @@ def get_combined_profile():
 # -------------------------------------------------------------------------
 
 @API.route('/api/FISFaculty', methods=['GET'])
-# @admin_token_required # Get the API key from the request header
+@admin_token_required # Get the API key from the request header
 def get_all_faculty():
-    # token = request.headers.get('token') # Get the API key from the request header
-    # key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
-    # key = key['key']
+    token = request.headers.get('token') # Get the API key from the request header
+    key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
+    key = key['key']
     
-    # if not key in API_KEYS.values():
-    #      return jsonify(message="access denied!"), 403
+    if not key in API_KEYS.values():
+         return jsonify(message="access denied!"), 403
     
-    # else:
+    else:
         db = SessionLocal()
         faculty_profile = db.query(FISFaculty).all()
         db.close()
@@ -152,16 +152,16 @@ def get_all_faculty():
 
 
 @API.route('/api/FISFaculty/<FacultyId>',  methods=['GET', 'POST', 'PUT', 'DELETE'])
-# @admin_token_required # Get the API key from the request header
+@admin_token_required # Get the API key from the request header
 def get_task(FacultyId):
-    # token = request.headers.get('token')  # Get the API key from the request header
-    # key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
-    # key = key['key']
+    token = request.headers.get('token')  # Get the API key from the request header
+    key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
+    key = key['key']
     
-    # if not key in API_KEYS.values():
-    #      return jsonify(message="access denied!"), 403
+    if not key in API_KEYS.values():
+         return jsonify(message="access denied!"), 403
     
-    # else:
+    else:
         if request.method == 'GET':
             db = SessionLocal()
             faculty_profile = db.query(FISFaculty).filter(FISFaculty.FacultyId == FacultyId).first()
@@ -228,16 +228,16 @@ def get_task(FacultyId):
 # -------------------------------------------------------------------------
 
 @API.route('/api/FISFaculty/FISPDS_PersonalDetails', methods=['GET'])
-# @admin_token_required # Get the API key from the request header
+@admin_token_required # Get the API key from the request header
 def get_all_pds_personal_details():
-    # token = request.headers.get('token')  # Get the API key from the request header
-    # key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
-    # key = key['key']
+    token = request.headers.get('token')  # Get the API key from the request header
+    key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
+    key = key['key']
     
-    # if not key in API_KEYS.values():
-    #      return jsonify(message="access denied!"), 403
+    if not key in API_KEYS.values():
+         return jsonify(message="access denied!"), 403
     
-    # else:
+    else:
         db = SessionLocal()
         faculty_profile = db.query(FISPDS_PersonalDetails).all()
         db.close()
@@ -250,16 +250,16 @@ def get_all_pds_personal_details():
 
 
 @API.route('/api/FISFaculty/FISPDS_PersonalDetails/<FacultyId>',  methods=['GET', 'POST', 'PUT', 'DELETE'])
-# @admin_token_required # Get the API key from the request header
+@admin_token_required # Get the API key from the request header
 def get_pds_personal_details(FacultyId):
-    # token = request.headers.get('token')  # Get the API key from the request header
-    # key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
-    # key = key['key']
+    token = request.headers.get('token')  # Get the API key from the request header
+    key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
+    key = key['key']
     
-    # if not key in API_KEYS.values():
-    #      return jsonify(message="access denied!"), 403
+    if not key in API_KEYS.values():
+         return jsonify(message="access denied!"), 403
     
-    # else:
+    else:
         if request.method == 'GET':
             db = SessionLocal()
             faculty_profile = db.query(FISPDS_PersonalDetails).filter(FISPDS_PersonalDetails.FacultyId == FacultyId).first()
@@ -324,16 +324,16 @@ def get_pds_personal_details(FacultyId):
 # -------------------------------------------------------------------------
 
 @API.route('/api/FISFaculty/FISPDS_ContactDetails', methods=['GET'])
-# @admin_token_required # Get the API key from the request header
+@admin_token_required # Get the API key from the request header
 def get_all_pds_contact_details():
-    # token = request.headers.get('token') # Get the API key from the request header
-    # key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
-    # key = key['key']
+    token = request.headers.get('token') # Get the API key from the request header
+    key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
+    key = key['key']
     
-    # if not key in API_KEYS.values():
-    #      return jsonify(message="access denied!"), 403
+    if not key in API_KEYS.values():
+         return jsonify(message="access denied!"), 403
     
-    # else:
+    else:
         db = SessionLocal()
         faculty_profile = db.query(FISPDS_ContactDetails).all()
         db.close()
@@ -346,16 +346,16 @@ def get_all_pds_contact_details():
 
 
 @API.route('/api/FISFaculty/FISPDS_ContactDetails/<FacultyId>',  methods=['GET', 'POST', 'PUT', 'DELETE'])
-# @admin_token_required # Get the API key from the request header
+@admin_token_required # Get the API key from the request header
 def get_pds_contact_details(FacultyId):
-    # token = request.headers.get('token')  # Get the API key from the request header
-    # key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
-    # key = key['key']
+    token = request.headers.get('token')  # Get the API key from the request header
+    key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
+    key = key['key']
     
-    # if not key in API_KEYS.values():
-    #      return jsonify(message="access denied!"), 403
+    if not key in API_KEYS.values():
+         return jsonify(message="access denied!"), 403
     
-    # else:
+    else:
         if request.method == 'GET':
             db = SessionLocal()
             faculty_profile = db.query(FISPDS_ContactDetails).filter(FISPDS_ContactDetails.FacultyId == FacultyId).first()

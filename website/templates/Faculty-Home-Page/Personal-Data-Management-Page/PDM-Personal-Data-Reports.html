@@ -13,12 +13,12 @@
           <div class="card-body">
             <br>
 
-            <form class="row g-3">
+            <div class="row g-3">
 
                 <div class="col-md-6">
                   <div class="form-floating mb-3">
-                    <select class="form-select" id="floatingSelect" aria-label="State">
-                      <option selected="">Personal Information</option>
+                    <select class="form-select" name="selected" id="floatingSelect" aria-label="State" onchange="updateGenerateButton()">
+                      <option value="0" selected>Personal Data Sheet</option>
                       <option value="1">Eligibities</option>
                       <option value="2">Educational Attainment</option>
                       <option value="3">On Going Advanced/Professional Study</option>
@@ -31,12 +31,12 @@
 
                 <div class="col-md-6">
                     <div class="d-grid gap-2 mt-3">
-                        <button type="submit" class="btn btn-primary">
+                        <button onclick="downloadPDF()" class="btn btn-primary">
                           <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512" style="fill:#ffffff;position:relative; bottom:2px"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M433.941 129.941l-83.882-83.882A48 48 0 0 0 316.118 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V163.882a48 48 0 0 0-14.059-33.941zM224 416c-35.346 0-64-28.654-64-64 0-35.346 28.654-64 64-64s64 28.654 64 64c0 35.346-28.654 64-64 64zm96-304.52V212c0 6.627-5.373 12-12 12H76c-6.627 0-12-5.373-12-12V108c0-6.627 5.373-12 12-12h228.52c3.183 0 6.235 1.264 8.485 3.515l3.48 3.48A11.996 11.996 0 0 1 320 111.48z"/></svg>
                           Generate</button>
                     </div>
                 </div>
-              </form>
+              </div>
           </div>
         </div>
   
@@ -45,50 +45,91 @@
 
 
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js" ></script>
-
-<button onclick="downloadPDF()">Download PDF</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js" ></script>
 
 <script>
-  function downloadPDF() {
-      // Load content from another HTML template
-      fetch('/PDM-Personal-Data-Reports/PDS-Export')
-          .then(response => response.text())
-          .then(htmlContent => {
-              // Create a temporary container to hold the content
-              const tempContainer = document.createElement('div');
-              tempContainer.innerHTML = htmlContent;
 
-              const currentDate = new Date();
+  // Function to update the generate button based on the selected option
+  function updateGenerateButton() {
+    // Get the selected option value
+    const selectedValue = document.getElementById('floatingSelect').value || 0;
 
-              // Get the current date
-              const day = currentDate.getDate();
-              const month = currentDate.getMonth() + 1; // Note: Months are zero-based
-              const year = currentDate.getFullYear();
-
-              // Display the current date in a specific format (e.g., YYYY-MM-DD)
-              const formattedDate = `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
-
-              // Options for the PDF generation
-              const options = {
-                  margin: 4,
-                  filename: `{{user.LastName}}_${formattedDate}_PDS.pdf`,
-                  image: { type: 'jpeg', quality: 0.98 },
-                  html2canvas: { scale: 2 },
-                  jsPDF: { unit: 'mm', format: 'legal', orientation: 'portrait' },
-                  pagebreak: { mode: ['auto'] } // Add this line for page breaks
-              };
-
-              // Use html2pdf to generate the PDF from the loaded content
-              html2pdf(tempContainer, options);
-          })
-          .catch(error => console.error('Error loading HTML content:', error));
+    // Change the onclick attribute of the generate button
+    const generateButton = document.querySelector('.btn.btn-primary');
+    generateButton.onclick = function () {
+      downloadPDF(selectedValue);
+    };
   }
+
+  // Function to download PDF with the selected option
+  function downloadPDF(selectedOption) {
+    // Load content from another HTML template
+    fetch(`/PDM-Personal-Data-Reports/${selectedOption}-Export`)
+      .then(response => response.text())
+      .then(htmlContent => {
+       // Create a temporary container to hold the content
+       const tempContainer = document.createElement('div');
+       tempContainer.innerHTML = htmlContent;
+
+       const currentDate = new Date();
+
+       // Get the current date
+       const day = currentDate.getDate();
+       const month = currentDate.getMonth() + 1; // Note: Months are zero-based
+       const year = currentDate.getFullYear();
+
+       // Display the current date in a specific format (e.g., YYYY-MM-DD)
+       const formattedDate = `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
+
+       // Customize the filename based on the selected option
+      let filename;
+      switch (selectedOption) {
+        case '0':
+          filename = `{{user.LastName}}_PDS_${formattedDate}.pdf`;
+          break;
+        case '1':
+          filename = `{{user.LastName}}_Eligibilities_${formattedDate}.pdf`;
+          break;
+        case '2':
+          filename = `{{user.LastName}}_Educational_Attainment_${formattedDate}.pdf`;
+          break;  
+        case '3':
+          filename = `{{user.LastName}}_On_Going_Advanced/Professional_Study_${formattedDate}.pdf`;
+          break;
+        case '4':
+          filename = `{{user.LastName}}_Attendance_in_Relevant_Development_Programs_${formattedDate}.pdf`;
+          break;
+        case '5':
+          filename = `{{user.LastName}}_Officeship/Membership_in_Professional_Organizations_${formattedDate}.pdf`;
+          break;
+        // Add cases for other options as needed
+        default:
+          filename = `{{user.LastName}}_Custom_Filename_${formattedDate}.pdf`;
+      }
+
+       // Options for the PDF generation
+       const options = {
+           margin: 2,
+           filename: filename,
+           image: { type: 'jpeg', quality: 0.98 },
+           html2canvas: { scale: 2 },
+           jsPDF: { unit: 'mm', format: 'legal', orientation: 'portrait' },
+           pagebreak: { mode: ['auto'] } // Add this line for page breaks
+       };
+
+       // Use html2pdf to generate the PDF from the loaded content
+       html2pdf(tempContainer, options);
+   })
+   .catch(error => console.error('Error loading HTML content:', error));
+  }
+
+  // Initialize the generate button with default selected value
+  updateGenerateButton();
+
+  // Call updateGenerateButton when the page has finished loading
+  window.addEventListener('load', updateGenerateButton);
+
 </script>
-
-	
-	 
-
 
 
 

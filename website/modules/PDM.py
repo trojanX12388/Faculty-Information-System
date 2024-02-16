@@ -1952,10 +1952,17 @@ def PDM_PDR():
                                age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                activate_PDR="active")
     
-@PDM.route('/PDM-Personal-Data-Reports/PDS-Export')
+@PDM.route('/PDM-Personal-Data-Reports/0-Export')
 @login_required
 @Check_Token
 def PDS_Export():
+    from datetime import datetime
+    # Get the current date and time
+    current_datetime = datetime.now()
+
+    # Extract only the current date
+    current_date = current_datetime.date()
+    
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
     username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
     PersonalDetails = FISPDS_PersonalDetails.query.filter_by(FacultyId=current_user.FacultyId).first() 
@@ -2005,16 +2012,55 @@ def PDS_Export():
         decrypted_SSS = ""
         decrypted_TIN = ""
     
-    if username.ProfilePic == None:
-        ProfilePic=profile_default
+    # EDUCATIONAL BACKGROUND
+    
+    Elementary = FISPDS_EducationalBackground.query.filter_by(FacultyId=current_user.FacultyId, level = "Elementary").first()
+    Secondary = FISPDS_EducationalBackground.query.filter_by(FacultyId=current_user.FacultyId, level = "Secondary").first()
+    College = FISPDS_EducationalBackground.query.filter_by(FacultyId=current_user.FacultyId, level = "College").first()
+    Vocational = FISPDS_EducationalBackground.query.filter_by(FacultyId=current_user.FacultyId, level = "VOCATIONAL/TRADE COURSE").first()
+    Graduate_Studies = FISPDS_EducationalBackground.query.filter_by(FacultyId=current_user.FacultyId, level = "GRADUATE STUDIES").first()
+    
+    # SIGNATURE
+    
+     # VERIFYING IF DATA OF CURRENT USER EXISTS
+    if current_user.FISPDS_Signature:
+        data = current_user
+        
+        # FETCHING USER ENCRYPTED SIGNATURE DATA
+        fetch = FISPDS_Signature.query.filter_by(FacultyId=current_user.FacultyId).first()
+        
+        # FETCHING USER ENCRYPTED SIGNATURE DATA
+        wet_signature = fetch.wet_signature
+        
     else:
-        ProfilePic=username.ProfilePic
-            
+        # FETCHING DEFAULT BLANK IMAGE
+        wet_signature = "1JIS5J0SPU_V5aOPAHACBxZ5hjhkHFfY4"
+        
+        
+    # FETCHING STRING DATA FROM CLOUD    
+    
+    # FACULTY FIS WET SIGNATURE FOLDER ID
+    folder = '1oLWdZCvLVTbhRc5XcXBqlw5H5wkqnBLu'
+    file7 = drive.CreateFile(metadata={"parents": [{"id": folder}],'id': ''+ str(wet_signature)})
+    
+    signature_StringData = file7.GetContentString(''+ str(wet_signature))
+    
+    # DECRYPTING DATA TO CONVERT INTO IMAGE
+    decrypted_signature = fernet.decrypt(signature_StringData[2:-1])
+        
+    
     return render_template('Faculty-Home-Page/Personal-Data-Management-Page/PDS/index.html',
                         User=username.FirstName + " " + username.LastName, 
-                        profile_pic=ProfilePic,
                         PDM="show",
                         user = current_user,
+                        Elementary = Elementary,
+                        Secondary = Secondary,
+                        College = College, 
+                        Vocational = Vocational,
+                        Graduate_Studies = Graduate_Studies,
+                        
+                        signature = "data:image/png;base64," + decrypted_signature.decode('utf-8'),
+                        
                         PersonalDetails = PersonalDetails,
                         ContactDetails = ContactDetails,
                         age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
@@ -2023,7 +2069,7 @@ def PDS_Export():
                         decrypted_PHILHEALTH = decrypted_PHILHEALTH,
                         decrypted_SSS = decrypted_SSS,
                         decrypted_TIN = decrypted_TIN,
-                        
+                        current_date  = current_date
                         )
 
 # ------------------------------- END OF PDM PERSONAL DATA REPORTS  ---------------------------- 
