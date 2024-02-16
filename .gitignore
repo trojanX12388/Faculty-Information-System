@@ -387,3 +387,12 @@ $RECYCLE.BIN/
 *client_secrets.json
 *credentials.json
 *settings.yaml
+*alembic.ini
+*env.py
+*script.py.mako
+*script.py
+*a1e4b1164bee_description_of_changes.py
+*ebe86ef162e0_description_of_changes.py
+*FIS_api_test.py
+*api.py
+*README
