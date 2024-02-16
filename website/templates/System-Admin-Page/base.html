@@ -240,6 +240,7 @@
   </div>
 
 </aside><!-- End Sidebar-->
+
 {% block content %}
 
 <!-- Include jQuery -->
@@ -302,148 +303,181 @@
       font-size: 24px; /* You can adjust the font size as needed */
       color: #000; /* You can set the color as needed */
     }
+
+        
+    .pheader {
+      background-color: #1F2739;
+      padding: 20px 0;
+      font-size: 14px;
+      transition: all 0.3s;
+      border-top: 1px solid #6e0303;
+    }
+
+    .pheader .copyright {
+      text-align: center;
+      color: #eeeeff;
+    }
+
+    .pheader .credits {
+      padding-top: 5px;
+      text-align: center;
+      font-size: 13px;
+      color: #e9e2ff;
+    }
   </style>
 
   <section class="section dashboard">
+
     <div class="row">
 
-      <!-- MENTORING STUDENT Card -->
-      <div class="card">
-        <div class="card-body d-flex flex-column justify-content-center">
-          <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-            <h5><strong>FACULTIES</strong></h5>
-          </div>
-          <div class="btnprinter-container">
-            <button id="btnPrintDetail3" class="btnprinter"><i class="bi bi-printer"></i></button>
-          </div>
-          <br>
+       <!-- Left side columns -->
+       <div class="col-lg-12">
+        <div class="row">
 
-          <table id="table3" class="display" style="width:100%; table-layout: fixed;"> <!-- Mentoring Table with stripped rows -->
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Rank</th>
-              </tr>
-            </thead>
-            <tbody id="facultyBody"></tbody>
+       <!-- Left side columns -->
+       <div class="col-lg-12">
+        <div class="row">
+
+          <!-- TOTAL FACULTIES Card -->
+          <div class="col-xxl-6 col-md-6">
+            <div class="card info-card revenue-card">
+              <div class="card-body">
+                <h5 class="card-title">TOTAL FACULTY MEMBERS</h5>
+
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-people"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>12</h6>
+                    <span class="text-success small pt-1 fw-bold">Faculties</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div><!-- End Sales Card -->
+
+          <!-- Customers Card -->
+          <div class="col-xxl-6 col-xl-12">
+
+            <div class="card info-card sales-card">
+
+              <div class="card-body">
+                <h5 class="card-title">TOTAL ADMIN MEMBERS</h5>
+
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-person-check"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>23</h6>
+                    <span class="text-success small pt-1 fw-bold">Admins</span>
+                   
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div><!-- End Customers Card -->
+
+        </div>
+      </div>
+          <!-- Projects Card -->
+          <div class="col-xxl-3 col-md-6">
+            <div class="card info-card customers-card">
+
+              <div class="card-body">
+                <h5 class="card-title">ACTIVE ACCOUNTS</h5>
+
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-person-check"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>34</h6>
+                  </div>
+                  <div class="ps-3">
+                    <span class="text-inactive small pt-1 fw-bold">FACULTY ACCOUNTS THAT ARE WORKING AND ACTIVE</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div><!-- End Projects Card -->
+
+              <!-- Projects Card -->
+              <div class="col-xxl-3 col-md-6">
+                <div class="card info-card revenue-card">
     
-          </table> 
-        </div> 
-    </div>
+                  <div class="card-body">
+                    <h5 class="card-title">DEACTIVATED ACCOUNTS</h5>
+    
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="bi bi-person-x-fill"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6>34</h6>
+                      </div>
+                      <div class="ps-3">
+                        <span class="text-inactive small pt-1 fw-bold">FACULTY ACCOUNTS ARE DEACTIVATED</span>
+                      </div>
+                    </div>
+                  </div>
+    
+                </div>
+              </div><!-- End Projects Card -->
 
+                  <!-- Projects Card -->
+          <div class="col-xxl-3 col-md-6">
+            <div class="card info-card revenue-card">
 
-     <!-- <table id="facultyTable" class="table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Rank</th>
-          </tr>
-        </thead>
-        <tbody id="facultyBody"></tbody>
-      </table>
-    </div>
-  -->
+              <div class="card-body">
+                <h5 class="card-title">LOCKED ACCOUNTS</h5>
+
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi"><img src="https://icons.iconarchive.com/icons/bootstrap/bootstrap/128/Bootstrap-person-fill-lock-icon.png" width="48" height="48"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>34</h6>
+                  </div>
+                  <div class="ps-3">
+                    <span class="text-inactive small pt-1 fw-bold">FACULTY ACCOUNTS ARE LOCKED FOR SECURITY ISSUES</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div><!-- End Projects Card -->
+
+              <!-- Projects Card -->
+              <div class="col-xxl-3 col-md-6">
+                <div class="card info-card revenue-card">
+    
+                  <div class="card-body">
+                    <h5 class="card-title">DELETED ACCOUNTS</h5>
+    
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="bi bi-trash-fill"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6>34</h6>
+                      </div>
+                      <div class="ps-3">
+                        <span class="text-inactive small pt-1 fw-bold">FACULTY ACCOUNTS THAT ARE DELETED</span>
+                      </div>
+                    </div>
+                  </div>
+    
+                </div>
+              </div><!-- End Projects Card -->
 
   </section>
 </main><!-- End #main -->
-
-<script>
-  // Use jQuery.ajax to get data from the API with headers
-  $.ajax({
-    url: '/api/FISFaculty',
-    type: 'GET',
-    headers: {
-      'Authorization': 'API-Key',
-      'token': '{{ token }}', // Replace ' token ' with the actual token variable
-    },
-    success: function(data) {
-      // Update the HTML content with faculty names in a table
-      const facultyBody = document.getElementById('facultyBody');
-
-      // Assuming each faculty object has properties like "FacultyId" and "FirstName"
-      data.Faculties.forEach(faculty => {
-        // Accessing specific properties
-        const facultyId = faculty.FacultyId;
-        const firstName = faculty.FirstName;
-        const lastName = faculty.LastName;
-        const rank = faculty.Rank;
-
-        // Create a table row with the faculty information
-        const row = facultyBody.insertRow();
-        const cell1 = row.insertCell(0);
-        const cell2 = row.insertCell(1);
-        const cell3 = row.insertCell(2);
-        const cell4 = row.insertCell(3);
-
-        cell1.textContent = facultyId;
-        cell2.textContent = firstName;
-        cell3.textContent = lastName;
-        cell4.textContent = rank;
-      });
-    },
-    error: function(error) {
-      console.error('Error fetching data:', error);
-    }
-  });
-</script>
-
-<script>
-  $(document).ready(function() {
-    // Function to initialize DataTable for a given table ID
-    function initializeDataTable(tableId, buttonId, title, customExportColumns) {
-      var dataTable = $(tableId).DataTable({
-        dom: 'BPlfrtip',
-        responsive: true,
-        columnDefs: [
-          {
-            searchPanes: {
-              show: true
-            },
-            targets: [0]
-          },
-          {
-            searchPanes: {
-              show: false
-            },
-            targets: [2]
-          }
-        ],
-        buttons: [
-          {
-            extend: 'print',
-            class: 'buttons-print',
-            title: title, // Set the title for each table
-            messageBottom: null,
-            exportOptions: {
-              columns: customExportColumns
-            },
-            text: 'Print'
-          }
-        ]
-      });
-
-       // Initially hide the DataTables print button
-      dataTable.buttons('.buttons-print').nodes().addClass('d-none');
-
-      $('#' + buttonId).on('click', function() {
-        // Trigger the DataTables print button click
-        dataTable.buttons('.buttons-print').trigger();
-      });
-    }
-
-    // Customize your export options for each table
-    
-    var exportColumnsTable3 = [ 0, 1, 2, 3 ];
-
-    // Initialize DataTables for each table
-    
-    initializeDataTable('#table3', 'btnPrintDetail3', 'Mentoring', exportColumnsTable3);
-  });
-</script>
 
 {% endblock %}
 

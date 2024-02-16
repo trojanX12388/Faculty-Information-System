@@ -1,0 +1,174 @@
+{% extends "/System-Admin-Page/base.html" %}{% block title %}Faculty Management{% endblock %} {% block content%}
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Faculty Management</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/auth/sysadmin/homepage">System Admin</a></li>
+        <li class="breadcrumb-item active">Faculty Management</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <style>
+    .responsive-table {
+      display: flex;
+      flex-wrap: wrap;
+      margin: -10px; /* Adjust margin as needed */
+    }
+  
+    .responsive-table td {
+      flex: 1;
+      padding: 10px; /* Adjust padding as needed */
+      box-sizing: border-box;
+    }
+  
+    .responsive-table h6 {
+      margin: 0;
+    }
+    .btnprinter-container {
+      text-align: right;
+    }
+  
+    .btnprinter {
+      width: 50px;
+      background-color: transparent;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+    }
+  
+    .btnprinter i {
+      font-size: 24px; /* You can adjust the font size as needed */
+      color: #000; /* You can set the color as needed */
+    }
+
+  </style>
+
+  <section class="section dashboard">
+    <div class="row">
+
+       <!-- Left side columns -->
+       <div class="col-lg-12">
+        <div class="row">
+
+     <!-- Faculty Members -->
+     <div class="col-12">
+      <div class="card recent-sales overflow-auto">
+
+        <div class="card-body">
+          <h5 class="card-title">Faculty Members</h5>
+          <h6 class="card-title">Click the ID of a faculty member to view more information.</h6>
+
+          <table class="table table-borderless datatable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Profile Image</th>
+                <th>Name</th>
+                <th>Date Hired</th>
+                <th>Account Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="facultyBody"></tbody>
+          </table>
+
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script>
+  // Wrap the ajax call in a function that returns a Promise
+  function fetchData() {
+    return new Promise(function(resolve, reject) {
+      $.ajax({
+        url: '/api/FISFaculty',
+        type: 'GET',
+        headers: {
+          'Authorization': 'API-Key',
+          'token': '{{ token }}', // Replace ' token ' with the actual token variable
+        },
+        success: function(data) {
+          resolve(data);
+        },
+        error: function(error) {
+          reject(error);
+        }
+      });
+    });
+  }
+
+  // Function to handle data fetching with retries
+  async function fetchDataWithRetry(retries = 3) {
+    try {
+      const data = await fetchData(); // Wait for the data to be fetched
+      return data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      
+      if (retries > 0) {
+        console.log(`Retrying... ${retries} attempts left.`);
+        return fetchDataWithRetry(retries - 1); // Retry with decreased attempts
+      } else {
+        throw new Error('Max retries reached. Unable to fetch data.');
+      }
+    }
+  }
+
+  // Use the async attribute and await keyword in the script
+  (async function() {
+    try {
+      const data = await fetchDataWithRetry(); // Wait for the data to be fetched with retry
+
+      // Update the HTML content with faculty names in a table
+      const facultyBody = document.getElementById('facultyBody');
+
+      // Assuming each faculty object has properties like "FacultyId" and "FirstName"
+      data.Faculties.forEach(faculty => {
+        // Accessing specific properties
+        const facultyId = faculty.FacultyId;
+        const ProfilePic = faculty.ProfilePic;
+        const Name = faculty.FirstName + ' ' + faculty.LastName;
+        const DateHired = faculty.DateHired;
+        const AccountStatus = faculty.IsActive; // Assuming AccountStatus is a property in your API response
+
+        // Create a table row with the faculty information
+        const row = facultyBody.insertRow();
+        const cell1 = row.insertCell(0);
+        const cell2 = row.insertCell(1);
+        const cell3 = row.insertCell(2);
+        const cell4 = row.insertCell(3);
+        const cell5 = row.insertCell(4);
+        const cell6 = row.insertCell(5);
+
+        // Set the href through ID and the profile pic image
+        cell1.innerHTML = `<a href="/faculty-member/${facultyId}">${facultyId}</a>`;
+        cell2.innerHTML = `<img src="https://lh3.googleusercontent.com/d/${ProfilePic}" alt="Profile Pic" style="width:90px;height:80px; border-radius: 10px 10px 10px 10px">`;
+        cell3.textContent = Name;
+        cell4.textContent = DateHired;
+        cell5.textContent = AccountStatus;
+        cell6.textContent = AccountStatus;
+        
+        
+      });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  })();
+</script>
+
+
+        </div>
+
+      </div>
+    </div><!-- End Recent Sales -->
+
+   
+  </section>
+</main><!-- End #main -->
+
+
+{% endblock %}

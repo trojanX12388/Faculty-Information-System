@@ -296,6 +296,29 @@ def sysadminH():
                             user = current_user,
                             token = selected_token,
                             profile_pic=ProfilePic)
+    
+
+@sysadmin.route('/auth/sysadmin/Faculty-Management', methods=['GET', 'POST'])
+@login_required
+@SysCheck_Token
+def sysadminFM():
+    
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT   
+    username = FISSystemAdmin.query.filter_by(SystemAdminId=current_user.SystemAdminId).first() 
+    
+    if username.ProfilePic == None:
+        ProfilePic=profile_default
+    else:
+        ProfilePic=username.ProfilePic
+    
+    API_TOKENS = ast.literal_eval(os.environ["API_TOKENS"])
+    selected_token = API_TOKENS.get('WEBSITE1_API_TOKEN')  
+                  
+    return render_template("System-Admin-Page/Faculty-Management.html",
+                            User= username.name,
+                            user = current_user,
+                            token = selected_token,
+                            profile_pic=ProfilePic)
 
 # FACULTY LOGOUT ROUTE
 @sysadmin.route("/auth/sysadmin/logout")
