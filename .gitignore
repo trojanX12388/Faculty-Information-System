@@ -383,8 +383,6 @@ $RECYCLE.BIN/
 
 # PYTHON FILES
 *app.py
-# PYTHON FILES
-*app.py
 
 *client_secrets.json
 *credentials.json
