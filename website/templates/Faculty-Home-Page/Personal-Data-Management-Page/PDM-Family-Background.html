@@ -22,6 +22,7 @@
                 <tr>
                   <th class="w-50" scope="col">Full Name</th>
                   <th scope="col">Relationship</th>
+                  <th scope="col">Date of Birth</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
@@ -34,6 +35,7 @@
                 <tr>
                   <th scope="row">{{data.full_name}}</th>
                   <td>{{data.relationship}}</td>
+                  <td></td>
                   <td>
                     <button type="submit" class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#d{{data.id}}"><i class="bi bi-trash"></i></button>
                     <button type="button" class="btn btn-outline-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#{{data.id}}"><i class="bi bi-file-earmark-text"></i></button>
@@ -53,19 +55,27 @@
 
                 <form action="/PDM-Family-Background" method="POST" enctype="multipart/form-data" accept-charset="utf-8" class="row g-3">
                         <br>
-                          <div class="col-md-10">
+                          <div class="col-md-10 my-md-3">
                             <div class="form-floating">
                               <input type="text" name="full_name" class="form-control" id="floatingName" placeholder="Family Member Name" value="{{data.full_name}}" required>
                               <label for="floatingName">Family Member Name</label>
                             </div>
                           </div>
-                          <br>
-                          <div class="col-md-10">
+
+                          <div class="col-md-10 my-md-3">
                             <div class="form-floating">
                               <input type="text" name="relationship"  class="form-control" id="floatingEmail" placeholder="Relationship" value="{{data.relationship}}" required>
                               <label for="floatingEmail">Relationship</label>
                             </div>
-                        </div> 
+                          </div> 
+
+                        <div class="col-md-10 my-md-3">
+                          <div class="form-floating">
+                            <input type="date" name="FamilyBirthday" class="form-control" id="floatingBirthday" placeholder="Birthday" value="{{data.FamilyBirthday}}" required>
+                            <label for="floatingBirthday">Birthday</label>
+                          </div>
+                        </div>
+
                       </div>
                       <div class="modal-footer">
                         <input type="hidden" name="id" value="{{data.id}}"></input>
@@ -130,19 +140,25 @@
 
               <form action="/PDM-Family-Background/add-record" method="POST" enctype="multipart/form-data" accept-charset="utf-8" class="row g-3">
 
-                        <div class="col-md-6">
+                        <div class="col-md-10">
                           <div class="form-floating">
-
                             <input type="text" name="full_name" class="form-control" id="floatingName" placeholder="Family Member Name" required>
                             <label for="floatingName">Family Member Name</label>
                           </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-10">
                           <div class="form-floating">
                             <input type="text" name="relationship"  class="form-control" id="floatingEmail" placeholder="Relationship" required>
                             <label for="floatingEmail">Relationship</label>
                           </div>
-                      </div> 
+                        </div> 
+
+                        <div class="col-md-10">
+                          <div class="form-floating">
+                            <input type="date" name="FamilyBirthday" class="form-control" id="floatingBirthday" placeholder="Birthday" required>
+                            <label for="floatingBirthday">Birthday</label>
+                          </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>

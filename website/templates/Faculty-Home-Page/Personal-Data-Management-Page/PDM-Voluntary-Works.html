@@ -22,6 +22,7 @@
               <tr>
                 <th class="w-50" scope="col">Organization</th>
                 <th scope="col">Position</th>
+                <th scope="col">Number of Hours</th>
                 <th scope="col">Inclusive Date</th>
                 <th scope="col">Action</th>
               </tr>
@@ -31,6 +32,7 @@
               {% if data.organization != None %}
               <tr>
                 <th scope="row">{{data.organization}}</th>
+                <td>{{data.position}}</td>
                 <td>{{data.position}}</td>
                 <td>{{data.from_date }} - {{data.to_date}}</td>
                 <td>
@@ -64,8 +66,15 @@
                               <input type="text" name="position" class="form-control" id="floating_position" placeholder="Position" value="{{data.position}}" required>
                               <label for="floating_position">Position</label>
                             </div>
-                          </div>    
+                          </div> 
                           <br>   
+                          <div class="col-md-10">
+                            <div class="form-floating">
+                              <input type="number" name="hours" class="form-control" id="floatingVoluntaryHours" placeholder="Number of Hours" value="" required>
+                              <label for="floatingVoluntaryHours">Number of Hours</label>
+                            </div>
+                          </div>   
+                          <br>
                           <h5 class="modal-title">Date</h5>
                           <br>
                           <div class="col-md-10">
@@ -143,26 +152,36 @@
 
               <form action="/PDM-Voluntary-Works/add-record" method="POST" enctype="multipart/form-data" accept-charset="utf-8" class="row g-3">
 
-                        <div class="col-md-6">
+                        <div class="col-md-10">
                           <div class="form-floating">
                             <input type="text" name="organization" class="form-control" id="floating_organization" placeholder="Organization" required>
                             <label for="floating_organization">Organization</label>
                           </div>
                         </div>
-                        <div class="col-md-6">
+                        <br>
+                        <div class="col-md-10">
                           <div class="form-floating">
                             <input type="text" name="position" class="form-control" id="floating_position" placeholder="Position" required>
                             <label for="floating_position">Position</label>
                           </div>
                         </div>
+                        <br>
+                        <div class="col-md-10">
+                          <div class="form-floating">
+                            <input type="number" name="hours" class="form-control" id="floatingVoluntaryHours" placeholder="Number of Hours" required>
+                            <label for="floatingVoluntaryHours">Number of Hours</label>
+                          </div>
+                        </div>
+                        <br>
                         <h5 class="modal-title">Date</h5>
-                        <div class="col-md-6">
+                        <div class="col-md-10">
                           <div class="form-floating">
                             <input type="date" name="from_date"  class="form-control" id="floating_from" placeholder="From" required>
                             <label for="floating_from">From</label>
                           </div>
                       </div> 
-                      <div class="col-md-6">
+                      <br>
+                      <div class="col-md-10">
                         <div class="form-floating">
                           <input type="date" name="to_date"  class="form-control" id="floating_to" placeholder="To" required>
                           <label for="floating_to">To</label>

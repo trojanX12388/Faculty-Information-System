@@ -1295,8 +1295,7 @@ body {
 }
 
 #calendar {
-    max-width: 800px;
-    margin: 40px auto;
+    margin: auto;
     background: #fff;
     padding: 15px;
 

@@ -118,7 +118,10 @@
         <div class="row mb-3">
           <label for="sex" class="col-md-4 col-lg-3 col-form-label">Sex</label>
           <div class="col-md-8 col-lg-9">
-            <input name="sex" type="text" class="form-control" id="sex" value="{{data.sex}}" >
+            <select name="sex" type="text" class="form-control py-sm-1" id="sex" value="{{data.sex}}">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
           </div>
         </div>
 
@@ -164,7 +167,16 @@
         <div class="row mb-3">
           <label for="blood_type" class="col-md-4 col-lg-3 col-form-label">Blood Type</label>
           <div class="col-md-8 col-lg-9">
-            <input name="blood_type" type="text" class="form-control" id="blood_type" value="{{data.blood_type}}">
+            <select name="blood_type" type="text" class="form-control py-sm-1" id="blood_type" value="{{data.blood_type}}">
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+            </select>
           </div>
         </div>
 
@@ -183,7 +195,7 @@
         <div class="row mb-3">
           <label for="country" class="col-md-4 col-lg-3 col-form-label">Country</label>
           <div class="col-md-8 col-lg-9">
-            <input name="country" type="text" class="form-control" id="country" value="{{data.country}}" >
+            <input name="country" type="text" class="form-control" id="country" value="{{data.country}}">
           </div>
         </div>
 
