@@ -59,6 +59,11 @@
 
         <div class="card-body">
           <h5 class="card-title">Faculty Members</h5>
+          <div class="d-grid gap-2 mt-3">
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-end">
+              <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#addrecord"><i class="bi bi-plus-circle"></i> Add New Faculty</button>
+            </div>
+          </div>
           <h6 class="card-title">Click the ID of a faculty member to view more information.</h6>
 
           <table class="table table-borderless datatable">
@@ -149,9 +154,11 @@
         cell2.innerHTML = `<img src="https://lh3.googleusercontent.com/d/${ProfilePic}" alt="Profile Pic" style="width:90px;height:80px; border-radius: 10px 10px 10px 10px">`;
         cell3.textContent = Name;
         cell4.textContent = DateHired;
-        cell5.textContent = AccountStatus;
-        cell6.textContent = AccountStatus;
-        
+        cell5.innerHTML = '<td><h6 class="badge bg-success" style="width:158px;height:20px;">Active</h6></td>';
+        cell6.innerHTML = `<td>
+          <button type="button" class="btn btn-outline-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#10016"><i class="bi bi-file-earmark-text"></i></button>
+          <button type="submit" class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#d10016"><i class="bi bi-trash"></i></button>
+      </td>`;;
         
       });
     } catch (error) {
@@ -170,5 +177,326 @@
   </section>
 </main><!-- End #main -->
 
+
+  <!-- Edit Record Modal-->
+
+  <div class="modal fade" id="10016" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Record</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+  <form action="/PDM-Eligibities" method="POST" enctype="multipart/form-data" accept-charset="utf-8" class="row g-3">
+          <br>
+          <div class="col-md-10">
+            <div class="form-floating">
+              <input type="text" name="eligibity" class="form-control" id="floatingschool_eligibity" placeholder="Eligibity" value="" required>
+              <label for="floatingschool_eligibity">Eligibity</label>
+            </div>
+          </div>  
+          <br>   
+          <div class="col-md-10">
+            <div class="form-floating">
+              <input type="text" name="rating" class="form-control" id="floatingschool_rating" placeholder="Rating" value="" required>
+              <label for="floatingschool_rating">Rating</label>
+            </div>
+          </div>    
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" name="id" value="10016"></input>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
+          <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Update</button>
+        </div>
+  </form>
+      </div>
+    </div>
+  </div><!-- End Edit Record Modal-->
+
+
+  <!-- Delete Record Modal-->
+
+  <div class="modal fade" id="d10016" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Delete Record</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        <form action="/PDM-Eligibities/delete-record" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+            <input type="hidden" name="id" value="10016"></input>
+          <h5 class="modal-title">Are you sure you want to delete this record?</h5>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Confirm</button>
+          </div>
+      </form>
+        </div>
+      </div>
+    </div>
+  </div><!-- End Delete Record Modal-->
+
+
+     <!-- Add Record Modal-->
+
+     <div class="modal fade" id="addrecord" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add New Faculty</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+            <form method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+     
+               <h5 class="card-title">Basic Information</h5>
+
+               <div class="row mb-3">
+                <label for="first_name" class="col-md-4 col-lg-3 col-form-label">First Name</label>
+                <div class="col-md-8 col-lg-9">
+                  <input name="first_name" type="text" class="form-control" id="first_name" value="">
+                </div>
+              </div>
+
+               <div class="row mb-3">
+                <label for="last_name" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
+                <div class="col-md-8 col-lg-9">
+                  <input name="last_name" type="text" class="form-control" id="last_name" value="">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="middle_name" class="col-md-4 col-lg-3 col-form-label">Middle Name</label>
+                <div class="col-md-8 col-lg-9">
+                  <input name="middle_name" type="text" class="form-control" id="middle_name" value="">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="middle_initial" class="col-md-4 col-lg-3 col-form-label">Middle Initial</label>
+                <div class="col-md-8 col-lg-9">
+                  <div class="col-md-10" style="width:100%;">
+     
+                      <select class="form-select" name="middle_initial" id="middle_initial" style="height:40px;" aria-label="name_extension">
+                        <option selected="" value="">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="G">G</option>
+                        <option value="H">H</option>
+                        <option value="I">I</option>
+                        <option value="J">J</option>
+                        <option value="K">K</option>
+                        <option value="L">L</option>
+                        <option value="M">M</option>
+                        <option value="N">N</option>
+                        <option value="O">O</option>
+                        <option value="P">P</option>
+                        <option value="Q">Q</option>
+                        <option value="R">R</option>
+                        <option value="S">S</option>
+                        <option value="T">T</option>
+                        <option value="U">U</option>
+                        <option value="V">V</option>
+                        <option value="W">W</option>
+                        <option value="X">X</option>
+                        <option value="Y">Y</option>
+                        <option value="Z">Z</option>
+                      </select>
+                 
+                </div> 
+                </div>
+              </div>
+  
+              <div class="row mb-3">
+                <label for="name_extension" class="col-md-4 col-lg-3 col-form-label">Name Extension</label>
+                <div class="col-md-8 col-lg-9">
+                  <div class="col-md-10" style="width:100%;">
+     
+                      <select class="form-select" name="name_extension" id="name_extension" style="height:40px;" aria-label="name_extension">
+                        <option selected="" value="">None</option>
+                        <option value="JR">JR</option>
+                        <option value="SR">SR</option>
+                        <option value="II">II</option>
+                        <option value="III">III</option>
+                        <option value="IV">IV</option>
+                        <option value="V">V</option>
+                      </select>
+                 
+                </div> 
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="name_extension" class="col-md-4 col-lg-3 col-form-label">Gender</label>
+                <div class="col-md-8 col-lg-9">
+                  <div class="col-md-10" style="width:100%;">
+     
+                      <select class="form-select" name="name_extension" id="name_extension" style="height:40px;" aria-label="name_extension">
+                        <option selected="" value="">Male</option>
+                        <option value="JR">Male</option>
+                        <option value="SR">Female</option>
+                      </select>
+                 
+                </div> 
+                </div>
+              </div>
+              
+              <div class="row mb-3">
+                <label for="birth_date" class="col-md-4 col-lg-3 col-form-label">Birth Date</label>
+                <div class="col-md-8 col-lg-9">
+                  <input name="birth_date" type="date" class="form-control" id="birth_date" value="">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="email" class="col-md-4 col-lg-3 col-form-label">Email Address</label>
+                <div class="col-md-8 col-lg-9">
+                  <input name="email" type="text" class="form-control" id="email" value="" >
+                </div>
+              </div>
+              
+              <div class="row mb-3">
+                <label for="honorific" class="col-md-4 col-lg-3 col-form-label">Honorific</label>
+                <div class="col-md-8 col-lg-9">
+                  <input name="honorific" type="text" class="form-control" id="honorific" value="">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="honorific" class="col-md-4 col-lg-3 col-form-label">Residential Address</label>
+                <div class="col-md-8 col-lg-9">
+                  <input name="honorific" type="text" class="form-control" id="honorific" value="">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="honorific" class="col-md-4 col-lg-3 col-form-label">Mobile Number</label>
+                <div class="col-md-8 col-lg-9">
+                  <input name="honorific" type="text" class="form-control" id="honorific" value="">
+                </div>
+              </div>
+
+
+              <br><br><br>
+
+              <h5 class="card-title">Faculty Information</h5>
+
+              <div class="row mb-3">
+                <label for="name_extension" class="col-md-4 col-lg-3 col-form-label">Faculty Type</label>
+                <div class="col-md-8 col-lg-9">
+                  <div class="col-md-10" style="width:100%;">
+     
+                      <select class="form-select" name="name_extension" id="name_extension" style="height:40px;" aria-label="name_extension">
+                        <option selected="" value="">None</option>
+                        <option value="JR">JR</option>
+                        <option value="SR">SR</option>
+                        <option value="II">II</option>
+                        <option value="III">III</option>
+                        <option value="IV">IV</option>
+                        <option value="V">V</option>
+                      </select>
+                 
+                </div> 
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="name_extension" class="col-md-4 col-lg-3 col-form-label">Rank</label>
+                <div class="col-md-8 col-lg-9">
+                  <div class="col-md-10" style="width:100%;">
+     
+                      <select class="form-select" name="name_extension" id="name_extension" style="height:40px;" aria-label="name_extension">
+                        <option selected="" value="">None</option>
+                        <option value="JR">JR</option>
+                        <option value="SR">SR</option>
+                        <option value="II">II</option>
+                        <option value="III">III</option>
+                        <option value="IV">IV</option>
+                        <option value="V">V</option>
+                      </select>
+                 
+                </div> 
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="name_extension" class="col-md-4 col-lg-3 col-form-label">Units</label>
+                <div class="col-md-8 col-lg-9">
+                  <div class="col-md-10" style="width:100%;">
+     
+                      <select class="form-select" name="name_extension" id="name_extension" style="height:40px;" aria-label="name_extension">
+                        <option selected="" value="">None</option>
+                        <option value="JR">JR</option>
+                        <option value="SR">SR</option>
+                        <option value="II">II</option>
+                        <option value="III">III</option>
+                        <option value="IV">IV</option>
+                        <option value="V">V</option>
+                      </select>
+                 
+                </div> 
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="name_extension" class="col-md-4 col-lg-3 col-form-label">Degree</label>
+                <div class="col-md-8 col-lg-9">
+                  <div class="col-md-10" style="width:100%;">
+     
+                      <select class="form-select" name="name_extension" id="name_extension" style="height:40px;" aria-label="name_extension">
+                        <option selected="" value="">None</option>
+                        <option value="JR">JR</option>
+                        <option value="SR">SR</option>
+                        <option value="II">II</option>
+                        <option value="III">III</option>
+                        <option value="IV">IV</option>
+                        <option value="V">V</option>
+                      </select>
+                 
+                </div> 
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="date_hired" class="col-md-4 col-lg-3 col-form-label">Date Hired</label>
+                <div class="col-md-8 col-lg-9">
+                  <input name="date_hired" type="date" class="form-control" id="date_hired" value="">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="name_extension" class="col-md-4 col-lg-3 col-form-label">Preferred Schedule</label>
+                <div class="col-md-8 col-lg-9">
+                  <div class="col-md-10" style="width:100%;">
+     
+                      <select class="form-select" name="name_extension" id="name_extension" style="height:40px;" aria-label="name_extension">
+                        <option selected="" value="">Male</option>
+                        <option value="JR">Male</option>
+                        <option value="SR">Female</option>
+                      </select>
+                 
+                </div> 
+                </div>
+              </div>
+
+              <br><br><br>
+
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add</button>
+    </form>
+          </div>
+        </div>
+      </div>
+    </div><!-- End Add Record Modal-->
 
 {% endblock %}
