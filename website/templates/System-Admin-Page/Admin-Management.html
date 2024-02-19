@@ -1,13 +1,13 @@
-{% extends "/System-Admin-Page/base.html" %}{% block title %}Faculty Management{% endblock %} {% block content%}
+{% extends "/System-Admin-Page/base.html" %}{% block title %}Admin Management{% endblock %} {% block content%}
 
 
 <main id="main" class="main">
   <div class="pagetitle">
-    <h1>Faculty Management</h1>
+    <h1>Admin Management</h1>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/auth/sysadmin/homepage">System Admin</a></li>
-        <li class="breadcrumb-item active">Faculty Management</li>
+        <li class="breadcrumb-item active">Admin Management</li>
       </ol>
     </nav>
   </div><!-- End Page Title -->
@@ -74,7 +74,7 @@
       <div class="card recent-sales overflow-auto">
 
         <div class="card-body">
-          <h5 class="card-title">Faculty Members</h5>
+          <h5 class="card-title">Admin Members</h5>
             {# DISPLAY NOTIFICATION ERROR  #} 
             
           {% with messages = get_flashed_messages(with_categories=true) %}
@@ -117,7 +117,7 @@
           <table class="table table-borderless datatable">
             <thead>
               <tr>
-                <th>Faculty ID</th>
+                <th>Admin ID</th>
                 <th>Profile Image</th>
                 <th>Name</th>
                 <th>Date Hired</th>
@@ -127,35 +127,35 @@
               </tr>
             </thead>
             <tbody>
-              {% for faculty_id in FacultyIds %}
-              {% set faculty_info = api_data['Faculties'][faculty_id] %}
+              {% for admin_id in AdminIds %}
+              {% set admin_info = api_data['Admins'][admin_id] %}
               <tr>
-                <td><h6>{{ faculty_id }}</h6></td>
-                <td><img src="https://lh3.googleusercontent.com/d/{{ faculty_info['ProfilePic'] }}" alt="Profile Pic" style="width:90px;height:80px; border-radius: 10px 10px 10px 10px"></td>
-                <td>{{ faculty_info['FirstName']}} {{faculty_info['LastName']}}</td>
-                <td>{{ format_date(faculty_info['DateHired']) }}</td>
-                {% if faculty_info['Status'] == "Active" %}
+                <td><h6>{{ admin_id }}</h6></td>
+                <td><img src="https://lh3.googleusercontent.com/d/{{ admin_info['ProfilePic'] }}" alt="Profile Pic" style="width:90px;height:80px; border-radius: 10px 10px 10px 10px"></td>
+                <td>{{ admin_info['FirstName']}} {{admin_info['LastName']}}</td>
+                <td>{{ format_date(admin_info['DateHired']) }}</td>
+                {% if admin_info['Status'] == "Active" %}
                 <td><h6 class="badge bg-success" style="width:158px;height:20px;">Active</h6></td>
-                {% elif faculty_info['Status'] == "Locked" %}
+                {% elif admin_info['Status'] == "Locked" %}
                 <td><h6 class="badge bg-warning" style="width:158px;height:20px;">Locked</h6></td>
-                {% elif faculty_info['Status'] == "Disabled" %}
+                {% elif admin_info['Status'] == "Disabled" %}
                 <td><h6 class="badge bg-danger" style="width:158px;height:20px;">Disabled</h6></td>
-                {% elif faculty_info['Status'] == "Deactivated" %}
+                {% elif admin_info['Status'] == "Deactivated" %}
                 <td><h6 class="badge bg-secondary" style="width:158px;height:20px;">Deactivated</h6></td>
                 {% else  %}
                 <td><h6 class="badge bg-light text-dark" style="width:158px;height:20px;">Unknown</h6></td>
                 {% endif %}
                 <td>
-                  <button type="button" class="btn btn-secondary rounded-pill" data-bs-toggle="modal" data-bs-target="#{{ faculty_id }}"><i class="bi bi-file-earmark-text"></i></button>
+                  <button type="button" class="btn btn-secondary rounded-pill" data-bs-toggle="modal" data-bs-target="#{{ admin_id }}"><i class="bi bi-file-earmark-text"></i></button>
               </td>
               <td>
-                <button type="submit" class="btn btn-warning rounded-pill" data-bs-toggle="modal" data-bs-target="#d{{ faculty_id }}"><i class="bi bi-patch-exclamation-fill"></i></button>
+                <button type="submit" class="btn btn-warning rounded-pill" data-bs-toggle="modal" data-bs-target="#d{{ admin_id }}"><i class="bi bi-patch-exclamation-fill"></i></button>
             </td>
               </tr>
 
                   <!-- Edit Record Modal-->
 
-                  <div class="modal fade" id="{{faculty_id}}" tabindex="-1">
+                  <div class="modal fade" id="{{admin_id}}" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered modal-lg">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -166,51 +166,51 @@
                           <ul class="nav nav-tabs nav-tabs-bordered">
 
                             <li class="nav-item">
-                              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#{{faculty_id}}profile-overview">Faculty Information</button>
+                              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#{{admin_id}}profile-overview">Faculty Information</button>
                             </li>
             
                             <li class="nav-item">
-                              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#{{faculty_id}}profile-basic-details">Password</button>
+                              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#{{admin_id}}profile-basic-details">Password</button>
                             </li>
             
                           </ul>
                   <div class="tab-content pt-2">
 
-                    <div class="tab-pane fade show active profile-overview" id="{{faculty_id}}profile-overview">
+                    <div class="tab-pane fade show active profile-overview" id="{{admin_id}}profile-overview">
 
-                <form action="/auth/sysadmin/Faculty-Management/update-info" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+                <form action="/auth/sysadmin/Admin-Management/update-info" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
                     <div class="modal-body">
 
                          <h5 class="card-title">Basic Information</h5>
           
                          <div class="row mb-3">
-                          <label for="{{faculty_id}}first_name" class="col-md-4 col-lg-3 col-form-label">First Name</label>
+                          <label for="{{admin_id}}first_name" class="col-md-4 col-lg-3 col-form-label">First Name</label>
                           <div class="col-md-8 col-lg-9">
-                            <input required name="first_name" type="text" class="form-control" id="{{faculty_id}}first_name" value="{{faculty_info['FirstName']}}">
+                            <input required name="first_name" type="text" class="form-control" id="{{admin_id}}first_name" value="{{admin_info['FirstName']}}">
                           </div>
                         </div>
           
                          <div class="row mb-3">
-                          <label for="{{faculty_id}}last_name" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
+                          <label for="{{admin_id}}last_name" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
                           <div class="col-md-8 col-lg-9">
-                            <input required name="last_name" type="text" class="form-control" id="{{faculty_id}}last_name" value="{{faculty_info['LastName']}}">
+                            <input required name="last_name" type="text" class="form-control" id="{{admin_id}}last_name" value="{{admin_info['LastName']}}">
                           </div>
                         </div>
           
                         <div class="row mb-3">
-                          <label for="{{faculty_id}}middle_name" class="col-md-4 col-lg-3 col-form-label">Middle Name</label>
+                          <label for="{{admin_id}}middle_name" class="col-md-4 col-lg-3 col-form-label">Middle Name</label>
                           <div class="col-md-8 col-lg-9">
-                            <input name="middle_name" type="text" class="form-control" id="{{faculty_id}}middle_name" value="{{faculty_info['MiddleName']}}">
+                            <input name="middle_name" type="text" class="form-control" id="{{admin_id}}middle_name" value="{{admin_info['MiddleName']}}">
                           </div>
                         </div>
           
                         <div class="row mb-3">
-                          <label for="{{faculty_id}}middle_initial" class="col-md-4 col-lg-3 col-form-label">Middle Initial</label>
+                          <label for="{{admin_id}}middle_initial" class="col-md-4 col-lg-3 col-form-label">Middle Initial</label>
                           <div class="col-md-8 col-lg-9">
                             <div class="col-md-10" style="width:100%;">
                
-                                <select class="form-select" name="middle_initial" id="{{faculty_id}}middle_initial" style="height:40px;" aria-label="{{faculty_id}}middle_initial">
-                                  <option selected value="{{faculty_info['MiddleInitial']}}">{{faculty_info['MiddleInitial']}}</option>
+                                <select class="form-select" name="middle_initial" id="{{admin_id}}middle_initial" style="height:40px;" aria-label="{{admin_id}}middle_initial">
+                                  <option selected value="{{admin_info['MiddleInitial']}}">{{admin_info['MiddleInitial']}}</option>
                                   <option value="A">A</option>
                                   <option value="B">B</option>
                                   <option value="C">C</option>
@@ -245,14 +245,14 @@
                         </div>
             
                         <div class="row mb-3">
-                          <label for="{{faculty_id}}name_extension" class="col-md-4 col-lg-3 col-form-label">Name Extension</label>
+                          <label for="{{admin_id}}name_extension" class="col-md-4 col-lg-3 col-form-label">Name Extension</label>
                           <div class="col-md-8 col-lg-9">
                             <div class="col-md-10" style="width:100%;">
                
-                                <select class="form-select" name="name_extension" id="{{faculty_id}}name_extension" style="height:40px;" aria-label="{{faculty_id}}name_extension">
-                                  <option selected value="{{faculty_info['NameExtension']}}">{% if faculty_info['NameExtension'] == "" %}
+                                <select class="form-select" name="name_extension" id="{{admin_id}}name_extension" style="height:40px;" aria-label="{{admin_id}}name_extension">
+                                  <option selected value="{{admin_info['NameExtension']}}">{% if admin_info['NameExtension'] == "" %}
                                     N/A
-                                  {% elif faculty_info['NameExtension'] == None %}
+                                  {% elif admin_info['NameExtension'] == None %}
                                     N/A
                                     {% endif %}
                                 </option>
@@ -271,12 +271,12 @@
                         </div>
           
                         <div class="row mb-3">
-                          <label for="{{faculty_id}}gender" class="col-md-4 col-lg-3 col-form-label">Gender</label>
+                          <label for="{{admin_id}}gender" class="col-md-4 col-lg-3 col-form-label">Gender</label>
                           <div class="col-md-8 col-lg-9">
                             <div class="col-md-10" style="width:100%;">
                
-                                <select class="form-select" name="gender" type="number" id="{{faculty_id}}gender" style="height:40px;" aria-label="{{faculty_id}}gender">
-                                  <option selected value="{{faculty_info['Gender']}}">{% if faculty_info['Gender'] == 1 %}
+                                <select class="form-select" name="gender" type="number" id="{{admin_id}}gender" style="height:40px;" aria-label="{{admin_id}}gender">
+                                  <option selected value="{{admin_info['Gender']}}">{% if admin_info['Gender'] == 1 %}
                                     Male
                                   {% else %}
                                   Female
@@ -291,38 +291,38 @@
                         </div>
                         
                         <div class="row mb-3">
-                          <label for="{{faculty_id}}birth_date" class="col-md-4 col-lg-3 col-form-label">Birth Date</label>
+                          <label for="{{admin_id}}birth_date" class="col-md-4 col-lg-3 col-form-label">Birth Date</label>
                           <div class="col-md-8 col-lg-9">
-                            <input required name="birth_date" type="date" class="form-control" id="{{faculty_id}}birth_date" value="{{ format_date_2(faculty_info['BirthDate']) }}">
+                            <input required name="birth_date" type="date" class="form-control" id="{{admin_id}}birth_date" value="{{ format_date_2(admin_info['BirthDate']) }}">
                           </div>
                         </div>
 
           
                         <div class="row mb-3">
-                          <label for="{{faculty_id}}email" class="col-md-4 col-lg-3 col-form-label">Email Address</label>
+                          <label for="{{admin_id}}email" class="col-md-4 col-lg-3 col-form-label">Email Address</label>
                           <div class="col-md-8 col-lg-9">
-                            <input required name="email" type="email" class="form-control" id="{{faculty_id}}email" value="{{faculty_info['Email']}}" >
+                            <input required name="email" type="email" class="form-control" id="{{admin_id}}email" value="{{admin_info['Email']}}" >
                           </div>
                         </div>
                         
                         <div class="row mb-3">
-                          <label for="{{faculty_id}}honorific" class="col-md-4 col-lg-3 col-form-label">Honorific</label>
+                          <label for="{{admin_id}}honorific" class="col-md-4 col-lg-3 col-form-label">Honorific</label>
                           <div class="col-md-8 col-lg-9">
-                            <input name="honorific" type="text" class="form-control" id="{{faculty_id}}honorific" value="{{faculty_info['Honorific']}}">
+                            <input name="honorific" type="text" class="form-control" id="{{admin_id}}honorific" value="{{admin_info['Honorific']}}">
                           </div>
                         </div>
           
                         <div class="row mb-3">
-                          <label for="{{faculty_id}}res_address" class="col-md-4 col-lg-3 col-form-label">Residential Address</label>
+                          <label for="{{admin_id}}res_address" class="col-md-4 col-lg-3 col-form-label">Residential Address</label>
                           <div class="col-md-8 col-lg-9">
-                            <input name="res_address" type="text" class="form-control" id="{{faculty_id}}res_address" value="{{faculty_info['ResidentialAddress']}}">
+                            <input name="res_address" type="text" class="form-control" id="{{admin_id}}res_address" value="{{admin_info['ResidentialAddress']}}">
                           </div>
                         </div>
           
                         <div class="row mb-3">
-                          <label for="{{faculty_id}}number" class="col-md-4 col-lg-3 col-form-label">Mobile Number</label>
+                          <label for="{{admin_id}}number" class="col-md-4 col-lg-3 col-form-label">Mobile Number</label>
                           <div class="col-md-8 col-lg-9">
-                              <input name="number" type="text" class="form-control" id="{{faculty_id}}number" pattern="\d{11}" title="Enter a valid 11-digit mobile number" value="{{faculty_info['MobileNumber']}}"/>
+                              <input name="number" type="text" class="form-control" id="{{admin_id}}number" pattern="\d{11}" title="Enter a valid 11-digit mobile number" value="{{admin_info['MobileNumber']}}"/>
                           </div>
                       </div>
           
@@ -332,12 +332,12 @@
                         <h5 class="card-title">Faculty Information</h5>
           
                         <div class="row mb-3">
-                          <label for="{{faculty_id}}type" class="col-md-4 col-lg-3 col-form-label">Faculty Type</label>
+                          <label for="{{admin_id}}type" class="col-md-4 col-lg-3 col-form-label">Faculty Type</label>
                           <div class="col-md-8 col-lg-9">
                             <div class="col-md-10" style="width:100%;">
                
-                                <select class="form-select" name="type" id="{{faculty_id}}type" style="height:40px;" aria-label="{{faculty_id}}type">
-                                  <option selected value="{{faculty_info['FacultyType']}}">{{faculty_info['FacultyType']}}</option>
+                                <select class="form-select" name="type" id="{{admin_id}}type" style="height:40px;" aria-label="{{admin_id}}type">
+                                  <option selected value="{{admin_info['AdminType']}}">{{admin_info['AdminType']}}</option>
                                   <option value="Full Time">Full Time</option>
                                   <option value="Part Time">Part Time</option>
                                 </select>
@@ -347,12 +347,12 @@
                         </div>
           
                         <div class="row mb-3">
-                          <label for="{{faculty_id}}rank" class="col-md-4 col-lg-3 col-form-label">Rank</label>
+                          <label for="{{admin_id}}rank" class="col-md-4 col-lg-3 col-form-label">Rank</label>
                           <div class="col-md-8 col-lg-9">
                             <div class="col-md-10" style="width:100%;">
                
-                                <select class="form-select" name="rank" id="{{faculty_id}}rank" style="height:40px;" aria-label="{{faculty_id}}rank">
-                                  <option selected value="{{faculty_info['Rank']}}">{{faculty_info['Rank']}}</option>
+                                <select class="form-select" name="rank" id="{{admin_id}}rank" style="height:40px;" aria-label="{{admin_id}}rank">
+                                  <option selected value="{{admin_info['Rank']}}">{{admin_info['Rank']}}</option>
                                   <option value="Instructor I">Instructor I</option>
                                   <option value="Instructor II">Instructor II</option>
                                   <option value="Instructor III">Instructor III</option>
@@ -377,20 +377,20 @@
                         </div>
           
                         <div class="row mb-3">
-                          <label for="{{faculty_id}}units" class="col-md-4 col-lg-3 col-form-label">Units</label>
+                          <label for="{{admin_id}}units" class="col-md-4 col-lg-3 col-form-label">Units</label>
                           <div class="col-md-8 col-lg-9">
-                              <input required name="units" type="text" class="form-control" id="{{faculty_id}}units" pattern="\d+(\.\d{1,2})?" title="Enter a valid decimal number" value="{{faculty_info['Units']}}"/>
+                              <input required name="units" type="text" class="form-control" id="{{admin_id}}units" pattern="\d+(\.\d{1,2})?" title="Enter a valid decimal number" value="{{admin_info['Units']}}"/>
                           </div>
                       </div>
           
                         <div class="row mb-3">
-                          <label for="{{faculty_id}}degree" class="col-md-4 col-lg-3 col-form-label">Degree</label>
+                          <label for="{{admin_id}}degree" class="col-md-4 col-lg-3 col-form-label">Degree</label>
                           <div class="col-md-8 col-lg-9">
                             <div class="col-md-10" style="width:100%;">
                
-                                <select class="form-select" name="degree" id="{{faculty_id}}degree" style="height:40px;" aria-label="degree">
+                                <select class="form-select" name="degree" id="{{admin_id}}degree" style="height:40px;" aria-label="degree">
                                   <!-- Master's Degrees -->
-                                  <option selected value="{{faculty_info['Degree']}}">{{faculty_info['Degree']}}</option>
+                                  <option selected value="{{admin_info['Degree']}}">{{admin_info['Degree']}}</option>
                                   <option value="Master in Business Administration">Master in Business Administration</option>
                                   <option value="Master of Science in Computer Science">Master of Science in Computer Science</option>
                                   <option value="Master of Fine Arts in Creative Writing">Master of Fine Arts in Creative Writing</option>
@@ -437,16 +437,16 @@
                         </div>
           
                         <div class="row mb-3">
-                          <label for="{{faculty_id}}specialization" class="col-md-4 col-lg-3 col-form-label">Specialization</label>
+                          <label for="{{admin_id}}specialization" class="col-md-4 col-lg-3 col-form-label">Specialization</label>
                           <div class="col-md-8 col-lg-9">
-                              <input name="specialization" type="text" class="form-control" id="{{faculty_id}}specialization" value="{{faculty_info['Specialization']}}"/>
+                              <input name="specialization" type="text" class="form-control" id="{{admin_id}}specialization" value="{{admin_info['Specialization']}}"/>
                           </div>
                       </div>
           
                         <div class="row mb-3">
-                          <label for="{{faculty_id}}date_hired" class="col-md-4 col-lg-3 col-form-label">Date Hired</label>
+                          <label for="{{admin_id}}date_hired" class="col-md-4 col-lg-3 col-form-label">Date Hired</label>
                           <div class="col-md-8 col-lg-9">
-                            <input required name="date_hired" type="date" class="form-control" id="{{faculty_id}}date_hired" value="{{ format_date_2(faculty_info['DateHired']) }}" >
+                            <input required name="date_hired" type="date" class="form-control" id="{{admin_id}}date_hired" value="{{ format_date_2(admin_info['DateHired']) }}" >
                           </div>
                         </div>
           
@@ -455,12 +455,12 @@
                         <h5 class="card-title">Preferred Schedule</h5>
 
                         <div class="row mb-3">
-                          <label for="day{{faculty_id}}" class="col-md-4 col-lg-3 col-form-label">Day</label>
+                          <label for="day{{admin_id}}" class="col-md-4 col-lg-3 col-form-label">Day</label>
                           <div class="col-md-8 col-lg-9">
                             <div class="col-md-10" style="width:100%;">
                
-                                <select class="form-select" name="day" id="day{{faculty_id}}" style="height:40px;" aria-label="day{{faculty_id}}">
-                                  <option selected value="{{ extract_day_and_time(faculty_info['PreferredSchedule'])[0] }}">{{ extract_day_and_time(faculty_info['PreferredSchedule'])[0] }}</option>
+                                <select class="form-select" name="day" id="day{{admin_id}}" style="height:40px;" aria-label="day{{admin_id}}">
+                                  <option selected value="{{ extract_day_and_time(admin_info['PreferredSchedule'])[0] }}">{{ extract_day_and_time(admin_info['PreferredSchedule'])[0] }}</option>
                                   <option value="Monday">Monday</option>
                                   <option value="Tuesday">Tuesday</option>
                                   <option value="Wednesday">Wednesday</option>
@@ -487,12 +487,12 @@
                         </div>
           
                         <div class="row mb-3">
-                          <label for="{{faculty_id}}time" class="col-md-4 col-lg-3 col-form-label">Time</label>
+                          <label for="{{admin_id}}time" class="col-md-4 col-lg-3 col-form-label">Time</label>
                           <div class="col-md-8 col-lg-9">
                             <div class="col-md-10" style="width:100%;">
                
-                                <select class="form-select" name="time" id="{{faculty_id}}time" style="height:40px;" aria-label="{{faculty_id}}time">
-                                  <option selected value="{{ extract_day_and_time(faculty_info['PreferredSchedule'])[1] }}">{{ extract_day_and_time(faculty_info['PreferredSchedule'])[1] }}</option>
+                                <select class="form-select" name="time" id="{{admin_id}}time" style="height:40px;" aria-label="{{admin_id}}time">
+                                  <option selected value="{{ extract_day_and_time(admin_info['PreferredSchedule'])[1] }}">{{ extract_day_and_time(admin_info['PreferredSchedule'])[1] }}</option>
                                   <option value="9:00 AM - 12:00 PM">Morning (9:00 AM - 12:00 PM)</option>
                                   <option value="12:00 PM - 2:00 PM">Noon (12:00 PM - 2:00 PM)</option>
                                   <option value="2:00 PM - 6:00 PM">Afternoon (2:00 PM - 6:00 PM)</option>
@@ -509,7 +509,7 @@
                     </div>  
 
                     <div class="modal-footer">
-                      <input required type="hidden" name="id" value="{{faculty_id}}"></input> 
+                      <input required type="hidden" name="id" value="{{admin_id}}"></input> 
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
                       <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Update</button>
                     </div>
@@ -518,23 +518,23 @@
 
                         </div>
                         <div class="tab-content pt-2">
-                        <div class="tab-pane fade profile-edit pt-2" id="{{faculty_id}}profile-basic-details">
+                        <div class="tab-pane fade profile-edit pt-2" id="{{admin_id}}profile-basic-details">
 
                           <div class="modal-body">
 
                           <h5 class="card-title">Change Password</h5>
-                    <form action="/auth/sysadmin/Faculty-Management/update-pass" method="POST" enctype="multipart/form-data" accept-charset="utf-8" id="passform">
+                    <form action="/auth/sysadmin/Admin-Management/update-pass" method="POST" enctype="multipart/form-data" accept-charset="utf-8" id="passform">
                           <div class="row mb-3">
-                              <label for="{{faculty_id}}new_password" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+                              <label for="{{admin_id}}new_password" class="col-md-4 col-lg-3 col-form-label">New Password</label>
                               <div class="col-md-8 col-lg-9">
-                                <input name="new_password" type="password" class="form-control" id="{{faculty_id}}new_password" value="" required>
+                                <input name="new_password" type="password" class="form-control" id="{{admin_id}}new_password" value="" required>
                               </div>
                           </div>
 
                           <div class="row mb-3">
-                            <label for="{{faculty_id}}conf_password" class="col-md-4 col-lg-3 col-form-label">Confirm Password</label>
+                            <label for="{{admin_id}}conf_password" class="col-md-4 col-lg-3 col-form-label">Confirm Password</label>
                             <div class="col-md-8 col-lg-9">
-                              <input name="conf_password" type="password" class="form-control" id="{{faculty_id}}conf_password" value="" required>
+                              <input name="conf_password" type="password" class="form-control" id="{{admin_id}}conf_password" value="" required>
                             </div>
                         </div>
 
@@ -543,8 +543,8 @@
                         </div>
 
                         <div class="modal-footer">
-                          <input required type="hidden" name="id" value="{{faculty_id}}"></input> 
-                          <input required type="hidden" name="email" value="{{faculty_info['Email']}}"></input> 
+                          <input required type="hidden" name="id" value="{{admin_id}}"></input> 
+                          <input required type="hidden" name="email" value="{{admin_info['Email']}}"></input> 
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
                           <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Update</button>
                         </div>
@@ -559,8 +559,8 @@
                         var form = document.querySelector('#passform'); // Fix: use #passform for ID selector
                 
                         form.addEventListener('submit', function (event) {
-                            var newPassword = document.getElementById('{{faculty_id}}new_password').value;
-                            var confirmPassword = document.getElementById('{{faculty_id}}conf_password').value;
+                            var newPassword = document.getElementById('{{admin_id}}new_password').value;
+                            var confirmPassword = document.getElementById('{{admin_id}}conf_password').value;
                 
                             if (newPassword !== confirmPassword) {
                                 alert('New Password and Confirm Password must match!');
@@ -579,7 +579,7 @@
   
                   <!-- UPDATE STATUS Modal-->
                 
-                  <div class="modal fade" id="d{{faculty_id}}" tabindex="-1">
+                  <div class="modal fade" id="d{{admin_id}}" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered modal-lg">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -587,20 +587,20 @@
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                        <form action="/auth/sysadmin/Faculty-Management/update-status" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
-                            <input required type="hidden" name="id" value="{{faculty_id}}"></input> 
+                        <form action="/auth/sysadmin/Admin-Management/update-status" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+                            <input required type="hidden" name="id" value="{{admin_id}}"></input> 
 
                             <div class="row mb-3">
 
                               <br><br><br>
           
                        
-                              <label for="{{faculty_id}}status" class="col-md-4 col-lg-3 col-form-label">Account Status</label>
+                              <label for="{{admin_id}}status" class="col-md-4 col-lg-3 col-form-label">Account Status</label>
                               <div class="col-md-8 col-lg-9">
                                 <div class="col-md-10" style="width:100%;">
                    
-                                    <select class="form-select" name="status" id="{{faculty_id}}status" style="height:40px;" aria-label="{{faculty_id}}status">
-                                      <option selected value="{{faculty_info['Status']}}">{{faculty_info['Status']}}</option>
+                                    <select class="form-select" name="status" id="{{admin_id}}status" style="height:40px;" aria-label="{{admin_id}}status">
+                                      <option selected value="{{admin_info['Status']}}">{{admin_info['Status']}}</option>
                                       <option value="Active">Active</option>
                                       <option value="Disabled">Disabled</option>
                                       <option value="Locked">Locked</option>
@@ -612,7 +612,7 @@
                             </div>
 
                           <div class="modal-footer">
-                            <input required type="hidden" name="id" value="{{faculty_id}}"></input> 
+                            <input required type="hidden" name="id" value="{{admin_id}}"></input> 
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
                             <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Confirm</button>
                           </div>
@@ -647,7 +647,7 @@
           </div>
           <div class="modal-body">
 
-            <form action="/auth/sysadmin/Faculty-Management/add-record" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+            <form action="/auth/sysadmin/Admin-Management/add-record" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
      
                <h5 class="card-title">Basic Information</h5>
 

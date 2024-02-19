@@ -40,16 +40,22 @@ API_KEYS = ast.literal_eval(os.environ["API_KEYS"])
 
 # LOAD MODELS
 from .model_class.faculty_profile import FISFaculty
+# LOAD MODELS
+from .model_class.admin_profile import FISAdmin
 # PDS
 from .model_class.pds_model import FISPDS_PersonalDetails,FISPDS_ContactDetails
+from .model_class.admin_pds_model import AdminFISPDS_PersonalDetails,AdminFISPDS_ContactDetails
 
 # LOAD EVALUATION
 from .model_class.evaluations import FISEvaluations
 
 # LOAD PYDANTIC MODELS
+from .model_class.admin_profile import FISAdmin_Model
 from .model_class.faculty_profile import FISFaculty_Model
 # PDS 
 from .model_class.pds_model import FISPDS_PersonalDetails_Model,FISPDS_ContactDetails_Model
+from .model_class.admin_pds_model import AdminFISPDS_PersonalDetails_Model,AdminFISPDS_ContactDetails_Model
+
 # LOAD EVALUATION MODELS
 from .model_class.evaluations import FISEvaluations_Model
 
@@ -116,6 +122,58 @@ def get_combined_profile():
                 combined_profile_by_id[faculty_id] = faculty_dict
 
             return jsonify({'Faculties': combined_profile_by_id})
+
+        except ValidationError as e:
+            return jsonify({'error': f'Validation error: {e}'})
+        finally:
+            db.close()
+
+
+@API.route('/api/all/FISAdmin', methods=['GET'])
+@admin_token_required  # Get the API key from the request header
+def get_combined_admin_profile():
+    # token = request.headers.get('token')  # Get the API key from the request header
+    # key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
+    # key = key['key']
+
+    # if key not in API_KEYS.values():
+    #     return jsonify(message="access denied!"), 403
+
+    # else:
+        db = SessionLocal()
+        try:
+            # Perform outer joins with FISFaculty, FISPDS_PersonalDetails, and FISPDS_ContactDetails
+            admin_alias = aliased(FISAdmin)
+            adminpersonal_details_alias = aliased(AdminFISPDS_PersonalDetails)
+            admincontact_details_alias = aliased(AdminFISPDS_ContactDetails)
+
+            combined_data = db.query(FISAdmin, adminpersonal_details_alias, admincontact_details_alias).outerjoin(
+                adminpersonal_details_alias, FISAdmin.AdminId == adminpersonal_details_alias.AdminId
+            ).outerjoin(
+                admincontact_details_alias, FISAdmin.AdminId == admincontact_details_alias.AdminId
+            ).all()
+
+            # Create a dictionary to store combined data with FacultyId as keys
+            combined_profile_by_id = {}
+
+            for admin, adminpersonal_details, admincontact_details in combined_data:
+                admin_dict = FISAdmin_Model.from_orm(admin).dict()
+                admin_id = admin.AdminId
+
+                if adminpersonal_details:
+                    admin_dict['AdminFISPDS_PersonalDetails'] = AdminFISPDS_PersonalDetails_Model.from_orm(adminpersonal_details).dict()
+                else:
+                    admin_dict['AdminFISPDS_PersonalDetails'] = None
+
+                if admincontact_details:
+                    admin_dict['AdminFISPDS_ContactDetails'] = AdminFISPDS_ContactDetails_Model.from_orm(admincontact_details).dict()
+                else:
+                    admin_dict['AdminFISPDS_ContactDetails'] = None
+
+                # Store combined data with FacultyId as keys in the dictionary
+                combined_profile_by_id[admin_id] = admin_dict
+
+            return jsonify({'Admins': combined_profile_by_id})
 
         except ValidationError as e:
             return jsonify({'error': f'Validation error: {e}'})

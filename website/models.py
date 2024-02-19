@@ -38,7 +38,8 @@ class FISFaculty(db.Model, UserMixin):
 
     Password = db.Column(db.String(256), nullable=False)  # Password
     ProfilePic= db.Column(db.String(50),default="14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08")  # Profile Pic
-    IsActive = db.Column(db.Boolean, default=True)
+    Status = db.Column(db.String(50), default="Deactivated")
+    Login_Attempt = db.Column(db.Integer, default=12)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     
@@ -120,7 +121,8 @@ class FISFaculty(db.Model, UserMixin):
             
             'Password': self.Password,
             'ProfilePic': self.ProfilePic,
-            'IsActive': self.IsActive,
+            'Status': self.Status,
+            'Login_Attempt': self.Login_Attempt,
             'created_at': self.created_at,
             'updated_at': self.updated_at,
     
@@ -207,7 +209,8 @@ class FISAdmin(db.Model, UserMixin):
 
     Password = db.Column(db.String(128), nullable=False)  # Password
     ProfilePic= db.Column(db.String(50),default="14wkc8rPgd8NcrqFoRFO_CNyrJ7nhmU08")  # Profile Pic
-    IsActive = db.Column(db.Boolean, default=True)
+    Status = db.Column(db.String(50), default="Deactivated")
+    Login_Attempt = db.Column(db.Integer, default=12)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)  
     
@@ -259,7 +262,8 @@ class FISAdmin(db.Model, UserMixin):
             
             'Password': self.Password,
             'ProfilePic': self.ProfilePic,
-            'IsActive': self.IsActive,
+            'Status': self.Status,
+            'Login_Attempt': self.Login_Attempt,
             'created_at': self.created_at,
             'updated_at': self.updated_at,
             
@@ -1789,7 +1793,39 @@ class ViolationForm(db.Model):
         }
 
 
+class Location(db.Model):
+    __tablename__ = 'SCDSLocation'
+    
+    LocationId = db.Column(db.Integer, primary_key=True, autoincrement=True) #LocationID
+    Name = db.Column(db.String(100), nullable=False) #LocationName
+    
+    def to_dict(self):
+        return {
+            'Name': self.Name,
+        }
 
+        
+class IncidentType(db.Model):
+    __tablename__ = 'SCDSIncidentType'
+    
+    IncidentTypeId = db.Column(db.Integer, primary_key=True, autoincrement=True) #IncidentTypeID
+    Name = db.Column(db.String(512), nullable=False) #IncidentName
+    Excused = db.Column(db.String(512), nullable=False) #Excused
+    OneOffense = db.Column(db.String(512), nullable=False) #1stLevel
+    TwoOffense = db.Column(db.String(512), nullable=False) #2ndLevel
+    ThreeOffense = db.Column(db.String(512), nullable=True) #3rdLevel
+    FourOffense = db.Column(db.String(512), nullable=True) #4thLevel
+    
+    def to_dict(self):
+        return {
+            'IncidentTypeId': self.IncidentTypeId,
+            'Name': self.Name,
+            'Excused': self.Excused,
+            'OneOffense': self.OneOffense,
+            'TwoOffense': self.TwoOffense,
+            'ThreeOffense': self.ThreeOffense,
+            'FourOffense': self.FourOffense
+        }
 
 # Student Users
 class Student(db.Model): # (class SPSStudent) In DJANGO you must set the name directly here 

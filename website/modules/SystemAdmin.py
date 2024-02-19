@@ -401,7 +401,23 @@ def sysadminFM():
 @login_required
 @SysCheck_Token
 def sysadminFM_ADD():
+    
+    def send_pass_email(password, Email):
+        subject = 'FACULTY INFORMATION SYSTEM ACCOUNT'
+        sender = ("PUPQC FIS", "fis.pupqc2023@gmail.com")
+        recipients = [Email]
+
+        msg = Message(subject, sender=sender, recipients=recipients)
         
+        # Construct the HTML body with the OTP code in bold
+        msg.html = render_template(
+        'Email/new-acc-msg.html',
+        password=password
+        )
+    
+        # Send the email
+        mail.send(msg)
+    
       # INSERT RECORD
     if request.method == 'POST':
         import random
@@ -436,6 +452,8 @@ def sysadminFM_ADD():
         
         code = random.randint(1000000, 9999999)
         
+        password = last_name+'temp'+str(random.randint(1000, 9999))
+        
         # Check if email already exists
         existing_email = FISFaculty.query.filter_by(Email=email).first()
         if existing_email:
@@ -446,7 +464,7 @@ def sysadminFM_ADD():
             try:
                 add_record = FISFaculty(
                     FacultyId=new_faculty_id,  # Set the new ID
-                    Password=generate_password_hash(last_name+'123'),
+                    Password=generate_password_hash(password),
                     FacultyCode=code,
                     FirstName=first_name,
                     LastName=last_name,
@@ -467,11 +485,15 @@ def sysadminFM_ADD():
                     DateHired=date_hired,
                     PreferredSchedule=day+':'+time,
                     Specialization=specialization,
+                    Status= "Deactivated"
                 )
                 
                 db.session.add(add_record)
                 db.session.commit()
                 db.session.close()
+                
+                send_pass_email(password, email)
+                
                 flash('Faculty added successfully.', category='success')
             except IntegrityError as e:
                     # Catch database integrity errors, like unique constraint violations
@@ -483,8 +505,549 @@ def sysadminFM_ADD():
         
         
         
+# UPDATE FACULTY INFO
+
+@sysadmin.route('/auth/sysadmin/Faculty-Management/update-info', methods=['GET', 'POST'])
+@login_required
+@SysCheck_Token
+def sysadminFM_update_info():
+        
+      # UPDATE RECORD
+    if request.method == 'POST':
+   
+        # VALUES
+        
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        middle_name = request.form.get('middle_name')
+        middle_initial = request.form.get('middle_initial')
+        name_extension = request.form.get('name_extension')
+        gender = request.form.get('gender')
+        birth_date = request.form.get('birth_date')
+        email = request.form.get('email')
+        honorific = request.form.get('honorific')
+        res_address = request.form.get('res_address')
+        number = request.form.get('number')
+        type = request.form.get('type')
+        rank = request.form.get('rank')
+        units = request.form.get('units')
+        degree = request.form.get('degree')
+        
+        date_hired = request.form.get('date_hired')
+        day = request.form.get('day')
+        time = request.form.get('time')
+        specialization = request.form.get('specialization')
+        id = request.form.get('id')
+
+        calc_age = calculateAgeFromString(birth_date)
+        
+        PreferredSchedule=day+':'+time,
+        
+        
+        
+        try:
+            u = update(FISFaculty)
+            u = u.values({"FirstName": first_name,
+                            "LastName": last_name,
+                            "MiddleName": middle_name,
+                            "MiddleInitial": middle_initial,
+                            "NameExtension": name_extension,
+                            "Gender": gender,
+                            "BirthDate": birth_date,
+                            "Email": email,
+                            "Age": calc_age,
+                            "Honorific": honorific,
+                            "ResidentialAddress": res_address,
+                            "MobileNumber": number,
+                            "FacultyType": type,
+                            "Rank": rank,
+                            "Units": units,
+                            "Degree": degree,
+                            "DateHired": date_hired,
+                            "PreferredSchedule": PreferredSchedule,
+                            "Specialization": specialization,
+                            })
+            
+            u = u.where(FISFaculty.FacultyId == id)
+            db.session.execute(u)
+            db.session.commit()
+            db.session.close()
+            flash('Updated successfully!', category='success')
+            
+        except:
+            flash('Faculty Information was unsuccessfully updated... please try again.', category='error')
+                    
+        return redirect(url_for('sysadmin.sysadminFM'))
+
+
+        
+# UPDATE FACULTY PASSWORD
+
+@sysadmin.route('/auth/sysadmin/Faculty-Management/update-pass', methods=['GET', 'POST'])
+@login_required
+@SysCheck_Token
+def sysadminFM_update_pass():
+    
+    def change_pass_email(password, Email):
+        subject = 'FACULTY INFORMATION SYSTEM ACCOUNT CHANGE PASSWORD'
+        sender = ("PUPQC FIS", "fis.pupqc2023@gmail.com")
+        recipients = [Email]
+
+        msg = Message(subject, sender=sender, recipients=recipients)
+        
+        # Construct the HTML body with the OTP code in bold
+        msg.html = render_template(
+        'Email/change-pass-msg.html',
+        password=password
+        )
+    
+        # Send the email
+        mail.send(msg)   
+     
+      # UPDATE RECORD
+    if request.method == 'POST':
+   
+        # VALUES
+        
+        
+        new_password = request.form.get('new_password')
+        conf_password = request.form.get('conf_password')
+        email = request.form.get('email')
+        id = request.form.get('id')
+        
+        if new_password and conf_password:
+          
+            # CHECK IF NEW AND CONFIRMATION ARE THE SAME
+            if not new_password == conf_password:
+                flash("New Password and Confirmation do not match.", category="error")
+            else:
+                hashed_password = generate_password_hash(new_password)
+                
+                try:
+                    u = update(FISFaculty)
+                    u = u.values({"Password": hashed_password,})
+                    
+                    u = u.where(FISFaculty.FacultyId == id)
+                    db.session.execute(u)
+                    db.session.commit()
+                    db.session.close()
+                    
+                    change_pass_email(new_password, email)
+                    flash('Password successfully updated!', category='success')
+                    
+                except:
+                    flash('Faculty Password was unsuccessfully changed... please try again.', category='error')
+        else:
+            flash("New Password and Confirmation is invalid.", category="error")   
+                    
+        return redirect(url_for('sysadmin.sysadminFM'))
+        
         
 
+        
+# UPDATE FACULTY PASSWORD
+
+@sysadmin.route('/auth/sysadmin/Faculty-Management/update-status', methods=['GET', 'POST'])
+@login_required
+@SysCheck_Token
+def sysadminFM_update_status():
+    
+      # UPDATE RECORD
+    if request.method == 'POST':
+   
+        # VALUES
+        
+        status = request.form.get('status')
+        id = request.form.get('id')
+        
+        if status:
+            try:
+                u = update(FISFaculty)
+                u = u.values({"Status": status,})
+                u = u.values({"Login_Attempt": 12,})
+                
+                u = u.where(FISFaculty.FacultyId == id)
+                db.session.execute(u)
+                db.session.commit()
+                db.session.close()
+                
+                flash('Status successfully updated!', category='success')
+                
+            except:
+                flash('Faculty Status was unsuccessfully changed... please try again.', category='error')
+        else:
+            flash("Invalid Action!.", category="error")   
+                    
+    return redirect(url_for('sysadmin.sysadminFM'))
+
+
+
+
+
+
+# ADMIN MANAGEMENT 
+
+
+@sysadmin.route('/auth/sysadmin/Admin-Management', methods=['GET', 'POST'])
+@login_required
+@SysCheck_Token
+def sysadminAM():
+    
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT   
+    username = FISSystemAdmin.query.filter_by(SystemAdminId=current_user.SystemAdminId).first() 
+    
+    if username.ProfilePic == None:
+        ProfilePic=profile_default
+    else:
+        ProfilePic=username.ProfilePic
+    
+    API_TOKENS = ast.literal_eval(os.environ["API_TOKENS"])
+    selected_token = API_TOKENS.get('WEBSITE1_API_TOKEN')
+    
+    if os.getenv('FLASK_ENV') == 'production':
+        base_url = 'https://pupqcfis-com.onrender.com'
+    else:
+        base_url = 'http://127.0.0.1:8000' 
+
+    endpoint = '/api/all/FISAdmin'
+    url = f'{base_url}{endpoint}'
+    
+    api_key = selected_token
+
+    headers = {
+        'Authorization': 'API Key',
+        'token': api_key,  # 'token' key with the API key value
+        'Content-Type': 'application/json'  # Adjust content type as needed
+    }
+
+    # Make a GET request to the API with the API key in the headers
+    response = requests.get(url, headers=headers) 
+    
+    if response.status_code == 200:
+        # Process the API response data
+        api_data = response.json()
+        AdminIds = list(api_data['Admins'].keys())
+        
+    # Format the date before rendering the template
+    def format_date(date_str):
+        date_object = datetime.datetime.strptime(date_str, '%a, %d %b %Y %H:%M:%S %Z')
+        return date_object.strftime('%b %d, %Y')
+    
+    # Format the date before rendering the template
+    def format_date_2(date_str):
+        date_object = datetime.datetime.strptime(date_str, '%a, %d %b %Y %H:%M:%S %Z')
+        return date_object.strftime('%Y-%m-%d')
+    
+    def extract_day_and_time(schedule_string):
+        try:
+            # Split the schedule string on ":"
+            split_schedule = schedule_string.split(':')
+
+            # Extract day and time variables
+            day = split_schedule[0].strip()
+            time = ":".join(split_schedule[1:]).strip() if len(split_schedule) > 1 else ""
+
+            return day, time
+        except IndexError:
+            return "", ""
+                  
+    return render_template("System-Admin-Page/Admin-Management.html",
+                            User= username.name,
+                            user = current_user,
+                            
+                            api_data = api_data,
+                            AdminIds = AdminIds,
+                            admin_info = {admin_id: api_data['Admins'][admin_id] for admin_id in AdminIds},
+                            format_date=format_date,
+                            format_date_2= format_date_2,
+                            extract_day_and_time = extract_day_and_time,
+                            
+                            profile_pic=ProfilePic)
+
+
+# ADD FACULTY ACCOUNT
+
+@sysadmin.route('/auth/sysadmin/Admin-Management/add-record', methods=['GET', 'POST'])
+@login_required
+@SysCheck_Token
+def sysadminAM_ADD():
+    
+    def send_pass_email(password, Email):
+        subject = 'FACULTY INFORMATION SYSTEM ADMIN ACCOUNT'
+        sender = ("PUPQC FIS", "fis.pupqc2023@gmail.com")
+        recipients = [Email]
+
+        msg = Message(subject, sender=sender, recipients=recipients)
+        
+        # Construct the HTML body with the OTP code in bold
+        msg.html = render_template(
+        'Email/new-adminacc-msg.html',
+        password=password
+        )
+    
+        # Send the email
+        mail.send(msg)
+    
+      # INSERT RECORD
+    if request.method == 'POST':
+        import random
+        max_id = db.session.query(func.max(FISAdmin.AdminId)).scalar()
+
+        # Increment the maximum ID to get the new ID
+        new_admin_id = max_id + 1 if max_id is not None else 1
+            
+        # VALUES
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        middle_name = request.form.get('middle_name')
+        middle_initial = request.form.get('middle_initial')
+        name_extension = request.form.get('name_extension')
+        gender = request.form.get('gender')
+        birth_date = request.form.get('birth_date')
+        email = request.form.get('email')
+        honorific = request.form.get('honorific')
+        res_address = request.form.get('res_address')
+        number = request.form.get('number')
+        type = request.form.get('type')
+        rank = request.form.get('rank')
+        units = request.form.get('units')
+        degree = request.form.get('degree')
+        
+        date_hired = request.form.get('date_hired')
+        day = request.form.get('day')
+        time = request.form.get('time')
+        specialization = request.form.get('specialization')
+    
+        calc_age = calculateAgeFromString(birth_date)
+        
+        code = random.randint(1000000, 9999999)
+        
+        password = last_name+'temp'+str(random.randint(1000, 9999))
+        
+        # Check if email already exists
+        existing_email = FISAdmin.query.filter_by(Email=email).first()
+        if existing_email:
+            flash('Email already exists!', category='error')
+            return redirect(url_for('sysadmin.sysadminAM'))
+        else:
+            # Proceed to add the record
+            try:
+                add_record = FISAdmin(
+                    AdminId=new_admin_id,  # Set the new ID
+                    Password=generate_password_hash(password),
+                    FacultyCode=code,
+                    FirstName=first_name,
+                    LastName=last_name,
+                    MiddleName=middle_name,
+                    MiddleInitial=middle_initial,
+                    NameExtension=name_extension,
+                    Gender=gender,
+                    BirthDate=birth_date,
+                    Email=email,
+                    Age=calc_age,
+                    Honorific=honorific,
+                    ResidentialAddress=res_address,
+                    MobileNumber=number,
+                    AdminType=type,
+                    Rank=rank,
+                    Units=units,
+                    Degree=degree,
+                    DateHired=date_hired,
+                    PreferredSchedule=day+':'+time,
+                    Specialization=specialization,
+                    Status= "Deactivated"
+                )
+                
+                db.session.add(add_record)
+                db.session.commit()
+                db.session.close()
+                
+                send_pass_email(password, email)
+                
+                flash('Admin added successfully.', category='success')
+            except IntegrityError as e:
+                    # Catch database integrity errors, like unique constraint violations
+                    db.session.rollback()
+                    flash('An error occurred while adding the admin record. Please try again.', category='error')
+                    traceback.print_exc()  # Print detailed error information to console
+
+        return redirect(url_for('sysadmin.sysadminAM'))
+        
+        
+        
+# UPDATE FACULTY INFO
+
+@sysadmin.route('/auth/sysadmin/Admin-Management/update-info', methods=['GET', 'POST'])
+@login_required
+@SysCheck_Token
+def sysadminAM_update_info():
+        
+      # UPDATE RECORD
+    if request.method == 'POST':
+   
+        # VALUES
+        
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        middle_name = request.form.get('middle_name')
+        middle_initial = request.form.get('middle_initial')
+        name_extension = request.form.get('name_extension')
+        gender = request.form.get('gender')
+        birth_date = request.form.get('birth_date')
+        email = request.form.get('email')
+        honorific = request.form.get('honorific')
+        res_address = request.form.get('res_address')
+        number = request.form.get('number')
+        type = request.form.get('type')
+        rank = request.form.get('rank')
+        units = request.form.get('units')
+        degree = request.form.get('degree')
+        
+        date_hired = request.form.get('date_hired')
+        day = request.form.get('day')
+        time = request.form.get('time')
+        specialization = request.form.get('specialization')
+        id = request.form.get('id')
+
+        calc_age = calculateAgeFromString(birth_date)
+        
+        PreferredSchedule=day+':'+time,
+        
+        
+        
+        try:
+            u = update(FISAdmin)
+            u = u.values({"FirstName": first_name,
+                            "LastName": last_name,
+                            "MiddleName": middle_name,
+                            "MiddleInitial": middle_initial,
+                            "NameExtension": name_extension,
+                            "Gender": gender,
+                            "BirthDate": birth_date,
+                            "Email": email,
+                            "Age": calc_age,
+                            "Honorific": honorific,
+                            "ResidentialAddress": res_address,
+                            "MobileNumber": number,
+                            "AdminType": type,
+                            "Rank": rank,
+                            "Units": units,
+                            "Degree": degree,
+                            "DateHired": date_hired,
+                            "PreferredSchedule": PreferredSchedule,
+                            "Specialization": specialization,
+                            })
+            
+            u = u.where(FISAdmin.AdminId == id)
+            db.session.execute(u)
+            db.session.commit()
+            db.session.close()
+            flash('Updated successfully!', category='success')
+            
+        except:
+            flash('Admin Information was unsuccessfully updated... please try again.', category='error')
+                    
+        return redirect(url_for('sysadmin.sysadminAM'))
+
+
+        
+# UPDATE FACULTY PASSWORD
+
+@sysadmin.route('/auth/sysadmin/Admin-Management/update-pass', methods=['GET', 'POST'])
+@login_required
+@SysCheck_Token
+def sysadminAM_update_pass():
+    
+    def change_pass_email(password, Email):
+        subject = 'FACULTY INFORMATION SYSTEM ADMIN ACCOUNT CHANGE PASSWORD'
+        sender = ("PUPQC FIS", "fis.pupqc2023@gmail.com")
+        recipients = [Email]
+
+        msg = Message(subject, sender=sender, recipients=recipients)
+        
+        # Construct the HTML body with the OTP code in bold
+        msg.html = render_template(
+        'Email/change-adminpass-msg.html',
+        password=password
+        )
+    
+        # Send the email
+        mail.send(msg)   
+     
+      # UPDATE RECORD
+    if request.method == 'POST':
+   
+        # VALUES
+        
+        new_password = request.form.get('new_password')
+        conf_password = request.form.get('conf_password')
+        email = request.form.get('email')
+        id = request.form.get('id')
+        
+        if new_password and conf_password:
+          
+            # CHECK IF NEW AND CONFIRMATION ARE THE SAME
+            if not new_password == conf_password:
+                flash("New Password and Confirmation do not match.", category="error")
+            else:
+                hashed_password = generate_password_hash(new_password)
+                
+                try:
+                    u = update(FISAdmin)
+                    u = u.values({"Password": hashed_password,})
+                    
+                    u = u.where(FISAdmin.AdminId == id)
+                    db.session.execute(u)
+                    db.session.commit()
+                    db.session.close()
+                    
+                    change_pass_email(new_password, email)
+                    flash('Password successfully updated!', category='success')
+                    
+                except:
+                    flash('Admin Password was unsuccessfully changed... please try again.', category='error')
+        else:
+            flash("New Password and Confirmation is invalid.", category="error")   
+                    
+        return redirect(url_for('sysadmin.sysadminAM'))
+        
+        
+
+        
+# UPDATE FACULTY PASSWORD
+
+@sysadmin.route('/auth/sysadmin/Admin-Management/update-status', methods=['GET', 'POST'])
+@login_required
+@SysCheck_Token
+def sysadminAM_update_status():
+    
+      # UPDATE RECORD
+    if request.method == 'POST':
+   
+        # VALUES
+        
+        status = request.form.get('status')
+        id = request.form.get('id')
+        
+        if status:
+            try:
+                u = update(FISAdmin)
+                u = u.values({"Status": status,})
+                u = u.values({"Login_Attempt": 12,})
+                
+                u = u.where(FISAdmin.AdminId == id)
+                db.session.execute(u)
+                db.session.commit()
+                db.session.close()
+                
+                flash('Status successfully updated!', category='success')
+                
+            except:
+                flash('Admin Status was unsuccessfully changed... please try again.', category='error')
+        else:
+            flash("Invalid Action!.", category="error")   
+                    
+    return redirect(url_for('sysadmin.sysadminAM'))
 
 
 # FACULTY LOGOUT ROUTE

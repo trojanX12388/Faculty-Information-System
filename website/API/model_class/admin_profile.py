@@ -12,11 +12,11 @@ import datetime
 # FACULTY PROFILE
 # --------------------------------------------------------------
 
-class FISFaculty(Base):
-    __tablename__ = 'FISFaculty'
+class FISAdmin(Base):
+    __tablename__ = 'FISAdmin'
 
-    FacultyId = Column(Integer, primary_key=True, index=True)
-    FacultyType = Column(String)
+    AdminId = Column(Integer, primary_key=True, index=True)
+    AdminType = Column(String)
     Rank = Column(String)
     Units = Column(Float)
     FirstName = Column(String)
@@ -43,9 +43,9 @@ class FISFaculty(Base):
     Status = Column(String)
 
 # Pydantic model for data validation
-class FISFaculty_Model(BaseModel):
-    FacultyId: int
-    FacultyType: str
+class FISAdmin_Model(BaseModel):
+    AdminId: int
+    AdminType: str
     Rank: str
     Units: float
     FirstName: str  = "" 
