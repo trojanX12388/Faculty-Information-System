@@ -22,7 +22,11 @@
               <tr>
                 <th class="w-50" scope="col">School Name</th>
                 <th scope="col">Level</th>
+                <th scope="col">Basic Education/Degree/Course
+                  <br>
+                  <span class="text-muted font-italic fw-normal">(write in full)</span></th>
                 <th scope="col">Inclusive Dates of Attendance</th>
+                <th scope="col">Scholarship/Academic Honors Received</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
@@ -32,7 +36,9 @@
               <tr>
                 <th scope="row">{{data.school_name}}</th>
                 <td>{{data.level}}</td>
-                <td>{{data.from_date.month }}/{{data.from_date.day }}/{{data.from_date.year }} - {{data.to_date.month }}/{{data.to_date.day }}/{{data.to_date.year }} </td>
+                <td></td>
+                <td>{{data.from_date }} - {{data.to_date}} </td>
+                <td></td>
                 <td>
                   <button type="submit" class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#d{{data.id}}"><i class="bi bi-trash"></i></button>
                   <button type="button" class="btn btn-outline-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#{{data.id}}"><i class="bi bi-file-earmark-text"></i></button>
@@ -61,13 +67,26 @@
                         <br>
                         <div class="col-md-10">
                           <div class="form-floating">
+                            <input type="text" name="Degree" class="form-control" id="floatingDegree" placeholder="Degree/Course" value="" required>
+                            <label for="floatingDegree">Basic Education/Degree/Course</label>
+                          </div>
+                        </div>
+                        <br>
+                        <div class="col-md-10">
+                          <div class="form-floating">
+                            <input type="text" name="AcademicHonor" class="form-control" id="floatingAcademicHonor" placeholder="Academic/Honor" value="" required>
+                            <label for="floatingAcademicHonor">Scholarship/Academic Honor Receive</label>
+                          </div>
+                        </div>
+
+                        <br>
+                        <div class="col-md-10">
+                          <div class="form-floating">
                             <select class="form-select" name="level" aria-label="Level">
                               <option selected="">{{data.level}}</option>
-                              <option value="College">College</option>
+                              <option value="Tertiary">Tertiary</option>
                               <option value="Secondary">Secondary</option>
                               <option value="Elementary">Elementary</option>
-                              <option value="VOCATIONAL/TRADE COURSE">VOCATIONAL/TRADE COURSE</option>
-                              <option value="GRADUATE STUDIES">GRADUATE STUDIES</option>
                             </select>
                             <label for="floatingschool_name">Level</label>
                           </div>
@@ -87,7 +106,7 @@
                         <input type="date" name="to_date"  class="form-control" id="floating_to" placeholder="To" value="{{data.to_date}}" required>
                         <label for="floating_level">To</label>
                       </div>
-                  </div>
+                    </div>
                   <br> 
                       </div>
                       <div class="modal-footer">
@@ -150,38 +169,53 @@
 
               <form action="/PDM-Educational-Background/add-record" method="POST" enctype="multipart/form-data" accept-charset="utf-8" class="row g-3">
 
-                        <div class="col-md-6">
+                        <div class="col-md-10">
                           <div class="form-floating">
                             <input type="text" name="school_name" class="form-control" id="floatingschool_name" placeholder="School Name" required>
                             <label for="floatingschool_name">School Name</label>
                           </div>
                         </div>
-                        <div class="col-md-6">
+                        <br>
+                        <div class="col-md-10">
+                          <div class="form-floating">
+                            <input type="text" name="Degree" class="form-control" id="floatingDegree" placeholder="Degree/Course" required>
+                            <label for="floatingDegree">Basic Education/Degree/Course</label>
+                          </div>
+                        </div>
+                        <br>
+                        <div class="col-md-10">
+                          <div class="form-floating">
+                            <input type="text" name="AcademicHonor" class="form-control" id="floatingAcademicHonor" placeholder="Academic/Honor" required>
+                            <label for="floatingAcademicHonor">Scholarship/Academic Honor Received</label>
+                          </div>
+                        </div>
+                        <br>
+                        <div class="col-md-10">
                           <div class="form-floating">
                             <select class="form-select" name="level" aria-label="Level">
-                              <option value="College">College</option>
+                              <option value="Tertiary">Tertiary</option>
                               <option value="Secondary">Secondary</option>
                               <option value="Elementary">Elementary</option>
-                              <option value="VOCATIONAL/TRADE COURSE">VOCATIONAL/TRADE COURSE</option>
-                              <option value="GRADUATE STUDIES">GRADUATE STUDIES</option>
                             </select>
                             <label for="floatingschool_name">Level</label>
-                          </div>
-                      </div> 
+                          </div> 
+                          <br>
+                        </div>
                       <h5 class="modal-title">Date</h5>
-                      <div class="col-md-6">
+                      <div class="col-md-10">
                         <div class="form-floating">
                           <input type="date" name="from_date"  class="form-control" id="floating_from" placeholder="From" required>
                           <label for="floating_level">From</label>
                         </div>
                     </div> 
-                    <div class="col-md-6">
+                    <div class="col-md-10">
                       <div class="form-floating">
                         <input type="date" name="to_date"  class="form-control" id="floating_to" placeholder="To" required>
                         <label for="floating_level">To</label>
                       </div>
-                  </div> 
+                    </div> 
                     </div>
+                    
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
                       <button type="submit" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add</button>

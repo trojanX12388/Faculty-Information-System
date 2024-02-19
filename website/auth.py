@@ -103,48 +103,124 @@ def facultyL():
         Password = request.form.get('password')
 
         entry = session['entry']
-        User = FISFaculty.query.filter_by(Email=Email, IsActive=True).first()
+        User = FISFaculty.query.filter_by(Email=Email).first()
 
         if not User:
             flash('Incorrect Email or Password!', category='error')
-        else:
+        elif User.Status == "Disabled":
+            flash('Your Account has been disabled. Please contact Administrator to enable your account...', category='error') 
+        
+        elif User.Status == "Locked":
+            flash('Your Account is Locked. Please contact Administrator...', category='error') 
+            
+        elif User.Status == "Deactivated":
             year = int(year)
             month = int(month)
             day = int(day)
-                
-            if check_password_hash(User.Password,Password) and User.BirthDate.year == year and User.BirthDate.month == month and User.BirthDate.day == day:
+
+            if User.Login_Attempt != 8:
+                u = update(FISFaculty).values({"Login_Attempt": User.Login_Attempt - 1})
+                u = u.where(FISFaculty.FacultyId == User.FacultyId)
+                db.session.execute(u)
+                db.session.commit()
+
+                if check_password_hash(User.Password, Password) and User.BirthDate.year == year and User.BirthDate.month == month and User.BirthDate.day == day:
                     login_user(User, remember=False)
                     access_token = generate_access_token(User.FacultyId)
                     refresh_token = generate_refresh_token(User.FacultyId)
-                    
-                    if FISLoginToken.query.filter_by(FacultyId=current_user.FacultyId).first():
-                        u = update(FISLoginToken)
-                        u = u.values({"access_token": access_token,
-                                    "refresh_token": refresh_token
-                                    })
-                        u = u.where(FISLoginToken.FacultyId == User.FacultyId)
-                        db.session.execute(u)
-                        db.session.commit()
-                        db.session.close()
+
+                    u = update(FISFaculty).values({"Login_Attempt": 12,
+                                                   "Status": "Active",})
+                    u = u.where(FISFaculty.FacultyId == User.FacultyId)
+                    db.session.execute(u)
+                    db.session.commit()
                         
+                    login_token = FISLoginToken.query.filter_by(FacultyId=current_user.FacultyId).first()
+                    if login_token:
+                        login_token.access_token = access_token
+                        login_token.refresh_token = refresh_token
                     else:
-                        add_record = FISLoginToken(   access_token = access_token,
-                                                    refresh_token = refresh_token,
-                                                    FacultyId = current_user.FacultyId)
-                    
-                        db.session.add(add_record)
+                        login_token = FISLoginToken(access_token=access_token, refresh_token=refresh_token, FacultyId=current_user.FacultyId)
+                        db.session.add(login_token)
                         db.session.commit()
-                        db.session.close()
+                        
+                    db.session.close()    
                     session['entry'] = 3
-                    return redirect(url_for('auth.facultyH'))   
-                    
-            else:
-                entry -= 1
-                if entry == 0:
-                    flash('Invalid Credentials! Please Try again...', category='error')
+                    return redirect(url_for('auth.facultyH'))
+
                 else:
-                    session['entry'] = entry
-                    flash('Invalid Credentials! Please Try again...', category='error')
+                    entry -= 1
+                    if entry == 0:
+                        flash('Your Account is Deactivated, enter the correct password to activate.', category='error')
+                    else:
+                        session['entry'] = entry
+                        flash('Your Account is Deactivated, enter the correct password to activate.', category='error')
+                        return redirect(url_for('auth.facultyL'))
+            
+            else:
+                u = update(FISFaculty)
+                u = u.values({"Status": "Locked",})
+                u = u.where(FISFaculty.FacultyId == User.FacultyId)
+                db.session.execute(u)
+                db.session.commit()
+                db.session.close()
+                flash('Your Account has been locked due to many incorrect attempts.', category='error')
+                return redirect(url_for('auth.facultyL'))
+        
+        elif User.Status == "Active":
+            year = int(year)
+            month = int(month)
+            day = int(day)
+
+            if User.Login_Attempt != 0:
+                u = update(FISFaculty).values({"Login_Attempt": User.Login_Attempt - 1})
+                u = u.where(FISFaculty.FacultyId == User.FacultyId)
+                db.session.execute(u)
+                db.session.commit()
+
+                if check_password_hash(User.Password, Password) and User.BirthDate.year == year and User.BirthDate.month == month and User.BirthDate.day == day:
+                    login_user(User, remember=False)
+                    access_token = generate_access_token(User.FacultyId)
+                    refresh_token = generate_refresh_token(User.FacultyId)
+
+                    u = update(FISFaculty).values({"Login_Attempt": 12})
+                    u = u.where(FISFaculty.FacultyId == User.FacultyId)
+                    db.session.execute(u)
+                    db.session.commit()
+                        
+                    login_token = FISLoginToken.query.filter_by(FacultyId=current_user.FacultyId).first()
+                    if login_token:
+                        login_token.access_token = access_token
+                        login_token.refresh_token = refresh_token
+                    else:
+                        login_token = FISLoginToken(access_token=access_token, refresh_token=refresh_token, FacultyId=current_user.FacultyId)
+                        db.session.add(login_token)
+                        db.session.commit()
+                        
+                    db.session.close()    
+                    session['entry'] = 3
+                    return redirect(url_for('auth.facultyH'))
+
+                else:
+                    entry -= 1
+                    if entry == 0:
+                        flash('Invalid Credentials! Please Try again...', category='error')
+                    else:
+                        session['entry'] = entry
+                        flash('Invalid Credentials! Please Try again...', category='error')
+                        return redirect(url_for('auth.facultyL'))
+            
+            else:
+                u = update(FISFaculty)
+                u = u.values({"Status": "Locked",})
+                u = u.where(FISFaculty.FacultyId == User.FacultyId)
+                db.session.execute(u)
+                db.session.commit()
+                db.session.close()
+                flash('Your Account has been locked due to many incorrect attempts.', category='error')
+                return redirect(url_for('auth.facultyL'))
+        else:
+           flash('Unknown Account', category='error')  
     else:
         flash('Invalid Credentials! Please Try again...', category='error')                 
     return render_template("Faculty-Login-Page/index.html")

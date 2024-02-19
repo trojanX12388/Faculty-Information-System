@@ -29,7 +29,7 @@ from website.models import db
 from sqlalchemy import update
 
 # LOADING MODEL CLASSES
-from website.models import FISFaculty, FISAdmin, FISLoginToken, FISSystemAdmin
+from website.models import FISAdmin, FISAdmin, FISLoginToken, FISSystemAdmin
 
 
 # LOAD JWT MODULE
@@ -120,13 +120,13 @@ def facultyRP():
     if request.method == 'POST':
         if password1 == password2:
             # Update
-            u = update(FISFaculty)
+            u = update(FISAdmin)
             u = u.values({"Password": generate_password_hash(password1)})
-            u = u.where(FISFaculty.Email == Email)
+            u = u.where(FISAdmin.Email == Email)
             db.session.execute(u)
             db.session.commit()
             db.session.close()
-            return redirect(url_for('auth.facultyL')) 
+            return redirect(url_for('admin.adminL')) 
     
     return render_template("Faculty-Login-Page/resetpass.html", Email=Email) 
 
@@ -136,7 +136,6 @@ def facultyRP():
 # -------------------------------------------------------------
 
 # ADMIN PAGE ROUTE
-
 @admin.route('/admin-login', methods=['GET', 'POST'])
 def adminL():
     if 'entry' not in session:
@@ -154,47 +153,124 @@ def adminL():
 
         if not User:
             flash('Incorrect Email or Password!', category='error')
-        else:
+        elif User.Status == "Disabled":
+            flash('Your Account has been disabled. Please contact Administrator to enable your account...', category='error') 
+        
+        elif User.Status == "Locked":
+            flash('Your Account is Locked. Please contact Administrator...', category='error') 
+            
+        elif User.Status == "Deactivated":
             year = int(year)
             month = int(month)
             day = int(day)
-                
-            if check_password_hash(User.Password,Password) and User.BirthDate.year == year and User.BirthDate.month == month and User.BirthDate.day == day:
+
+            if User.Login_Attempt != 8:
+                u = update(FISAdmin).values({"Login_Attempt": User.Login_Attempt - 1})
+                u = u.where(FISAdmin.AdminId == User.AdminId)
+                db.session.execute(u)
+                db.session.commit()
+
+                if check_password_hash(User.Password, Password) and User.BirthDate.year == year and User.BirthDate.month == month and User.BirthDate.day == day:
                     login_user(User, remember=False)
                     access_token = generate_access_token(User.AdminId)
                     refresh_token = generate_refresh_token(User.AdminId)
-                    
-                    if FISLoginToken.query.filter_by(AdminId=current_user.AdminId).first():
-                        u = update(FISLoginToken)
-                        u = u.values({"access_token": access_token,
-                                    "refresh_token": refresh_token
-                                    })
-                        u = u.where(FISLoginToken.AdminId == User.AdminId)
-                        db.session.execute(u)
-                        db.session.commit()
-                        db.session.close()
+
+                    u = update(FISAdmin).values({"Login_Attempt": 12,
+                                                   "Status": "Active",})
+                    u = u.where(FISAdmin.AdminId == User.AdminId)
+                    db.session.execute(u)
+                    db.session.commit()
                         
+                    login_token = FISLoginToken.query.filter_by(AdminId=current_user.AdminId).first()
+                    if login_token:
+                        login_token.access_token = access_token
+                        login_token.refresh_token = refresh_token
                     else:
-                        add_record = FISLoginToken(   access_token = access_token,
-                                                    refresh_token = refresh_token,
-                                                    AdminId = current_user.AdminId)
-                    
-                        db.session.add(add_record)
+                        login_token = FISLoginToken(access_token=access_token, refresh_token=refresh_token, AdminId=current_user.AdminId)
+                        db.session.add(login_token)
                         db.session.commit()
-                        db.session.close()
+                        
+                    db.session.close()    
                     session['entry'] = 3
-                    return redirect(url_for('admin.adminH'))   
-                    
-            else:
-                entry -= 1
-                if entry == 0:
-                    flash('Invalid Credentials! Please Try again...', category='error')
+                    return redirect(url_for('admin.adminH'))
+
                 else:
-                    session['entry'] = entry
-                    flash('Invalid Credentials! Please Try again...', category='error')
+                    entry -= 1
+                    if entry == 0:
+                        flash('Your Account is Deactivated, enter the correct password to activate.', category='error')
+                    else:
+                        session['entry'] = entry
+                        flash('Your Account is Deactivated, enter the correct password to activate.', category='error')
+                        return redirect(url_for('admin.adminL'))
+            
+            else:
+                u = update(FISAdmin)
+                u = u.values({"Status": "Locked",})
+                u = u.where(FISAdmin.AdminId == User.AdminId)
+                db.session.execute(u)
+                db.session.commit()
+                db.session.close()
+                flash('Your Account has been locked due to many incorrect attempts.', category='error')
+                return redirect(url_for('admin.adminL'))
+        
+        elif User.Status == "Active":
+            year = int(year)
+            month = int(month)
+            day = int(day)
+
+            if User.Login_Attempt != 0:
+                u = update(FISAdmin).values({"Login_Attempt": User.Login_Attempt - 1})
+                u = u.where(FISAdmin.AdminId == User.AdminId)
+                db.session.execute(u)
+                db.session.commit()
+
+                if check_password_hash(User.Password, Password) and User.BirthDate.year == year and User.BirthDate.month == month and User.BirthDate.day == day:
+                    login_user(User, remember=False)
+                    access_token = generate_access_token(User.AdminId)
+                    refresh_token = generate_refresh_token(User.AdminId)
+
+                    u = update(FISAdmin).values({"Login_Attempt": 12})
+                    u = u.where(FISAdmin.AdminId == User.AdminId)
+                    db.session.execute(u)
+                    db.session.commit()
+                        
+                    login_token = FISLoginToken.query.filter_by(AdminId=current_user.AdminId).first()
+                    if login_token:
+                        login_token.access_token = access_token
+                        login_token.refresh_token = refresh_token
+                    else:
+                        login_token = FISLoginToken(access_token=access_token, refresh_token=refresh_token, AdminId=current_user.AdminId)
+                        db.session.add(login_token)
+                        db.session.commit()
+                        
+                    db.session.close()    
+                    session['entry'] = 3
+                    return redirect(url_for('admin.adminH'))
+
+                else:
+                    entry -= 1
+                    if entry == 0:
+                        flash('Invalid Credentials! Please Try again...', category='error')
+                    else:
+                        session['entry'] = entry
+                        flash('Invalid Credentials! Please Try again...', category='error')
+                        return redirect(url_for('admin.adminL'))
+            
+            else:
+                u = update(FISAdmin)
+                u = u.values({"Status": "Locked",})
+                u = u.where(FISAdmin.AdminId == User.AdminId)
+                db.session.execute(u)
+                db.session.commit()
+                db.session.close()
+                flash('Your Account has been locked due to many incorrect attempts.', category='error')
+                return redirect(url_for('admin.adminL'))
+        else:
+           flash('Unknown Account', category='error')  
     else:
         flash('Invalid Credentials! Please Try again...', category='error')                 
     return render_template("Admin-Login-Page/index.html")
+
 
 
 # ADMIN HOME PAGE ROUTE
@@ -258,8 +334,6 @@ def adminH():
         
         part_time_counts = defaultdict(int)
         full_time_counts = defaultdict(int)
-        
-        print(selected_token)
         
         if response.status_code == 200:
             # Process the API response data
@@ -344,8 +418,8 @@ def adminH():
         total_assocProfs  = total_assocProf_I+total_assocProf_II+total_assocProf_III+total_assocProf_IV+total_assocProf_V
      
         def count_faculty_tokens_with_account_ids(session: Session):
-            # Counting FISLoginToken entries where FacultyId is not null
-            count = session.query(func.count()).filter(FISLoginToken.FacultyId.isnot(None)).scalar()
+            # Counting FISLoginToken entries where AdminId is not null
+            count = session.query(func.count()).filter(FISLoginToken.AdminId.isnot(None)).scalar()
             return count
         
         db = SessionLocal()  # Assuming you have your session initialized
@@ -558,7 +632,7 @@ def adminLogout():
     # if token_list:
     #     # Access the first token from the list
     #     token_id = token_list[0].id  # Assuming you want the first token
-    #     user_token = FISLoginToken.query.filter_by(id=token_id, FacultyId=current_user.FacultyId).first()
+    #     user_token = FISLoginToken.query.filter_by(id=token_id, AdminId=current_user.AdminId).first()
     #     # Now 'user_token' should contain the specific FISLoginToken object
     #     if user_token:
     #         db.session.delete(user_token)

@@ -32,6 +32,11 @@
         <div class="col-lg-9 col-md-8">{{user.MobileNumber}}</div>
       </div>
 
+      <div class="row">
+        <div class="col-lg-3 col-md-4 label">Telephone Number</div>
+        <div class="col-lg-9 col-md-8">{{user.TelephoneNumber}}</div>
+      </div>
+
       <h5 class="card-title">Permanent Address</h5>
 
       <div class="row">
@@ -102,10 +107,6 @@
         <div class="col-lg-9 col-md-8">{{data.res_zip_code}}</div>
       </div>
 
-      <div class="row">
-        <div class="col-lg-3 col-md-4 label">Phone Number</div>
-        <div class="col-lg-9 col-md-8">{{data.res_phone_number}}</div>
-      </div>
 
       <h5 class="card-title">Remarks</h5>
       <div class="row">
@@ -134,14 +135,21 @@
         <div class="row mb-3">
           <label for="email" class="col-md-4 col-lg-3 col-form-label">Email Address</label>
           <div class="col-md-8 col-lg-9">
-            <input name="email" type="text" class="form-control" id="email" value="{{user.Email}}" >
+            <input name="email" type="text" class="form-control" id="email" value="{{user.Email}}" disabled>
           </div>
         </div>
 
         <div class="row mb-3">
           <label for="mobile_number" class="col-md-4 col-lg-3 col-form-label">Mobile Number</label>
           <div class="col-md-8 col-lg-9">
-            <input name="mobile_number" type="text" class="form-control" id="mobile_number" value="{{user.MobileNumber}}">
+            <input name="mobile_number" type="text" class="form-control" id="mobile_number" value="{{user.MobileNumber}}"disabled>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label for="telephone_number" class="col-md-4 col-lg-3 col-form-label">Telephone Number</label>
+          <div class="col-md-8 col-lg-9">
+            <input name="telephone_number" type="text" class="form-control" id="telephone_number" value="{{user.TelephoneNumber}}">
           </div>
         </div>
 
@@ -256,12 +264,6 @@
               </div>
             </div>
   
-            <div class="row mb-3">
-              <label for="res_phone_number" class="col-md-4 col-lg-3 col-form-label">Phone Number</label>
-              <div class="col-md-8 col-lg-9">
-                <input name="res_phone_number" type="text" class="form-control" id="res_phone_number" value="{{data.res_phone_number}}" >
-              </div>
-            </div>
 
         <h5 class="card-title">Remarks</h5>
         <div class="row mb-3">

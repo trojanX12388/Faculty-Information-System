@@ -23,6 +23,9 @@
                 <th class="w-50" scope="col">Title</th>
                 <th scope="col">Inclusive Date</th>
                 <th scope="col">Level</th>
+                <th scope="col">Number of Hours</th>
+                <th scope="col">Type of Training/Seminar</th>
+                <th scope="col">Conducted/Sponsored By</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
@@ -33,6 +36,9 @@
                   <th scope="row">{{data.title}}</th>
                   <td>{{data.from_date }} - {{data.to_date}}</td>
                   <td>{{data.level}}</td>
+                  <td>{{data.NumberOfHours}}</td>
+                  <td>{{data.TypeOfSeminar}}</td>
+                  <td>{{data.ConductedBy}}</td>
                   <td>
                     <button type="submit" class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#d{{data.id}}"><i class="bi bi-trash"></i></button>
                     <button type="button" class="btn btn-outline-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#{{data.id}}"><i class="bi bi-file-earmark-text"></i></button>
@@ -82,6 +88,26 @@
                         </div>
                     </div>
                     <br>  
+                    <div class="col-md-10">
+                      <div class="form-floating">
+                        <input type="text" name="NumberOfHours" class="form-control" id="floatingNumberOfHours" placeholder="Number of Hours" value="{{data.level}}" required>
+                        <label for="floatingNumberOfHours">Number of Hours</label>
+                      </div>
+                    </div>   
+                    <br>
+                    <div class="col-md-10">
+                      <div class="form-floating">
+                        <input type="text" name="TypeOfSeminar" class="form-control" id="floating_level" placeholder="Level" value="{{data.level}}" required>
+                        <label for="floating_level">Type of Training/Seminar</label>
+                      </div>
+                    </div>   
+                    <br>
+                    <div class="col-md-10">
+                      <div class="form-floating">
+                        <input type="text" name="ConductedBy" class="form-control" id="floatingConductedBy" placeholder="ConductedBy" value="{{data.level}}" required>
+                        <label for="floatingConductedBy">Conducted/Sponsored by</label>
+                      </div>
+                    </div>   
                         </div>
                         <div class="modal-footer">
                           <input type="hidden" name="id" value="{{data.id}}"></input>
@@ -144,31 +170,49 @@
 
               <form action="/PDM-Training-Seminars/add-record" method="POST" enctype="multipart/form-data" accept-charset="utf-8" class="row g-3">
 
-                        <div class="col-md-6">
+                        <div class="col-md-10">
                           <div class="form-floating">
                             <input type="text" name="title" class="form-control" id="floating_title" placeholder="Title" required>
                             <label for="floating_title">Title</label>
                           </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-10">
                           <div class="form-floating">
                             <input type="text" name="level" class="form-control" id="floating_level" placeholder="Level" required>
                             <label for="floating_level">Level</label>
                           </div>
                         </div>
                         <h5 class="modal-title">Date</h5>
-                        <div class="col-md-6">
+                      <div class="col-md-10">
                           <div class="form-floating">
                             <input type="date" name="from_date"  class="form-control" id="floating_from" placeholder="From" required>
                             <label for="floating_from">From</label>
                           </div>
                       </div> 
-                      <div class="col-md-6">
+                      <div class="col-md-10">
                         <div class="form-floating">
                           <input type="date" name="to_date"  class="form-control" id="floating_to" placeholder="To" required>
                           <label for="floating_to">To</label>
-                        </div>
+                      </div>
                     </div> 
+                    <div class="col-md-10">
+                      <div class="form-floating">
+                        <input type="number" name="NumberOfHours" class="form-control" id="floatingNumberOfHours" placeholder="Number of Hours" required>
+                        <label for="floatingNumberOfHours">Number of Hours</label>
+                      </div>
+                    </div>
+                    <div class="col-md-10">
+                      <div class="form-floating">
+                        <input type="text" name="TypeOfSeminar" class="form-control" id="floatingSeminarType" placeholder="Type of Seminar or Training" required>
+                        <label for="floatingSeminarType">Type of Training/Seminar</label>
+                      </div>
+                    </div>
+                    <div class="col-md-10">
+                      <div class="form-floating">
+                        <input type="text" name="ConductedBy" class="form-control" id="floatingConductedBy" placeholder="Conducted By" required>
+                        <label for="floatingConductedBy">Conducted/Sponsored by</label>
+                      </div>
+                    </div>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>

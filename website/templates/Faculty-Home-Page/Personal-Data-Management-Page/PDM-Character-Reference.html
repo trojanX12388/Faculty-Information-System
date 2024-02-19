@@ -21,6 +21,8 @@
             <thead>
               <tr>
                 <th class="w-50" scope="col">Full Name</th>
+                <th scope="col">Address</th>
+                <th scope="col">Contact Number</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
@@ -29,6 +31,8 @@
                 {% if data.full_name != None %}
                 <tr>
                   <th scope="row">{{data.full_name}}</th>
+                  <th></th>
+                  <th></th>
                   <td>
                     <button type="submit" class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#d{{data.id}}"><i class="bi bi-trash"></i></button>
                     <button type="button" class="btn btn-outline-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#{{data.id}}"><i class="bi bi-file-earmark-text"></i></button>
@@ -56,6 +60,19 @@
                             </div>
                           </div>
                           <br> 
+                          <div class="col-md-10">
+                            <div class="form-floating">
+                              <input type="text" name="CharacterAddress" class="form-control" id="floatingAddress" placeholder="Character Address" value="" required>
+                              <label for="floatingAddress">Address</label>
+                            </div>
+                          </div>
+                          <br>
+                          <div class="col-md-10">
+                            <div class="form-floating">
+                              <input type="number" name="CharacterNumber" class="form-control" id="floatingNumber" placeholder="Character Number" value="" required>
+                              <label for="floatingNumber">Contact No.</label>
+                            </div>
+                          </div>
                         </div>
                         <div class="modal-footer">
                           <input type="hidden" name="id" value="{{data.id}}"></input>
@@ -117,12 +134,26 @@
 
               <form action="/PDM-Character-Reference/add-record" method="POST" enctype="multipart/form-data" accept-charset="utf-8" class="row g-3">
 
-                        <div class="col-md-6">
+                        <div class="col-md-10">
                           <div class="form-floating">
                             <input type="text" name="full_name" class="form-control" id="floating_full_name" placeholder="Full Name" required>
                             <label for="floating_full_name">Full Name</label>
                           </div>
-                        </div>               
+                        </div>    
+                        <br>
+                        <div class="col-md-10">
+                          <div class="form-floating">
+                            <input type="text" name="CharacterAddress" class="form-control" id="floatingAddress" placeholder="Character Address" required>
+                            <label for="floatingAddress">Address</label>
+                          </div>
+                        </div>      
+                        <br>        
+                        <div class="col-md-10">
+                          <div class="form-floating">
+                            <input type="number" name="CharacterNumber" class="form-control" id="floatingNumber" placeholder="Character Number" required>
+                            <label for="floatingNumber">Contact No.</label>
+                          </div>
+                        </div>      
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>

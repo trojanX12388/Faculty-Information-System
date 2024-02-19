@@ -77,4 +77,3 @@ PyJWT
 
 Flask-Migrate
 Flask-Script
-

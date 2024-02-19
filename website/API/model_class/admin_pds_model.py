@@ -8,14 +8,13 @@ Base = declarative_base()
 
 import datetime
 
-# PERSONAL DETAILS
-# --------------------------------------------------------------
+# ADMIN PDS
 
-class FISPDS_PersonalDetails(Base):
+class AdminFISPDS_PersonalDetails(Base):
     __tablename__ = 'FISPDS_PersonalDetails'
 
     id = Column(Integer, primary_key=True, index=True)
-    FacultyId = Column(Integer)
+    AdminId = Column(Integer)
     sex = Column(String)
     gender = Column(String)
     height = Column(Float)
@@ -32,9 +31,9 @@ class FISPDS_PersonalDetails(Base):
     is_delete = Column(Boolean, default=False)
 
 # Pydantic model for data validation
-class FISPDS_PersonalDetails_Model(BaseModel):
+class AdminFISPDS_PersonalDetails_Model(BaseModel):
     id: int
-    FacultyId : int
+    AdminId : int
     sex : Optional[str]
     gender : Optional[str]
     height : Optional[float]
@@ -58,14 +57,14 @@ class FISPDS_PersonalDetails_Model(BaseModel):
 
 
 
-# PDS Contact Details  
+# ADMIN PDS Contact Details  
 # --------------------------------------------------------------
 
-class FISPDS_ContactDetails(Base):
+class AdminFISPDS_ContactDetails(Base):
     __tablename__ = 'FISPDS_ContactDetails'
 
     id = Column(Integer, primary_key=True, index=True)
-    FacultyId = Column(Integer)
+    AdminId = Column(Integer)
     Email = Column(String)
     mobile_number = Column(String)
     perm_country = Column(String)
@@ -86,9 +85,9 @@ class FISPDS_ContactDetails(Base):
     is_delete = Column(Boolean, default=False)
 
 # Pydantic model for data validation
-class FISPDS_ContactDetails_Model(BaseModel):
+class AdminFISPDS_ContactDetails_Model(BaseModel):
     id: int
-    FacultyId : int
+    AdminId : int
     Email : Optional[str]
     mobile_number : Optional[str]
     perm_country : Optional[str]
@@ -111,4 +110,3 @@ class FISPDS_ContactDetails_Model(BaseModel):
     class Config:
         orm_mode = True
         from_attributes=True
-        

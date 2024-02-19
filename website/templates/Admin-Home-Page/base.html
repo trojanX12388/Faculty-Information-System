@@ -200,7 +200,7 @@
           
           <!-- Your existing HTML code with the modified logout link -->
           <li>
-            <a class="dropdown-item d-flex align-items-center" href="/logout" onclick="logout()">
+            <a class="dropdown-item d-flex align-items-center" href="/admin-logout" onclick="logout()">
                   <i class="bi bi-box-arrow-right"></i>
                   <span>Sign Out</span>
               </a>
@@ -1022,10 +1022,16 @@
                       <td>{{ faculty_info['FacultyType'] }}</td>
                       <td>{{ faculty_info['Rank'] }}</td>
                       <td class="fw-bold">{{ faculty_info['Units'] }}</td>
-                      {% if faculty_info['IsActive'] == True %}
-                      <td><span class="badge bg-success">Active</span></td>
-                      {% else %}
-                      <td><span class="badge bg-danger">Inactive</span></td>
+                      {% if faculty_info['Status'] == "Active" %}
+                      <td><h6 class="badge bg-success" style="width:158px;height:20px;">Active</h6></td>
+                      {% elif faculty_info['Status'] == "Locked" %}
+                      <td><h6 class="badge bg-warning" style="width:158px;height:20px;">Locked</h6></td>
+                      {% elif faculty_info['Status'] == "Disabled" %}
+                      <td><h6 class="badge bg-danger" style="width:158px;height:20px;">Disabled</h6></td>
+                      {% elif faculty_info['Status'] == "Deactivated" %}
+                      <td><h6 class="badge bg-secondary" style="width:158px;height:20px;">Deactivated</h6></td>
+                      {% else  %}
+                      <td><h6 class="badge bg-light text-dark" style="width:158px;height:20px;">Unknown</h6></td>
                       {% endif %}
                     </tr>
                   {% endfor %}
