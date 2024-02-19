@@ -1,5 +1,6 @@
 {% extends "/System-Admin-Page/base.html" %}{% block title %}Faculty Management{% endblock %} {% block content%}
 
+
 <main id="main" class="main">
   <div class="pagetitle">
     <h1>Faculty Management</h1>
@@ -46,6 +47,21 @@
 
   </style>
 
+  
+<style>
+  .close {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+  }
+
+  .close-icon {
+      color: #000; /* Set the color you want for the "x" */
+      font-size: 20px; /* Set the font size for the "x" */
+  }
+</style>
+
   <section class="section dashboard">
     <div class="row">
 
@@ -59,6 +75,38 @@
 
         <div class="card-body">
           <h5 class="card-title">Faculty Members</h5>
+            {# DISPLAY NOTIFICATION ERROR  #} 
+            
+          {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+              {% for category, message in messages %}
+                  {% if category == 'error' %}
+                      <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-between" role="alert" style="z-index:1;">
+                          <div>{{ message }}</div>
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="closeNotification(this)">
+                              <span aria-hidden="true" class="close-icon">&times;</span>
+                          </button>
+                      </div>
+                  {% elif category == 'success' %}
+                      <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between" role="alert" style="z-index:1;">
+                          <div>{{ message }}</div>
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="closeNotification(this)">
+                              <span aria-hidden="true" class="close-icon">&times;</span>
+                          </button>
+                      </div>
+                  {% endif %}
+              {% endfor %}
+          {% endif %}
+      {% endwith %}
+
+        <script>
+          function closeNotification(button) {
+              // Find the parent notification element and remove it
+              var notification = button.closest('.alert');
+              notification.remove();
+          }
+      </script>
+
           <div class="d-grid gap-2 mt-3">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-end">
               <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#addrecord"><i class="bi bi-plus-circle"></i> Add New Faculty</button>
@@ -69,104 +117,481 @@
           <table class="table table-borderless datatable">
             <thead>
               <tr>
-                <th>ID</th>
+                <th>Faculty ID</th>
                 <th>Profile Image</th>
                 <th>Name</th>
                 <th>Date Hired</th>
                 <th>Account Status</th>
-                <th>Action</th>
+                <th>Edit Information</th>
+                <th>Update Status</th>
               </tr>
             </thead>
-            <tbody id="facultyBody"></tbody>
+            <tbody>
+              {% for faculty_id in FacultyIds %}
+              {% set faculty_info = api_data['Faculties'][faculty_id] %}
+              <tr>
+                <td><h6>{{ faculty_id }}</h6></td>
+                <td><img src="https://lh3.googleusercontent.com/d/{{ faculty_info['ProfilePic'] }}" alt="Profile Pic" style="width:90px;height:80px; border-radius: 10px 10px 10px 10px"></td>
+                <td>{{ faculty_info['FirstName']}} {{faculty_info['LastName']}}</td>
+                <td>{{ format_date(faculty_info['DateHired']) }}</td>
+                {% if faculty_info['IsActive'] == True %}
+                <td><h6 class="badge bg-success" style="width:158px;height:20px;">Active</h6></td>
+                {% elif faculty_info['IsActive'] == Locked %}
+                <td><h6 class="badge bg-warning" style="width:158px;height:20px;">Locked</h6></td>
+                {% elif faculty_info['IsActive'] == Disabled %}
+                <td><h6 class="badge bg-secondary" style="width:158px;height:20px;">Disabled</h6></td>
+                {% else %}
+                <td><h6 class="badge bg-danger" style="width:158px;height:20px;">Inactive</h6></td>
+                {% endif %}
+                <td>
+                  <button type="button" class="btn btn-secondary rounded-pill" data-bs-toggle="modal" data-bs-target="#{{ faculty_id }}"><i class="bi bi-file-earmark-text"></i></button>
+              </td>
+              <td>
+                <button type="submit" class="btn btn-warning rounded-pill" data-bs-toggle="modal" data-bs-target="#d{{ faculty_id }}"><i class="bi bi-patch-exclamation-fill"></i></button>
+            </td>
+              </tr>
+
+                  <!-- Edit Record Modal-->
+
+                  <div class="modal fade" id="{{faculty_id}}" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">Edit Faculty Information</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <ul class="nav nav-tabs nav-tabs-bordered">
+
+                            <li class="nav-item">
+                              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#{{faculty_id}}profile-overview">Faculty Information</button>
+                            </li>
+            
+                            <li class="nav-item">
+                              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#{{faculty_id}}profile-basic-details">Password</button>
+                            </li>
+            
+                          </ul>
+                  <div class="tab-content pt-2">
+
+                    <div class="tab-pane fade show active profile-overview" id="{{faculty_id}}profile-overview">
+
+                  <form action="/PDM-Eligibities" method="POST" enctype="multipart/form-data" accept-charset="utf-8" class="row g-3">
+                    <div class="modal-body">
+
+                         <h5 class="card-title">Basic Information</h5>
+          
+                         <div class="row mb-3">
+                          <label for="{{faculty_id}}first_name" class="col-md-4 col-lg-3 col-form-label">First Name</label>
+                          <div class="col-md-8 col-lg-9">
+                            <input required name="first_name" type="text" class="form-control" id="{{faculty_id}}first_name" value="{{faculty_info['FirstName']}}">
+                          </div>
+                        </div>
+          
+                         <div class="row mb-3">
+                          <label for="{{faculty_id}}last_name" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
+                          <div class="col-md-8 col-lg-9">
+                            <input required name="last_name" type="text" class="form-control" id="{{faculty_id}}last_name" value="{{faculty_info['LastName']}}">
+                          </div>
+                        </div>
+          
+                        <div class="row mb-3">
+                          <label for="{{faculty_id}}middle_name" class="col-md-4 col-lg-3 col-form-label">Middle Name</label>
+                          <div class="col-md-8 col-lg-9">
+                            <input name="middle_name" type="text" class="form-control" id="{{faculty_id}}middle_name" value="{{faculty_info['MiddleName']}}">
+                          </div>
+                        </div>
+          
+                        <div class="row mb-3">
+                          <label for="{{faculty_id}}middle_initial" class="col-md-4 col-lg-3 col-form-label">Middle Initial</label>
+                          <div class="col-md-8 col-lg-9">
+                            <div class="col-md-10" style="width:100%;">
+               
+                                <select class="form-select" name="middle_initial" id="{{faculty_id}}middle_initial" style="height:40px;" aria-label="{{faculty_id}}middle_initial">
+                                  <option selected value="{{faculty_info['MiddleInitial']}}">{{faculty_info['MiddleInitial']}}</option>
+                                  <option value="A">A</option>
+                                  <option value="B">B</option>
+                                  <option value="C">C</option>
+                                  <option value="D">D</option>
+                                  <option value="E">E</option>
+                                  <option value="F">F</option>
+                                  <option value="G">G</option>
+                                  <option value="H">H</option>
+                                  <option value="I">I</option>
+                                  <option value="J">J</option>
+                                  <option value="K">K</option>
+                                  <option value="L">L</option>
+                                  <option value="M">M</option>
+                                  <option value="N">N</option>
+                                  <option value="O">O</option>
+                                  <option value="P">P</option>
+                                  <option value="Q">Q</option>
+                                  <option value="R">R</option>
+                                  <option value="S">S</option>
+                                  <option value="T">T</option>
+                                  <option value="U">U</option>
+                                  <option value="V">V</option>
+                                  <option value="W">W</option>
+                                  <option value="X">X</option>
+                                  <option value="Y">Y</option>
+                                  <option value="Z">Z</option>
+                                  <option value="">N/A</option>
+                                </select>
+                           
+                          </div> 
+                          </div>
+                        </div>
+            
+                        <div class="row mb-3">
+                          <label for="{{faculty_id}}name_extension" class="col-md-4 col-lg-3 col-form-label">Name Extension</label>
+                          <div class="col-md-8 col-lg-9">
+                            <div class="col-md-10" style="width:100%;">
+               
+                                <select class="form-select" name="name_extension" id="{{faculty_id}}name_extension" style="height:40px;" aria-label="{{faculty_id}}name_extension">
+                                  <option selected value="{{faculty_info['NameExtension']}}">{% if faculty_info['NameExtension'] == "" %}
+                                    N/A
+                                  {% elif faculty_info['NameExtension'] == None %}
+                                    N/A
+                                    {% endif %}
+                                </option>
+                                  
+                                  <option value="JR">JR</option>
+                                  <option value="SR">SR</option>
+                                  <option value="II">II</option>
+                                  <option value="III">III</option>
+                                  <option value="IV">IV</option>
+                                  <option value="V">V</option>
+                                  <option value="">N/A</option>
+                                </select>
+                           
+                          </div> 
+                          </div>
+                        </div>
+          
+                        <div class="row mb-3">
+                          <label for="{{faculty_id}}gender" class="col-md-4 col-lg-3 col-form-label">Gender</label>
+                          <div class="col-md-8 col-lg-9">
+                            <div class="col-md-10" style="width:100%;">
+               
+                                <select class="form-select" name="gender" type="number" id="{{faculty_id}}gender" style="height:40px;" aria-label="{{faculty_id}}gender">
+                                  <option selected value="{{faculty_info['Gender']}}">{% if faculty_info['Gender'] == 1 %}
+                                    Male
+                                  {% else %}
+                                  Female
+                                  {% endif %}
+                                  </option>
+                                  <option value="1">Male</option>
+                                  <option value="2">Female</option>
+                                </select>
+                           
+                          </div> 
+                          </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                          <label for="{{faculty_id}}birth_date" class="col-md-4 col-lg-3 col-form-label">Birth Date</label>
+                          <div class="col-md-8 col-lg-9">
+                            <input required name="birth_date" type="date" class="form-control" id="{{faculty_id}}birth_date" value="{{ format_date_2(faculty_info['BirthDate']) }}">
+                          </div>
+                        </div>
+
+          
+                        <div class="row mb-3">
+                          <label for="{{faculty_id}}email" class="col-md-4 col-lg-3 col-form-label">Email Address</label>
+                          <div class="col-md-8 col-lg-9">
+                            <input required name="email" type="email" class="form-control" id="{{faculty_id}}email" value="{{faculty_info['Email']}}" >
+                          </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                          <label for="{{faculty_id}}honorific" class="col-md-4 col-lg-3 col-form-label">Honorific</label>
+                          <div class="col-md-8 col-lg-9">
+                            <input name="honorific" type="text" class="form-control" id="{{faculty_id}}honorific" value="{{faculty_info['Honorific']}}">
+                          </div>
+                        </div>
+          
+                        <div class="row mb-3">
+                          <label for="{{faculty_id}}res_address" class="col-md-4 col-lg-3 col-form-label">Residential Address</label>
+                          <div class="col-md-8 col-lg-9">
+                            <input name="res_address" type="text" class="form-control" id="{{faculty_id}}res_address" value="{{faculty_info['ResidentialAddress']}}">
+                          </div>
+                        </div>
+          
+                        <div class="row mb-3">
+                          <label for="{{faculty_id}}number" class="col-md-4 col-lg-3 col-form-label">Mobile Number</label>
+                          <div class="col-md-8 col-lg-9">
+                              <input name="number" type="text" class="form-control" id="{{faculty_id}}number" pattern="\d{11}" title="Enter a valid 11-digit mobile number" value="{{faculty_info['MobileNumber']}}"/>
+                          </div>
+                      </div>
+          
+          
+                        <br><br><br>
+          
+                        <h5 class="card-title">Faculty Information</h5>
+          
+                        <div class="row mb-3">
+                          <label for="{{faculty_id}}type" class="col-md-4 col-lg-3 col-form-label">Faculty Type</label>
+                          <div class="col-md-8 col-lg-9">
+                            <div class="col-md-10" style="width:100%;">
+               
+                                <select class="form-select" name="type" id="{{faculty_id}}type" style="height:40px;" aria-label="{{faculty_id}}type">
+                                  <option selected value="{{faculty_info['FacultyType']}}">{{faculty_info['FacultyType']}}</option>
+                                  <option value="Full Time">Full Time</option>
+                                  <option value="Part Time">Part Time</option>
+                                </select>
+                           
+                          </div> 
+                          </div>
+                        </div>
+          
+                        <div class="row mb-3">
+                          <label for="{{faculty_id}}rank" class="col-md-4 col-lg-3 col-form-label">Rank</label>
+                          <div class="col-md-8 col-lg-9">
+                            <div class="col-md-10" style="width:100%;">
+               
+                                <select class="form-select" name="rank" id="{{faculty_id}}rank" style="height:40px;" aria-label="{{faculty_id}}rank">
+                                  <option selected value="{{faculty_info['Rank']}}">{{faculty_info['Rank']}}</option>
+                                  <option value="Instructor I">Instructor I</option>
+                                  <option value="Instructor II">Instructor II</option>
+                                  <option value="Instructor III">Instructor III</option>
+                                  <option value="Instructor IV">Instructor IV</option>
+                                  <option value="Instructor V">Instructor V</option>
+          
+                                  <option value="Assistant Professor I">Assistant Professor I</option>
+                                  <option value="Assistant Professor II">Assistant Professor II</option>
+                                  <option value="Assistant Professor III">Assistant Professor III</option>
+                                  <option value="Assistant Professor IV">Assistant Professor IV</option>
+                                  <option value="Assistant Professor V">Assistant Professor V</option>
+                                  
+                                  <option value="Associate Professor I">Associate Professor I</option>
+                                  <option value="Associate Professor II">Associate Professor II</option>
+                                  <option value="Associate Professor III">Associate Professor III</option>
+                                  <option value="Associate Professor IV">Associate Professor IV</option>
+                                  <option value="Associate Professor V">Associate Professor V</option>
+                                </select>
+                           
+                          </div> 
+                          </div>
+                        </div>
+          
+                        <div class="row mb-3">
+                          <label for="{{faculty_id}}units" class="col-md-4 col-lg-3 col-form-label">Units</label>
+                          <div class="col-md-8 col-lg-9">
+                              <input required name="units" type="text" class="form-control" id="{{faculty_id}}units" pattern="\d+(\.\d{1,2})?" title="Enter a valid decimal number" value="{{faculty_info['Units']}}"/>
+                          </div>
+                      </div>
+          
+                        <div class="row mb-3">
+                          <label for="{{faculty_id}}degree" class="col-md-4 col-lg-3 col-form-label">Degree</label>
+                          <div class="col-md-8 col-lg-9">
+                            <div class="col-md-10" style="width:100%;">
+               
+                                <select class="form-select" name="degree" id="{{faculty_id}}degree" style="height:40px;" aria-label="degree">
+                                  <!-- Master's Degrees -->
+                                  <option selected value="{{faculty_info['Degree']}}">{{faculty_info['Degree']}}</option>
+                                  <option value="Master in Business Administration">Master in Business Administration</option>
+                                  <option value="Master of Science in Computer Science">Master of Science in Computer Science</option>
+                                  <option value="Master of Fine Arts in Creative Writing">Master of Fine Arts in Creative Writing</option>
+                                  <option value="Master of Social Work">Master of Social Work</option>
+                                  <option value="Master of Architecture">Master of Architecture</option>
+                                  <option value="Master of Public Health">Master of Public Health</option>
+                                  <option value="Master of Education">Master of Education</option>
+                                  <option value="Master of Laws">Master of Laws</option>
+                                  <option value="Master of Engineering in Civil Engineering">Master of Engineering in Civil Engineering</option>
+                                  <option value="Master of Arts in English Literature">Master of Arts in English Literature</option>
+                                  <option value="Master of Information Technology">Master of Information Technology</option>
+                                  <option value="Master of Computer Science">Master of Computer Science</option>
+                                  <option value="Master of Information Systems">Master of Information Systems</option>
+                                  <option value="Master of Software Development">Master of Software Development</option>
+                                  <option value="Master of Data Analytics">Master of Data Analytics</option>
+                                  <!-- Bachelor's Degrees -->
+                                  <option value="Bachelor in Physical Education">Bachelor in Physical Education</option>
+                                  <option value="Bachelor of Arts in Psychology">Bachelor of Arts in Psychology</option>
+                                  <option value="Bachelor of Engineering in Mechanical Engineering">Bachelor of Engineering in Mechanical Engineering</option>
+                                  <option value="Bachelor of Science in Environmental Science">Bachelor of Science in Environmental Science</option>
+                                  <option value="Bachelor of Music">Bachelor of Music</option>
+                                  <option value="Bachelor of Business Administration">Bachelor of Business Administration</option>
+                                  <option value="Bachelor of Science in Chemistry">Bachelor of Science in Chemistry</option>
+                                  <option value="Bachelor of Communication Studies">Bachelor of Communication Studies</option>
+                                  <option value="Bachelor of Social Work">Bachelor of Social Work</option>
+                                  <option value="Bachelor of Software Engineering">Bachelor of Software Engineering</option>
+                                  <option value="Bachelor of Data Science">Bachelor of Data Science</option>
+                                  <option value="Bachelor of Science in Information Technology">Bachelor of Science in Information Technology</option>
+                                  <option value="Bachelor of Fine Arts in Graphic Design">Bachelor of Fine Arts in Graphic Design</option>
+                                  <option value="Bachelor of Science in Nursing">Bachelor of Science in Nursing</option>
+                                  <option value="Bachelor of Fine Arts in Photography">Bachelor of Fine Arts in Photography</option>
+                                  <!-- Other Degrees -->
+                                  <option value="Doctor in Public Administration">Doctor in Public Administration</option>
+                                  <option value="Doctor of Medicine">Doctor of Medicine</option>
+                                  <option value="Doctor of Philosophy in Economics">Doctor of Philosophy in Economics</option>
+                                  <option value="Doctor of Dental Medicine">Doctor of Dental Medicine</option>
+                                  <option value="Doctor of Psychology">Doctor of Psychology</option>
+                                  <option value="Doctor of Veterinary Medicine">Doctor of Veterinary Medicine</option>
+                                  <option value="Juris Doctor">Juris Doctor</option>
+                                </select>
+                           
+                          </div> 
+                          </div>
+                        </div>
+          
+                        <div class="row mb-3">
+                          <label for="{{faculty_id}}specialization" class="col-md-4 col-lg-3 col-form-label">Specialization</label>
+                          <div class="col-md-8 col-lg-9">
+                              <input name="specialization" type="text" class="form-control" id="{{faculty_id}}specialization" value="{{faculty_info['Specialization']}}"/>
+                          </div>
+                      </div>
+          
+                        <div class="row mb-3">
+                          <label for="{{faculty_id}}date_hired" class="col-md-4 col-lg-3 col-form-label">Date Hired</label>
+                          <div class="col-md-8 col-lg-9">
+                            <input required name="date_hired" type="date" class="form-control" id="{{faculty_id}}date_hired" value="{{ format_date_2(faculty_info['DateHired']) }}" >
+                          </div>
+                        </div>
+          
+                        <br><br><br>
+          
+                        <h5 class="card-title">Preferred Schedule</h5>
+
+                        <div class="row mb-3">
+                          <label for="day{{faculty_id}}" class="col-md-4 col-lg-3 col-form-label">Day</label>
+                          <div class="col-md-8 col-lg-9">
+                            <div class="col-md-10" style="width:100%;">
+               
+                                <select class="form-select" name="day" id="day{{faculty_id}}" style="height:40px;" aria-label="day{{faculty_id}}">
+                                  <option selected value="{{ extract_day_and_time(faculty_info['PreferredSchedule'])[0] }}">{{ extract_day_and_time(faculty_info['PreferredSchedule'])[0] }}</option>
+                                  <option value="Monday">Monday</option>
+                                  <option value="Tuesday">Tuesday</option>
+                                  <option value="Wednesday">Wednesday</option>
+                                  <option value="Thursday">Thursday</option>
+                                  <option value="Friday">Friday</option>
+                                  <option value="Monday to Tuesday">Monday to Tuesday</option>
+                                  <option value="Monday to Wednesday">Monday to Wednesday</option>
+                                  <option value="Monday to Thursday">Monday to Thursday</option>
+                                  <option value="Monday to Friday">Monday to Friday</option>
+                                  <option value="Tuesday to Wednesday">Tuesday to Wednesday</option>
+                                  <option value="Tuesday to Thursday">Tuesday to Thursday</option>
+                                  <option value="Tuesday to Friday">Tuesday to Friday</option>
+                                  <option value="Wednesday to Thursday">Wednesday to Thursday</option>
+                                  <option value="Wednesday to Friday">Wednesday to Friday</option>
+                                  <option value="Thursday to Friday">Thursday to Friday</option>
+                                  <option value="Monday, Wednesday, and Friday">Monday, Wednesday, and Friday</option>
+                                  <option value="Tuesday, Thursday, and Friday">Tuesday, Thursday, and Friday</option>
+                                  <option value="Monday, Tuesday, and Thursday">Monday, Tuesday, and Thursday</option>
+                                  <option value="Every Day">Every Day</option>
+                                </select>
+                           
+                          </div> 
+                          </div>
+                        </div>
+          
+                        <div class="row mb-3">
+                          <label for="{{faculty_id}}time" class="col-md-4 col-lg-3 col-form-label">Time</label>
+                          <div class="col-md-8 col-lg-9">
+                            <div class="col-md-10" style="width:100%;">
+               
+                                <select class="form-select" name="time" id="{{faculty_id}}time" style="height:40px;" aria-label="{{faculty_id}}time">
+                                  <option selected value="{{ extract_day_and_time(faculty_info['PreferredSchedule'])[1] }}">{{ extract_day_and_time(faculty_info['PreferredSchedule'])[1] }}</option>
+                                  <option value="9:00 AM - 12:00 PM">Morning (9:00 AM - 12:00 PM)</option>
+                                  <option value="12:00 PM - 2:00 PM">Noon (12:00 PM - 2:00 PM)</option>
+                                  <option value="2:00 PM - 6:00 PM">Afternoon (2:00 PM - 6:00 PM)</option>
+                                  <option value="6:00 PM - 9:00 PM">Evening (6:00 PM - 9:00 PM)</option>
+                                  <option value="Whole Day">Whole Day</option>
+                                </select>
+                           
+                          </div> 
+                          </div>
+                        </div>
+          
+                        <br><br><br>
+          
+                    </div>  
+                        </div>
+                        <div class="tab-content pt-2">
+                        <div class="tab-pane fade profile-edit pt-2" id="{{faculty_id}}profile-basic-details">
+
+                          <div class="modal-body">
+
+                            <h5 class="card-title">Current Password</h5>
+
+                            <button onclick="togglePasswordInput('{{faculty_id}}')">Toggle Password Input</button>
+                            
+                          <div class="row mb-3">
+                              <label for="{{faculty_id}}password" class="col-md-4 col-lg-3 col-form-label">Password</label>
+                              <div class="col-md-8 col-lg-9">
+                                <input name="password" type="password" class="form-control" id="{{faculty_id}}password" value="asdsadwad" Disabled>
+                              </div>
+                          </div>
+
+                          <script>
+                            function togglePasswordInput(facultyId) {
+                                var passwordInput = document.getElementById(facultyId + 'password');
+                            
+                                // Check if the input is currently disabled
+                                if (passwordInput.disabled) {
+                                    // Enable the input
+                                    passwordInput.disabled = false;
+                                } else {
+                                    // Disable the input
+                                    passwordInput.disabled = true;
+                                }
+                            }
+                            </script>
+
+                          <h5 class="card-title">Change Password</h5>
+
+                          <div class="row mb-3">
+                              <label for="{{faculty_id}}new_password" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+                              <div class="col-md-8 col-lg-9">
+                                <input name="new_password" type="password" class="form-control" id="{{faculty_id}}new_password" value="">
+                              </div>
+                          </div>
+            
+                          <br><br><br>
+            
+                        </div>
+
+                        </div>
+                      </div>
+                        <div class="modal-footer">
+                          <input required type="hidden" name="id" value="faculty_id"></input> 
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
+                          <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Update</button>
+                        </div>
+                  </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                  </div><!-- End Edit Record Modal-->
+                
+  
+                  <!-- Delete Record Modal-->
+                
+                  <div class="modal fade" id="d{{faculty_id}}" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">Delete Faculty</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        <form action="/PDM-Eligibities/delete-record" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+                            <input required type="hidden" name="id" value="{{faculty_id}}"></input> 
+                          <h5 class="modal-title">Are you sure you want to delete this record?</h5>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
+                            <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Confirm</button>
+                          </div>
+                      </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div><!-- End Delete Record Modal-->
+
+            {% endfor %}
+
+            </tbody>
           </table>
-
-
-<!-- Include jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
-<script>
-  // Wrap the ajax call in a function that returns a Promise
-  function fetchData() {
-    return new Promise(function(resolve, reject) {
-      $.ajax({
-        url: '/api/FISFaculty',
-        type: 'GET',
-        headers: {
-          'Authorization': 'API-Key',
-          'token': '{{ token }}', // Replace ' token ' with the actual token variable
-        },
-        success: function(data) {
-          resolve(data);
-        },
-        error: function(error) {
-          reject(error);
-        }
-      });
-    });
-  }
-
-  // Function to handle data fetching with retries
-  async function fetchDataWithRetry(retries = 3) {
-    try {
-      const data = await fetchData(); // Wait for the data to be fetched
-      return data;
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      
-      if (retries > 0) {
-        console.log(`Retrying... ${retries} attempts left.`);
-        return fetchDataWithRetry(retries - 1); // Retry with decreased attempts
-      } else {
-        throw new Error('Max retries reached. Unable to fetch data.');
-      }
-    }
-  }
-
-  // Use the async attribute and await keyword in the script
-  (async function() {
-    try {
-      const data = await fetchDataWithRetry(); // Wait for the data to be fetched with retry
-
-      // Update the HTML content with faculty names in a table
-      const facultyBody = document.getElementById('facultyBody');
-
-      // Assuming each faculty object has properties like "FacultyId" and "FirstName"
-      data.Faculties.forEach(faculty => {
-        // Accessing specific properties
-        const facultyId = faculty.FacultyId;
-        const ProfilePic = faculty.ProfilePic;
-        const Name = faculty.FirstName + ' ' + faculty.LastName;
-        const DateHired = faculty.DateHired;
-        const AccountStatus = faculty.IsActive; // Assuming AccountStatus is a property in your API response
-
-        // Create a table row with the faculty information
-        const row = facultyBody.insertRow();
-        const cell1 = row.insertCell(0);
-        const cell2 = row.insertCell(1);
-        const cell3 = row.insertCell(2);
-        const cell4 = row.insertCell(3);
-        const cell5 = row.insertCell(4);
-        const cell6 = row.insertCell(5);
-
-        // Set the href through ID and the profile pic image
-        cell1.innerHTML = `<a href="/faculty-member/${facultyId}">${facultyId}</a>`;
-        cell2.innerHTML = `<img src="https://lh3.googleusercontent.com/d/${ProfilePic}" alt="Profile Pic" style="width:90px;height:80px; border-radius: 10px 10px 10px 10px">`;
-        cell3.textContent = Name;
-        cell4.textContent = DateHired;
-        cell5.innerHTML = '<td><h6 class="badge bg-success" style="width:158px;height:20px;">Active</h6></td>';
-        cell6.innerHTML = `<td>
-          <button type="button" class="btn btn-outline-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#10016"><i class="bi bi-file-earmark-text"></i></button>
-          <button type="submit" class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#d10016"><i class="bi bi-trash"></i></button>
-      </td>`;;
-        
-      });
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  })();
-</script>
-
 
         </div>
 
@@ -176,69 +601,6 @@
    
   </section>
 </main><!-- End #main -->
-
-
-  <!-- Edit Record Modal-->
-
-  <div class="modal fade" id="10016" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Edit Record</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-
-  <form action="/PDM-Eligibities" method="POST" enctype="multipart/form-data" accept-charset="utf-8" class="row g-3">
-          <br>
-          <div class="col-md-10">
-            <div class="form-floating">
-              <input type="text" name="eligibity" class="form-control" id="floatingschool_eligibity" placeholder="Eligibity" value="" required>
-              <label for="floatingschool_eligibity">Eligibity</label>
-            </div>
-          </div>  
-          <br>   
-          <div class="col-md-10">
-            <div class="form-floating">
-              <input type="text" name="rating" class="form-control" id="floatingschool_rating" placeholder="Rating" value="" required>
-              <label for="floatingschool_rating">Rating</label>
-            </div>
-          </div>    
-        </div>
-        <div class="modal-footer">
-          <input type="hidden" name="id" value="10016"></input>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
-          <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Update</button>
-        </div>
-  </form>
-      </div>
-    </div>
-  </div><!-- End Edit Record Modal-->
-
-
-  <!-- Delete Record Modal-->
-
-  <div class="modal fade" id="d10016" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Delete Record</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-        <form action="/PDM-Eligibities/delete-record" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
-            <input type="hidden" name="id" value="10016"></input>
-          <h5 class="modal-title">Are you sure you want to delete this record?</h5>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
-            <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Confirm</button>
-          </div>
-      </form>
-        </div>
-      </div>
-    </div>
-  </div><!-- End Delete Record Modal-->
-
 
      <!-- Add Record Modal-->
 
@@ -251,21 +613,21 @@
           </div>
           <div class="modal-body">
 
-            <form method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+            <form action="/auth/sysadmin/Faculty-Management/add-record" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
      
                <h5 class="card-title">Basic Information</h5>
 
                <div class="row mb-3">
                 <label for="first_name" class="col-md-4 col-lg-3 col-form-label">First Name</label>
                 <div class="col-md-8 col-lg-9">
-                  <input name="first_name" type="text" class="form-control" id="first_name" value="">
+                  <input required name="first_name" type="text" class="form-control" id="first_name" value="">
                 </div>
               </div>
 
                <div class="row mb-3">
                 <label for="last_name" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
                 <div class="col-md-8 col-lg-9">
-                  <input name="last_name" type="text" class="form-control" id="last_name" value="">
+                  <input required name="last_name" type="text" class="form-control" id="last_name" value="">
                 </div>
               </div>
 
@@ -282,7 +644,8 @@
                   <div class="col-md-10" style="width:100%;">
      
                       <select class="form-select" name="middle_initial" id="middle_initial" style="height:40px;" aria-label="name_extension">
-                        <option selected="" value="">A</option>
+                        
+                        <option value="A">A</option>
                         <option value="B">B</option>
                         <option value="C">C</option>
                         <option value="D">D</option>
@@ -308,6 +671,7 @@
                         <option value="X">X</option>
                         <option value="Y">Y</option>
                         <option value="Z">Z</option>
+                        <option value="">N/A</option>
                       </select>
                  
                 </div> 
@@ -320,13 +684,15 @@
                   <div class="col-md-10" style="width:100%;">
      
                       <select class="form-select" name="name_extension" id="name_extension" style="height:40px;" aria-label="name_extension">
-                        <option selected="" value="">None</option>
+                        
                         <option value="JR">JR</option>
                         <option value="SR">SR</option>
                         <option value="II">II</option>
                         <option value="III">III</option>
                         <option value="IV">IV</option>
                         <option value="V">V</option>
+                        <option selected="" value="">N/A</option>
+
                       </select>
                  
                 </div> 
@@ -334,14 +700,13 @@
               </div>
 
               <div class="row mb-3">
-                <label for="name_extension" class="col-md-4 col-lg-3 col-form-label">Gender</label>
+                <label for="gender" class="col-md-4 col-lg-3 col-form-label">Gender</label>
                 <div class="col-md-8 col-lg-9">
                   <div class="col-md-10" style="width:100%;">
      
-                      <select class="form-select" name="name_extension" id="name_extension" style="height:40px;" aria-label="name_extension">
-                        <option selected="" value="">Male</option>
-                        <option value="JR">Male</option>
-                        <option value="SR">Female</option>
+                      <select class="form-select" name="gender" type="number" id="gender" style="height:40px;" aria-label="gender">
+                        <option value="1">Male</option>
+                        <option value="2">Female</option>
                       </select>
                  
                 </div> 
@@ -351,14 +716,14 @@
               <div class="row mb-3">
                 <label for="birth_date" class="col-md-4 col-lg-3 col-form-label">Birth Date</label>
                 <div class="col-md-8 col-lg-9">
-                  <input name="birth_date" type="date" class="form-control" id="birth_date" value="">
+                  <input required name="birth_date" type="date" class="form-control" id="birth_date" value="">
                 </div>
               </div>
 
               <div class="row mb-3">
                 <label for="email" class="col-md-4 col-lg-3 col-form-label">Email Address</label>
                 <div class="col-md-8 col-lg-9">
-                  <input name="email" type="text" class="form-control" id="email" value="" >
+                  <input required name="email" type="email" class="form-control" id="email" value="" >
                 </div>
               </div>
               
@@ -370,18 +735,18 @@
               </div>
 
               <div class="row mb-3">
-                <label for="honorific" class="col-md-4 col-lg-3 col-form-label">Residential Address</label>
+                <label for="res_address" class="col-md-4 col-lg-3 col-form-label">Residential Address</label>
                 <div class="col-md-8 col-lg-9">
-                  <input name="honorific" type="text" class="form-control" id="honorific" value="">
+                  <input name="res_address" type="text" class="form-control" id="res_address" value="">
                 </div>
               </div>
 
               <div class="row mb-3">
-                <label for="honorific" class="col-md-4 col-lg-3 col-form-label">Mobile Number</label>
+                <label for="number" class="col-md-4 col-lg-3 col-form-label">Mobile Number</label>
                 <div class="col-md-8 col-lg-9">
-                  <input name="honorific" type="text" class="form-control" id="honorific" value="">
+                    <input name="number" type="text" class="form-control" id="number" pattern="\d{11}" title="Enter a valid 11-digit mobile number" />
                 </div>
-              </div>
+            </div>
 
 
               <br><br><br>
@@ -389,18 +754,13 @@
               <h5 class="card-title">Faculty Information</h5>
 
               <div class="row mb-3">
-                <label for="name_extension" class="col-md-4 col-lg-3 col-form-label">Faculty Type</label>
+                <label for="type" class="col-md-4 col-lg-3 col-form-label">Faculty Type</label>
                 <div class="col-md-8 col-lg-9">
                   <div class="col-md-10" style="width:100%;">
      
-                      <select class="form-select" name="name_extension" id="name_extension" style="height:40px;" aria-label="name_extension">
-                        <option selected="" value="">None</option>
-                        <option value="JR">JR</option>
-                        <option value="SR">SR</option>
-                        <option value="II">II</option>
-                        <option value="III">III</option>
-                        <option value="IV">IV</option>
-                        <option value="V">V</option>
+                      <select class="form-select" name="type" id="type" style="height:40px;" aria-label="type">
+                        <option value="Full Time">Full Time</option>
+                        <option value="Part Time">Part Time</option>
                       </select>
                  
                 </div> 
@@ -408,18 +768,28 @@
               </div>
 
               <div class="row mb-3">
-                <label for="name_extension" class="col-md-4 col-lg-3 col-form-label">Rank</label>
+                <label for="rank" class="col-md-4 col-lg-3 col-form-label">Rank</label>
                 <div class="col-md-8 col-lg-9">
                   <div class="col-md-10" style="width:100%;">
      
-                      <select class="form-select" name="name_extension" id="name_extension" style="height:40px;" aria-label="name_extension">
-                        <option selected="" value="">None</option>
-                        <option value="JR">JR</option>
-                        <option value="SR">SR</option>
-                        <option value="II">II</option>
-                        <option value="III">III</option>
-                        <option value="IV">IV</option>
-                        <option value="V">V</option>
+                      <select class="form-select" name="rank" id="rank" style="height:40px;" aria-label="rank">
+                        <option value="Instructor I">Instructor I</option>
+                        <option value="Instructor II">Instructor II</option>
+                        <option value="Instructor III">Instructor III</option>
+                        <option value="Instructor IV">Instructor IV</option>
+                        <option value="Instructor V">Instructor V</option>
+
+                        <option value="Assistant Professor I">Assistant Professor I</option>
+                        <option value="Assistant Professor II">Assistant Professor II</option>
+                        <option value="Assistant Professor III">Assistant Professor III</option>
+                        <option value="Assistant Professor IV">Assistant Professor IV</option>
+                        <option value="Assistant Professor V">Assistant Professor V</option>
+                        
+                        <option value="Associate Professor I">Associate Professor I</option>
+                        <option value="Associate Professor II">Associate Professor II</option>
+                        <option value="Associate Professor III">Associate Professor III</option>
+                        <option value="Associate Professor IV">Associate Professor IV</option>
+                        <option value="Associate Professor V">Associate Professor V</option>
                       </select>
                  
                 </div> 
@@ -427,18 +797,58 @@
               </div>
 
               <div class="row mb-3">
-                <label for="name_extension" class="col-md-4 col-lg-3 col-form-label">Units</label>
+                <label for="units" class="col-md-4 col-lg-3 col-form-label">Units</label>
+                <div class="col-md-8 col-lg-9">
+                    <input required name="units" type="text" class="form-control" id="units" pattern="\d+(\.\d{1,2})?" title="Enter a valid decimal number" />
+                </div>
+            </div>
+
+              <div class="row mb-3">
+                <label for="degree" class="col-md-4 col-lg-3 col-form-label">Degree</label>
                 <div class="col-md-8 col-lg-9">
                   <div class="col-md-10" style="width:100%;">
      
-                      <select class="form-select" name="name_extension" id="name_extension" style="height:40px;" aria-label="name_extension">
-                        <option selected="" value="">None</option>
-                        <option value="JR">JR</option>
-                        <option value="SR">SR</option>
-                        <option value="II">II</option>
-                        <option value="III">III</option>
-                        <option value="IV">IV</option>
-                        <option value="V">V</option>
+                      <select class="form-select" name="degree" id="degree" style="height:40px;" aria-label="degree">
+                        <!-- Master's Degrees -->
+                        <option value="Master in Business Administration">Master in Business Administration</option>
+                        <option value="Master of Science in Computer Science">Master of Science in Computer Science</option>
+                        <option value="Master of Fine Arts in Creative Writing">Master of Fine Arts in Creative Writing</option>
+                        <option value="Master of Social Work">Master of Social Work</option>
+                        <option value="Master of Architecture">Master of Architecture</option>
+                        <option value="Master of Public Health">Master of Public Health</option>
+                        <option value="Master of Education">Master of Education</option>
+                        <option value="Master of Laws">Master of Laws</option>
+                        <option value="Master of Engineering in Civil Engineering">Master of Engineering in Civil Engineering</option>
+                        <option value="Master of Arts in English Literature">Master of Arts in English Literature</option>
+                        <option value="Master of Information Technology">Master of Information Technology</option>
+                        <option value="Master of Computer Science">Master of Computer Science</option>
+                        <option value="Master of Information Systems">Master of Information Systems</option>
+                        <option value="Master of Software Development">Master of Software Development</option>
+                        <option value="Master of Data Analytics">Master of Data Analytics</option>
+                        <!-- Bachelor's Degrees -->
+                        <option value="Bachelor in Physical Education">Bachelor in Physical Education</option>
+                        <option value="Bachelor of Arts in Psychology">Bachelor of Arts in Psychology</option>
+                        <option value="Bachelor of Engineering in Mechanical Engineering">Bachelor of Engineering in Mechanical Engineering</option>
+                        <option value="Bachelor of Science in Environmental Science">Bachelor of Science in Environmental Science</option>
+                        <option value="Bachelor of Music">Bachelor of Music</option>
+                        <option value="Bachelor of Business Administration">Bachelor of Business Administration</option>
+                        <option value="Bachelor of Science in Chemistry">Bachelor of Science in Chemistry</option>
+                        <option value="Bachelor of Communication Studies">Bachelor of Communication Studies</option>
+                        <option value="Bachelor of Social Work">Bachelor of Social Work</option>
+                        <option value="Bachelor of Software Engineering">Bachelor of Software Engineering</option>
+                        <option value="Bachelor of Data Science">Bachelor of Data Science</option>
+                        <option value="Bachelor of Science in Information Technology">Bachelor of Science in Information Technology</option>
+                        <option value="Bachelor of Fine Arts in Graphic Design">Bachelor of Fine Arts in Graphic Design</option>
+                        <option value="Bachelor of Science in Nursing">Bachelor of Science in Nursing</option>
+                        <option value="Bachelor of Fine Arts in Photography">Bachelor of Fine Arts in Photography</option>
+                        <!-- Other Degrees -->
+                        <option value="Doctor in Public Administration">Doctor in Public Administration</option>
+                        <option value="Doctor of Medicine">Doctor of Medicine</option>
+                        <option value="Doctor of Philosophy in Economics">Doctor of Philosophy in Economics</option>
+                        <option value="Doctor of Dental Medicine">Doctor of Dental Medicine</option>
+                        <option value="Doctor of Psychology">Doctor of Psychology</option>
+                        <option value="Doctor of Veterinary Medicine">Doctor of Veterinary Medicine</option>
+                        <option value="Juris Doctor">Juris Doctor</option>
                       </select>
                  
                 </div> 
@@ -446,40 +856,65 @@
               </div>
 
               <div class="row mb-3">
-                <label for="name_extension" class="col-md-4 col-lg-3 col-form-label">Degree</label>
+                <label for="specialization" class="col-md-4 col-lg-3 col-form-label">Specialization</label>
                 <div class="col-md-8 col-lg-9">
-                  <div class="col-md-10" style="width:100%;">
-     
-                      <select class="form-select" name="name_extension" id="name_extension" style="height:40px;" aria-label="name_extension">
-                        <option selected="" value="">None</option>
-                        <option value="JR">JR</option>
-                        <option value="SR">SR</option>
-                        <option value="II">II</option>
-                        <option value="III">III</option>
-                        <option value="IV">IV</option>
-                        <option value="V">V</option>
-                      </select>
-                 
-                </div> 
+                    <input name="specialization" type="text" class="form-control" id="specialization" />
                 </div>
-              </div>
+            </div>
 
               <div class="row mb-3">
                 <label for="date_hired" class="col-md-4 col-lg-3 col-form-label">Date Hired</label>
                 <div class="col-md-8 col-lg-9">
-                  <input name="date_hired" type="date" class="form-control" id="date_hired" value="">
+                  <input required name="date_hired" type="date" class="form-control" id="date_hired" value="" >
+                </div>
+              </div>
+
+              <br><br><br>
+
+              <h5 class="card-title">Preferred Schedule</h5>
+
+              <div class="row mb-3">
+                <label for="day" class="col-md-4 col-lg-3 col-form-label">Day</label>
+                <div class="col-md-8 col-lg-9">
+                  <div class="col-md-10" style="width:100%;">
+     
+                      <select class="form-select" name="day" id="day" style="height:40px;" aria-label="day">
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Monday to Tuesday">Monday to Tuesday</option>
+                        <option value="Monday to Wednesday">Monday to Wednesday</option>
+                        <option value="Monday to Thursday">Monday to Thursday</option>
+                        <option value="Monday to Friday">Monday to Friday</option>
+                        <option value="Tuesday to Wednesday">Tuesday to Wednesday</option>
+                        <option value="Tuesday to Thursday">Tuesday to Thursday</option>
+                        <option value="Tuesday to Friday">Tuesday to Friday</option>
+                        <option value="Wednesday to Thursday">Wednesday to Thursday</option>
+                        <option value="Wednesday to Friday">Wednesday to Friday</option>
+                        <option value="Thursday to Friday">Thursday to Friday</option>
+                        <option value="Monday, Wednesday, and Friday">Monday, Wednesday, and Friday</option>
+                        <option value="Tuesday, Thursday, and Friday">Tuesday, Thursday, and Friday</option>
+                        <option value="Monday, Tuesday, and Thursday">Monday, Tuesday, and Thursday</option>
+                        <option value="Every Day">Every Day</option>
+                      </select>
+                 
+                </div> 
                 </div>
               </div>
 
               <div class="row mb-3">
-                <label for="name_extension" class="col-md-4 col-lg-3 col-form-label">Preferred Schedule</label>
+                <label for="time" class="col-md-4 col-lg-3 col-form-label">Time</label>
                 <div class="col-md-8 col-lg-9">
                   <div class="col-md-10" style="width:100%;">
      
-                      <select class="form-select" name="name_extension" id="name_extension" style="height:40px;" aria-label="name_extension">
-                        <option selected="" value="">Male</option>
-                        <option value="JR">Male</option>
-                        <option value="SR">Female</option>
+                      <select class="form-select" name="time" id="time" style="height:40px;" aria-label="time">
+                        <option value="9:00 AM - 12:00 PM">Morning (9:00 AM - 12:00 PM)</option>
+                        <option value="12:00 PM - 2:00 PM">Noon (12:00 PM - 2:00 PM)</option>
+                        <option value="2:00 PM - 6:00 PM">Afternoon (2:00 PM - 6:00 PM)</option>
+                        <option value="6:00 PM - 9:00 PM">Evening (6:00 PM - 9:00 PM)</option>
+                        <option value="Whole Day">Whole Day</option>
                       </select>
                  
                 </div> 
@@ -488,7 +923,6 @@
 
               <br><br><br>
 
-            </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>

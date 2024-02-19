@@ -259,8 +259,6 @@ def adminH():
         part_time_counts = defaultdict(int)
         full_time_counts = defaultdict(int)
         
-        print(selected_token)
-        
         if response.status_code == 200:
             # Process the API response data
             api_data = response.json()
