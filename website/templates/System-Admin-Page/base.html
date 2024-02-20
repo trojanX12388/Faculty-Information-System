@@ -272,15 +272,19 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <main id="main" class="main">
-  <div class="pagetitle">
-    <h1>Dashboard</h1>
-    <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/auth/sysadmin/homepage">System Admin</a></li>
-        <li class="breadcrumb-item active">Dashboard</li>
-      </ol>
-    </nav>
-  </div><!-- End Page Title -->
+  <div style="background-color:#08101B; height:200px; position: relative; display: flex; align-items: center;">
+    <div style="background: url('{{ url_for('static', filename='images/Default-Images/pupqc-logo.png')}}') no-repeat; background-size: 300px 300px; width: 300px; height: 200px; opacity: 0.5; filter: grayscale(100%);"></div>
+    <div style="margin-left: 20px;">
+        <h1 style="color:#FFFFFF;">DASHBOARD</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item" style="color:#CECDCD;"><a href="/auth/sysadmin/homepage" style="color:#CECDCD;">System Admin Dashboard</a></li>
+            </ol>
+        </nav>
+    </div>
+</div><!-- End Page Title -->
+
+  <br><br>
 
   <style>
     .responsive-table {
@@ -342,7 +346,7 @@
     <div class="row">
 
        <!-- Left side columns -->
-       <div class="col-lg-12">
+       <div class="col-lg-8">
         <div class="row">
 
        <!-- Left side columns -->
@@ -407,10 +411,8 @@
                     <i class="bi bi-person-check"></i>
                   </div>
                   <div class="ps-3">
-                    <h6>34</h6>
-                  </div>
-                  <div class="ps-3">
-                    <span class="text-inactive small pt-1 fw-bold">FACULTY ACCOUNTS THAT ARE WORKING AND ACTIVE</span>
+                    <h6>47</h6>
+                    <span class="text-inactive small pt-1 fw-bold">ACTIVE</span>
                   </div>
                 </div>
               </div>
@@ -430,11 +432,10 @@
                         <i class="bi bi-person-x-fill"></i>
                       </div>
                       <div class="ps-3">
-                        <h6>34</h6>
+                        <h6>12</h6>
+                        <span class="text-inactive small pt-1 fw-bold">DISABLED</span>
                       </div>
-                      <div class="ps-3">
-                        <span class="text-inactive small pt-1 fw-bold">FACULTY ACCOUNTS ARE DEACTIVATED</span>
-                      </div>
+                     
                     </div>
                   </div>
     
@@ -453,11 +454,10 @@
                     <i class="bi"><img src="https://icons.iconarchive.com/icons/bootstrap/bootstrap/128/Bootstrap-person-fill-lock-icon.png" width="48" height="48"></i>
                   </div>
                   <div class="ps-3">
-                    <h6>34</h6>
+                    <h6>8</h6>
+                    <span class="text-inactive small pt-1 fw-bold">LOCKED</span>
                   </div>
-                  <div class="ps-3">
-                    <span class="text-inactive small pt-1 fw-bold">FACULTY ACCOUNTS ARE LOCKED FOR SECURITY ISSUES</span>
-                  </div>
+                
                 </div>
               </div>
 
@@ -469,23 +469,256 @@
                 <div class="card info-card revenue-card">
     
                   <div class="card-body">
-                    <h5 class="card-title">DEACTIVATED ACCOUNTS</h5>
+                    <h5 class="card-title">DEACTIVATED</h5>
     
                     <div class="d-flex align-items-center">
                       <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                         <i class="fa fa-ban" style="font-size:48px;color:black"></i>
                       </div>
                       <div class="ps-3">
-                        <h6>34</h6>
+                        <h6>6</h6>
+                        <span class="text-inactive small pt-1 fw-bold">DEACTIVATED</span>
                       </div>
-                      <div class="ps-3">
-                        <span class="text-inactive small pt-1 fw-bold">FACULTY ACCOUNTS THAT ARE DELETED</span>
-                      </div>
+                     
                     </div>
                   </div>
     
                 </div>
-              </div><!-- End Projects Card -->
+              </div>
+
+              <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+      
+              <div class="card-body pt-3">
+                <!-- Bordered Tabs -->
+                <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
+  
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview" aria-selected="true" role="tab">Faculties Chart</button>
+                  </li>
+  
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit" aria-selected="false" role="tab" tabindex="-1">Admins Chart</button>
+                  </li>
+  
+                </ul>
+                <div class="tab-content pt-2">
+  
+                  <div class="tab-pane fade profile-overview active show" id="profile-overview" role="tabpanel">
+                
+                     <!-- Create a container element for the chart -->
+                        <div id="chart"></div>
+
+                        <!-- Include your ApexCharts code -->
+                          <script>
+                            var options = {
+                              series: [{
+                                name: "Faculties",
+                                data: [10, 41, 35, 51, 49, 12, 69, 91, 128]
+                              }],
+                              chart: {
+                                height: 350,
+                                type: 'line',
+                                zoom: {
+                                  enabled: false
+                                }
+                              },
+                              dataLabels: {
+                                enabled: false
+                              },
+                              stroke: {
+                                curve: 'straight'
+                              },
+                              title: {
+                                text: 'Added Faculties',
+                                align: 'left'
+                              },
+                              grid: {
+                                row: {
+                                  colors: ['#f3f3f3', 'transparent'],
+                                  opacity: 0.5
+                                },
+                              },
+                              xaxis: {
+                                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+                              }
+                            };
+
+                            var chart = new ApexCharts(document.querySelector("#chart"), options);
+                            chart.render();
+                          </script>
+  
+                  </div>
+  
+                  <div class="tab-pane fade profile-edit pt-3" id="profile-edit" role="tabpanel">
+
+                     <!-- Create a container element for the chart -->
+                     <div id="chart2"></div>
+
+                     <!-- Include your ApexCharts code -->
+                       <script>
+                         var options = {
+                           series: [{
+                             name: "Admins",
+                             data: [1, 41, 35, 51, 9, 32, 89, 3, 148]
+                           }],
+                           chart: {
+                             height: 350,
+                             type: 'line',
+                             zoom: {
+                               enabled: false
+                             }
+                           },
+                           dataLabels: {
+                             enabled: false
+                           },
+                           stroke: {
+                             curve: 'straight'
+                           },
+                           title: {
+                             text: 'Added Admins',
+                             align: 'left'
+                           },
+                           grid: {
+                             row: {
+                               colors: ['#f3f3f3', 'transparent'],
+                               opacity: 0.5
+                             },
+                           },
+                           xaxis: {
+                             categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+                           }
+                         };
+
+                         var chart = new ApexCharts(document.querySelector("#chart2"), options);
+                         chart.render();
+                       </script>
+  
+                  </div>
+    
+  
+                </div><!-- End Bordered Tabs -->
+  
+              </div>
+
+      
+                  </div>
+                </div><!-- End News & Updates -->
+                <div class="col-lg-4">
+
+                  <!-- Recent Activity -->
+                  <div class="card">
+                 
+                    <div class="card-body">
+                      <h5 class="card-title">Recent Activity</h5>
+        
+                      <div class="activity">
+        
+                        <div class="activity-item d-flex">
+                          <div class="activite-label">32 min</div>
+                          <i class="bi bi-circle-fill activity-badge text-success align-self-start"></i>
+                          <div class="activity-content">
+                            Quia quae rerum <a href="#" class="fw-bold text-dark">explicabo officiis</a> beatae
+                          </div>
+                        </div><!-- End activity item-->
+        
+                        <div class="activity-item d-flex">
+                          <div class="activite-label">56 min</div>
+                          <i class="bi bi-circle-fill activity-badge text-danger align-self-start"></i>
+                          <div class="activity-content">
+                            Voluptatem blanditiis blanditiis eveniet
+                          </div>
+                        </div><!-- End activity item-->
+        
+                        <div class="activity-item d-flex">
+                          <div class="activite-label">2 hrs</div>
+                          <i class="bi bi-circle-fill activity-badge text-primary align-self-start"></i>
+                          <div class="activity-content">
+                            Voluptates corrupti molestias voluptatem
+                          </div>
+                        </div><!-- End activity item-->
+        
+                        <div class="activity-item d-flex">
+                          <div class="activite-label">1 day</div>
+                          <i class="bi bi-circle-fill activity-badge text-info align-self-start"></i>
+                          <div class="activity-content">
+                            Tempore autem saepe <a href="#" class="fw-bold text-dark">occaecati voluptatem</a> tempore
+                          </div>
+                        </div><!-- End activity item-->
+        
+                        <div class="activity-item d-flex">
+                          <div class="activite-label">2 days</div>
+                          <i class="bi bi-circle-fill activity-badge text-warning align-self-start"></i>
+                          <div class="activity-content">
+                            Est sit eum reiciendis exercitationem
+                          </div>
+                        </div><!-- End activity item-->
+        
+                        <div class="activity-item d-flex">
+                          <div class="activite-label">4 weeks</div>
+                          <i class="bi bi-circle-fill activity-badge text-muted align-self-start"></i>
+                          <div class="activity-content">
+                            Dicta dolorem harum nulla eius. Ut quidem quidem sit quas
+                          </div>
+                        </div><!-- End activity item-->
+        
+                      </div>
+        
+                    </div>
+                  </div><!-- End Recent Activity -->
+        
+                  <!-- News & Updates Traffic -->
+                  <div class="card">
+                    <div class="filter">
+                      <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                      <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                        <li class="dropdown-header text-start">
+                          <h6>Filter</h6>
+                        </li>
+        
+                        <li><a class="dropdown-item" href="#">Today</a></li>
+                        <li><a class="dropdown-item" href="#">This Month</a></li>
+                        <li><a class="dropdown-item" href="#">This Year</a></li>
+                      </ul>
+                    </div>
+        
+                    <div class="card-body pb-0">
+                      <h5 class="card-title">News &amp; Updates <span>| Today</span></h5>
+        
+                      <div class="news">
+                        <div class="post-item clearfix">
+                          <img src="assets/img/news-1.jpg" alt="">
+                          <h4><a href="#">Nihil blanditiis at in nihil autem</a></h4>
+                          <p>Sit recusandae non aspernatur laboriosam. Quia enim eligendi sed ut harum...</p>
+                        </div>
+        
+                        <div class="post-item clearfix">
+                          <img src="assets/img/news-2.jpg" alt="">
+                          <h4><a href="#">Quidem autem et impedit</a></h4>
+                          <p>Illo nemo neque maiores vitae officiis cum eum turos elan dries werona nande...</p>
+                        </div>
+        
+                        <div class="post-item clearfix">
+                          <img src="assets/img/news-3.jpg" alt="">
+                          <h4><a href="#">Id quia et et ut maxime similique occaecati ut</a></h4>
+                          <p>Fugiat voluptas vero eaque accusantium eos. Consequuntur sed ipsam et totam...</p>
+                        </div>
+        
+                        <div class="post-item clearfix">
+                          <img src="assets/img/news-4.jpg" alt="">
+                          <h4><a href="#">Laborum corporis quo dara net para</a></h4>
+                          <p>Qui enim quia optio. Eligendi aut asperiores enim repellendusvel rerum cuder...</p>
+                        </div>
+        
+                        <div class="post-item clearfix">
+                          <img src="assets/img/news-5.jpg" alt="">
+                          <h4><a href="#">Et dolores corrupti quae illo quod dolor</a></h4>
+                          <p>Odit ut eveniet modi reiciendis. Atque cupiditate libero beatae dignissimos eius...</p>
+                        </div>
+        
+                      </div><!-- End sidebar recent posts-->
+              </div>
+
+            </div><!-- End Projects Card -->
 
   </section>
 </main><!-- End #main -->
