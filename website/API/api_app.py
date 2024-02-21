@@ -474,7 +474,7 @@ def get_pds_contact_details(FacultyId):
             return jsonify({'result': True})
         
         
-# FACULTY DATA 
+# FACULTY EVALUATIONS DATA 
 # -------------------------------------------------------------------------
 def convert_to_percentage(grade):
             # No need to multiply by 100
@@ -498,51 +498,52 @@ def convert_to_interpretation(grade):
     return None  # Handle the case where the grade doesn't fall into any range
 
 
+
 @API.route('/api/FISFaculty/Evaluations', methods=['GET'])
-def get_all_faculty_evaluations():
-    try:
-        # Get query parameters for pagination
-        page = int(request.args.get('page', 1))
-        per_page = int(request.args.get('per_page', 300))
+@admin_token_required # Get the API key from the request header
+def get_all_faculty_evaluations_test():
+    token = request.headers.get('token')  # Get the API key from the request header
+    key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
+    key = key['key']
+    
+    if not key in API_KEYS.values():
+         return jsonify(message="access denied!"), 403
+    
+    else:
+        try:
+            # Get query parameters for pagination
+            page = int(request.args.get('page', 1))
+            per_page = int(request.args.get('per_page', 300))
 
-        # Calculate offset based on page and per_page values
-        offset = (page - 1) * per_page
+            # Calculate offset based on page and per_page values
+            offset = (page - 1) * per_page
 
-        db = SessionLocal()
+            db = SessionLocal()
 
-        # Query only the required subset of data based on offset and per_page
-        faculty_profiles = db.query(FISEvaluations).offset(offset).limit(per_page).all()
+            # Query only the required subset of data based on offset and per_page
+            faculty_profiles = db.query(FISEvaluations).offset(offset).limit(per_page).all()
 
-        profiles = []
+            profiles = []
 
-        for faculty in faculty_profiles:
-            faculty_record = db.query(FISFaculty).filter_by(FacultyId=faculty.FacultyId).first()
-            faculty_type = faculty_record.FacultyType
-            if faculty_record:
+            for faculty in faculty_profiles:
+                
                 faculty_data = FISEvaluations_Model.from_orm(faculty).dict()
                 faculty_data['Id'] = faculty_data['FacultyId']
-                faculty_data['FacultyName'] = f"{faculty_record.LastName}, {faculty_record.FirstName} {faculty_record.MiddleInitial}"
-
-                # Calculate average ratings for peer, student, director, acad_head
-                peer_avg = (faculty_data['peer_a'] + faculty_data['peer_b'] + faculty_data['peer_c'] + faculty_data['peer_d']) / 4
-                student_avg = (faculty_data['student_a'] + faculty_data['student_b'] + faculty_data['student_c'] + faculty_data['student_d']) / 4
-                director_avg = (faculty_data['director_a'] + faculty_data['director_b'] + faculty_data['director_c'] + faculty_data['director_d']) / 4
-                acad_head_avg = (faculty_data['acad_head_a'] + faculty_data['acad_head_b'] + faculty_data['acad_head_c'] + faculty_data['acad_head_d']) / 4
-                self_avg = (faculty_data['self_a'] + faculty_data['self_b'] + faculty_data['self_c'] + faculty_data['self_d']) / 4
+                faculty_data['FacultyName'] = faculty_data['Evaluator_Name']
 
                 # Calculate supervisor average
-                supervisor_avg = (acad_head_avg + director_avg) / 2
+                supervisor_avg = (faculty_data['acad_head'] + faculty_data['director']) / 2
 
                 # Add calculated averages to the dictionary
                 faculty_data['Supervisor Rating'] = convert_to_percentage(supervisor_avg)
                 faculty_data['Supervisor Interpretation'] = convert_to_interpretation(supervisor_avg)
-                faculty_data['Students Rating'] = convert_to_percentage(student_avg)
-                faculty_data['Students Interpretation'] = convert_to_interpretation(student_avg)
-                faculty_data['Peer Rating'] = convert_to_percentage(peer_avg)
-                faculty_data['Peer Interpretation'] = convert_to_interpretation(peer_avg)
-                faculty_data['Self Rating'] = convert_to_percentage(self_avg)
-                faculty_data['Self Interpretation'] = convert_to_interpretation(self_avg)
-                faculty_data['FacultyType'] = faculty_type
+                faculty_data['Students Rating'] = convert_to_percentage(faculty_data['student'])
+                faculty_data['Students Interpretation'] = convert_to_interpretation(faculty_data['student'])
+                faculty_data['Peer Rating'] = convert_to_percentage(faculty_data['peer'])
+                faculty_data['Peer Interpretation'] = convert_to_interpretation(faculty_data['peer'])
+                faculty_data['Self Rating'] = convert_to_percentage(faculty_data['self'])
+                faculty_data['Self Interpretation'] = convert_to_interpretation(faculty_data['self'])
+                faculty_data['FacultyType'] = faculty_data['Type']
                 faculty_data['Semester'] = faculty_data['semester']  # Assuming 'semester' is already a field in FISEvaluations_Model
                 faculty_data['Year'] = faculty_data['school_year'].strftime("%Y-%m-%d %H:%M:%S.%f%z")
 
@@ -553,7 +554,7 @@ def get_all_faculty_evaluations():
                     'self', 'self_a', 'self_b', 'self_c', 'self_d',
                     'peer', 'peer_a', 'peer_b', 'peer_c', 'peer_d',
                     'student', 'student_a', 'student_b', 'student_c', 'student_d',
-                    'school_year','semester','is_delete'
+                    'school_year','semester','is_delete', 'Evaluator_Name', 'Type',
                 ]
 
                 for field in unwanted_fields:
@@ -562,11 +563,9 @@ def get_all_faculty_evaluations():
 
                 profiles.append(faculty_data)
 
-        db.close()
+            db.close()
 
-        return jsonify(profiles)
+            return jsonify(profiles)
 
-    except ValidationError as e:
-        return jsonify({'error': f'Validation error: {e}'})
-
-# ---------------------------------------------------------
+        except ValidationError as e:
+            return jsonify({'error': f'Validation error: {e}'})

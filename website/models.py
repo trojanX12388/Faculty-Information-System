@@ -925,7 +925,9 @@ class FISEvaluations(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
-    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    Evaluator_Name = db.Column(db.String)
+    Type = db.Column(db.String)
     acad_head = db.Column(db.Float)
     acad_head_a = db.Column(db.Float) 
     acad_head_b = db.Column(db.Float) 
@@ -959,7 +961,9 @@ class FISEvaluations(db.Model):
         return {
             'id': self.id,
             'FacultyId': self.FacultyId,
-            # 'AdminId': self.AdminId,
+            'AdminId': self.AdminId,
+            'Evaluator_Name': self.Evaluator_Name,
+            'Type': self.Type,
             'acad_head': self.acad_head,
             'acad_head_a': self.acad_head_a,
             'acad_head_b': self.acad_head_b,
