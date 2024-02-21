@@ -1729,6 +1729,72 @@ class FISMandatoryRequirements(db.Model):
 
 # ------------------------------------------------
 
+
+# ------------------------------------------------
+# SYSTEM ADMIN LOG
+  
+class FISSystemAdmin_Log(db.Model):
+    __tablename__ = 'FISSystemAdmin_Log'
+
+    id = db.Column(db.Integer, primary_key=True)  # DataID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID 
+    DateTime = db.Column(db.DateTime, default=datetime.now)
+    Status = db.Column(db.String(50), default="success")
+    Log = db.Column(db.String(50))
+    is_delete = db.Column(db.Boolean, default=False) 
+    
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'FacultyId': self.FacultyId,
+            'AdminId': self.AdminId,
+            'DateTime': self.DateTime,
+            'Status': self.Status,
+            'Log': self.Log,
+            'is_delete': self.is_delete
+        }
+        
+    def get_id(self):
+        return str(self.id)  # Convert to string to ensure compatibility  
+
+# ------------------------------------------------
+
+# ------------------------------------------------
+# USER LOG
+  
+class FISUser_Log(db.Model):
+    __tablename__ = 'FISUser_Log'
+
+    id = db.Column(db.Integer, primary_key=True)  # DataID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID 
+    DateTime = db.Column(db.DateTime, default=datetime.now)
+    Status = db.Column(db.String(50), default="success")
+    Log = db.Column(db.String(50))
+    is_delete = db.Column(db.Boolean, default=False) 
+    
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'FacultyId': self.FacultyId,
+            'AdminId': self.AdminId,
+            'DateTime': self.DateTime,
+            'Status': self.Status,
+            'Log': self.Log,
+            'is_delete': self.is_delete
+        }
+        
+    def get_id(self):
+        return str(self.id)  # Convert to string to ensure compatibility  
+
+# ------------------------------------------------
+
+
+# --------------------------------------------------------
+
 # INTEGRATED TABLES
 
 
@@ -2130,7 +2196,6 @@ class Project(db.Model):
     Implementer = db.Column(db.String(255), nullable=False)
     LeadProponentId = db.Column(db.String(36), db.ForeignKey('ESISUser.UserId', ondelete='CASCADE'), nullable=False)
     CollaboratorId = db.Column(db.Integer, db.ForeignKey('ESISCollaborator.CollaboratorId', ondelete='CASCADE'), nullable=False)
-    ProjectTeam = db.Column(db.JSON, nullable=False)
     TargetGroup= db.Column(db.String(255), nullable=False)
     ProjectType = db.Column(db.String(100), nullable=False)
     StartDate = db.Column(db.Date)

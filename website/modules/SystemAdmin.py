@@ -32,7 +32,7 @@ from website.models import db
 from sqlalchemy import update
 
 # LOADING MODEL CLASSES
-from website.models import FISFaculty, FISAdmin, FISLoginToken, FISSystemAdmin
+from website.models import FISFaculty, FISAdmin, FISLoginToken, FISSystemAdmin, FISSystemAdmin_Log, FISUser_Log
 
 
 # LOAD JWT MODULE
@@ -308,13 +308,11 @@ def sysadminH():
     else:
         ProfilePic=username.ProfilePic
     
-    API_TOKENS = ast.literal_eval(os.environ["API_TOKENS"])
-    selected_token = API_TOKENS.get('WEBSITE1_API_TOKEN')  
                   
     return render_template("System-Admin-Page/base.html",
                             User= username.name,
                             user = current_user,
-                            token = selected_token,
+                            
                             profile_pic=ProfilePic)
     
 
@@ -490,6 +488,16 @@ def sysadminFM_ADD():
                 
                 db.session.add(add_record)
                 db.session.commit()
+                
+                add_log = FISSystemAdmin_Log(
+                    FacultyId=new_faculty_id,  # Set the new ID
+                    Status= "success",
+                    Log = "Create Account",
+                )
+                
+                db.session.add(add_log)
+                db.session.commit()
+            
                 db.session.close()
                 
                 send_pass_email(password, email)
@@ -570,6 +578,16 @@ def sysadminFM_update_info():
             
             u = u.where(FISFaculty.FacultyId == id)
             db.session.execute(u)
+
+            db.session.close()
+            
+            add_log = FISSystemAdmin_Log(
+                    FacultyId=id,  # Set the new ID
+                    Status= "update",
+                    Log = "Update Info",
+                )
+                
+            db.session.add(add_log)
             db.session.commit()
             db.session.close()
             flash('Updated successfully!', category='success')
@@ -630,6 +648,16 @@ def sysadminFM_update_pass():
                     u = u.where(FISFaculty.FacultyId == id)
                     db.session.execute(u)
                     db.session.commit()
+                    
+                    add_log = FISSystemAdmin_Log(
+                    FacultyId=id,  # Set the new ID
+                    Status= "update",
+                    Log = "Update Password",
+                )
+                
+                    db.session.add(add_log)
+                    db.session.commit()
+                    
                     db.session.close()
                     
                     change_pass_email(new_password, email)
@@ -669,6 +697,27 @@ def sysadminFM_update_status():
                 u = u.where(FISFaculty.FacultyId == id)
                 db.session.execute(u)
                 db.session.commit()
+                
+                if status == "Disabled":
+                    add_log = FISSystemAdmin_Log(
+                        FacultyId=id,  # Set the new ID
+                        Status= "alert",
+                        Log = "Disable Account",
+                    )
+                    
+                    db.session.add(add_log)
+                    db.session.commit()
+                
+                else:   
+                    add_log = FISSystemAdmin_Log(
+                        FacultyId=id,  # Set the new ID
+                        Status= "update",
+                        Log = "Update Status to "  + str(status),
+                    )
+                    
+                    db.session.add(add_log)
+                    db.session.commit()
+                
                 db.session.close()
                 
                 flash('Status successfully updated!', category='success')
@@ -860,6 +909,16 @@ def sysadminAM_ADD():
                 
                 db.session.add(add_record)
                 db.session.commit()
+                
+                add_log = FISSystemAdmin_Log(
+                    AdminId=new_admin_id,  # Set the new ID
+                    Status= "success",
+                    Log = "Create Account",
+                )
+                
+                db.session.add(add_log)
+                db.session.commit()
+                
                 db.session.close()
                 
                 send_pass_email(password, email)
@@ -941,6 +1000,16 @@ def sysadminAM_update_info():
             u = u.where(FISAdmin.AdminId == id)
             db.session.execute(u)
             db.session.commit()
+            
+            add_log = FISSystemAdmin_Log(
+                    AdminId=id,  # Set the new ID
+                    Status= "update",
+                    Log = "Update Info",
+                )
+                
+            db.session.add(add_log)
+            db.session.commit()
+            
             db.session.close()
             flash('Updated successfully!', category='success')
             
@@ -999,6 +1068,16 @@ def sysadminAM_update_pass():
                     u = u.where(FISAdmin.AdminId == id)
                     db.session.execute(u)
                     db.session.commit()
+                    
+                    add_log = FISSystemAdmin_Log(
+                    AdminId=id,  # Set the new ID
+                    Status= "update",
+                    Log = "Update Password",
+                )
+                
+                    db.session.add(add_log)
+                    db.session.commit()
+                    
                     db.session.close()
                     
                     change_pass_email(new_password, email)
@@ -1038,6 +1117,27 @@ def sysadminAM_update_status():
                 u = u.where(FISAdmin.AdminId == id)
                 db.session.execute(u)
                 db.session.commit()
+                
+                if status == "Disabled":
+                    add_log = FISSystemAdmin_Log(
+                        AdminId=id,  # Set the new ID
+                        Status= "alert",
+                        Log = "Disable Account",
+                    )
+                    
+                    db.session.add(add_log)
+                    db.session.commit()
+                
+                else:   
+                    add_log = FISSystemAdmin_Log(
+                        AdminId=id,  # Set the new ID
+                        Status= "update",
+                        Log = "Update Status to "  + str(status),
+                    )
+                    
+                    db.session.add(add_log)
+                    db.session.commit()
+                
                 db.session.close()
                 
                 flash('Status successfully updated!', category='success')
@@ -1058,3 +1158,355 @@ def sysadminLogout():
     logout_user()
     flash('Logged Out Successfully!', category='success')
     return redirect(url_for('sysadmin.sysadminL')) 
+
+
+
+
+
+
+
+
+
+
+
+# ----------------------------------------------------------------------------------
+
+
+
+
+# SYS ADMIN API 
+
+@sysadmin.route('/auth/sysadmin/api/FISData', methods=['GET', 'POST'])
+@login_required
+@SysCheck_Token
+def sysadmin_api_Faculty():
+    
+    API_TOKENS = ast.literal_eval(os.environ["API_TOKENS"])
+    selected_token = API_TOKENS.get('WEBSITE1_API_TOKEN')
+    
+    if os.getenv('FLASK_ENV') == 'production':
+        base_url = 'https://pupqcfis-com.onrender.com'
+    else:
+        base_url = 'http://127.0.0.1:8000' 
+
+    endpoint1 = '/api/all/FISFaculty'
+    url1 = f'{base_url}{endpoint1}'
+    
+    api_key = selected_token
+
+    headers = {
+        'Authorization': 'API Key',
+        'token': api_key,  # 'token' key with the API key value
+        'Content-Type': 'application/json'  # Adjust content type as needed
+    }
+
+    # Initialize dictionaries to store counts of part-time and full-time faculty hired each year
+    from collections import defaultdict
+    from datetime import datetime
+    
+    # Determine the recent year dynamically
+    current_year = datetime.now().year
+
+    # Create columns for the recent year and the last six years
+    years_range = range(current_year, current_year - 7, -1)
+    years_range1 = years_range[0]
+    years_range2 = years_range[1]
+    years_range3 = years_range[2]
+    years_range4 = years_range[3]
+    years_range5 = years_range[4]
+    years_range6 = years_range[5]
+    years_range7 = years_range[6]
+
+    # Make a GET request to the API with the API key in the headers
+    response1 = requests.get(url1, headers=headers) 
+    
+    if response1.status_code == 200:
+        # Process the API response data
+        api_data = response1.json()
+        FacultyIds = list(api_data['Faculties'].keys())
+    
+        # Process the API response data
+        api_data = response1.json()
+        FacultyIds = list(api_data['Faculties'].keys())
+
+        faculty_active = 0
+        faculty_disabled = 0
+        faculty_locked = 0
+        faculty_deactivated = 0
+        
+        faculty_years_range1 = 0
+        faculty_years_range2 = 0
+        faculty_years_range3 = 0
+        faculty_years_range4 = 0
+        faculty_years_range5 = 0
+        faculty_years_range6 = 0
+        faculty_years_range7 = 0
+
+        total_faculty = len(FacultyIds)
+
+        for faculty_id in FacultyIds:
+            faculty_info = api_data['Faculties'][faculty_id]
+            faculty_status = faculty_info['Status']
+            faculty_hired_date = faculty_info['created_at']
+
+            if faculty_status == 'Active':
+                faculty_active += 1
+            elif faculty_status == 'Disabled':
+                faculty_disabled += 1
+            elif faculty_status == 'Locked':
+                faculty_locked += 1
+            elif faculty_status == 'Deactivated':
+                faculty_deactivated += 1
+                
+            
+            if faculty_hired_date:
+            # Convert the date string to a datetime object and extract the year
+                hired_date = datetime.strptime(faculty_hired_date, '%a, %d %b %Y %H:%M:%S %Z')
+                hired_year = hired_date.year
+
+                # Increment the counts for the respective employment type and year
+                if hired_year == years_range1:
+                    faculty_years_range1 += 1
+                elif hired_year == years_range2:
+                    faculty_years_range2 += 1
+                elif hired_year == years_range3:
+                    faculty_years_range3 += 1
+                elif hired_year == years_range4:
+                    faculty_years_range4 += 1
+                elif hired_year == years_range5:
+                    faculty_years_range5 += 1
+                elif hired_year == years_range6:
+                    faculty_years_range6 += 1
+                elif hired_year == years_range7:
+                    faculty_years_range7 += 1
+    
+    # ADMINS
+        
+    endpoint2 = '/api/all/FISAdmin'
+    url2 = f'{base_url}{endpoint2}'
+    
+    api_key = selected_token
+
+    # Make a GET request to the API with the API key in the headers
+    response2 = requests.get(url2, headers=headers) 
+    
+    if response2.status_code == 200:
+        # Process the API response data
+        api_data2 = response2.json()
+        AdminIds = list(api_data2['Admins'].keys())
+    
+        # Process the API response data
+        api_data2 = response2.json()
+        AdminIds = list(api_data2['Admins'].keys())
+
+        # Initialize dictionaries to store counts of part-time and full-time faculty hired each year
+        from collections import defaultdict
+        from datetime import datetime
+
+        admin_added = defaultdict(int)
+        full_time_counts = defaultdict(int)
+
+        admin_active = 0
+        admin_disabled = 0
+        admin_locked = 0
+        admin_deactivated = 0
+        
+        admin_years_range1 = 0
+        admin_years_range2 = 0
+        admin_years_range3 = 0
+        admin_years_range4 = 0
+        admin_years_range5 = 0
+        admin_years_range6 = 0
+        admin_years_range7 = 0
+
+        total_admin = len(AdminIds)
+
+        for admin_id in AdminIds:
+            admin_info = api_data2['Admins'][admin_id]
+            admin_status = admin_info['Status']
+            admin_hired_date = admin_info['created_at']
+
+            if admin_status == 'Active':
+                admin_active += 1
+            elif admin_status == 'Disabled':
+                admin_disabled += 1
+            elif admin_status == 'Locked':
+                admin_locked += 1
+            elif admin_status == 'Deactivated':
+                admin_deactivated += 1
+
+            if admin_hired_date:
+                # Convert the date string to a datetime object and extract the year
+                hired_date2 = datetime.strptime(admin_hired_date, '%a, %d %b %Y %H:%M:%S %Z')
+                hired_year2 = hired_date2.year   
+                
+                # Increment the counts for the respective employment type and year
+                if hired_year2 == years_range1:
+                    admin_years_range1 += 1
+                elif hired_year2 == years_range2:
+                    admin_years_range2 += 1
+                elif hired_year2 == years_range3:
+                    admin_years_range3 += 1
+                elif hired_year2 == years_range4:
+                    admin_years_range4 += 1
+                elif hired_year2 == years_range5:
+                    admin_years_range5 += 1
+                elif hired_year2 == years_range6:
+                    admin_years_range6 += 1
+                elif hired_year2 == years_range7:
+                    admin_years_range7 += 1
+
+        
+        # Create a dictionary with the required data
+        api_response_data = {
+            'total_faculty': total_faculty,
+            'total_admin': total_admin,
+            'faculty_active': faculty_active + admin_active,
+            'faculty_disabled': faculty_disabled + admin_disabled,
+            'faculty_locked': faculty_locked + admin_locked,
+            'faculty_deactivated': faculty_deactivated + admin_deactivated,
+            
+            'hired_year': hired_year,
+            
+            'years_range1': years_range1,
+            'years_range2': years_range2,
+            'years_range2': years_range2,
+            'years_range3': years_range3,
+            'years_range4': years_range4,
+            'years_range5': years_range5,
+            'years_range6': years_range6,
+            'years_range7': years_range7,
+            
+            'faculty_years_range1': faculty_years_range1,
+            'faculty_years_range2': faculty_years_range2,
+            'faculty_years_range3': faculty_years_range3,
+            'faculty_years_range4': faculty_years_range4,
+            'faculty_years_range5': faculty_years_range5,
+            'faculty_years_range6': faculty_years_range6,
+            'faculty_years_range7': faculty_years_range7,
+            
+            'admin_years_range1': admin_years_range1,
+            'admin_years_range2': admin_years_range2,
+            'admin_years_range3': admin_years_range3,
+            'admin_years_range4': admin_years_range4,
+            'admin_years_range5': admin_years_range5,
+            'admin_years_range6': admin_years_range6,
+            'admin_years_range7': admin_years_range7,
+            
+           "chart_data": [
+            {"year": years_range7, "value": faculty_years_range7},
+            {"year": years_range6, "value": faculty_years_range6},
+            {"year": years_range5, "value": faculty_years_range5},
+            {"year": years_range4, "value": faculty_years_range4},
+            {"year": years_range3, "value": faculty_years_range3},
+            {"year": years_range2, "value": faculty_years_range2},
+            {"year": years_range1, "value": faculty_years_range1},
+        ],
+           
+           "chart_data2": [
+            {"year": years_range7, "value": admin_years_range7},
+            {"year": years_range6, "value": admin_years_range6},
+            {"year": years_range5, "value": admin_years_range5},
+            {"year": years_range4, "value": admin_years_range4},
+            {"year": years_range3, "value": admin_years_range3},
+            {"year": years_range2, "value": admin_years_range2},
+            {"year": years_range1, "value": admin_years_range1},
+        ],
+           
+        }
+
+        # Return the data as JSON using Flask's jsonify
+        return jsonify(api_response_data)
+   
+@sysadmin.route('/auth/sysadmin/api/User-Log', methods=['GET', 'POST'])
+@login_required
+@SysCheck_Token
+def sysadmin_api_user_log():
+    
+    # Fetch all data from FISUser_Log
+    logs = FISUser_Log.query.all()
+
+    # Create a list to store the selected fields for each log entry
+    formatted_logs = []
+
+    # Iterate over the logs and extract the required fields
+    for log in logs:
+        # Determine whether it's a Faculty or Admin log entry
+        identifier_type = 'FacultyId' if log.FacultyId is not None else 'AdminId'
+
+        # Fetch FirstName from FISFaculty or FISAdmin based on identifier_type
+        identifier_name = None
+        if identifier_type == 'FacultyId':
+            identifier_entry = FISFaculty.query.filter_by(FacultyId=log.FacultyId).first()
+        elif identifier_type == 'AdminId':
+            identifier_entry = FISAdmin.query.filter_by(AdminId=log.AdminId).first()
+
+        if identifier_entry:
+            identifier_name = identifier_entry.FirstName + " " + identifier_entry.LastName
+
+        # Create a dictionary with the required data
+        formatted_log = {
+            'id': log.id,
+            'DateTime': log.DateTime.strftime("%Y-%m-%d %H:%M:%S"),  # Format datetime as string
+            'Status': log.Status,
+            'Log': log.Log + " " + identifier_name,
+            'IdentifierType': identifier_type,
+            'IdentifierValue': log.FacultyId or log.AdminId,  # Choose the available identifier
+            'IdentifierName': identifier_name  # Add IdentifierName to the response
+        }
+
+        formatted_logs.append(formatted_log)
+
+    # Create a dictionary with the required data
+    api_response_data = {
+        'logs': formatted_logs
+    }
+
+    # Return the data as JSON using Flask's jsonify
+    return jsonify(api_response_data)
+    
+@sysadmin.route('/auth/sysadmin/api/System-Admin-Log', methods=['GET', 'POST'])
+@login_required
+@SysCheck_Token
+def sysadmin_api_sysadmin_log():
+    
+    # Fetch all data from FISSystemAdmin_Log
+    logs = FISSystemAdmin_Log.query.all()
+
+    # Create a list to store the selected fields for each log entry
+    formatted_logs = []
+
+    # Iterate over the logs and extract the required fields
+    for log in logs:
+        # Determine whether it's a Faculty or Admin log entry
+        identifier_type = 'FacultyId' if log.FacultyId is not None else 'AdminId'
+
+        # Fetch FirstName from FISFaculty or FISAdmin based on identifier_type
+        identifier_name = None
+        if identifier_type == 'FacultyId':
+            identifier_entry = FISFaculty.query.filter_by(FacultyId=log.FacultyId).first()
+        elif identifier_type == 'AdminId':
+            identifier_entry = FISAdmin.query.filter_by(AdminId=log.AdminId).first()
+
+        if identifier_entry:
+            identifier_name = identifier_entry.FirstName + " " + identifier_entry.LastName
+        
+        # Create a dictionary with the required data
+        formatted_log = {
+            'id': log.id,
+            'DateTime': log.DateTime.strftime("%Y-%m-%d %H:%M:%S"),  # Format datetime as string
+            'Status': log.Status,
+            'Log': log.Log + " " + "of" + " " + identifier_name,
+            'IdentifierType': identifier_type,
+            'IdentifierValue': log.FacultyId or log.AdminId  # Choose the available identifier
+        }
+
+        formatted_logs.append(formatted_log)
+
+    # Create a dictionary with the required data
+    api_response_data = {
+        'logs': formatted_logs
+    }
+
+    # Return the data as JSON using Flask's jsonify
+    return jsonify(api_response_data)
