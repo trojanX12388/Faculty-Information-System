@@ -2,7 +2,7 @@
 from pydantic import BaseModel, Field
 from typing import Optional
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Boolean, Float
+from sqlalchemy import Column, Integer, String, Boolean, Float, DateTime
 
 Base = declarative_base()
 
@@ -41,6 +41,8 @@ class FISAdmin(Base):
     
     ProfilePic = Column(String)
     Status = Column(String)
+    
+    created_at = Column(DateTime)
 
 # Pydantic model for data validation
 class FISAdmin_Model(BaseModel):
@@ -68,6 +70,8 @@ class FISAdmin_Model(BaseModel):
     Gender: int
     ProfilePic: str = ""
     Status: Optional[str] 
+    
+    created_at: datetime.datetime  # Use datetime.datetime for timestamp
 
     class Config:
         orm_mode = True

@@ -29,7 +29,7 @@ from website.models import db
 from sqlalchemy import update
 
 # LOADING MODEL CLASSES
-from website.models import FISAdmin, FISAdmin, FISLoginToken, FISSystemAdmin
+from website.models import FISAdmin, FISAdmin, FISLoginToken, FISSystemAdmin, FISUser_Log
 
 
 # LOAD JWT MODULE
@@ -183,12 +183,23 @@ def adminL():
                         
                     login_token = FISLoginToken.query.filter_by(AdminId=current_user.AdminId).first()
                     if login_token:
-                        login_token.access_token = access_token
-                        login_token.refresh_token = refresh_token
+                        u = update(FISLoginToken).values({"access_token": access_token,"refresh_token": refresh_token,})
+                        u = u.where(FISLoginToken.AdminId == User.AdminId)
+                        db.session.execute(u)
+                        db.session.commit()
                     else:
                         login_token = FISLoginToken(access_token=access_token, refresh_token=refresh_token, AdminId=current_user.AdminId)
                         db.session.add(login_token)
                         db.session.commit()
+                    
+                    add_log = FISUser_Log(
+                        AdminId=current_user.AdminId,
+                        Status= "success",
+                        Log = "Activated",
+                    )
+                    
+                    db.session.add(add_log)
+                    db.session.commit()
                         
                     db.session.close()    
                     session['entry'] = 3
@@ -209,6 +220,16 @@ def adminL():
                 u = u.where(FISAdmin.AdminId == User.AdminId)
                 db.session.execute(u)
                 db.session.commit()
+                
+                add_log = FISUser_Log(
+                        AdminId=current_user.AdminId,
+                        Status= "alert",
+                        Log = "Locked",
+                    )
+                    
+                db.session.add(add_log)
+                db.session.commit()
+                
                 db.session.close()
                 flash('Your Account has been locked due to many incorrect attempts.', category='error')
                 return redirect(url_for('admin.adminL'))
@@ -236,12 +257,23 @@ def adminL():
                         
                     login_token = FISLoginToken.query.filter_by(AdminId=current_user.AdminId).first()
                     if login_token:
-                        login_token.access_token = access_token
-                        login_token.refresh_token = refresh_token
+                        u = update(FISLoginToken).values({"access_token": access_token,"refresh_token": refresh_token,})
+                        u = u.where(FISLoginToken.AdminId == User.AdminId)
+                        db.session.execute(u)
+                        db.session.commit()
                     else:
                         login_token = FISLoginToken(access_token=access_token, refresh_token=refresh_token, AdminId=current_user.AdminId)
                         db.session.add(login_token)
                         db.session.commit()
+                    
+                    add_log = FISUser_Log(
+                        AdminId=current_user.AdminId,
+                        Status= "success",
+                        Log = "Logged In",
+                    )
+                    
+                    db.session.add(add_log)
+                    db.session.commit()
                         
                     db.session.close()    
                     session['entry'] = 3
@@ -262,6 +294,16 @@ def adminL():
                 u = u.where(FISAdmin.AdminId == User.AdminId)
                 db.session.execute(u)
                 db.session.commit()
+                
+                add_log = FISUser_Log(
+                        AdminId=current_user.AdminId,
+                        Status= "alert",
+                        Log = "Locked",
+                    )
+                    
+                db.session.add(add_log)
+                db.session.commit()
+                
                 db.session.close()
                 flash('Your Account has been locked due to many incorrect attempts.', category='error')
                 return redirect(url_for('admin.adminL'))
@@ -640,6 +682,16 @@ def adminLogout():
     #         db.session.close()
     # else:
     #     pass
+    
+    add_log = FISUser_Log(
+                        AdminId=current_user.AdminId,
+                        Status= "info",
+                        Log = "Logged Out",
+                    )
+                    
+    db.session.add(add_log)
+    db.session.commit()
+    db.session.close() 
     
     logout_user()
     flash('Logged Out Successfully!', category='success')

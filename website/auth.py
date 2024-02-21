@@ -29,7 +29,7 @@ from .models import db
 from sqlalchemy import update
 
 # LOADING MODEL CLASSES
-from .models import FISFaculty, FISAdmin, FISLoginToken, FISSystemAdmin
+from .models import FISFaculty, FISAdmin, FISLoginToken, FISSystemAdmin, FISUser_Log
 
 
 # LOAD JWT MODULE
@@ -137,13 +137,26 @@ def facultyL():
                         
                     login_token = FISLoginToken.query.filter_by(FacultyId=current_user.FacultyId).first()
                     if login_token:
-                        login_token.access_token = access_token
-                        login_token.refresh_token = refresh_token
+                        u = update(FISLoginToken).values({"access_token": access_token,"refresh_token": refresh_token,})
+                        u = u.where(FISLoginToken.FacultyId == User.FacultyId)
+                        db.session.execute(u)
+                        db.session.commit()
                     else:
                         login_token = FISLoginToken(access_token=access_token, refresh_token=refresh_token, FacultyId=current_user.FacultyId)
                         db.session.add(login_token)
                         db.session.commit()
-                        
+                    
+                    
+                    add_log = FISUser_Log(
+                        FacultyId=current_user.FacultyId,
+                        Status= "success",
+                        Log = "Activated",
+                    )
+                    
+                    db.session.add(add_log)
+                    db.session.commit()
+                    
+                     
                     db.session.close()    
                     session['entry'] = 3
                     return redirect(url_for('auth.facultyH'))
@@ -163,6 +176,16 @@ def facultyL():
                 u = u.where(FISFaculty.FacultyId == User.FacultyId)
                 db.session.execute(u)
                 db.session.commit()
+                
+                add_log = FISUser_Log(
+                        FacultyId=current_user.FacultyId,
+                        Status= "alert",
+                        Log = "Locked",
+                    )
+                    
+                db.session.add(add_log)
+                db.session.commit()
+                
                 db.session.close()
                 flash('Your Account has been locked due to many incorrect attempts.', category='error')
                 return redirect(url_for('auth.facultyL'))
@@ -190,12 +213,23 @@ def facultyL():
                         
                     login_token = FISLoginToken.query.filter_by(FacultyId=current_user.FacultyId).first()
                     if login_token:
-                        login_token.access_token = access_token
-                        login_token.refresh_token = refresh_token
+                        u = update(FISLoginToken).values({"access_token": access_token,"refresh_token": refresh_token,})
+                        u = u.where(FISLoginToken.FacultyId == User.FacultyId)
+                        db.session.execute(u)
+                        db.session.commit()
                     else:
                         login_token = FISLoginToken(access_token=access_token, refresh_token=refresh_token, FacultyId=current_user.FacultyId)
                         db.session.add(login_token)
                         db.session.commit()
+                    
+                    add_log = FISUser_Log(
+                        FacultyId=current_user.FacultyId,
+                        Status= "success",
+                        Log = "Logged In",
+                    )
+                    
+                    db.session.add(add_log)
+                    db.session.commit()
                         
                     db.session.close()    
                     session['entry'] = 3
@@ -216,6 +250,16 @@ def facultyL():
                 u = u.where(FISFaculty.FacultyId == User.FacultyId)
                 db.session.execute(u)
                 db.session.commit()
+                
+                add_log = FISUser_Log(
+                        FacultyId=current_user.FacultyId,
+                        Status= "alert",
+                        Log = "Locked",
+                    )
+                    
+                db.session.add(add_log)
+                db.session.commit()
+                
                 db.session.close()
                 flash('Your Account has been locked due to many incorrect attempts.', category='error')
                 return redirect(url_for('auth.facultyL'))
@@ -292,6 +336,16 @@ def Logout():
     #         db.session.close()
     # else:
     #     pass
+    
+    add_log = FISUser_Log(
+                        FacultyId=current_user.FacultyId,
+                        Status= "info",
+                        Log = "Logged Out",
+                    )
+                    
+    db.session.add(add_log)
+    db.session.commit()
+    db.session.close() 
     
     logout_user()
     session['entry'] = 3

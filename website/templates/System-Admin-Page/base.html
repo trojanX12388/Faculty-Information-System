@@ -26,7 +26,8 @@
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <link href="https://cdn.remixicon.com/releases/v1.2.2/remixicon.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
- 
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
    <!-- Template Main CSS File -->
  <link rel="stylesheet" href="{{url_for('static', filename='css/homepage/style.css')}}"> {# MAIN HOMEPAGE CSS #}
  <link rel="stylesheet" href="{{url_for('static', filename='css/homepage/PDM-Basic-Details/uploadprofile.css')}}"> {# UPLOAD PROFILE CSS #}
@@ -272,15 +273,19 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <main id="main" class="main">
-  <div class="pagetitle">
-    <h1>Dashboard</h1>
-    <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/auth/sysadmin/homepage">System Admin</a></li>
-        <li class="breadcrumb-item active">Dashboard</li>
-      </ol>
-    </nav>
-  </div><!-- End Page Title -->
+  <div style="background-color:#08101B; height:200px; position: relative; display: flex; align-items: center;">
+    <div style="background: url('{{ url_for('static', filename='images/Default-Images/pupqc-logo.png')}}') no-repeat; background-size: 300px 300px; width: 300px; height: 200px; opacity: 0.5; filter: grayscale(100%);"></div>
+    <div style="margin-left: 20px;">
+        <h1 style="color:#FFFFFF;">DASHBOARD</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item" style="color:#CECDCD;"><a href="/auth/sysadmin/homepage" style="color:#CECDCD;">System Admin Dashboard</a></li>
+            </ol>
+        </nav>
+    </div>
+</div><!-- End Page Title -->
+
+  <br><br>
 
   <style>
     .responsive-table {
@@ -342,7 +347,7 @@
     <div class="row">
 
        <!-- Left side columns -->
-       <div class="col-lg-12">
+       <div class="col-lg-8">
         <div class="row">
 
        <!-- Left side columns -->
@@ -360,7 +365,9 @@
                     <i class="bi bi-people"></i>
                   </div>
                   <div class="ps-3">
-                    <h6>12</h6>
+
+                    <h6 id="total_faculty_placeholder"></h6>
+
                     <span class="text-success small pt-1 fw-bold">Faculties</span>
                   </div>
                 </div>
@@ -382,7 +389,9 @@
                     <i class="bi bi-person-check"></i>
                   </div>
                   <div class="ps-3">
-                    <h6>23</h6>
+
+                    <h6 id="total_admin_placeholder"></h6>
+
                     <span class="text-success small pt-1 fw-bold">Admins</span>
                    
                   </div>
@@ -407,10 +416,10 @@
                     <i class="bi bi-person-check"></i>
                   </div>
                   <div class="ps-3">
-                    <h6>34</h6>
-                  </div>
-                  <div class="ps-3">
-                    <span class="text-inactive small pt-1 fw-bold">FACULTY ACCOUNTS THAT ARE WORKING AND ACTIVE</span>
+
+                    <h6 id="faculty_active"></h6>
+
+                    <span class="text-inactive small pt-1 fw-bold">ACTIVE</span>
                   </div>
                 </div>
               </div>
@@ -430,11 +439,12 @@
                         <i class="bi bi-person-x-fill"></i>
                       </div>
                       <div class="ps-3">
-                        <h6>34</h6>
+
+                        <h6 id="faculty_disabled"></h6>
+
+                        <span class="text-inactive small pt-1 fw-bold">DISABLED</span>
                       </div>
-                      <div class="ps-3">
-                        <span class="text-inactive small pt-1 fw-bold">FACULTY ACCOUNTS ARE DEACTIVATED</span>
-                      </div>
+                     
                     </div>
                   </div>
     
@@ -453,11 +463,12 @@
                     <i class="bi"><img src="https://icons.iconarchive.com/icons/bootstrap/bootstrap/128/Bootstrap-person-fill-lock-icon.png" width="48" height="48"></i>
                   </div>
                   <div class="ps-3">
-                    <h6>34</h6>
+
+                    <h6 id="faculty_locked"></h6>
+                    
+                    <span class="text-inactive small pt-1 fw-bold">LOCKED</span>
                   </div>
-                  <div class="ps-3">
-                    <span class="text-inactive small pt-1 fw-bold">FACULTY ACCOUNTS ARE LOCKED FOR SECURITY ISSUES</span>
-                  </div>
+                
                 </div>
               </div>
 
@@ -469,26 +480,401 @@
                 <div class="card info-card revenue-card">
     
                   <div class="card-body">
-                    <h5 class="card-title">DEACTIVATED ACCOUNTS</h5>
+                    <h5 class="card-title">DEACTIVATED</h5>
     
                     <div class="d-flex align-items-center">
                       <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                         <i class="fa fa-ban" style="font-size:48px;color:black"></i>
                       </div>
                       <div class="ps-3">
-                        <h6>34</h6>
+
+                        <h6 id="faculty_deactivated"></h6>
+
+                        <span class="text-inactive small pt-1 fw-bold">DEACTIVATED</span>
                       </div>
-                      <div class="ps-3">
-                        <span class="text-inactive small pt-1 fw-bold">FACULTY ACCOUNTS THAT ARE DELETED</span>
-                      </div>
+                     
                     </div>
                   </div>
     
                 </div>
-              </div><!-- End Projects Card -->
+              </div>
+
+              <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+      
+              <div class="card-body pt-3">
+                <!-- Bordered Tabs -->
+                <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
+  
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview" aria-selected="true" role="tab">Faculties Chart</button>
+                  </li>
+  
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit" aria-selected="false" role="tab" tabindex="-1">Admins Chart</button>
+                  </li>
+  
+                </ul>
+                <div class="tab-content pt-2">
+  
+                  <div class="tab-pane fade profile-overview active show" id="profile-overview" role="tabpanel">
+                
+                     <!-- Create a container element for the chart -->
+                        <div id="chart"></div>
+
+                  </div>
+  
+                  <div class="tab-pane fade profile-edit pt-3" id="profile-edit" role="tabpanel">
+
+                     <!-- Create a container element for the chart -->
+                     <div id="chart2"></div>
+
+                  </div>
+    
+  
+                </div><!-- End Bordered Tabs -->
+  
+              </div>
+
+      
+                  </div>
+                </div><!-- End News & Updates -->
+                <div class="col-lg-4">
+
+                  <!-- Recent Activity -->
+                  <div class="card">
+                 
+                    <div class="card-body">
+                      <h5 class="card-title">Users Activity</h5>
+        
+                      <div class="activity" id="activity-container2" style="max-height: 300px; height: 300px; overflow-y: auto;">
+        
+          
+                      </div>
+        
+                    </div>
+                  </div><!-- End Recent Activity -->
+        
+             <!-- Recent Activity -->
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Activity Logs</h5>
+
+                <div class="activity" id="activity-container" style="max-height: 300px; height: 300px; overflow-y: auto;">
+
+                  <!-- Log entries will be appended here dynamically -->
+                </div>
+
+              </div>
+            </div><!-- End Recent Activity -->
+
+          </div>
 
   </section>
 </main><!-- End #main -->
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    var options1 = {
+      series: [{
+        name: "Faculties",
+        data: []  // Initial empty data
+      }],
+      chart: {
+        height: 350,
+        type: 'line',
+        zoom: {
+          enabled: false
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        curve: 'straight'
+      },
+      title: {
+        text: 'Added Faculties (Last 7 Years)',
+        align: 'left'
+      },
+      grid: {
+        row: {
+          colors: ['#f3f3f3', 'transparent'],
+          opacity: 0.5
+        },
+      },
+      xaxis: {
+        categories: [],  // Initial empty categories
+      },
+      yaxis: {
+        max: 20 // Set a maximum value for the y-axis
+      }
+    };
+
+    var options2 = {
+      series: [{
+        name: "Admins",
+        data: []  // Initial empty data
+      }],
+      chart: {
+        height: 350,
+        type: 'line',
+        zoom: {
+          enabled: false
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        curve: 'straight'
+      },
+      title: {
+        text: 'Added Admins (Last 7 Years)',
+        align: 'left'
+      },
+      grid: {
+        row: {
+          colors: ['#f3f3f3', 'transparent'],
+          opacity: 0.5
+        },
+      },
+      xaxis: {
+        categories: [],  // Initial empty categories
+      },
+      yaxis: {
+        max: 20 // Set a maximum value for the y-axis
+      }
+    };
+
+    var chart1 = new ApexCharts(document.querySelector("#chart"), options1);
+    chart1.render();
+
+    var chart2 = new ApexCharts(document.querySelector("#chart2"), options2);
+    chart2.render();
+
+    // Function to update the content and chart data
+    function updateContent(data) {
+      $('#total_faculty_placeholder').text(data.total_faculty);
+      $('#faculty_active').text(data.faculty_active);
+      $('#faculty_disabled').text(data.faculty_disabled);
+      $('#faculty_locked').text(data.faculty_locked);
+      $('#faculty_deactivated').text(data.faculty_deactivated);
+      $('#total_admin_placeholder').text(data.total_admin);
+
+      // CHART FOR FACULTY
+      var categories1 = data.chart_data.map(function(item) {
+        return item.year;
+      });
+
+      chart1.updateOptions({
+        xaxis: {
+          categories: categories1
+        }
+      });
+
+      chart1.updateSeries([{
+        data: data.chart_data.map(function(item) {
+          return item.value;
+        })
+      }]);
+
+      // CHART FOR ADMIN
+      var categories2 = data.chart_data2.map(function(item) {
+        return item.year;
+      });
+
+      chart2.updateOptions({
+        xaxis: {
+          categories: categories2
+        }
+      });
+
+      chart2.updateSeries([{
+        data: data.chart_data2.map(function(item) {
+          return item.value;
+        })
+      }]);
+    }
+
+    // Fetch data using Ajax
+    function fetchData() {
+      $.ajax({
+        url: '/auth/sysadmin/api/FISData',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+          updateContent(data);
+        },
+        error: function (xhr, status, error) {
+          // Handle errors if needed
+          console.error('Error fetching data:', error);
+        }
+      });
+    }
+
+    // Initial data load on page load
+    fetchData();
+
+    // Set up a timer to periodically refresh the data (adjust the interval as needed)
+    setInterval(fetchData, 60000); // Refresh every 60 seconds
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.7/dayjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.7/plugin/relativeTime.min.js"></script>
+
+
+
+<script>
+  // Load the relativeTime plugin for dayjs
+  dayjs.extend(window.dayjs_plugin_relativeTime);
+
+  // Function to calculate custom human-readable time difference using dayjs
+  function calculateTimeDifference(dateTime) {
+    const diffInSeconds = dayjs().diff(dayjs(dateTime), 'seconds');
+
+    if (diffInSeconds < 60) {
+      return diffInSeconds + 's';
+    } else if (diffInSeconds < 3600) {
+      return Math.floor(diffInSeconds / 60) + 'm';
+    } else if (diffInSeconds < 86400) {
+      return Math.floor(diffInSeconds / 3600) + 'h';
+    } else {
+      return Math.floor(diffInSeconds / 86400) + 'd';
+    }
+  }
+
+  // Ajax request to fetch logs from the Flask backend
+  $.ajax({
+    url: '/auth/sysadmin/api/System-Admin-Log',
+    type: 'GET',
+    dataType: 'json',
+    success: function (data) {
+      // Handle the response and update the HTML
+      if (data.logs.length > 0) {
+        // Sort logs by DateTime in descending order
+        data.logs.sort(function (a, b) {
+          return new Date(b.DateTime) - new Date(a.DateTime);
+        });
+
+        var activityContainer = $('#activity-container');
+
+        // Loop through the sorted logs and append them to the HTML
+        $.each(data.logs, function (index, log) {
+          var activityItem = $('<div class="activity-item d-flex">');
+          var activityLabel = $('<div class="activite-label">').text(calculateTimeDifference(log.DateTime));
+          var activityBadge = $('<i class="bi bi-circle-fill activity-badge align-self-start">');
+          var activityContent = $('<div class="activity-content">').text(log.Log);
+
+          // Set activity badge color based on log status
+          if (log.Status.toLowerCase() === 'success') {
+            activityBadge.addClass('text-success');
+          } else if (log.Status.toLowerCase() === 'alert') {
+            activityBadge.addClass('text-danger');
+          } else if (log.Status.toLowerCase() === 'update') {
+            activityBadge.addClass('text-warning');
+          } else if (log.Status.toLowerCase() === 'info') {
+            activityBadge.addClass('text-primary'); 
+          } else {
+          activityBadge.addClass('text-secondary'); 
+          }
+
+          // If there is a FacultyId or AdminId, display it
+          if (log.IdentifierType && log.IdentifierValue) {
+            activityContent.append(' (', log.IdentifierType, ': ', log.IdentifierValue, ')');
+          }
+
+          activityItem.append(activityLabel, activityBadge, activityContent);
+          activityContainer.append(activityItem);
+        });
+      } else {
+        // Handle the case when there are no logs
+        $('#activity-container').text('No activity logs available.');
+      }
+    },
+    error: function () {
+      // Handle the error case
+      $('#activity-container').text('Failed to fetch activity logs.');
+    }
+  });
+</script>
+
+
+<script>
+  // Load the relativeTime plugin for dayjs
+  dayjs.extend(window.dayjs_plugin_relativeTime);
+
+  // Function to calculate custom human-readable time difference using dayjs
+  function calculateTimeDifference(dateTime) {
+    const diffInSeconds = dayjs().diff(dayjs(dateTime), 'seconds');
+
+    if (diffInSeconds < 60) {
+      return diffInSeconds + 's';
+    } else if (diffInSeconds < 3600) {
+      return Math.floor(diffInSeconds / 60) + 'm';
+    } else if (diffInSeconds < 86400) {
+      return Math.floor(diffInSeconds / 3600) + 'h';
+    } else {
+      return Math.floor(diffInSeconds / 86400) + 'd';
+    }
+  }
+
+  // Ajax request to fetch logs from the Flask backend
+  $.ajax({
+    url: '/auth/sysadmin/api/User-Log',
+    type: 'GET',
+    dataType: 'json',
+    success: function (data) {
+      // Handle the response and update the HTML
+      if (data.logs.length > 0) {
+        // Sort logs by DateTime in descending order
+        data.logs.sort(function (a, b) {
+          return new Date(b.DateTime) - new Date(a.DateTime);
+        });
+
+        var activityContainer2 = $('#activity-container2');
+
+        // Loop through the sorted logs and append them to the HTML
+        $.each(data.logs, function (index, log) {
+          var activityItem = $('<div class="activity-item d-flex">');
+          var activityLabel = $('<div class="activite-label">').text(calculateTimeDifference(log.DateTime));
+          var activityBadge = $('<i class="bi bi-circle-fill activity-badge align-self-start">');
+          var activityContent = $('<div class="activity-content">').text(log.Log);
+
+          // Set activity badge color based on log status
+          if (log.Status.toLowerCase() === 'success') {
+            activityBadge.addClass('text-success');
+          } else if (log.Status.toLowerCase() === 'alert') {
+            activityBadge.addClass('text-danger');
+          } else if (log.Status.toLowerCase() === 'update') {
+            activityBadge.addClass('text-warning');
+          } else if (log.Status.toLowerCase() === 'info') {
+            activityBadge.addClass('text-primary'); 
+          } else {
+          activityBadge.addClass('text-secondary'); 
+          }
+          // If there is a FacultyId or AdminId, display it
+          if (log.IdentifierType && log.IdentifierValue) {
+            activityContent.append(' (', log.IdentifierType, ': ', log.IdentifierValue, ')');
+          }
+
+          activityItem.append(activityLabel, activityBadge, activityContent);
+          activityContainer2.append(activityItem);
+        });
+      } else {
+        // Handle the case when there are no logs
+        $('#activity-container2').text('No user logs available.');
+      }
+    },
+    error: function () {
+      // Handle the error case
+      $('#activity-container2').text('Failed to fetch user logs.');
+    }
+  });
+</script>
 
 {% endblock %}
 
@@ -503,7 +889,7 @@
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>

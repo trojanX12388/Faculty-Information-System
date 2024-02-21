@@ -2,15 +2,19 @@
 
 
 <main id="main" class="main">
-  <div class="pagetitle">
-    <h1>Admin Management</h1>
-    <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/auth/sysadmin/homepage">System Admin</a></li>
-        <li class="breadcrumb-item active">Admin Management</li>
-      </ol>
-    </nav>
-  </div><!-- End Page Title -->
+  <div style="background-color:#08101B; height:200px; position: relative; display: flex; align-items: center;">
+    <div style="background: url('{{ url_for('static', filename='images/Default-Images/pupqc-logo.png')}}') no-repeat; background-size: 300px 300px; width: 300px; height: 200px; opacity: 0.5; filter: grayscale(100%);"></div>
+    <div style="margin-left: 20px;">
+        <h1 style="color:#FFFFFF;">ADMIN MANAGEMENT</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item" style="color:#CECDCD;"><a href="/auth/sysadmin/homepage" style="color:#CECDCD;">System Admin Admin Management</a></li>
+            </ol>
+        </nav>
+    </div>
+</div><!-- End Page Title -->
+
+<br><br>
 
   <style>
     .responsive-table {
@@ -109,10 +113,10 @@
 
           <div class="d-grid gap-2 mt-3">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-end">
-              <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#addrecord"><i class="bi bi-plus-circle"></i> Add New Faculty</button>
+              <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#addrecord"><i class="bi bi-plus-circle"></i> Add New Admin</button>
             </div>
           </div>
-          <h6 class="card-title">Click the ID of a faculty member to view more information.</h6>
+          <h6 class="card-title">Click the ID of a admin member to view more information.</h6>
 
           <table class="table table-borderless datatable">
             <thead>
@@ -159,14 +163,14 @@
                     <div class="modal-dialog modal-dialog-centered modal-lg">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="modal-title">Edit Faculty Information</h5>
+                          <h5 class="modal-title">Edit Admin Information</h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                           <ul class="nav nav-tabs nav-tabs-bordered">
 
                             <li class="nav-item">
-                              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#{{admin_id}}profile-overview">Faculty Information</button>
+                              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#{{admin_id}}profile-overview">Admin Information</button>
                             </li>
             
                             <li class="nav-item">
@@ -329,10 +333,10 @@
           
                         <br><br><br>
           
-                        <h5 class="card-title">Faculty Information</h5>
+                        <h5 class="card-title">Admin Information</h5>
           
                         <div class="row mb-3">
-                          <label for="{{admin_id}}type" class="col-md-4 col-lg-3 col-form-label">Faculty Type</label>
+                          <label for="{{admin_id}}type" class="col-md-4 col-lg-3 col-form-label">Admin Type</label>
                           <div class="col-md-8 col-lg-9">
                             <div class="col-md-10" style="width:100%;">
                
@@ -642,7 +646,7 @@
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Add New Faculty</h5>
+            <h5 class="modal-title">Add New Admin</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -785,10 +789,10 @@
 
               <br><br><br>
 
-              <h5 class="card-title">Faculty Information</h5>
+              <h5 class="card-title">Admin Information</h5>
 
               <div class="row mb-3">
-                <label for="type" class="col-md-4 col-lg-3 col-form-label">Faculty Type</label>
+                <label for="type" class="col-md-4 col-lg-3 col-form-label">Admin Type</label>
                 <div class="col-md-8 col-lg-9">
                   <div class="col-md-10" style="width:100%;">
      
