@@ -1745,7 +1745,7 @@ class FISSystemAdmin_Log(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID 
-    DateTime = db.Column(db.DateTime, default=lambda: datetime.now(pytz.timezone('Etc/GMT+3')))
+    DateTime = db.Column(db.DateTime(timezone=True), server_default=db.func.now())
     Status = db.Column(db.String(50), default="success")
     Log = db.Column(db.String(50))
     is_delete = db.Column(db.Boolean, default=False) 
@@ -1775,7 +1775,7 @@ class FISUser_Log(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID 
-    DateTime = db.Column(db.DateTime, default=lambda: datetime.now(pytz.timezone('Etc/GMT+3')))
+    DateTime = db.Column(db.DateTime, default=lambda: datetime.now(pytz.timezone('Asia/Singapore')))
     Status = db.Column(db.String(50), default="success")
     Log = db.Column(db.String(50))
     is_delete = db.Column(db.Boolean, default=False) 
