@@ -178,7 +178,7 @@ def facultyL():
                 db.session.commit()
                 
                 add_log = FISUser_Log(
-                        FacultyId=current_user.FacultyId,
+                        FacultyId=User.FacultyId,
                         Status= "alert",
                         Log = "Locked",
                     )
@@ -252,7 +252,7 @@ def facultyL():
                 db.session.commit()
                 
                 add_log = FISUser_Log(
-                        FacultyId=current_user.FacultyId,
+                        FacultyId=User.FacultyId,
                         Status= "alert",
                         Log = "Locked",
                     )

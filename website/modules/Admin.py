@@ -222,7 +222,7 @@ def adminL():
                 db.session.commit()
                 
                 add_log = FISUser_Log(
-                        AdminId=current_user.AdminId,
+                        AdminId=User.AdminId,
                         Status= "alert",
                         Log = "Locked",
                     )
@@ -296,7 +296,7 @@ def adminL():
                 db.session.commit()
                 
                 add_log = FISUser_Log(
-                        AdminId=current_user.AdminId,
+                        AdminId=User.AdminId,
                         Status= "alert",
                         Log = "Locked",
                     )

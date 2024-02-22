@@ -1798,6 +1798,40 @@ class FISUser_Log(db.Model):
 # ------------------------------------------------
 
 
+# # ------------------------------------------------
+# # USER LOG
+  
+# class FISRequests(db.Model):
+#     __tablename__ = 'FISRequests'
+
+#     id = db.Column(db.Integer, primary_key=True)  # DataID
+#     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+#     AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID 
+#     DateTime = db.Column(db.DateTime(timezone=True), server_default=db.func.now())
+#     Status = db.Column(db.String(50), default="success")
+#     IdentifierType = db.Column(db.String(50))
+#     IdentifierValue = db.Column(db.String(50))
+#     is_delete = db.Column(db.Boolean, default=False) 
+    
+    
+#     def to_dict(self):
+#         return {
+#             'id': self.id,
+#             'FacultyId': self.FacultyId,
+#             'AdminId': self.AdminId,
+#             'DateTime': self.DateTime,
+#             'Status': self.Status,
+#             'Log': self.Log,
+#             'is_delete': self.is_delete
+#         }
+        
+#     def get_id(self):
+#         return str(self.id)  # Convert to string to ensure compatibility  
+
+# # ------------------------------------------------
+
+
+
 # --------------------------------------------------------
 
 # INTEGRATED TABLES
