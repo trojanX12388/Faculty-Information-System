@@ -20,10 +20,11 @@
           <table id="myTable" class="table-striped table-borderless table datatable">
             <thead>
               <tr>
-                <th class="w-50" scope="col">Organization</th>
+                <th class="w-50" scope="col">Name and Address of Organization</th>
                 <th scope="col">Position</th>
                 <th scope="col">Number of Hours</th>
                 <th scope="col">Inclusive Date</th>
+                <th scope="col">Proof</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
@@ -35,6 +36,7 @@
                 <td>{{data.position}}</td>
                 <td>{{data.position}}</td>
                 <td>{{data.from_date }} - {{data.to_date}}</td>
+                <td></td>
                 <td>
                   <button type="submit" class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#d{{data.id}}"><i class="bi bi-trash"></i></button>
                   <button type="button" class="btn btn-outline-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#{{data.id}}"><i class="bi bi-file-earmark-text"></i></button>
@@ -74,6 +76,13 @@
                               <label for="floatingVoluntaryHours">Number of Hours</label>
                             </div>
                           </div>   
+                          <br>
+                          <h5>Proof</h5>
+                          <div class="row mb-3">
+                            <div class="col-sm-10">
+                              <input class="form-control" type="file" id="formFile">
+                            </div>
+                          </div>
                           <br>
                           <h5 class="modal-title">Date</h5>
                           <br>
@@ -170,6 +179,12 @@
                           <div class="form-floating">
                             <input type="number" name="hours" class="form-control" id="floatingVoluntaryHours" placeholder="Number of Hours" required>
                             <label for="floatingVoluntaryHours">Number of Hours</label>
+                          </div>
+                        </div>
+                        <h5>Proof</h5>
+                        <div class="row mb-3">
+                          <div class="col-sm-10">
+                            <input class="form-control" type="file" id="formFile">
                           </div>
                         </div>
                         <br>

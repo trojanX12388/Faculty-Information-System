@@ -26,7 +26,6 @@
                 <th scope="col">Number of Hours</th>
                 <th scope="col">Type of Training/Seminar</th>
                 <th scope="col">Conducted/Sponsored By</th>
-                <th scope="col">Action</th>
               </tr>
             </thead>
               <tbody>
@@ -39,10 +38,6 @@
                   <td>{{data.NumberOfHours}}</td>
                   <td>{{data.TypeOfSeminar}}</td>
                   <td>{{data.ConductedBy}}</td>
-                  <td>
-                    <button type="submit" class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#d{{data.id}}"><i class="bi bi-trash"></i></button>
-                    <button type="button" class="btn btn-outline-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#{{data.id}}"><i class="bi bi-file-earmark-text"></i></button>
-                </td>
                 </tr>
 
                    <!-- Edit Record Modal-->
@@ -152,10 +147,6 @@
             </form>
           </table>
           <!-- End Table with stripped rows -->
-
-            <div class="d-grid gap-2 mt-3">
-            <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#addrecord"><i class="bi bi-plus-circle"></i> Add New Record</button>
-          </div>
 
                <!-- Add Record Modal-->
 

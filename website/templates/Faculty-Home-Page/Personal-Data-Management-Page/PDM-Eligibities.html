@@ -21,8 +21,12 @@
           <table id="myTable" class="table-striped table-borderless table datatable">
             <thead>
               <tr>
-                <th class="w-50" scope="col">Eligibity</th>
-                <th scope="col">Rating</th>
+                <th class="w-50" scope="col">Career Service/ RA 1080(Board/Bar) Under Special Laws/ CES/ CSEE Barangay Eligibility/ Driver's License</th>
+                <th scope="col">Rating <span class="text-muted fst-italic fw-normal">(if applicable)</span></th>
+                <th>Date of Examination</th>
+                <th>Place of Examination/ Conferment</th>
+                <th>License Number<span class="text-muted fst-italic fw-normal">(if applicable)</span></th>
+                <th>Proof</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
@@ -32,6 +36,10 @@
               <tr>
                 <th scope="row">{{data.eligibity}}</th>
                 <td>{{data.rating}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td>
                   <button type="submit" class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#d{{data.id}}"><i class="bi bi-trash"></i></button>
                   <button type="button" class="btn btn-outline-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#{{data.id}}"><i class="bi bi-file-earmark-text"></i></button>
@@ -54,22 +62,51 @@
                           <div class="col-md-10">
                             <div class="form-floating">
                               <input type="text" name="eligibity" class="form-control" id="floatingschool_eligibity" placeholder="Eligibity" value="{{data.eligibity}}" required>
-                              <label for="floatingschool_eligibity">Eligibity</label>
+                              <label for="floatingschool_eligibity">Eligibity Type</label>
                             </div>
                           </div>  
                           <br>   
                           <div class="col-md-10">
                             <div class="form-floating">
-                              <input type="text" name="rating" class="form-control" id="floatingschool_rating" placeholder="Rating" value="{{data.rating}}" required>
+                              <input type="text" name="rating" class="form-control" id="floatingschool_rating" placeholder="Rating" value="{{data.rating}}">
                               <label for="floatingschool_rating">Rating</label>
                             </div>
-                          </div>    
+                          </div>  
+                          <br>  
+                          <div class="col-md-10">
+                            <div class="form-floating">
+                              <input type="text" name="Place" class="form-control" id="floatingPlace" placeholder="Place of Examination" value="" required>
+                              <label for="floatingPlace">Place of Examination</label>
+                            </div>
+                          </div> 
+                          <br>
+                          <div class="col-md-10">
+                            <div class="form-floating">
+                              <input type="text" name="LicenseNumber" class="form-control" id="floatingLicenseNumber" placeholder="License Number" value="">
+                              <label for="floatingPlace">License Number</label>
+                            </div>
+                          </div> 
+                          <br>
+                          <h5>Proof</h5>
+                          <div class="row mb-3">
+                            <div class="col-sm-10">
+                              <input class="form-control" type="file" id="Proof" placeholder="Proof" value="" required>
+                            </div>
+                          </div>
+                          <br>
+                          <h5>Date</h5>
+                          <div class="row mb-3">
+                            <div class="col-sm-10">
+                              <input type="date" name="ExaminationDate" class="form-control" id="floatingExaminationDate" placeholder="Examination Date">
+                            </div>
+                          </div>
                         </div>
                         <div class="modal-footer">
                           <input type="hidden" name="id" value="{{data.id}}"></input>
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
                           <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Update</button>
                         </div>
+
                   </form>
                       </div>
                     </div>
@@ -119,7 +156,7 @@
                 <div class="modal-dialog modal-dialog-centered modal-lg">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title">Add Record</h5>
+                      <h5 class="modal-title">Add Eligibility Record</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -129,13 +166,37 @@
                         <div class="col-md-10">
                           <div class="form-floating">
                             <input type="text" name="eligibity" class="form-control" id="floatingschool_eligibity" placeholder="Eligibity" required>
-                            <label for="floatingschool_eligibity">Eligibity</label>
+                            <label for="floatingschool_eligibity">Eligibity Type</label>
                           </div>
                         </div>
                         <div class="col-md-10">
                           <div class="form-floating">
-                            <input type="text" name="rating" class="form-control" id="floatingschool_rating" placeholder="Rating" required>
+                            <input type="text" name="rating" class="form-control" id="floatingschool_rating" placeholder="Rating">
                             <label for="floatingschool_rating">Rating</label>
+                          </div>
+                        </div>
+                        <div class="col-md-10">
+                          <div class="form-floating">
+                            <input type="text" name="Place" class="form-control" id="floatingPlace" placeholder="Place" required>
+                            <label for="floatingPlace">Place of Examination</label>
+                          </div>
+                        </div>
+                        <div class="col-md-10">
+                          <div class="form-floating">
+                            <input type="text" name="LicenseNumber" class="form-control" id="floatingLicenseNumber" placeholder="License Number" >
+                            <label for="floatingLicenseNumber">License Number</label>
+                          </div>
+                        </div>
+                        <h5>Proof</h5>
+                        <div class="row mb-3">
+                          <div class="col-sm-10">
+                            <input class="form-control" type="file" id="formFile">
+                          </div>
+                        </div>
+                        <h5>Date</h5>
+                        <div class="row mb-3">
+                          <div class="col-sm-10">
+                            <input type="date" name="ExaminationDate" class="form-control" id="floatingExaminationDate">
                           </div>
                         </div>
                     </div>

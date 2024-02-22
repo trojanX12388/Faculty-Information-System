@@ -7,6 +7,242 @@
         <div class="card">
           <div class="card-body">
             <h6 class="card-title">Family Background</h6>
+            <div class="card-body pt-3">
+              <!-- Bordered Tabs -->
+              
+              <ul class="nav nav-tabs nav-tabs-bordered">
+
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Family Background</button>
+                </li>
+
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-basic-details">Edit</button>
+                </li>
+
+              </ul>
+
+              <div class="tab-content pt-2">
+
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+             
+                  <h5 class="card-title fw-bold">Spouse</h5>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label ">Surname</div>
+                    <div class="col-lg-9 col-md-8"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">First Name</div>
+                    <div class="col-lg-9 col-md-8"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Middle Name</div>
+                    <div class="col-lg-9 col-md-8"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Name Extension</div>
+                    <div class="col-lg-9 col-md-8"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label ">Occupation</div>
+                    <div class="col-lg-9 col-md-8"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Employer/Business Name</div>
+                    <div class="col-lg-9 col-md-8"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Business Address</div>
+                    <div class="col-lg-9 col-md-8"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Telephone Number</div>
+                    <div class="col-lg-9 col-md-8"></div>
+                  </div>
+
+                  <h5 class="card-title fw-bold">Father</h5>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label ">Surname</div>
+                    <div class="col-lg-9 col-md-8"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">First Name</div>
+                    <div class="col-lg-9 col-md-8"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Middle Name</div>
+                    <div class="col-lg-9 col-md-8"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Name Extension</div>
+                    <div class="col-lg-9 col-md-8"></div>
+                  </div>
+
+                  <h5 class="card-title fw-bold">Mother</h5>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label ">Surname</div>
+                    <div class="col-lg-9 col-md-8"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">First Name</div>
+                    <div class="col-lg-9 col-md-8"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Middle Name</div>
+                    <div class="col-lg-9 col-md-8"></div>
+                  </div>
+                </div>
+
+                <div class="tab-pane fade profile-edit pt-2" id="profile-basic-details">
+
+                  <!-- Famnily Background Edit Form -->
+                  <form method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+                    <h5 class="card-title">Encode the necessary details then click the 
+                      <p class="btn btn-primary btn-sm" style="position:relative; top:6px">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512" style="fill:#ffffff;position:relative; bottom:2px">
+                          <path d="M433.941 129.941l-83.882-83.882A48 48 0 0 0 316.118 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V163.882a48 48 0 0 0-14.059-33.941zM224 416c-35.346 0-64-28.654-64-64 0-35.346 28.654-64 64-64s64 28.654 64 64c0 35.346-28.654 64-64 64zm96-304.52V212c0 6.627-5.373 12-12 12H76c-6.627 0-12-5.373-12-12V108c0-6.627 5.373-12 12-12h228.52c3.183 0 6.235 1.264 8.485 3.515l3.48 3.48A11.996 11.996 0 0 1 320 111.48z"/>
+                        </svg>
+                        Save</p>
+                     button below.</h5>
+                  
+                     <h5 class="card-title fw-bold">Spouse</h5>
+
+                    <div class="row mb-3">
+                      <label for="SpouseSurname" class="col-md-4 col-lg-3 col-form-label">Surname</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="SpouseSurname" type="text" class="form-control" id="SpouseSurname" value="" >
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="SpouseFirstName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="SpouseFirstName" type="text" class="form-control" id="SpouseFirstName" value="">
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="SpouseMiddleName" class="col-md-4 col-lg-3 col-form-label">Middle Name</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="SpouseMiddleName" type="text" class="form-control" id="SpouseMiddleName" value="">
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="SpouseExtension" class="col-md-4 col-lg-3 col-form-label">Name Extension</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="SpouseExtension" type="text" class="form-control" id="Extension" value="">
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="Occupation" class="col-md-4 col-lg-3 col-form-label">Occupation</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="Occupation" type="text" class="form-control" id="Occupation" value="">
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="SpouseBusiness" class="col-md-4 col-lg-3 col-form-label">Employer/Business Name</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="SpouseBusiness" type="text" class="form-control" id="Business" value="">
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="BusinessAddress" class="col-md-4 col-lg-3 col-form-label">Business Address</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="BusinessAddress" type="text" class="form-control" id="BusinessAddress" value="">
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="SpouseTelephone" class="col-md-4 col-lg-3 col-form-label">Telephone Number</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="SpouseTelephone" type="text" class="form-control" id="Telephone" value="">
+                      </div>
+                    </div>
+                    
+                    <h5 class="card-title fw-bold">Father</h5>
+
+                    <div class="row mb-3">
+                      <label for="FatherSurname" class="col-md-4 col-lg-3 col-form-label">Surname</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="FatherSurname" type="text" class="form-control" id="FatherSurname" value="" >
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="FatherFirstName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="FatherFirstName" type="text" class="form-control" id="FatherFirstName" value="">
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="FatherMiddleName" class="col-md-4 col-lg-3 col-form-label">Middle Name</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="FatherMiddleName" type="text" class="form-control" id="FatherMiddleName" value="">
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="FatherExtension" class="col-md-4 col-lg-3 col-form-label">Name Extension</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="FatherExtension" type="text" class="form-control" id="Extension" value="">
+                      </div>
+                    </div>
+
+                    <h5 class="card-title fw-bold">Mother</h5>
+
+                    <div class="row mb-3">
+                      <label for="MotherSurname" class="col-md-4 col-lg-3 col-form-label">Surname</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="MotherSurname" type="text" class="form-control" id="MotherSurname" value="" >
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="MotherFirstName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="MotherFirstName" type="text" class="form-control" id="MotherFirstName" value="">
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="MotherMiddleName" class="col-md-4 col-lg-3 col-form-label">Middle Name</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="MotherMiddleName" type="text" class="form-control" id="MotherMiddleName" value="">
+                      </div>
+                    </div>
+
+                    
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512" style="fill:#ffffff;position:relative; bottom:2px"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M433.941 129.941l-83.882-83.882A48 48 0 0 0 316.118 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V163.882a48 48 0 0 0-14.059-33.941zM224 416c-35.346 0-64-28.654-64-64 0-35.346 28.654-64 64-64s64 28.654 64 64c0 35.346-28.654 64-64 64zm96-304.52V212c0 6.627-5.373 12-12 12H76c-6.627 0-12-5.373-12-12V108c0-6.627 5.373-12 12-12h228.52c3.183 0 6.235 1.264 8.485 3.515l3.48 3.48A11.996 11.996 0 0 1 320 111.48z"/></svg>
+                        Save</button>
+                    </div>
+                  </form><!-- End Family Background Edit Form -->
+
+                </div>
+              </div>
+
+            <h5 class="card-title fw-bold">Children</h5>
             <h6 class="">Click the button 
                 <button type="button" class="btn btn-sm btn-outline-primary rounded-pill"><i class="bi bi-file-earmark-text" style="position:relative;bottom:3px"></i></button>
                   to edit the record, or  
@@ -20,8 +256,7 @@
             <table id="myTable" class="table-striped table-borderless table datatable">
               <thead>
                 <tr>
-                  <th class="w-50" scope="col">Full Name</th>
-                  <th scope="col">Relationship</th>
+                  <th class="w-50" scope="col">Name of Children</th>
                   <th scope="col">Date of Birth</th>
                   <th scope="col">Action</th>
                 </tr>
@@ -34,7 +269,6 @@
             
                 <tr>
                   <th scope="row">{{data.full_name}}</th>
-                  <td>{{data.relationship}}</td>
                   <td></td>
                   <td>
                     <button type="submit" class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#d{{data.id}}"><i class="bi bi-trash"></i></button>
@@ -58,16 +292,9 @@
                           <div class="col-md-10 my-md-3">
                             <div class="form-floating">
                               <input type="text" name="full_name" class="form-control" id="floatingName" placeholder="Family Member Name" value="{{data.full_name}}" required>
-                              <label for="floatingName">Family Member Name</label>
+                              <label for="floatingName">Child Name</label>
                             </div>
                           </div>
-
-                          <div class="col-md-10 my-md-3">
-                            <div class="form-floating">
-                              <input type="text" name="relationship"  class="form-control" id="floatingEmail" placeholder="Relationship" value="{{data.relationship}}" required>
-                              <label for="floatingEmail">Relationship</label>
-                            </div>
-                          </div> 
 
                         <div class="col-md-10 my-md-3">
                           <div class="form-floating">
@@ -143,15 +370,9 @@
                         <div class="col-md-10">
                           <div class="form-floating">
                             <input type="text" name="full_name" class="form-control" id="floatingName" placeholder="Family Member Name" required>
-                            <label for="floatingName">Family Member Name</label>
+                            <label for="floatingName">Child Name</label>
                           </div>
                         </div>
-                        <div class="col-md-10">
-                          <div class="form-floating">
-                            <input type="text" name="relationship"  class="form-control" id="floatingEmail" placeholder="Relationship" required>
-                            <label for="floatingEmail">Relationship</label>
-                          </div>
-                        </div> 
 
                         <div class="col-md-10">
                           <div class="form-floating">

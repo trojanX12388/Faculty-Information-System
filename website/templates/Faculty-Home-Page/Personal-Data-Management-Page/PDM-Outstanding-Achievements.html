@@ -23,6 +23,7 @@
                 <th class="w-50" scope="col">Achievement / Award</th>
                 <th scope="col">Date</th>
                 <th scope="col">Level</th>
+                <th scope="col">Proof</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
@@ -33,6 +34,7 @@
                   <th scope="row">{{data.achievement}}</th>
                   <td>{{data.date }}</td>
                   <td>{{data.level}}</td>
+                  <td></td>
                   <td>
                     <button type="submit" class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#d{{data.id}}"><i class="bi bi-trash"></i></button>
                     <button type="button" class="btn btn-outline-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#{{data.id}}"><i class="bi bi-file-earmark-text"></i></button>
@@ -63,8 +65,15 @@
                             <input type="text" name="level" class="form-control" id="floating_level" placeholder="Level" value="{{data.level}}" required>
                             <label for="floating_level">Level</label>
                           </div>
-                        </div>    
-                      <br>
+                        </div>  
+                        <br>  
+                        <h5>Proof</h5>
+                        <div class="row mb-3">
+                          <div class="col-sm-10">
+                            <input class="form-control" type="file" id="formFile">
+                            <label for="form"></label>
+                          </div>
+                        </div>
                       <div class="col-md-10">
                         <div class="form-floating">
                           <input type="date" name="date"  class="form-control" id="floating_date" placeholder="Date Received" value="{{data.date}}" required>
@@ -142,6 +151,13 @@
                           <div class="form-floating">
                             <input type="text" name="level" class="form-control" id="floating_level" placeholder="Level" required>
                             <label for="floating_level">Level</label>
+                          </div>
+                        </div>
+                        <h5>Proof</h5>
+                        <div class="row mb-3">
+                          <div class="col-sm-10">
+                            <input class="form-control" type="file" id="formFile">
+                            <label for="form"></label>
                           </div>
                         </div>
                       <div class="col-md-10">
