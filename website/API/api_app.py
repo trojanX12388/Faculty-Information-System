@@ -500,16 +500,16 @@ def convert_to_interpretation(grade):
 
 
 @API.route('/api/FISFaculty/Evaluations', methods=['GET'])
-@admin_token_required # Get the API key from the request header
-def get_all_faculty_evaluations_test():
-    token = request.headers.get('token')  # Get the API key from the request header
-    key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
-    key = key['key']
+# @admin_token_required # Get the API key from the request header
+def get_all_faculty_evaluations():
+    # token = request.headers.get('token')  # Get the API key from the request header
+    # key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
+    # key = key['key']
     
-    if not key in API_KEYS.values():
-         return jsonify(message="access denied!"), 403
+    # if not key in API_KEYS.values():
+    #      return jsonify(message="access denied!"), 403
     
-    else:
+    # else:
         try:
             # Get query parameters for pagination
             page = int(request.args.get('page', 1))
