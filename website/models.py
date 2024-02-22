@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
 from flask_login import UserMixin
 import ast
+import pytz
 
 from .extensions import db
 
@@ -1734,6 +1735,7 @@ class FISMandatoryRequirements(db.Model):
 # ------------------------------------------------
 
 
+
 # ------------------------------------------------
 # SYSTEM ADMIN LOG
   
@@ -1743,11 +1745,10 @@ class FISSystemAdmin_Log(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID 
-    DateTime = db.Column(db.DateTime, default=datetime.now)
+    DateTime = db.Column(db.DateTime, default=lambda: datetime.now(pytz.timezone('Etc/GMT+3')))
     Status = db.Column(db.String(50), default="success")
     Log = db.Column(db.String(50))
     is_delete = db.Column(db.Boolean, default=False) 
-    
     
     def to_dict(self):
         return {
@@ -1761,7 +1762,7 @@ class FISSystemAdmin_Log(db.Model):
         }
         
     def get_id(self):
-        return str(self.id)  # Convert to string to ensure compatibility  
+        return str(self.id)  # Convert to string to ensure compatibility
 
 # ------------------------------------------------
 
@@ -1774,7 +1775,7 @@ class FISUser_Log(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID 
-    DateTime = db.Column(db.DateTime, default=datetime.now)
+    DateTime = db.Column(db.DateTime, default=lambda: datetime.now(pytz.timezone('Etc/GMT+3')))
     Status = db.Column(db.String(50), default="success")
     Log = db.Column(db.String(50))
     is_delete = db.Column(db.Boolean, default=False) 
