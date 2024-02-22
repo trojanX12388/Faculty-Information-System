@@ -726,8 +726,6 @@
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.7/dayjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.7/plugin/relativeTime.min.js"></script>
 
-
-
 <script>
   // Load the relativeTime plugin for dayjs
   dayjs.extend(window.dayjs_plugin_relativeTime);
@@ -735,74 +733,91 @@
   // Function to calculate custom human-readable time difference using dayjs
   function calculateTimeDifference(dateTime) {
     const diffInSeconds = dayjs().diff(dayjs(dateTime), 'seconds');
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    const diffInHours = Math.floor(diffInSeconds / 3600);
+    const diffInDays = Math.floor(diffInSeconds / 86400);
 
     if (diffInSeconds < 60) {
-      return diffInSeconds + 's';
-    } else if (diffInSeconds < 3600) {
-      return Math.floor(diffInSeconds / 60) + 'm';
-    } else if (diffInSeconds < 86400) {
-      return Math.floor(diffInSeconds / 3600) + 'h';
+      return diffInSeconds + 's ago';
+    } else if (diffInMinutes < 60) {
+      return diffInMinutes + 'm ago';
+    } else if (diffInHours < 24) {
+      return diffInHours + 'h ago';
+    } else if (diffInDays < 7) {
+      return diffInDays + 'd ago';
+    } else if (diffInDays < 30) {
+      return Math.floor(diffInDays / 7) + 'w ago';
+    } else if (diffInDays < 365) {
+      return Math.floor(diffInDays / 30) + 'mo ago';
     } else {
-      return Math.floor(diffInSeconds / 86400) + 'd';
+      return Math.floor(diffInDays / 365) + 'y ago';
     }
   }
 
-  // Ajax request to fetch logs from the Flask backend
-  $.ajax({
-    url: '/auth/sysadmin/api/System-Admin-Log',
-    type: 'GET',
-    dataType: 'json',
-    success: function (data) {
-      // Handle the response and update the HTML
-      if (data.logs.length > 0) {
-        // Sort logs by DateTime in descending order
-        data.logs.sort(function (a, b) {
-          return new Date(b.DateTime) - new Date(a.DateTime);
-        });
+  // Function to fetch logs and update HTML
+  function fetchAndDisplayLogs() {
+    $.ajax({
+      url: '/auth/sysadmin/api/System-Admin-Log',
+      type: 'GET',
+      dataType: 'json',
+      success: function (data) {
+        // Handle the response and update the HTML
+        if (data.logs.length > 0) {
+          // Sort logs by DateTime in descending order
+          data.logs.sort(function (a, b) {
+            return new Date(b.DateTime) - new Date(a.DateTime);
+          });
 
-        var activityContainer = $('#activity-container');
+          var activityContainer = $('#activity-container');
+          activityContainer.empty(); // Clear existing content
 
-        // Loop through the sorted logs and append them to the HTML
-        $.each(data.logs, function (index, log) {
-          var activityItem = $('<div class="activity-item d-flex">');
-          var activityLabel = $('<div class="activite-label">').text(calculateTimeDifference(log.DateTime));
-          var activityBadge = $('<i class="bi bi-circle-fill activity-badge align-self-start">');
-          var activityContent = $('<div class="activity-content">').text(log.Log);
+          // Loop through the sorted logs and append them to the HTML
+          $.each(data.logs, function (index, log) {
+            var activityItem = $('<div class="activity-item d-flex">');
+            var activityLabel = $('<div class="activite-label">').text(calculateTimeDifference(log.DateTime));
+            var activityBadge = $('<i class="bi bi-circle-fill activity-badge align-self-start">');
+            var activityContent = $('<div class="activity-content">').text(log.Log);
 
-          // Set activity badge color based on log status
-          if (log.Status.toLowerCase() === 'success') {
-            activityBadge.addClass('text-success');
-          } else if (log.Status.toLowerCase() === 'alert') {
-            activityBadge.addClass('text-danger');
-          } else if (log.Status.toLowerCase() === 'update') {
-            activityBadge.addClass('text-warning');
-          } else if (log.Status.toLowerCase() === 'info') {
-            activityBadge.addClass('text-primary'); 
-          } else {
-          activityBadge.addClass('text-secondary'); 
-          }
+            // Set activity badge color based on log status
+            if (log.Status.toLowerCase() === 'success') {
+              activityBadge.addClass('text-success');
+            } else if (log.Status.toLowerCase() === 'alert') {
+              activityBadge.addClass('text-danger');
+            } else if (log.Status.toLowerCase() === 'update') {
+              activityBadge.addClass('text-warning');
+            } else if (log.Status.toLowerCase() === 'info') {
+              activityBadge.addClass('text-primary');
+            } else {
+              activityBadge.addClass('text-secondary');
+            }
 
-          // If there is a FacultyId or AdminId, display it
-          if (log.IdentifierType && log.IdentifierValue) {
-            activityContent.append(' (', log.IdentifierType, ': ', log.IdentifierValue, ')');
-          }
+            // If there is a FacultyId or AdminId, display it
+            if (log.IdentifierType && log.IdentifierValue) {
+              activityContent.append(' (', log.IdentifierType, ': ', log.IdentifierValue, ')');
+            }
 
-          activityItem.append(activityLabel, activityBadge, activityContent);
-          activityContainer.append(activityItem);
-        });
-      } else {
-        // Handle the case when there are no logs
-        $('#activity-container').text('No activity logs available.');
+            activityItem.append(activityLabel, activityBadge, activityContent);
+            activityContainer.append(activityItem);
+          });
+        } else {
+          // Handle the case when there are no logs
+          $('#activity-container').text('No activity logs available.');
+        }
+      },
+      error: function () {
+        // Handle the error case
+        $('#activity-container').text('Failed to fetch activity logs.');
       }
-    },
-    error: function () {
-      // Handle the error case
-      $('#activity-container').text('Failed to fetch activity logs.');
-    }
-  });
+    });
+  }
+
+  // Initial fetch and display
+  fetchAndDisplayLogs();
+
+  // Reload logs every minute
+  setInterval(fetchAndDisplayLogs, 60000);
 </script>
 
-
 <script>
   // Load the relativeTime plugin for dayjs
   dayjs.extend(window.dayjs_plugin_relativeTime);
@@ -810,70 +825,89 @@
   // Function to calculate custom human-readable time difference using dayjs
   function calculateTimeDifference(dateTime) {
     const diffInSeconds = dayjs().diff(dayjs(dateTime), 'seconds');
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    const diffInHours = Math.floor(diffInSeconds / 3600);
+    const diffInDays = Math.floor(diffInSeconds / 86400);
 
     if (diffInSeconds < 60) {
-      return diffInSeconds + 's';
-    } else if (diffInSeconds < 3600) {
-      return Math.floor(diffInSeconds / 60) + 'm';
-    } else if (diffInSeconds < 86400) {
-      return Math.floor(diffInSeconds / 3600) + 'h';
+      return diffInSeconds + 's ago';
+    } else if (diffInMinutes < 60) {
+      return diffInMinutes + 'm ago';
+    } else if (diffInHours < 24) {
+      return diffInHours + 'h ago';
+    } else if (diffInDays < 7) {
+      return diffInDays + 'd ago';
+    } else if (diffInDays < 30) {
+      return Math.floor(diffInDays / 7) + 'w ago';
+    } else if (diffInDays < 365) {
+      return Math.floor(diffInDays / 30) + 'mo ago';
     } else {
-      return Math.floor(diffInSeconds / 86400) + 'd';
+      return Math.floor(diffInDays / 365) + 'y ago';
     }
   }
 
-  // Ajax request to fetch logs from the Flask backend
-  $.ajax({
-    url: '/auth/sysadmin/api/User-Log',
-    type: 'GET',
-    dataType: 'json',
-    success: function (data) {
-      // Handle the response and update the HTML
-      if (data.logs.length > 0) {
-        // Sort logs by DateTime in descending order
-        data.logs.sort(function (a, b) {
-          return new Date(b.DateTime) - new Date(a.DateTime);
-        });
+  // Function to fetch logs and update HTML
+  function fetchAndDisplayUserLogs() {
+    $.ajax({
+      url: '/auth/sysadmin/api/User-Log',
+      type: 'GET',
+      dataType: 'json',
+      success: function (data) {
+        // Handle the response and update the HTML
+        if (data.logs.length > 0) {
+          // Sort logs by DateTime in descending order
+          data.logs.sort(function (a, b) {
+            return new Date(b.DateTime) - new Date(a.DateTime);
+          });
 
-        var activityContainer2 = $('#activity-container2');
+          var activityContainer2 = $('#activity-container2');
+          activityContainer2.empty(); // Clear existing content
 
-        // Loop through the sorted logs and append them to the HTML
-        $.each(data.logs, function (index, log) {
-          var activityItem = $('<div class="activity-item d-flex">');
-          var activityLabel = $('<div class="activite-label">').text(calculateTimeDifference(log.DateTime));
-          var activityBadge = $('<i class="bi bi-circle-fill activity-badge align-self-start">');
-          var activityContent = $('<div class="activity-content">').text(log.Log);
+          // Loop through the sorted logs and append them to the HTML
+          $.each(data.logs, function (index, log) {
+            var activityItem = $('<div class="activity-item d-flex">');
+            var activityLabel = $('<div class="activite-label">').text(calculateTimeDifference(log.DateTime));
+            var activityBadge = $('<i class="bi bi-circle-fill activity-badge align-self-start">');
+            var activityContent = $('<div class="activity-content">').text(log.Log);
 
-          // Set activity badge color based on log status
-          if (log.Status.toLowerCase() === 'success') {
-            activityBadge.addClass('text-success');
-          } else if (log.Status.toLowerCase() === 'alert') {
-            activityBadge.addClass('text-danger');
-          } else if (log.Status.toLowerCase() === 'update') {
-            activityBadge.addClass('text-warning');
-          } else if (log.Status.toLowerCase() === 'info') {
-            activityBadge.addClass('text-primary'); 
-          } else {
-          activityBadge.addClass('text-secondary'); 
-          }
-          // If there is a FacultyId or AdminId, display it
-          if (log.IdentifierType && log.IdentifierValue) {
-            activityContent.append(' (', log.IdentifierType, ': ', log.IdentifierValue, ')');
-          }
+            // Set activity badge color based on log status
+            if (log.Status.toLowerCase() === 'success') {
+              activityBadge.addClass('text-success');
+            } else if (log.Status.toLowerCase() === 'alert') {
+              activityBadge.addClass('text-danger');
+            } else if (log.Status.toLowerCase() === 'update') {
+              activityBadge.addClass('text-warning');
+            } else if (log.Status.toLowerCase() === 'info') {
+              activityBadge.addClass('text-primary');
+            } else {
+              activityBadge.addClass('text-secondary');
+            }
 
-          activityItem.append(activityLabel, activityBadge, activityContent);
-          activityContainer2.append(activityItem);
-        });
-      } else {
-        // Handle the case when there are no logs
-        $('#activity-container2').text('No user logs available.');
+            // If there is a FacultyId or AdminId, display it
+            if (log.IdentifierType && log.IdentifierValue) {
+              activityContent.append(' (', log.IdentifierType, ': ', log.IdentifierValue, ')');
+            }
+
+            activityItem.append(activityLabel, activityBadge, activityContent);
+            activityContainer2.append(activityItem);
+          });
+        } else {
+          // Handle the case when there are no logs
+          $('#activity-container2').text('No user logs available.');
+        }
+      },
+      error: function () {
+        // Handle the error case
+        $('#activity-container2').text('Failed to fetch user logs.');
       }
-    },
-    error: function () {
-      // Handle the error case
-      $('#activity-container2').text('Failed to fetch user logs.');
-    }
-  });
+    });
+  }
+
+  // Initial fetch and display
+  fetchAndDisplayUserLogs();
+
+  // Reload user logs every minute
+  setInterval(fetchAndDisplayUserLogs, 60000);
 </script>
 
 {% endblock %}
