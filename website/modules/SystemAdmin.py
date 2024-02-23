@@ -32,7 +32,7 @@ from website.models import db
 from sqlalchemy import update
 
 # LOADING MODEL CLASSES
-from website.models import FISFaculty, FISAdmin, FISLoginToken, FISSystemAdmin, FISSystemAdmin_Log, FISUser_Log
+from website.models import FISFaculty, FISAdmin, FISLoginToken, FISSystemAdmin, FISSystemAdmin_Log, FISUser_Log, FISRequests
 
 
 # LOAD JWT MODULE
@@ -1093,7 +1093,7 @@ def sysadminAM_update_pass():
         
 
         
-# UPDATE FACULTY PASSWORD
+# UPDATE FACULTY STATUS
 
 @sysadmin.route('/auth/sysadmin/Admin-Management/update-status', methods=['GET', 'POST'])
 @login_required
@@ -1148,6 +1148,121 @@ def sysadminAM_update_status():
             flash("Invalid Action!.", category="error")   
                     
     return redirect(url_for('sysadmin.sysadminAM'))
+
+
+        
+
+# SYSTEM ADMIN REQUESTS PAGE 
+
+
+@sysadmin.route('/auth/sysadmin/Requests', methods=['GET', 'POST'])
+@login_required
+@SysCheck_Token
+def sysadminR():
+    
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT   
+    username = FISSystemAdmin.query.filter_by(SystemAdminId=current_user.SystemAdminId).first() 
+    
+    if username.ProfilePic == None:
+        ProfilePic=profile_default
+    else:
+        ProfilePic=username.ProfilePic
+    
+                  
+    return render_template("System-Admin-Page/Requests.html",
+                            User= username.name,
+                            user = current_user,
+                            
+                            profile_pic=ProfilePic)
+
+
+
+# UPDATE REQUESTS
+
+@sysadmin.route('/auth/sysadmin/Requests/action', methods=['GET', 'POST'])
+@login_required
+@SysCheck_Token
+def sysadminAM_update_requests():
+    
+      # UPDATE RECORD
+    if request.method == 'POST':
+   
+        # VALUES
+        
+        value = request.form.get('value')
+        status = request.form.get('status')
+        id = request.form.get('id')
+        
+        try:
+            if status == "pending":
+                u = update(FISRequests)
+                u = u.values({"Status": value,})
+                
+                u = u.where(FISRequests.id == id)
+                db.session.execute(u)
+                db.session.commit()
+                db.session.close()
+           
+                flash('successfully done!', category='success')
+                
+            elif status == "declined" or status == "done":
+                
+                data = FISRequests.query.filter_by(id=id).first() 
+                db.session.delete(data)
+                db.session.commit()
+                db.session.close()
+           
+                flash('successfully deleted!', category='success')
+            
+        except:
+            flash('Request was unsuccessfully updated... please try again.', category='error')
+       
+                   
+    return redirect(url_for('sysadmin.sysadminR'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # FACULTY LOGOUT ROUTE
@@ -1506,6 +1621,56 @@ def sysadmin_api_sysadmin_log():
     # Create a dictionary with the required data
     api_response_data = {
         'logs': formatted_logs
+    }
+
+    # Return the data as JSON using Flask's jsonify
+    return jsonify(api_response_data)
+
+  
+@sysadmin.route('/auth/sysadmin/api/Requests', methods=['GET', 'POST'])
+@login_required
+@SysCheck_Token
+def sysadmin_api_sysadmin_requests():
+    
+    # Fetch all data from FISRequests
+    requests = FISRequests.query.all()
+
+    # Create a list to store the selected fields for each log entry
+    formatted_requests = []
+
+    # Iterate over the logs and extract the required fields
+    for request in requests:
+        # Determine whether it's a Faculty or Admin log entry
+        identifier_type = 'FacultyId' if request.FacultyId is not None else 'AdminId'
+
+        # Fetch FirstName from FISFaculty or FISAdmin based on identifier_type
+        identifier_name = None
+        if identifier_type == 'FacultyId':
+            identifier_entry = FISFaculty.query.filter_by(FacultyId=request.FacultyId).first()
+        elif identifier_type == 'AdminId':
+            identifier_entry = FISAdmin.query.filter_by(AdminId=request.AdminId).first()
+
+        if identifier_entry:
+            identifier_name = identifier_entry.FirstName + " " + identifier_entry.LastName
+        
+        # Create a dictionary with the required data
+        formatted_request = {
+            'id': request.id,
+            'DateTime': request.DateTime.strftime("%Y-%m-%d %H:%M:%S"),  # Format datetime as string
+            'Status': request.Status,
+            'Request': request.Request,
+            'IdentifierType': identifier_type,
+            'IdentifierName': identifier_name,
+            'Profile_Pic': identifier_entry.ProfilePic,
+            'IdentifierId': request.FacultyId or request.AdminId,  # Choose the available identifier
+            'updated_at': request.updated_at.strftime("%Y-%m-%d %H:%M:%S"), 
+        }
+
+        formatted_requests.append(formatted_request)
+
+    # Create a dictionary with the required data
+    api_response_data = {
+        'requests': formatted_requests
     }
 
     # Return the data as JSON using Flask's jsonify

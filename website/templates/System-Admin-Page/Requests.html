@@ -1,0 +1,385 @@
+{% extends "/System-Admin-Page/base.html" %}{% block title %}Requests{% endblock %} {% block content%}
+
+
+<main id="main" class="main">
+  <div style="background-color:#08101B; height:200px; position: relative; display: flex; align-items: center;">
+    <div style="background: url('{{ url_for('static', filename='images/Default-Images/pupqc-logo.png')}}') no-repeat; background-size: 300px 300px; width: 300px; height: 200px; opacity: 0.5; filter: grayscale(100%);"></div>
+    <div style="margin-left: 20px;">
+        <h1 style="color:#FFFFFF;">REQUESTS</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item" style="color:#CECDCD;"><a href="/auth/sysadmin/homepage" style="color:#CECDCD;">System Admin Requests</a></li>
+            </ol>
+        </nav>
+    </div>
+</div><!-- End Page Title -->
+
+<br><br>
+
+  <style>
+    .responsive-table {
+      display: flex;
+      flex-wrap: wrap;
+      margin: -10px; /* Adjust margin as needed */
+    }
+  
+    .responsive-table td {
+      flex: 1;
+      padding: 10px; /* Adjust padding as needed */
+      box-sizing: border-box;
+    }
+  
+    .responsive-table h6 {
+      margin: 0;
+    }
+    .btnprinter-container {
+      text-align: right;
+    }
+  
+    .btnprinter {
+      width: 50px;
+      background-color: transparent;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+    }
+  
+    .btnprinter i {
+      font-size: 24px; /* You can adjust the font size as needed */
+      color: #000; /* You can set the color as needed */
+    }
+
+  </style>
+
+  
+<style>
+  .close {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+  }
+
+  .close-icon {
+      color: #000; /* Set the color you want for the "x" */
+      font-size: 20px; /* Set the font size for the "x" */
+  }
+</style>
+
+<section class="section">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">USERS REQUESTS LIST</h5>
+
+              {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                  {% for category, message in messages %}
+                      {% if category == 'error' %}
+                          <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-between" role="alert" style="z-index:1;">
+                              <div>{{ message }}</div>
+                              <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="closeNotification(this)">
+                                  <span aria-hidden="true" class="close-icon">&times;</span>
+                              </button>
+                          </div>
+                      {% elif category == 'success' %}
+                          <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between" role="alert" style="z-index:1;">
+                              <div>{{ message }}</div>
+                              <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="closeNotification(this)">
+                                  <span aria-hidden="true" class="close-icon">&times;</span>
+                              </button>
+                          </div>
+                      {% endif %}
+                  {% endfor %}
+              {% endif %}
+          {% endwith %}
+
+          <script>
+            function closeNotification(button) {
+                // Find the parent notification element and remove it
+                var notification = button.closest('.alert');
+                notification.remove();
+            }
+        </script>
+
+    <!-- Bordered Tabs Justified -->
+      <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+        <li class="nav-item flex-fill" role="presentation">
+          <button class="nav-link w-100 active" id="AllTask-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-AllTask" type="button" role="tab" aria-controls="AllTask" aria-selected="true">ALL PENDING TASKS</button>
+        </li>
+        <li class="nav-item flex-fill" role="presentation">
+          <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-profile" type="button" role="tab" aria-controls="profile" aria-selected="false">TASK CLOSURE</button>
+        </li>
+      </ul>
+
+      <!-- Add this container where you want to display the tab content -->
+      <div class="tab-content pt-2">
+        <div class="tab-pane fade show active" id="bordered-justified-AllTask" role="tabpanel" aria-labelledby="AllTask-tab">
+          <div id="tabContainer"></div>
+        </div>
+
+        <div class="tab-pane fade" id="bordered-justified-profile" role="tabpanel" aria-labelledby="profile-tab">
+          <div id="tabContainer2"></div>
+        </div>
+      </div>
+
+          </div>
+  </div>
+</section>
+</main><!-- End #main -->
+
+
+
+<script>
+  // Load the relativeTime plugin for dayjs
+  dayjs.extend(window.dayjs_plugin_relativeTime);
+
+
+  // Function to initialize DataTable
+  function initializeDataTable(selector) {
+    $(selector).DataTable({
+      searching: true,
+      paging: true,
+      lengthMenu: [5, 10, 15, 20, 25],
+      // Add other options as needed
+    });
+  }
+
+  // Function to calculate custom human-readable time difference using dayjs
+  function calculateTimeDate(dateTime) {
+    const formattedDateTime = dayjs(dateTime).format('MMMM DD, YYYY [at] h:mm A');
+    return `(${formattedDateTime})`;
+  }
+
+  // Function to create the tab content HTML
+  function createTabContent(data) {
+    var tabContent = `
+    
+          <table class="table table-borderless datatable">
+            <thead>
+              <tr>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="notificationTableBody">
+    `;
+
+    if (data.requests.length > 0) {
+      // Sort notifications by DateTime in descending order
+      data.requests.sort(function (a, b) {
+        return new Date(b.DateTime) - new Date(a.DateTime);
+      });
+
+      // Loop through all notifications and append them to the HTML table
+      for (let index = 0; index < data.requests.length; index++) {
+        var notification = data.requests[index];
+
+        tabContent += `
+          <tr>
+            <td>
+              <div class="card my-md-2 border">
+                <div class="card-body"><br>
+                  <img src="https://lh3.googleusercontent.com/d/${notification.Profile_Pic}" alt="Profile" class="rounded-circle" style="width:80px;height:80px;margin-right: 15px;"></img>
+                  <br><br>
+                  <h5 class="mb-0">${notification.Request}</h5> 
+                  <small class="text-muted fst-italic">${calculateTimeDate(notification.DateTime)}</small>
+                  <br><br><h6>Details:</h6>
+                  <p class="bi bi-dot fw-bold">Name: <span class="fw-normal">${notification.IdentifierName}</span></p>
+                  <p class="bi bi-dot fw-bold">Employee ID: <span class="fw-normal">${notification.IdentifierId}</span></p>
+                  <p class="bi bi-dot fw-bold">ID Type: <span class="fw-normal">${notification.IdentifierType}</span></p>
+                  <p class="bi bi-dot fw-bold">Requesting: <span class="fw-normal">${notification.Request}</span></p>
+                  <br><br>
+                  <div class="d-flex justify-content-end">
+                <form action="/auth/sysadmin/Requests/action" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+                    <input name="value" type="hidden"  value="done"/>  
+                    <input required type="hidden" name="status" value="${notification.Status}"></input>
+                    <input required type="hidden" name="id" value="${notification.id}"></input>
+                    <button type="submit" class="btn btn-secondary btn-sm">Mark as Done</button>
+                </form>
+                <form action="/auth/sysadmin/Requests/action" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+                  <input name="value" type="hidden"  value="declined"/>
+                  <input required type="hidden" name="id" value="${notification.id}"></input>  
+                  <input required type="hidden" name="status" value="${notification.Status}"></input>
+                  <button type="submit" class="btn btn-danger btn-sm ml-2">Decline</button>
+                </form>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        `;
+      }
+    } else {
+      // Handle the case when there are no notifications
+      tabContent += '<tr><td>No notifications available.</td></tr>';
+    }
+
+    tabContent += `
+            </tbody>
+          </table>
+      
+    `;
+
+    return tabContent;
+  }
+
+  // Function to fetch and display notifications inside the table
+  function tableNotification() {
+    $.ajax({
+      url: '/auth/sysadmin/api/Requests',
+      type: 'GET',
+      dataType: 'json',
+      success: function (data) {
+        // Filter only pending requests
+        var pendingRequests = data.requests.filter(function (request) {
+          return request.Status === 'pending'; // Replace 'pending' with the actual status value for pending requests
+        });
+  
+        // Handle the response and update the HTML for pending requests
+        var tabContent = createTabContent({ requests: pendingRequests });
+  
+        // Insert the generated HTML into the tabContainer
+        $('#tabContainer').html(tabContent);
+  
+      },
+      error: function () {
+        // Handle the error case
+        $('#tabContainer').html('<p>Failed to fetch notifications.</p>');
+      }
+    });
+  }
+
+  // Initial fetch and display
+  tableNotification();
+
+</script>
+
+
+
+<script>
+  
+  // Function to create the tab content HTML
+  function createTabContent2(data2) {
+    var tabContent2 = `
+
+    <div class="tab-content pt-2">
+      <div class="tab-pane fade show active" id="bordered-justified-profile" role="tabpanel" aria-labelledby="profile-tab">
+     
+          <table class="table table-borderless datatable">
+            <thead>
+              <tr>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="notificationTableBody2">
+    `;
+
+    if (data2.requests.length > 0) {
+      // Sort notifications by DateTime in descending order
+      data2.requests.sort(function (a, b) {
+        return new Date(b.DateTime) - new Date(a.DateTime);
+      });
+
+      for (let index = 0; index < data2.requests.length; index++) {
+        var notification2 = data2.requests[index];
+      
+        // Define variables for badge color and text
+        var badgeColor = '';
+        var badgeText = '';
+      
+        // Check the status and set badge color and text accordingly
+        if (notification2.Status === 'done') {
+          badgeColor = 'text-success';
+          badgeText = 'DONE';
+        } else if (notification2.Status === 'declined') {
+          badgeColor = 'text-danger';
+          badgeText = 'DECLINED';
+        }
+      
+        tabContent2 += `
+          <tr>
+            <td>
+              <div class="card my-md-2 border">
+                <div class="card-body"><br>
+                  <div class="d-flex justify-content-end">
+                    <small class="fw-bold"><i class="bi bi-record-fill activity-badge ${badgeColor} me-sm-1"></i>${badgeText}</small>
+                  </div>
+                  <img src="https://lh3.googleusercontent.com/d/${notification2.Profile_Pic}" alt="Profile" class="rounded-circle" style="width:80px;height:80px;margin-right: 15px;"></img>
+                  <br><br>
+                  <h5 class="mb-0">${notification2.Request}</h5>   
+                 
+                  <small class="text-muted fst-italic">${calculateTimeDate(notification2.DateTime)}</small>
+                  <br><br><h6>Details:</h6>
+                  <p class="bi bi-dot fw-bold">Name: <span class="fw-normal">${notification2.IdentifierName}</span></p>
+                  <p class="bi bi-dot fw-bold">Employee ID: <span class="fw-normal">${notification2.IdentifierId}</span></p>
+                  <p class="bi bi-dot fw-bold">ID Type: <span class="fw-normal">${notification2.IdentifierType}</span></p>
+                  <p class="bi bi-dot fw-bold">Requesting: <span class="fw-normal">${notification2.Request}</span></p>
+                  <br>
+                  <p class="bi bi-dot fw-bold">Respond At: <span class="fw-normal">${calculateTimeDate(notification2.updated_at)}</span></p>
+                  <br><br>
+                  <div class="d-flex justify-content-end">
+                    <form action="/auth/sysadmin/Requests/action" method="POST" enctype="multipart/form-data2" accept-charset="utf-8">
+                      <input name="value" type="hidden"  value="delete"/>  
+                      <input required type="hidden" name="id" value="${notification2.id}"></input>
+                      <input required type="hidden" name="status" value="${notification2.Status}"></input>
+                      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        `;
+      }
+    } else {
+      // Handle the case when there are no notifications
+      tabContent2 += '<tr><td>No notifications available.</td></tr>';
+    }
+
+    tabContent2 += `
+            </tbody>
+          </table>
+        </div>
+        </div>
+    `;
+
+    return tabContent2;
+  }
+
+  // Function to fetch and display notifications inside the table
+  function tableNotification2() {
+    $.ajax({
+      url: '/auth/sysadmin/api/Requests',
+      type: 'GET',
+      dataType: 'json',
+      success: function (data2) {
+        // Filter only pending requests
+        var pendingRequests2 = data2.requests.filter(function (request2) {
+          return request2.Status !== 'pending'; // Replace 'pending' with the actual status value for pending requests
+        });
+  
+        // Handle the response and update the HTML for pending requests
+        var tabContent2 = createTabContent2({ requests: pendingRequests2 });
+  
+        // Insert the generated HTML into the tabContainer2
+        $('#tabContainer2').html(tabContent2);
+        
+         // Initialize the DataTable
+         initializeDataTable('.datatable');
+      
+       
+      },
+      error: function () {
+        // Handle the error case
+        $('#tabContainer2').html('<p>Failed to fetch notifications.</p>');
+      }
+    });
+  }
+
+  
+  // Initial fetch and display
+  tableNotification2();
+
+</script>
+
+
+{% endblock %}
