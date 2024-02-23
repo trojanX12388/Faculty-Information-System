@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, redirect, render_template, request, url_for
+from flask import Flask, Blueprint, redirect, render_template, request, url_for, flash
 from dotenv import load_dotenv
 from flask_login import login_required, current_user
 from pydrive.auth import GoogleAuth
@@ -2075,3 +2075,63 @@ def PDS_Export():
 # ------------------------------- END OF PDM PERSONAL DATA REPORTS  ---------------------------- 
  
 # ------------------------------------------------------------- 
+
+
+
+
+# ------------------------------- SETTINGS ------------------------------
+
+@PDM.route("/Settings", methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def Settings():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+    
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+      
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
+        else:
+            ProfilePic=username.ProfilePic
+        
+        # UPDATE 
+        
+        if request.method == 'POST':
+            from werkzeug.security import generate_password_hash
+            from werkzeug.security import check_password_hash
+         
+            # VALUES
+           
+            password = request.form.get('password')
+            newpassword = request.form.get('newpassword')
+            renewpassword = request.form.get('renewpassword')
+            
+            if check_password_hash(current_user.Password, password):
+
+                if newpassword == renewpassword:
+                    Password=generate_password_hash(newpassword)
+                    
+                    u = update(FISFaculty)
+                    u = u.values({"Password": Password})
+                    
+                    u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
+                    db.session.execute(u)
+                    db.session.commit()
+                    db.session.close()
+                    
+                    flash('Password successfully updated!', category='success')
+                    return redirect(url_for('PDM.Settings'))
+                 
+                else:
+                    flash('Invalid input! Password does not match...', category='error')
+                    return redirect(url_for('PDM.Settings')) 
+            else:
+                flash('Invalid input! Password does not match...', category='error')
+                return redirect(url_for('PDM.Settings')) 
+                                
+        return render_template("Faculty-Home-Page/Personal-Data-Management-Page/Settings.html", 
+                               User=username.FirstName + " " + username.LastName, 
+                               profile_pic=ProfilePic,
+                               user = current_user,
+                               age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
+                               )
