@@ -49,6 +49,9 @@ from .model_class.admin_pds_model import AdminFISPDS_PersonalDetails,AdminFISPDS
 # LOAD EVALUATION
 from .model_class.evaluations import FISEvaluations
 
+# LOAD PROFESSIONAL DEVELOPMENT
+from .model_class.professional_development import FISProfessionalDevelopment
+
 # LOAD PYDANTIC MODELS
 from .model_class.admin_profile import FISAdmin_Model
 from .model_class.faculty_profile import FISFaculty_Model
@@ -58,6 +61,9 @@ from .model_class.admin_pds_model import AdminFISPDS_PersonalDetails_Model,Admin
 
 # LOAD EVALUATION MODELS
 from .model_class.evaluations import FISEvaluations_Model
+
+# LOAD PROFESSIONAL DEVELOPMENT MODELS
+from .model_class.professional_development import FISProfessionalDevelopment_Model
 
 # ---------------------------------------------------------
 
@@ -566,6 +572,60 @@ def get_all_faculty_evaluations():
             db.close()
 
             return jsonify(profiles)
+
+        except ValidationError as e:
+            return jsonify({'error': f'Validation error: {e}'})
+        
+        
+        
+@API.route('/api/FISFaculty/Professional-Development', methods=['GET', 'POST'])
+@admin_token_required
+def get_all_faculty_PD():
+    
+    token = request.headers.get('token')  # Get the API key from the request header
+    key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
+    key = key['key']
+    
+    if not key in API_KEYS.values():
+         return jsonify(message="access denied!"), 403
+    
+    else:
+        try:
+            db = SessionLocal()
+
+            # Query only the required subset of data based on offset and per_page
+            professional_development = db.query(FISProfessionalDevelopment).all()
+
+            # Create a list to store the selected fields for each log entry
+            formatted_requests = []
+
+            for record in professional_development:
+                    
+                    data = FISProfessionalDevelopment_Model.from_orm(record).dict()
+                    data['id'] = data['id']
+                    data['FacultyId'] = data['FacultyId']
+                    data['title'] = data['title']
+                    data['date_start'] = data['date_start']
+                    data['date_end'] = data['date_start']
+                    data['hours'] = data['hours']
+                    data['conducted_by'] = data['conducted_by']
+                    data['type'] = data['type']
+                    data['file_id'] = data['file_id']
+
+                    # Exclude unwanted fields
+                    unwanted_fields = [
+                     'AdminId',
+                    ]
+
+                    for field in unwanted_fields:
+                        if field in data:
+                            del data[field]
+
+                    formatted_requests.append(data)
+
+            db.close()
+
+            return jsonify(formatted_requests)
 
         except ValidationError as e:
             return jsonify({'error': f'Validation error: {e}'})

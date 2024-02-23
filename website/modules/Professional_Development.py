@@ -19,7 +19,7 @@ from website.models import db
 from sqlalchemy import update
 
 # LOADING MODEL CLASSES
-from website.models import FISFaculty
+from website.models import FISFaculty, FISProfessionalDevelopment
 
 # LOADING FUNCTION CHECK TOKEN
 from website.Token.token_check import Check_Token
@@ -106,65 +106,192 @@ def PD_W():
  
 # ------------------------------------------------------------- 
 
-# ------------------------------- TRAININGS ----------------------------  
+# ------------------------------- PROFESSIONAL DEVELOPMENT ----------------------------  
 
-@PD.route("/PD-Trainings", methods=['GET', 'POST'])
+@PD.route("/Professional-Development", methods=['GET', 'POST'])
 @login_required
 @Check_Token
 def PD_T():
     # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
         username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
-        url = 'https://acmis.onrender.com/api/faculty/certificate/records/?format=json'
-        response = requests.get(url)
-    
-        if response.status_code == 200:
-            # Process the API response data
-            api_data = response.json()
-
-            # Filter the data for the person named "Alma Fernandez"
-            records = [record for record in api_data if record.get('first_name', '') == current_user.FirstName and record.get('last_name', '') == current_user.LastName]
-
-        # Format the date in the desired format
-        for record in records:
-            date_str = record.get('date', '')
-            if date_str:
-                formatted_date = datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%S%z').strftime('%B %d, %Y')
-                record['date'] = formatted_date
-
+        
         if username.ProfilePic == None:
             ProfilePic=profile_default
         else:
             ProfilePic=username.ProfilePic
            
         
-        # # UPDATE PROFILE BASIC DETAILS
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            title = request.form.get('title')
+            date_start = request.form.get('date_start')
+            date_end = request.form.get('date_end')
+            hours = request.form.get('hours')
+            conduct_by = request.form.get('conduct_by')
+            type = request.form.get('type')
+            
+            namefile = title + "_" + type
+            
+            id = request.form.get('id')
+            file_id = request.form.get('file_id')
+            
+            file =  request.form.get('base64')
+            
+            ext = request.files.get('fileup')
+            ext = ext.filename
+            
+            nameFile = f'{str(username.FacultyId)}{str(namefile)}'
+            
+        # PROFESSIONAL DEVELOPMENT FOLDER ID
+            folder = '1j_3naGGNLgnSoLOq5IF7ZeGbBd8prsJ-'
+            
+            
+            url = """data:application/pdf;base64,{}""".format(file)
+                    
+            filename, m = urlretrieve(url)
         
-        # if request.method == 'POST':
-
-        #     # UPDATE BASIC DETAILS
-        #     # VALUES
-        #     faculty_code = request.form.get('faculty_code')
-        #     honorific = request.form.get('honorific')
-
-        #     u = update(FISFaculty)
-        #     u = u.values({"faculty_code": faculty_code,
-        #                   "honorific": honorific
-        #                   })
-        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
-        #     db.session.execute(u)
-        #     db.session.commit()
-        #     db.session.close()
-        #     return redirect(url_for('PDM.PDM_BD')) 
+            file_list = drive.ListFile({'q': "'%s' in parents and trashed=false"%(folder)}).GetList()
+            try:
+                for file1 in file_list:
+                    if file1['id'] == str(file_id):
+                        file1.Delete()                
+            except:
+                pass
+            # CONFIGURE FILE FORMAT AND NAME
+            file1 = drive.CreateFile(metadata={
+                "title": ""+ str(nameFile),
+                "parents": [{"id": folder}],
+                "mimeType": "application/pdf"
+                })
+            
+            # GENERATE FILE AND UPLOAD
+            file1.SetContentFile(filename)
+            file1.Upload()
+            
+            u = update(FISProfessionalDevelopment)
+            u = u.values({"title": title,
+                          "file_id": file_id,
+                          "date_start": date_start,
+                          "date_end": date_end,
+                          "hours": hours,
+                          "conducted_by": conduct_by,
+                          "type": type,
+              
+                          })
+            u = u.where(FISProfessionalDevelopment.id == id)
+            db.session.execute(u)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PD.PD_T')) 
                       
-        return render_template("Faculty-Home-Page/Professional-Development/PD-Trainings.html", 
+        return render_template("Faculty-Home-Page/Professional-Development/Professional-Development.html", 
                                User= username.FirstName + " " + username.LastName,
                                faculty_code= username.FacultyCode,
                                user= current_user,
-                               profile_pic=ProfilePic,
-                               records = records)
+                               profile_pic=ProfilePic)
 
+
+     
+@PD.route("/Professional-Development/add-record", methods=['GET', 'POST'])
+@login_required
+def PD_add():
+        
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+        
+        title = request.form.get('title')
+        date_start = request.form.get('date_start')
+        date_end = request.form.get('date_end')
+        hours = request.form.get('hours')
+        conduct_by = request.form.get('conduct_by')
+        type = request.form.get('type')
+        
+        namefile = title + "_" + type
+        
+        file =  request.form.get('base64')
+        ext = request.files.get('fileup')
+        ext = ext.filename
+        
+        id = f'{str(username.FacultyId)}{str(namefile)}'
+        
+       # CAPSTONE FOLDER ID
+        folder = '1j_3naGGNLgnSoLOq5IF7ZeGbBd8prsJ-'
+        
+        
+        url = """data:application/pdf;base64,{}""".format(file)
+                
+        filename, m = urlretrieve(url)
+    
+        file_list = drive.ListFile({'q': "'%s' in parents and trashed=false"%(folder)}).GetList()
+        try:
+            for file1 in file_list:
+                if file1['title'] == str(id):
+                    file1.Delete()                
+        except:
+            pass
+        # CONFIGURE FILE FORMAT AND NAME
+        file1 = drive.CreateFile(metadata={
+            "title": ""+ str(id),
+            "parents": [{"id": folder}],
+            "mimeType": "application/pdf"
+            })
+        
+        # GENERATE FILE AND UPLOAD
+        file1.SetContentFile(filename)
+        file1.Upload()
+        
+        add_record = FISProfessionalDevelopment(title=title,
+                                                file_id='%s'%(file1['id']),
+                                                date_start=date_start,
+                                                date_end=date_end,
+                                                hours=hours,
+                                                conducted_by=conduct_by,
+                                                type=type,
+                                                FacultyId = current_user.FacultyId,
+                                                )
+        
+        db.session.add(add_record)
+        db.session.commit()
+        db.session.close()
+        
+        return redirect(url_for('PD.PD_T'))
+            
+           
+@PD.route("/Professional-Development/delete-record", methods=['GET', 'POST'])
+@login_required
+def PD_del():
+        username = FISFaculty.query.filter_by(FacultyId=current_user.FacultyId).first() 
+
+        id = request.form.get('id')
+        
+        
+        data = FISProfessionalDevelopment.query.filter_by(id=id).first() 
+        
+        if data:
+            namefile = data.title + "_" + data.type
+            id = f'{str(username.FacultyId)}{str(namefile)}'
+        
+            # CAPSTONE FOLDER ID
+            folder = '1j_3naGGNLgnSoLOq5IF7ZeGbBd8prsJ-'
+        
+            file_list = drive.ListFile({'q': "'%s' in parents and trashed=false"%(folder)}).GetList()
+            try:
+                for file1 in file_list:
+                    if file1['title'] == str(id):
+                        file1.Delete()                
+            except:
+                pass
+
+            db.session.delete(data)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PD.PD_T'))   
  
 # ------------------------------------------------------------- 
+
+
+
 
 # ------------------------------- SEMINARS ----------------------------  
 

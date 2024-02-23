@@ -1225,6 +1225,64 @@ def sysadminAM_update_requests():
 
 
 
+# ------------------------------- SETTINGS ------------------------------
+
+@sysadmin.route("/auth/sysadmin/Settings", methods=['GET', 'POST'])
+@login_required
+@SysCheck_Token
+def sysadmin_Settings():
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+    
+        # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT   
+        username = FISSystemAdmin.query.filter_by(SystemAdminId=current_user.SystemAdminId).first() 
+        
+        if username.ProfilePic == None:
+            ProfilePic=profile_default
+        else:
+            ProfilePic=username.ProfilePic
+        
+        # UPDATE 
+        
+        if request.method == 'POST':
+            from werkzeug.security import generate_password_hash
+            from werkzeug.security import check_password_hash
+         
+            # VALUES
+           
+            password = request.form.get('password')
+            newpassword = request.form.get('newpassword')
+            renewpassword = request.form.get('renewpassword')
+            
+            if check_password_hash(current_user.Password, password):
+
+                if newpassword == renewpassword:
+                    Password=generate_password_hash(newpassword)
+                    
+                    u = update(FISSystemAdmin)
+                    u = u.values({"Password": Password})
+                    
+                    u = u.where(FISSystemAdmin.SystemAdminId == current_user.SystemAdminId)
+                    db.session.execute(u)
+                    db.session.commit()
+                    db.session.close()
+                    
+                    flash('Password successfully updated!', category='success')
+                    return redirect(url_for('sysadmin.sysadmin_Settings'))
+                 
+                else:
+                    flash('Invalid input! Password does not match...', category='error')
+                    return redirect(url_for('sysadmin.sysadmin_Settings')) 
+            else:
+                flash('Invalid input! Password does not match...', category='error')
+                return redirect(url_for('sysadmin.sysadmin_Settings')) 
+                                
+        return render_template("System-Admin-Page/Settings.html", 
+                               User= username.name,
+                               profile_pic=ProfilePic,
+                               user = current_user,
+                               )
+
+
 
 
 

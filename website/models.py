@@ -1327,10 +1327,14 @@ class FISProfessionalDevelopment(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
-    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
-    activity_type = db.Column(db.String(50)) 
-    description = db.Column(db.String) 
-    date = db.Column(db.Date) 
+    AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    title = db.Column(db.String) 
+    date_start = db.Column(db.Date) 
+    date_end = db.Column(db.Date)
+    hours =  db.Column(db.Integer)
+    conducted_by = db.Column(db.String(50))
+    type = db.Column(db.String(50))
+    file_id = db.Column(db.String(50))
     is_delete = db.Column(db.Boolean, default=False) 
     
 
@@ -1338,10 +1342,14 @@ class FISProfessionalDevelopment(db.Model):
         return {
             'id': self.id,
             'FacultyId': self.FacultyId,
-            # 'AdminId': self.AdminId,
-            'activity_type': self.activity_type,
-            'description': self.description,
-            'date': self.date,
+            'AdminId': self.AdminId,
+            'title': self.title,
+            'date_start': self.date_start,
+            'date_end': self.date_end,
+            'hours': self.hours,
+            'conducted_by': self.conducted_by,
+            'type': self.type,
+            'file_id': self.file_id,
             'is_delete': self.is_delete
         }
         
