@@ -76,16 +76,55 @@
     .workshop {
       background-color: #1F2739;
     }
+    .close {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+  }
+
+  .close-icon {
+      color: #000; /* Set the color you want for the "x" */
+      font-size: 20px; /* Set the font size for the "x" */
+  }
 
     </style>
-
-
+ 
     <section class="section">
       <div class="d-flex flex-row">
       
         <div class="card ms-md-2 w-100 mb-0 pb-0">
             <div class="card-body">
               <h5 class="card-title">Learning and Development Interventions, Training, Seminar, Conference, Workshop, or Short Course Attended</h5>
+              {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                  {% for category, message in messages %}
+                      {% if category == 'error' %}
+                          <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-between" role="alert" style="z-index:1;">
+                              <div>{{ message }}</div>
+                              <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="closeNotification(this)">
+                                  <span aria-hidden="true" class="close-icon">&times;</span>
+                              </button>
+                          </div>
+                      {% elif category == 'success' %}
+                          <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between" role="alert" style="z-index:1;">
+                              <div>{{ message }}</div>
+                              <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="closeNotification(this)">
+                                  <span aria-hidden="true" class="close-icon">&times;</span>
+                              </button>
+                          </div>
+                      {% endif %}
+                  {% endfor %}
+              {% endif %}
+          {% endwith %}
+  
+          <script>
+            function closeNotification(button) {
+                // Find the parent notification element and remove it
+                var notification = button.closest('.alert');
+                notification.remove();
+            }
+        </script>
               <br>
               <h6 class="">Click the button 
                <button type="button" class="btn btn-sm btn-outline-primary rounded-pill"><i class="bi bi-file-earmark-text" style="position:relative;bottom:3px"></i></button>
@@ -184,17 +223,44 @@
                             </div>
                             <div class="row mb-3">
                   
-                              <label for="btnup" class="col-sm-2 col-form-label">File Upload</label>
+                              <label for="btnup{{data.id}}" class="col-sm-2 col-form-label">File Upload</label>
                   
                               <div class="col-sm-10">
                   
                                 <div class="col-sm-10">
                                   <br>
-                                  <span id="fileNameDisplay1"></span>
-                                  <button type="button" id="btnup" class="btn btn-warning btn-sm" onclick="document.getElementById('fileup1').click()">Browse File</button>
-                                  <input type="file" value="" name="fileup" id="fileup1" hidden required></input>
-                                  <input type="text" id="base641" name="base64" hidden></input>
+                                  <span id="fileNameDisplay{{data.id}}"></span>
+                                  <button type="button" id="btnup{{data.id}}" class="btn btn-warning btn-sm" onclick="document.getElementById('fileup{{data.id}}').click()">Browse File</button>
+                                  <input type="file" value="" name="fileup" id="fileup{{data.id}}" hidden required></input>
+                                  <input type="text" id="base64{{data.id}}" name="base64" hidden></input>
                                   
+                                  <script>
+                                    $('#fileup{{data.id}}').change(function () {
+                                        async function toBase64{{data.id}}(file{{data.id}}) {
+                                            return new Promise((resolve, reject) => {
+                                                const reader = new FileReader();
+                                                reader.onload = () => resolve(reader.result.split(',')[1]);
+                                                reader.onerror = error => reject(error);
+                                                reader.readAsDataURL(file{{data.id}});
+                                            });
+                                        }
+                
+                                        async function Main{{data.id}}() {
+                                            const fileInput{{data.id}} = document.querySelector('#fileup{{data.id}}');
+                                            const file{{data.id}} = fileInput{{data.id}}.files[0];
+                                            
+                                            // Display the file name
+                                            const fileNameDisplay1 = document.getElementById('fileNameDisplay{{data.id}}');
+                                            fileNameDisplay1.textContent = file{{data.id}}.name;
+                
+                                            // Convert file to base64
+                                            const value{{data.id}} = await toBase64{{data.id}}(file{{data.id}});
+                                            document.getElementById("base64{{data.id}}").setAttribute('value', value{{data.id}});
+                                        }
+                
+                                        Main{{data.id}}();
+                                    });
+                                  </script> 
                                 </div>
                                 
                               </div>
@@ -211,6 +277,7 @@
                   </div>
                 </div>
               </div><!-- End Edit Record Modal-->
+
               
 
                 <!-- Delete Record Modal-->
@@ -432,34 +499,6 @@
   });
 </script>
 
-
-<script>
-  $('#fileup1').change(function () {
-      async function toBase64(file) {
-          return new Promise((resolve, reject) => {
-              const reader = new FileReader();
-              reader.onload = () => resolve(reader.result.split(',')[1]);
-              reader.onerror = error => reject(error);
-              reader.readAsDataURL(file);
-          });
-      }
-
-      async function Main() {
-          const fileInput = document.querySelector('#fileup1');
-          const file = fileInput.files[0];
-          
-          // Display the file name
-          const fileNameDisplay = document.getElementById('fileNameDisplay');
-          fileNameDisplay.textContent = file.name;
-
-          // Convert file to base64
-          const value = await toBase64(file);
-          document.getElementById("base641").setAttribute('value', value);
-      }
-
-      Main();
-  });
-</script>
 
 {% endblock %}
 

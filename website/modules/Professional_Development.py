@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, redirect, render_template, request, url_for
+from flask import Flask, Blueprint, redirect, render_template, request, url_for, flash
 from dotenv import load_dotenv
 from flask_login import login_required, current_user
 from pydrive.auth import GoogleAuth
@@ -143,48 +143,56 @@ def PD_T():
             ext = ext.filename
             
             nameFile = f'{str(username.FacultyId)}{str(namefile)}'
+
             
         # PROFESSIONAL DEVELOPMENT FOLDER ID
             folder = '1j_3naGGNLgnSoLOq5IF7ZeGbBd8prsJ-'
             
             
-            url = """data:application/pdf;base64,{}""".format(file)
-                    
-            filename, m = urlretrieve(url)
-        
-            file_list = drive.ListFile({'q': "'%s' in parents and trashed=false"%(folder)}).GetList()
             try:
-                for file1 in file_list:
-                    if file1['id'] == str(file_id):
-                        file1.Delete()                
+                url = """data:application/pdf;base64,{}""".format(file)
+                    
+                filename, m = urlretrieve(url)
+            
+                file_list = drive.ListFile({'q': "'%s' in parents and trashed=false"%(folder)}).GetList()
+                try:
+                    for file1 in file_list:
+                        if file1['id'] == file_id:
+                            file1.Delete()                
+                except:
+                    pass
+                # CONFIGURE FILE FORMAT AND NAME
+                file1 = drive.CreateFile(metadata={
+                    "title": ""+ str(nameFile),
+                    "parents": [{"id": folder}],
+                    "mimeType": "application/pdf"
+                    })
+                
+                # GENERATE FILE AND UPLOAD
+                file1.SetContentFile(filename)
+                file1.Upload()
+                
+                u = update(FISProfessionalDevelopment)
+                u = u.values({"title": title,
+                            "file_id": '%s'%(file1['id']),
+                            "date_start": date_start,
+                            "date_end": date_end,
+                            "hours": hours,
+                            "conducted_by": conduct_by,
+                            "type": type,
+                
+                            })
+                u = u.where(FISProfessionalDevelopment.id == id)
+                db.session.execute(u)
+                db.session.commit()
+                db.session.close()
+                
+                flash('successfully updated!', category='success')
+                return redirect(url_for('PD.PD_T'))
+            
             except:
-                pass
-            # CONFIGURE FILE FORMAT AND NAME
-            file1 = drive.CreateFile(metadata={
-                "title": ""+ str(nameFile),
-                "parents": [{"id": folder}],
-                "mimeType": "application/pdf"
-                })
-            
-            # GENERATE FILE AND UPLOAD
-            file1.SetContentFile(filename)
-            file1.Upload()
-            
-            u = update(FISProfessionalDevelopment)
-            u = u.values({"title": title,
-                          "file_id": file_id,
-                          "date_start": date_start,
-                          "date_end": date_end,
-                          "hours": hours,
-                          "conducted_by": conduct_by,
-                          "type": type,
-              
-                          })
-            u = u.where(FISProfessionalDevelopment.id == id)
-            db.session.execute(u)
-            db.session.commit()
-            db.session.close()
-            return redirect(url_for('PD.PD_T')) 
+                flash('Unsuccessfully Updated... please try again.', category='error') 
+                return redirect(url_for('PD.PD_T'))
                       
         return render_template("Faculty-Home-Page/Professional-Development/Professional-Development.html", 
                                User= username.FirstName + " " + username.LastName,
@@ -218,44 +226,48 @@ def PD_add():
        # CAPSTONE FOLDER ID
         folder = '1j_3naGGNLgnSoLOq5IF7ZeGbBd8prsJ-'
         
-        
-        url = """data:application/pdf;base64,{}""".format(file)
-                
-        filename, m = urlretrieve(url)
-    
-        file_list = drive.ListFile({'q': "'%s' in parents and trashed=false"%(folder)}).GetList()
         try:
-            for file1 in file_list:
-                if file1['title'] == str(id):
-                    file1.Delete()                
+        
+            url = """data:application/pdf;base64,{}""".format(file)
+                    
+            filename, m = urlretrieve(url)
+        
+            file_list = drive.ListFile({'q': "'%s' in parents and trashed=false"%(folder)}).GetList()
+            try:
+                for file1 in file_list:
+                    if file1['title'] == str(id):
+                        file1.Delete()                
+            except:
+                pass
+            # CONFIGURE FILE FORMAT AND NAME
+            file1 = drive.CreateFile(metadata={
+                "title": ""+ str(id),
+                "parents": [{"id": folder}],
+                "mimeType": "application/pdf"
+                })
+            
+            # GENERATE FILE AND UPLOAD
+            file1.SetContentFile(filename)
+            file1.Upload()
+            
+            add_record = FISProfessionalDevelopment(title=title,
+                                                    file_id='%s'%(file1['id']),
+                                                    date_start=date_start,
+                                                    date_end=date_end,
+                                                    hours=hours,
+                                                    conducted_by=conduct_by,
+                                                    type=type,
+                                                    FacultyId = current_user.FacultyId,
+                                                    )
+            
+            db.session.add(add_record)
+            db.session.commit()
+            db.session.close()
+            flash('successfully added!', category='success')
+            return redirect(url_for('PD.PD_T'))
         except:
-            pass
-        # CONFIGURE FILE FORMAT AND NAME
-        file1 = drive.CreateFile(metadata={
-            "title": ""+ str(id),
-            "parents": [{"id": folder}],
-            "mimeType": "application/pdf"
-            })
-        
-        # GENERATE FILE AND UPLOAD
-        file1.SetContentFile(filename)
-        file1.Upload()
-        
-        add_record = FISProfessionalDevelopment(title=title,
-                                                file_id='%s'%(file1['id']),
-                                                date_start=date_start,
-                                                date_end=date_end,
-                                                hours=hours,
-                                                conducted_by=conduct_by,
-                                                type=type,
-                                                FacultyId = current_user.FacultyId,
-                                                )
-        
-        db.session.add(add_record)
-        db.session.commit()
-        db.session.close()
-        
-        return redirect(url_for('PD.PD_T'))
+            flash('Unsuccessfully added. Please try again...', category='error')
+            return redirect(url_for('PD.PD_T'))
             
            
 @PD.route("/Professional-Development/delete-record", methods=['GET', 'POST'])
@@ -274,7 +286,7 @@ def PD_del():
         
             # CAPSTONE FOLDER ID
             folder = '1j_3naGGNLgnSoLOq5IF7ZeGbBd8prsJ-'
-        
+
             file_list = drive.ListFile({'q': "'%s' in parents and trashed=false"%(folder)}).GetList()
             try:
                 for file1 in file_list:
@@ -286,7 +298,14 @@ def PD_del():
             db.session.delete(data)
             db.session.commit()
             db.session.close()
+            
+            flash('successfully deleted!', category='success')
             return redirect(url_for('PD.PD_T'))   
+        
+        else:
+            flash('Unsuccessfully deleted!', category='error')
+            return redirect(url_for('PD.PD_T'))
+            
  
 # ------------------------------------------------------------- 
 
