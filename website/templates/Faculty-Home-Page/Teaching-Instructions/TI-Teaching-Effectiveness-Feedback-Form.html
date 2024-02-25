@@ -50,6 +50,7 @@
     margin-bottom: 5px;
   }
 </style>
+
 <div class="container mt-5">
   <div class="d-grid gap-2 mt-3 col-md-12 d-flex flex-column align-items-end">
     <button type="button" onclick="redirectToURL()" class="btn btn-primary mt-3 col-md-2">Back</i></button>
@@ -58,8 +59,181 @@
           window.location.href = '/TI-Teaching-Effectiveness';
       }
   </script>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const radioButtons = document.querySelectorAll('input[type="radio"]');
+
+      const totalScoreDisplayA = document.getElementById('totalScoreA');
+      const totalScoreDisplayB = document.getElementById('totalScoreB');
+      const totalScoreDisplayC = document.getElementById('totalScoreC');
+      const totalScoreDisplayD = document.getElementById('totalScoreD');
+      const totalScoreDisplayE = document.getElementById('totalScoreE');
+
+      const totalScoreDisplay2A = document.getElementById('totalScore2A');
+      const totalScoreDisplay2B = document.getElementById('totalScore2B');
+      const totalScoreDisplay2C = document.getElementById('totalScore2C');
+      const totalScoreDisplay2D = document.getElementById('totalScore2D');
+      const totalScoreDisplay2E = document.getElementById('totalScore2E');
+
+      const totalScoreDisplay3A = document.getElementById('totalScore3A');
+      const totalScoreDisplay3B = document.getElementById('totalScore3B');
+      const totalScoreDisplay3C = document.getElementById('totalScore3C');
+      const totalScoreDisplay3D = document.getElementById('totalScore3D');
+      const totalScoreDisplay3E = document.getElementById('totalScore3E');
+
+      const totalScoreDisplay4A = document.getElementById('totalScore4A');
+      const totalScoreDisplay4B = document.getElementById('totalScore4B');
+      const totalScoreDisplay4C = document.getElementById('totalScore4C');
+      const totalScoreDisplay4D = document.getElementById('totalScore4D');
+      const totalScoreDisplay4E = document.getElementById('totalScore4E');
+
+      const averageScoreDisplay = document.getElementById('AverageScore'); // Add this line
+      let totalScoreA = 0;
+      let totalScoreB = 0;
+      let totalScoreC = 0;
+      let totalScoreD = 0;
+      let totalScoreE = 0;
+
+      let totalScore2A = 0;
+      let totalScore2B = 0;
+      let totalScore2C = 0;
+      let totalScore2D = 0;
+      let totalScore2E = 0;
+
+      let totalScore3A = 0;
+      let totalScore3B = 0;
+      let totalScore3C = 0;
+      let totalScore3D = 0;
+      let totalScore3E = 0;
+
+      let totalScore4A = 0;
+      let totalScore4B = 0;
+      let totalScore4C = 0;
+      let totalScore4D = 0;
+      let totalScore4E = 0;
+  
+      radioButtons.forEach(function(radioButton) {
+        radioButton.addEventListener('change', function() {
+          const section = radioButton.closest('ol').getAttribute('data-section');
+          if (section === 'A') {
+            totalScoreA = calculateTotalScore('gridRadiosA');
+            totalScoreDisplayA.textContent = `Total Score A: ${totalScoreA}`;
+          } else if (section === 'B') {
+            totalScoreB = calculateTotalScore('gridRadiosB');
+            totalScoreDisplayB.textContent = `Total Score B: ${totalScoreB}`;
+          } else if (section === 'C') {
+            totalScoreC = calculateTotalScore('gridRadiosC');
+            totalScoreDisplayC.textContent = `Total Score C: ${totalScoreC}`;
+          } else if (section === 'D') {
+            totalScoreD = calculateTotalScore('gridRadiosD');
+            totalScoreDisplayD.textContent = `Total Score D: ${totalScoreD}`;
+          } else if (section === 'E') {
+            totalScoreE = calculateTotalScore('gridRadiosE');
+            totalScoreDisplayE.textContent = `Total Score E: ${totalScoreE}`;
+          }
+          else if (section === 'E') {
+            totalScoreE = calculateTotalScore('gridRadiosE');
+            totalScoreDisplayE.textContent = `Total Score E: ${totalScoreE}`;
+          }
+          else if (section === '2A') {
+            totalScore2A = calculateTotalScore('gridRadios2A');
+            totalScoreDisplay2A.textContent = `Total Score 2A: ${totalScore2A}`;
+          } else if (section === '2B') {
+            totalScore2B = calculateTotalScore('gridRadios2B');
+            totalScoreDisplay2B.textContent = `Total Score 2B: ${totalScore2B}`;
+          } else if (section === '2C') {
+            totalScore2C = calculateTotalScore('gridRadios2C');
+            totalScoreDisplay2C.textContent = `Total Score 2C: ${totalScore2C}`;
+          } else if (section === '2D') {
+            totalScore2D = calculateTotalScore('gridRadios2D');
+            totalScoreDisplay2D.textContent = `Total Score 2D: ${totalScore2D}`;
+          } else if (section === '2E') {
+            totalScore2E = calculateTotalScore('gridRadios2E');
+            totalScoreDisplay2E.textContent = `Total Score 2E: ${totalScore2E}`;
+          }
+
+          else if (section === '3A') {
+            totalScore3A = calculateTotalScore('gridRadios3A');
+            totalScoreDisplay3A.textContent = `Total Score 3A: ${totalScore3A}`;
+          } else if (section === '3B') {
+            totalScore3B = calculateTotalScore('gridRadios3B');
+            totalScoreDisplay3B.textContent = `Total Score 3B: ${totalScore3B}`;
+          } else if (section === '3C') {
+            totalScore3C = calculateTotalScore('gridRadios3C');
+            totalScoreDisplay3C.textContent = `Total Score 3C: ${totalScore3C}`;
+          } else if (section === '3D') {
+            totalScore3D = calculateTotalScore('gridRadios3D');
+            totalScoreDisplay3D.textContent = `Total Score 3D: ${totalScore3D}`;
+          } else if (section === '3E') {
+            totalScore3E = calculateTotalScore('gridRadios3E');
+            totalScoreDisplay3E.textContent = `Total Score 3E: ${totalScore3E}`;
+          }
+  
+          else if (section === '4A') {
+            totalScore4A = calculateTotalScore('gridRadios4A');
+            totalScoreDisplay4A.textContent = `Total Score 4A: ${totalScore4A}`;
+          } else if (section === '4B') {
+            totalScore4B = calculateTotalScore('gridRadios4B');
+            totalScoreDisplay4B.textContent = `Total Score 4B: ${totalScore4B}`;
+          } else if (section === '4C') {
+            totalScore4C = calculateTotalScore('gridRadios4C');
+            totalScoreDisplay4C.textContent = `Total Score 4C: ${totalScore4C}`;
+          } else if (section === '4D') {
+            totalScore4D = calculateTotalScore('gridRadios4D');
+            totalScoreDisplay4D.textContent = `Total Score 4D: ${totalScore4D}`;
+          } else if (section === '4E') {
+            totalScore4E = calculateTotalScore('gridRadios4E');
+            totalScoreDisplay4E.textContent = `Total Score 4E: ${totalScore4E}`;
+          }
+
+
+          // Calculate and display the average
+          const totalScores = [
+          totalScoreA, 
+          totalScoreB, 
+          totalScoreC, 
+          totalScoreD, 
+          totalScoreE,
+
+          totalScore2A, 
+          totalScore2B, 
+          totalScore2C, 
+          totalScore2D, 
+          totalScore2E,
+
+          totalScore3A, 
+          totalScore3B, 
+          totalScore3C, 
+          totalScore3D, 
+          totalScore3E,
+
+          totalScore4A, 
+          totalScore4B, 
+          totalScore4C, 
+          totalScore4D, 
+          totalScore4E,
+
+          ];
+          const totalSum = totalScores.reduce((sum, score) => sum + score, 0);
+          const averageScore = totalScores.length > 0 ? totalSum / totalScores.length : 0;
+          averageScoreDisplay.textContent = `Average Score: ${averageScore.toFixed(2)}`;
+        });
+      });
+  
+      function calculateTotalScore(radioGroupName) {
+        let sum = 0;
+        const radioButtonsInSection = document.querySelectorAll(`input[type="radio"][name="${radioGroupName}"]:checked`);
+        radioButtonsInSection.forEach(function(radioButton) {
+          sum += parseInt(radioButton.value);
+        });
+        return sum;
+      }
+    });
+  </script>
+
 </div>
-  <p>To print the faculty feedback result from this course and section, click the print icon. <button id="btnPrintDetail1" class="btnprinter"><i class="bi bi-printer-fill"></i></button></p>
   
   <div class="border p-3">
     
@@ -69,717 +243,805 @@
       <br>
     
        <!-- start of list -->
-       <ol type="A">
-        <li class="list-group-items fw-bold">Commitment (Komitment/Pagtatalaga sa Sarili) 
-            <ol type="1" class="fw-normal">
-                <li class="list-group-items mt-md-2">Demonstrates sensitivity to students` abilities to attend and absorb content information
-                    <ul>
+       
+        <ol class="list-group-items fw-bold">A. Commitment (Komitment/Pagtatalaga sa Sarili) 
+          <br><br>
+                <li class="fw-normal" >Demonstrates sensitivity to students` abilities to attend and absorb content information
+                  <ol type="A" class="fw-normal"  data-section="A">
+                  <ul>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
-                            <label class="form-check-label" for="gridRadios1">
+                            <input class="form-check-input" type="radio" name="gridRadiosA" id="gridRadiosA1" value="5">
+                            <label class="form-check-label" for="gridRadiosA1">
                               5 - Very Outstanding
                             </label>
                           </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                            <label class="form-check-label" for="gridRadios2">
+                            <input class="form-check-input" type="radio" name="gridRadiosA" id="gridRadiosA2" value="4">
+                            <label class="form-check-label" for="gridRadiosA2">
                               4 - Outstanding 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
-                            <label class="form-check-label" for="gridRadios3">
+                            <input class="form-check-input" type="radio" name="gridRadiosA" id="gridRadiosA3" value="3">
+                            <label class="form-check-label" for="gridRadiosA3">
                               3 - Satisfactory 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4">
-                            <label class="form-check-label" for="gridRadios4">
+                            <input class="form-check-input" type="radio" name="gridRadiosA" id="gridRadiosA4" value="2">
+                            <label class="form-check-label" for="gridRadiosA4">
                               2 - Fair 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios5" value="option5">
-                            <label class="form-check-label" for="gridRadios5">
+                            <input class="form-check-input" type="radio" name="gridRadiosA" id="gridRadiosA5" value="1">
+                            <label class="form-check-label" for="gridRadiosA5">
                               1 - Poor 
                             </label>
                         </div>
                     </ul>
+                  </ol>
                 </li>
-                <li class="list-group-items">Integrates sensitively his/her learning objectives into those of the students in a collaborative process
-                    <ul>
+                <li class="fw-normal" >Integrates sensitively his/her learning objectives into those of the students in a collaborative process
+                  <ol type="B" data-section="B">
+                  <ul>
+                      <div class="form-check">
+                          <input class="form-check-input" type="radio" name="gridRadiosB" id="gridRadiosB1" value="5">
+                          <label class="form-check-label" for="gridRadiosB1">
+                            5 - Very Outstanding
+                          </label>
+                        </div>
+                      <div class="form-check">
+                          <input class="form-check-input" type="radio" name="gridRadiosB" id="gridRadiosB2" value="4">
+                          <label class="form-check-label" for="gridRadiosB2">
+                            4 - Outstanding 
+                          </label>
+                      </div>
+                      <div class="form-check">
+                          <input class="form-check-input" type="radio" name="gridRadiosB" id="gridRadiosB3" value="3">
+                          <label class="form-check-label" for="gridRadiosB3">
+                            3 - Satisfactory 
+                          </label>
+                      </div>
+                      <div class="form-check">
+                          <input class="form-check-input" type="radio" name="gridRadiosB" id="gridRadiosB4" value="2">
+                          <label class="form-check-label" for="gridRadiosB4">
+                            2 - Fair 
+                          </label>
+                      </div>
+                      <div class="form-check">
+                          <input class="form-check-input" type="radio" name="gridRadiosB" id="gridRadiosB5" value="1">
+                          <label class="form-check-label" for="gridRadiosB5">
+                            1 - Poor 
+                          </label>
+                      </div>
+                  </ul>
+                </ol>
+              </li>
+                <li class="fw-normal">Makes himself/herself available to students beyond official time
+                  <ol type="C" class="fw-normal"  data-section="C">  
+                  <ul>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
-                            <label class="form-check-label" for="gridRadios1">
+                            <input class="form-check-input" type="radio" name="gridRadiosC" id="gridRadiosC1" value="5">
+                            <label class="form-check-label" for="gridRadiosC1">
                               5 - Very Outstanding
                             </label>
                           </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                            <label class="form-check-label" for="gridRadios2">
+                            <input class="form-check-input" type="radio" name="gridRadiosC" id="gridRadiosC2" value="4">
+                            <label class="form-check-label" for="gridRadiosC2">
                               4 - Outstanding 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
-                            <label class="form-check-label" for="gridRadios3">
+                            <input class="form-check-input" type="radio" name="gridRadiosC" id="gridRadiosC3" value="3">
+                            <label class="form-check-label" for="gridRadiosC3">
                               3 - Satisfactory 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4">
-                            <label class="form-check-label" for="gridRadios4">
+                            <input class="form-check-input" type="radio" name="gridRadiosC" id="gridRadiosC4" value="2">
+                            <label class="form-check-label" for="gridRadiosC4">
                               2 - Fair 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios5" value="option5">
-                            <label class="form-check-label" for="gridRadios5">
+                            <input class="form-check-input" type="radio" name="gridRadiosC" id="gridRadiosC5" value="1">
+                            <label class="form-check-label" for="gridRadiosC5">
                               1 - Poor 
                             </label>
                         </div>
                     </ul>
+                  </ol>
                 </li>
-                <li class="list-group-items">Makes himself/herself available to students beyond official time
-                    <ul>
+              
+              
+                <li class="fw-normal">Regularly comes to class on time; well-groomed and well-prepared to complete assigned responsibilities.
+                  <ol type="D" class="fw-normal"  data-section="D"> 
+                  <ul>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
-                            <label class="form-check-label" for="gridRadios1">
+                            <input class="form-check-input" type="radio" name="gridRadiosD" id="gridRadiosD1" value="5">
+                            <label class="form-check-label" for="gridRadiosD1">
                               5 - Very Outstanding
                             </label>
                           </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                            <label class="form-check-label" for="gridRadios2">
+                            <input class="form-check-input" type="radio" name="gridRadiosD" id="gridRadiosD2" value="4">
+                            <label class="form-check-label" for="gridRadiosD2">
                               4 - Outstanding 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
-                            <label class="form-check-label" for="gridRadios3">
+                            <input class="form-check-input" type="radio" name="gridRadiosD" id="gridRadiosD3" value="3">
+                            <label class="form-check-label" for="gridRadiosD3">
                               3 - Satisfactory 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4">
-                            <label class="form-check-label" for="gridRadios4">
+                            <input class="form-check-input" type="radio" name="gridRadiosD" id="gridRadiosD4" value="2">
+                            <label class="form-check-label" for="gridRadiosD4">
                               2 - Fair 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios5" value="option5">
-                            <label class="form-check-label" for="gridRadios5">
+                            <input class="form-check-input" type="radio" name="gridRadiosD" id="gridRadiosD5" value="1">
+                            <label class="form-check-label" for="gridRadiosD5">
                               1 - Poor 
                             </label>
                         </div>
                     </ul>
+                  </ol>
                 </li>
-                <li class="list-group-items">Regularly comes to class on time; well-groomed and well-prepared to complete assigned responsibilities.
-                    <ul>
+              
+               
+                <li class="fw-normal">Keeps accurate records of students` performance and promptly submits the same
+                  <ol type="E" class="fw-normal"  data-section="E"> 
+                  <ul>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
-                            <label class="form-check-label" for="gridRadios1">
+                            <input class="form-check-input" type="radio" name="gridRadiosE" id="gridRadiosE1" value="5">
+                            <label class="form-check-label" for="gridRadiosE1">
                               5 - Very Outstanding
                             </label>
                           </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                            <label class="form-check-label" for="gridRadios2">
+                            <input class="form-check-input" type="radio" name="gridRadiosE" id="gridRadiosE2" value="4">
+                            <label class="form-check-label" for="gridRadiosE2">
                               4 - Outstanding 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
-                            <label class="form-check-label" for="gridRadios3">
+                            <input class="form-check-input" type="radio" name="gridRadiosE" id="gridRadiosE3" value="3">
+                            <label class="form-check-label" for="gridRadiosE3">
                               3 - Satisfactory 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4">
-                            <label class="form-check-label" for="gridRadios4">
+                            <input class="form-check-input" type="radio" name="gridRadiosE" id="gridRadiosE4" value="2">
+                            <label class="form-check-label" for="gridRadiosE4">
                               2 - Fair 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios5" value="option5">
-                            <label class="form-check-label" for="gridRadios5">
+                            <input class="form-check-input" type="radio" name="gridRadiosE" id="gridRadiosE5" value="1">
+                            <label class="form-check-label" for="gridRadiosE5">
                               1 - Poor 
                             </label>
                         </div>
                     </ul>
+                     </ol>
                 </li>
-                <li class="list-group-items">Keeps accurate records of students` performance and promptly submits the same
-                    <ul>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
-                            <label class="form-check-label" for="gridRadios1">
-                              5 - Very Outstanding
-                            </label>
-                          </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                            <label class="form-check-label" for="gridRadios2">
-                              4 - Outstanding 
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
-                            <label class="form-check-label" for="gridRadios3">
-                              3 - Satisfactory 
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4">
-                            <label class="form-check-label" for="gridRadios4">
-                              2 - Fair 
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios5" value="option5">
-                            <label class="form-check-label" for="gridRadios5">
-                              1 - Poor 
-                            </label>
-                        </div>
-                    </ul>
-                </li>
-            </ol>
-        </li> 
-
+           
+        </ol> 
+        <br>
         <!-- B -->
-        <li class="list-group-items fw-bold">Knowledge of Subject (Kaalaman sa Paksa)
-            <ol type="1" start="6" class="fw-normal">
-                <li class="list-group-items mt-md-2">Demonstrates mastery of the subject matter(explains the subject matter without relying solely on the prescribed textbook)
-                    <ul>
+        <ol class="list-group-items fw-bold">B. Knowledge of Subject (Kaalaman sa Paksa)
+          <br><br>
+              <li class="fw-normal">Demonstrates mastery of the subject matter(explains the subject matter without relying solely on the prescribed textbook)
+                <ol type="2A" class="fw-normal"  data-section="2A"> 
+                  <ul>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
-                            <label class="form-check-label" for="gridRadios1">
+                            <input class="form-check-input" type="radio" name="gridRadios2A" id="gridRadios2A1" value="5">
+                            <label class="form-check-label" for="gridRadios2A1">
                               5 - Very Outstanding
                             </label>
                           </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                            <label class="form-check-label" for="gridRadios2">
+                            <input class="form-check-input" type="radio" name="gridRadios2A" id="gridRadios2A2" value="4">
+                            <label class="form-check-label" for="gridRadios2A2">
                               4 - Outstanding 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
-                            <label class="form-check-label" for="gridRadios3">
+                            <input class="form-check-input" type="radio" name="gridRadios2A" id="gridRadios2A3" value="3">
+                            <label class="form-check-label" for="gridRadios2A3">
                               3 - Satisfactory 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4">
-                            <label class="form-check-label" for="gridRadios4">
+                            <input class="form-check-input" type="radio" name="gridRadios2A" id="gridRadios2A4" value="2">
+                            <label class="form-check-label" for="gridRadios2A4">
                               2 - Fair 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios5" value="option5">
-                            <label class="form-check-label" for="gridRadios5">
+                            <input class="form-check-input" type="radio" name="gridRadios2A" id="gridRadios2A5" value="1">
+                            <label class="form-check-label" for="gridRadios2A5">
                               1 - Poor 
                             </label>
                         </div>
                     </ul>
+                  </ol>
                 </li>
-                <li class="list-group-items">Draws and shares information on the state-of the-art theories and practices in his/her discipline
-                    <ul>
+
+                <li class="fw-normal" >Draws and shares information on the state-of the-art theories and practices in his/her discipline
+                  <ol type="2B" class="fw-normal"  data-section="2B">  
+                  <ul>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
-                            <label class="form-check-label" for="gridRadios1">
+                            <input class="form-check-input" type="radio" name="gridRadios2B" id="gridRadios2B1" value="5">
+                            <label class="form-check-label" for="gridRadios2B1">
                               5 - Very Outstanding
                             </label>
                           </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                            <label class="form-check-label" for="gridRadios2">
+                            <input class="form-check-input" type="radio" name="gridRadios2B" id="gridRadios2B2" value="4">
+                            <label class="form-check-label" for="gridRadios2B2">
                               4 - Outstanding 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
-                            <label class="form-check-label" for="gridRadios3">
+                            <input class="form-check-input" type="radio" name="gridRadios2B" id="gridRadios2B3" value="3">
+                            <label class="form-check-label" for="gridRadios2B3">
                               3 - Satisfactory 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4">
-                            <label class="form-check-label" for="gridRadios4">
+                            <input class="form-check-input" type="radio" name="gridRadios2B" id="gridRadios2B4" value="2">
+                            <label class="form-check-label" for="gridRadios2B4">
                               2 - Fair 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios5" value="option5">
-                            <label class="form-check-label" for="gridRadios5">
+                            <input class="form-check-input" type="radio" name="gridRadios2B" id="gridRadios2B5" value="1">
+                            <label class="form-check-label" for="gridRadios2B5">
                               1 - Poor 
                             </label>
                         </div>
                     </ul>
+                  </ol>
                 </li>
-                <li class="list-group-items">Integrates subjects into practical circumstances and learning intents/purposes of students 
-                    <ul>
+
+                <li class="fw-normal">Integrates subjects into practical circumstances and learning intents/purposes of students 
+                  <ol type="2C" class="fw-normal"  data-section="2C">  
+                  <ul>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
-                            <label class="form-check-label" for="gridRadios1">
+                            <input class="form-check-input" type="radio" name="gridRadios2C" id="gridRadios2C1" value="5">
+                            <label class="form-check-label" for="gridRadios2C1">
                               5 - Very Outstanding
                             </label>
                           </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                            <label class="form-check-label" for="gridRadios2">
+                            <input class="form-check-input" type="radio" name="gridRadios2C" id="gridRadios2C2" value="4">
+                            <label class="form-check-label" for="gridRadios2C2">
                               4 - Outstanding 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
-                            <label class="form-check-label" for="gridRadios3">
+                            <input class="form-check-input" type="radio" name="gridRadios2C" id="gridRadios2C3" value="3">
+                            <label class="form-check-label" for="gridRadios2C3">
                               3 - Satisfactory 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4">
-                            <label class="form-check-label" for="gridRadios4">
+                            <input class="form-check-input" type="radio" name="gridRadios2C" id="gridRadios2C4" value="2">
+                            <label class="form-check-label" for="gridRadios2C4">
                               2 - Fair 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios5" value="option5">
-                            <label class="form-check-label" for="gridRadios5">
+                            <input class="form-check-input" type="radio" name="gridRadios2C" id="gridRadios2C5" value="1">
+                            <label class="form-check-label" for="gridRadios2C5">
                               1 - Poor 
                             </label>
                         </div>
                     </ul>
+                  </ol>
                 </li>
-                <li class="list-group-items">Explains the relevance of present topics to previous lessons and relates the subject matter to relevant current issues and/or daily life activities
-                    <ul>
+
+                <li class="fw-normal">Explains the relevance of present topics to previous lessons and relates the subject matter to relevant current issues and/or daily life activities
+                  <ol type="2D" class="fw-normal"  data-section="2D">    
+                  <ul>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
-                            <label class="form-check-label" for="gridRadios1">
+                            <input class="form-check-input" type="radio" name="gridRadios2D" id="gridRadios2D1" value="5">
+                            <label class="form-check-label" for="gridRadios2D1">
                               5 - Very Outstanding
                             </label>
                           </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                            <label class="form-check-label" for="gridRadios2">
+                            <input class="form-check-input" type="radio" name="gridRadios2D" id="gridRadios2D2" value="4">
+                            <label class="form-check-label" for="gridRadios2D2">
                               4 - Outstanding 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
-                            <label class="form-check-label" for="gridRadios3">
+                            <input class="form-check-input" type="radio" name="gridRadios2D" id="gridRadios2D3" value="3">
+                            <label class="form-check-label" for="gridRadios2D3">
                               3 - Satisfactory 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4">
-                            <label class="form-check-label" for="gridRadios4">
+                            <input class="form-check-input" type="radio" name="gridRadios2D" id="gridRadios2D4" value="2">
+                            <label class="form-check-label" for="gridRadios2D4">
                               2 - Fair 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios5" value="option5">
-                            <label class="form-check-label" for="gridRadios5">
+                            <input class="form-check-input" type="radio" name="gridRadios2D" id="gridRadios2D5" value="1">
+                            <label class="form-check-label" for="gridRadios2D5">
                               1 - Poor 
                             </label>
                         </div>
                     </ul>
+                  </ol>
                 </li>
-                <li class="list-group-items">Demonstrate up-to-date knowledge and/or awareness of current trends and issues in the subjects
-                    <ul>
+
+                <li class="fw-normal">Demonstrate up-to-date knowledge and/or awareness of current trends and issues in the subjects
+                  <ol type="2E" class="fw-normal"  data-section="2E">     
+                  <ul>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
-                            <label class="form-check-label" for="gridRadios1">
+                            <input class="form-check-input" type="radio" name="gridRadios2E" id="gridRadios2E1" value="5">
+                            <label class="form-check-label" for="gridRadios2E1">
                               5 - Very Outstanding
                             </label>
                           </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                            <label class="form-check-label" for="gridRadios2">
+                            <input class="form-check-input" type="radio" name="gridRadios2E" id="gridRadios2E2" value="4">
+                            <label class="form-check-label" for="gridRadios2E2">
                               4 - Outstanding 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
-                            <label class="form-check-label" for="gridRadios3">
+                            <input class="form-check-input" type="radio" name="gridRadios2E" id="gridRadios2E3" value="3">
+                            <label class="form-check-label" for="gridRadios2E3">
                               3 - Satisfactory 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4">
-                            <label class="form-check-label" for="gridRadios4">
+                            <input class="form-check-input" type="radio" name="gridRadios2E" id="gridRadios2E4" value="2">
+                            <label class="form-check-label" for="gridRadios2E4">
                               2 - Fair 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios5" value="option5">
-                            <label class="form-check-label" for="gridRadios5">
+                            <input class="form-check-input" type="radio" name="gridRadios2E" id="gridRadios2E5" value="1">
+                            <label class="form-check-label" for="gridRadios2E5">
                               1 - Poor 
                             </label>
                         </div>
                     </ul>
+                  </ol>
                 </li>
-            </ol>
-        </li>
+           
+        </ol>
+        <br>
 
         <!-- C -->
-        <li class="list-group-items fw-bold">Teaching for Independent Learning (Pagtuturo para sa Malayang Pagkatuto)
-            <ol type="1" start="11" class="fw-normal">
-                <li class="list-group-items mt-md-2"> Creates strategies that allow students to practice using concepts they need to understand (interactive discussion)
-                    <ul>
+        <ol class="list-group-items fw-bold">C. Teaching for Independent Learning (Pagtuturo para sa Malayang Pagkatuto)
+          <br> <br>
+                <li class="fw-normal"> Creates strategies that allow students to practice using concepts they need to understand (interactive discussion)
+                  <ol type="3A" class="fw-normal"  data-section="3A">    
+                  <ul>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
-                            <label class="form-check-label" for="gridRadios1">
+                            <input class="form-check-input" type="radio" name="gridRadios3A" id="gridRadios3A1" value="5">
+                            <label class="form-check-label" for="gridRadios3A1">
                               5 - Very Outstanding
                             </label>
                           </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                            <label class="form-check-label" for="gridRadios2">
+                            <input class="form-check-input" type="radio" name="gridRadios3A" id="gridRadios3A2" value="4">
+                            <label class="form-check-label" for="gridRadios3A2">
                               4 - Outstanding 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
-                            <label class="form-check-label" for="gridRadios3">
+                            <input class="form-check-input" type="radio" name="gridRadios3A" id="gridRadios3A3" value="3">
+                            <label class="form-check-label" for="gridRadios3A3">
                               3 - Satisfactory 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4">
-                            <label class="form-check-label" for="gridRadios4">
+                            <input class="form-check-input" type="radio" name="gridRadios3A" id="gridRadios3A4" value="2">
+                            <label class="form-check-label" for="gridRadios3A4">
                               2 - Fair 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios5" value="option5">
-                            <label class="form-check-label" for="gridRadios5">
+                            <input class="form-check-input" type="radio" name="gridRadios3A" id="gridRadios3A5" value="1">
+                            <label class="form-check-label" for="gridRadios3A5">
                               1 - Poor 
                             </label>
                         </div>
                     </ul>
+                  </ol>
                 </li>
-                <li class="list-group-items">Enhances students` self-esteem and/or gives due recognition to students` performance/potentials
-                    <ul>
+                <li class="fw-normal" >Enhances students` self-esteem and/or gives due recognition to students` performance/potentials
+                  <ol type="3B" class="fw-normal"  data-section="3B">   
+                  <ul>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
-                            <label class="form-check-label" for="gridRadios1">
+                            <input class="form-check-input" type="radio" name="gridRadios3B" id="gridRadios3B1" value="5">
+                            <label class="form-check-label" for="gridRadios3B1">
                               5 - Very Outstanding
                             </label>
                           </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                            <label class="form-check-label" for="gridRadios2">
+                            <input class="form-check-input" type="radio" name="gridRadios3B" id="gridRadios3B2" value="4">
+                            <label class="form-check-label" for="gridRadios3B2">
                               4 - Outstanding 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
-                            <label class="form-check-label" for="gridRadios3">
+                            <input class="form-check-input" type="radio" name="gridRadios3B" id="gridRadios3B3" value="3">
+                            <label class="form-check-label" for="gridRadios3B3">
                               3 - Satisfactory 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4">
-                            <label class="form-check-label" for="gridRadios4">
+                            <input class="form-check-input" type="radio" name="gridRadios3B" id="gridRadios3B4" value="2">
+                            <label class="form-check-label" for="gridRadios3B4">
                               2 - Fair 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios5" value="option5">
-                            <label class="form-check-label" for="gridRadios5">
+                            <input class="form-check-input" type="radio" name="gridRadios3B" id="gridRadios3B5" value="1">
+                            <label class="form-check-label" for="gridRadios3B5">
                               1 - Poor 
                             </label>
                         </div>
                     </ul>
+                  </ol>
                 </li>
-                <li class="list-group-items">Allows students to create their own course objectives, realistically defines student-professor rules, and makes them accountable to their performance
-                    <ul>
+
+                <li class="fw-normal">Allows students to create their own course objectives, realistically defines student-professor rules, and makes them accountable to their performance
+                  <ol type="3D" class="fw-normal"  data-section="3D">    
+                  <ul>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
-                            <label class="form-check-label" for="gridRadios1">
+                            <input class="form-check-input" type="radio" name="gridRadios3D" id="gridRadios3D1" value="5">
+                            <label class="form-check-label" for="gridRadios3D1">
                               5 - Very Outstanding
                             </label>
                           </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                            <label class="form-check-label" for="gridRadios2">
+                            <input class="form-check-input" type="radio" name="gridRadios3D" id="gridRadios3D2" value="4">
+                            <label class="form-check-label" for="gridRadios3D2">
                               4 - Outstanding 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
-                            <label class="form-check-label" for="gridRadios3">
+                            <input class="form-check-input" type="radio" name="gridRadios3D" id="gridRadios3D3" value="3">
+                            <label class="form-check-label" for="gridRadios3D3">
                               3 - Satisfactory 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4">
-                            <label class="form-check-label" for="gridRadios4">
+                            <input class="form-check-input" type="radio" name="gridRadios3D" id="gridRadios3D4" value="2">
+                            <label class="form-check-label" for="gridRadios3D4">
                               2 - Fair 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios5" value="option5">
-                            <label class="form-check-label" for="gridRadios5">
+                            <input class="form-check-input" type="radio" name="gridRadios3D" id="gridRadios3D5" value="1">
+                            <label class="form-check-label" for="gridRadios3D5">
                               1 - Poor 
                             </label>
                         </div>
                     </ul>
+                  </ol>
                 </li>
-                <li class="list-group-items">Allows students to think independently, make their own decisions, and holds them accountable for their performance based largely on their success in executing decisions
-                    <ul>
+                <li class="fw-normal">Allows students to think independently, make their own decisions, and holds them accountable for their performance based largely on their success in executing decisions
+                  <ol type="3E" class="fw-normal"  data-section="3E">     
+                  <ul>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
-                            <label class="form-check-label" for="gridRadios1">
+                            <input class="form-check-input" type="radio" name="gridRadios3E" id="gridRadios3E1" value="5">
+                            <label class="form-check-label" for="gridRadios3E1">
                               5 - Very Outstanding
                             </label>
                           </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                            <label class="form-check-label" for="gridRadios2">
+                            <input class="form-check-input" type="radio" name="gridRadios3E" id="gridRadios3E2" value="4">
+                            <label class="form-check-label" for="gridRadios3E2">
                               4 - Outstanding 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
-                            <label class="form-check-label" for="gridRadios3">
+                            <input class="form-check-input" type="radio" name="gridRadios3E" id="gridRadios3E3" value="3">
+                            <label class="form-check-label" for="gridRadios3E3">
                               3 - Satisfactory 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4">
-                            <label class="form-check-label" for="gridRadios4">
+                            <input class="form-check-input" type="radio" name="gridRadios3E" id="gridRadios3E4" value="2">
+                            <label class="form-check-label" for="gridRadios3E4">
                               2 - Fair 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios5" value="option5">
-                            <label class="form-check-label" for="gridRadios5">
+                            <input class="form-check-input" type="radio" name="gridRadios3E" id="gridRadios3E5" value="1">
+                            <label class="form-check-label" for="gridRadios3E5">
                               1 - Poor 
                             </label>
                         </div>
                     </ul>
+                  </ol>
                 </li>
-                <li class="list-group-items">Encourages students to learn beyond what is required and guides them on how to apply the concepts learned
-                    <ul>
+
+                <li class="fw-normal">Encourages students to learn beyond what is required and guides them on how to apply the concepts learned
+                  <ol type="3C" class="fw-normal"  data-section="3C">
+                  <ul>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
-                            <label class="form-check-label" for="gridRadios1">
+                            <input class="form-check-input" type="radio" name="gridRadios3C" id="gridRadios3C1" value="5">
+                            <label class="form-check-label" for="gridRadios3C1">
                               5 - Very Outstanding
                             </label>
                           </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                            <label class="form-check-label" for="gridRadios2">
+                            <input class="form-check-input" type="radio" name="gridRadios3C" id="gridRadios3C2" value="4">
+                            <label class="form-check-label" for="gridRadios3C2">
                               4 - Outstanding 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
-                            <label class="form-check-label" for="gridRadios3">
+                            <input class="form-check-input" type="radio" name="gridRadios3C" id="gridRadios3C3" value="3">
+                            <label class="form-check-label" for="gridRadios3C3">
                               3 - Satisfactory 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4">
-                            <label class="form-check-label" for="gridRadios4">
+                            <input class="form-check-input" type="radio" name="gridRadios3C" id="gridRadios3C4" value="2">
+                            <label class="form-check-label" for="gridRadios3C4">
                               2 - Fair 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios5" value="option5">
-                            <label class="form-check-label" for="gridRadios5">
+                            <input class="form-check-input" type="radio" name="gridRadios3C" id="gridRadios3C5" value="1">
+                            <label class="form-check-label" for="gridRadios3C5">
                               1 - Poor 
                             </label>
                         </div>
                     </ul>
+                  </ol>
                 </li>
             </ol>
-        </li>
+       
+            <br>
 
         <!-- D -->
-        <li class="list-group-items fw-bold">Management of Learning (Pamamahala sa Pagkatuto)
-            <ol type="1" start="16" class="fw-normal">
-                <li class="list-group-items mt-ms-2">Creates opportunities for intensive and/or extensive contribution of students in the class activities (e.g., breaks class into dyads, triads, or buzz/task groups)
-                    <ul>
+        <ol class="list-group-items fw-bold">D. Management of Learning (Pamamahala sa Pagkatuto)
+      <br><br>
+                <li class="fw-normal">Creates opportunities for intensive and/or extensive contribution of students in the class activities (e.g., breaks class into dyads, triads, or buzz/task groups)
+                  <ol type="4A" class="fw-normal"  data-section="4A"> 
+                  <ul>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
-                            <label class="form-check-label" for="gridRadios1">
+                            <input class="form-check-input" type="radio" name="gridRadios4A" id="gridRadios4A1" value="5">
+                            <label class="form-check-label" for="gridRadios4A1">
                               5 - Very Outstanding
                             </label>
                           </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                            <label class="form-check-label" for="gridRadios2">
+                            <input class="form-check-input" type="radio" name="gridRadios4A" id="gridRadios4A2" value="4">
+                            <label class="form-check-label" for="gridRadios4A2">
                               4 - Outstanding 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
-                            <label class="form-check-label" for="gridRadios3">
+                            <input class="form-check-input" type="radio" name="gridRadios4A" id="gridRadios4A3" value="3">
+                            <label class="form-check-label" for="gridRadios4A3">
                               3 - Satisfactory 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4">
-                            <label class="form-check-label" for="gridRadios4">
+                            <input class="form-check-input" type="radio" name="gridRadios4A" id="gridRadios4A4" value="2">
+                            <label class="form-check-label" for="gridRadios4A4">
                               2 - Fair 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios5" value="option5">
-                            <label class="form-check-label" for="gridRadios5">
+                            <input class="form-check-input" type="radio" name="gridRadios4A" id="gridRadios4A5" value="1">
+                            <label class="form-check-label" for="gridRadios4A5">
                               1 - Poor 
                             </label>
                         </div>
                     </ul>
+                  </ol>
                 </li>
-                <li class="list-group-items">Assumes roles as facilitator, resource person, coach, inquisitor, integrator, referee, in drawing students to contribute to knowledge and understanding of the concepts at hand
-                    <ul>
+                <li class="fw-normal">Assumes roles as facilitator, resource person, coach, inquisitor, integrator, referee, in drawing students to contribute to knowledge and understanding of the concepts at hand
+                  <ol type="4B" class="fw-normal"  data-section="4B">   
+                  <ul>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
-                            <label class="form-check-label" for="gridRadios1">
+                            <input class="form-check-input" type="radio" name="gridRadios4B" id="gridRadios4B1" value="5">
+                            <label class="form-check-label" for="gridRadios4B1">
                               5 - Very Outstanding
                             </label>
                           </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                            <label class="form-check-label" for="gridRadios2">
+                            <input class="form-check-input" type="radio" name="gridRadios4B" id="gridRadios4B2" value="4">
+                            <label class="form-check-label" for="gridRadios4B2">
                               4 - Outstanding 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
-                            <label class="form-check-label" for="gridRadios3">
+                            <input class="form-check-input" type="radio" name="gridRadios4B" id="gridRadios4B3" value="3">
+                            <label class="form-check-label" for="gridRadios4B3">
                               3 - Satisfactory 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4">
-                            <label class="form-check-label" for="gridRadios4">
+                            <input class="form-check-input" type="radio" name="gridRadios4B" id="gridRadios4B4" value="2">
+                            <label class="form-check-label" for="gridRadios4B4">
                               2 - Fair 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios5" value="option5">
-                            <label class="form-check-label" for="gridRadios5">
+                            <input class="form-check-input" type="radio" name="gridRadios4B" id="gridRadios4B5" value="1">
+                            <label class="form-check-label" for="gridRadios4B5">
                               1 - Poor 
                             </label>
                         </div>
                     </ul>
+                  </ol>
                 </li>
-                <li class="list-group-items"> Design and implements learning conditions and experiences that promote healthy exchanges and/or confrontations
-                    <ul>
+                <li class="fw-normal"> Design and implements learning conditions and experiences that promote healthy exchanges and/or confrontations
+                  <ol type="4C" class="fw-normal"  data-section="4C">  
+                  <ul>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
-                            <label class="form-check-label" for="gridRadios1">
+                            <input class="form-check-input" type="radio" name="gridRadios4C" id="gridRadios4C1" value="5">
+                            <label class="form-check-label" for="gridRadios4C1">
                               5 - Very Outstanding
                             </label>
                           </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                            <label class="form-check-label" for="gridRadios2">
+                            <input class="form-check-input" type="radio" name="gridRadios4C" id="gridRadios4C2" value="4">
+                            <label class="form-check-label" for="gridRadios4C2">
                               4 - Outstanding 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
-                            <label class="form-check-label" for="gridRadios3">
+                            <input class="form-check-input" type="radio" name="gridRadios4C" id="gridRadios4C3" value="3">
+                            <label class="form-check-label" for="gridRadios4C3">
                               3 - Satisfactory 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4">
-                            <label class="form-check-label" for="gridRadios4">
+                            <input class="form-check-input" type="radio" name="gridRadios4C" id="gridRadios4C4" value="2">
+                            <label class="form-check-label" for="gridRadios4C4">
                               2 - Fair 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios5" value="option5">
-                            <label class="form-check-label" for="gridRadios5">
+                            <input class="form-check-input" type="radio" name="gridRadios4C" id="gridRadios4C5" value="1">
+                            <label class="form-check-label" for="gridRadios4C5">
                               1 - Poor 
                             </label>
                         </div>
                     </ul>
+                  </ol>
                 </li>
-                <li class="list-group-items">Structures/re-structures learning and teaching-learning contexts to enhance the attainment of collective learning objectives
-                    <ul>
+                <li class="fw-normal">Structures/re-structures learning and teaching-learning contexts to enhance the attainment of collective learning objectives
+                  <ol type="4D" class="fw-normal"  data-section="4D">   
+                  <ul>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
-                            <label class="form-check-label" for="gridRadios1">
+                            <input class="form-check-input" type="radio" name="gridRadios4D" id="gridRadios4D1" value="5">
+                            <label class="form-check-label" for="gridRadios4D1">
                               5 - Very Outstanding
                             </label>
                           </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                            <label class="form-check-label" for="gridRadios2">
+                            <input class="form-check-input" type="radio" name="gridRadios4D" id="gridRadios4D2" value="4">
+                            <label class="form-check-label" for="gridRadios4D2">
                               4 - Outstanding 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
-                            <label class="form-check-label" for="gridRadios3">
+                            <input class="form-check-input" type="radio" name="gridRadios4D" id="gridRadios4D3" value="3">
+                            <label class="form-check-label" for="gridRadios4D3">
                               3 - Satisfactory 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4">
-                            <label class="form-check-label" for="gridRadios4">
+                            <input class="form-check-input" type="radio" name="gridRadios4D" id="gridRadios4D4" value="2">
+                            <label class="form-check-label" for="gridRadios4D4">
                               2 - Fair 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios5" value="option5">
-                            <label class="form-check-label" for="gridRadios5">
+                            <input class="form-check-input" type="radio" name="gridRadios4D" id="gridRadios4D5" value="1">
+                            <label class="form-check-label" for="gridRadios4D5">
                               1 - Poor 
                             </label>
                         </div>
                     </ul>
+                  </ol>
                 </li>
-                <li class="list-group-items">Uses instructional materials (audio/video materials: fieldtrips, film-showing, computer-aided instructions etc.) to reinforce learning processes
-                    <ul>
+                <li class="fw-normal">Uses instructional materials (audio/video materials: fieldtrips, film-showing, computer-aided instructions etc.) to reinforce learning processes
+                  <ol type="4E" class="fw-normal"  data-section="4E">   
+                  <ul>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
-                            <label class="form-check-label" for="gridRadios1">
+                            <input class="form-check-input" type="radio" name="gridRadios4E" id="gridRadios4E1" value="5">
+                            <label class="form-check-label" for="gridRadios4E1">
                               5 - Very Outstanding
                             </label>
                           </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                            <label class="form-check-label" for="gridRadios2">
+                            <input class="form-check-input" type="radio" name="gridRadios4E" id="gridRadios4E2" value="4">
+                            <label class="form-check-label" for="gridRadios4E2">
                               4 - Outstanding 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3">
-                            <label class="form-check-label" for="gridRadios3">
+                            <input class="form-check-input" type="radio" name="gridRadios4E" id="gridRadios4E3" value="3">
+                            <label class="form-check-label" for="gridRadios4E3">
                               3 - Satisfactory 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios4" value="option4">
-                            <label class="form-check-label" for="gridRadios4">
+                            <input class="form-check-input" type="radio" name="gridRadios4E" id="gridRadios4E4" value="2">
+                            <label class="form-check-label" for="gridRadios4E4">
                               2 - Fair 
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios5" value="option5">
-                            <label class="form-check-label" for="gridRadios5">
+                            <input class="form-check-input" type="radio" name="gridRadios4E" id="gridRadios4E5" value="1">
+                            <label class="form-check-label" for="gridRadios4E5">
                               1 - Poor 
                             </label>
                         </div>
                     </ul>
+                  </ol>
                 </li>
             </ol>
-        </li>
-    </ol>
-
+     
       <!-- Add more questions for Section 2 as needed -->
     </form>
+
+  <br><br>
+
+  
+  <div class="card-body profile-card pt-4 d-flex flex-column align-items-left">
+    <h4 id="AverageScore">Average Score: 0</h4>
+  </div>
+
   </div>
 </div>
+<div hidden>
+<p id="totalScoreA">Total Score A: 0</p>
+<p id="totalScoreB">Total Score B: 0</p>
+<p id="totalScoreC">Total Score C: 0</p>
+<p id="totalScoreD">Total Score D: 0</p>
+<p id="totalScoreE">Total Score E: 0</p>
 
+<br>
 
+<p id="totalScore2A">Total Score 2A: 0</p>
+<p id="totalScore2B">Total Score 2B: 0</p>
+<p id="totalScore2C">Total Score 2C: 0</p>
+<p id="totalScore2D">Total Score 2D: 0</p>
+<p id="totalScore2E">Total Score 2E: 0</p>
+
+<br>
+
+<p id="totalScore3A">Total Score 3A: 0</p>
+<p id="totalScore3B">Total Score 3B: 0</p>
+<p id="totalScore3C">Total Score 3C: 0</p>
+<p id="totalScore3D">Total Score 3D: 0</p>
+<p id="totalScore3E">Total Score 3E: 0</p>
+
+<br>
+
+<p id="totalScore4A">Total Score 4A: 0</p>
+<p id="totalScore4B">Total Score 4B: 0</p>
+<p id="totalScore4C">Total Score 4C: 0</p>
+<p id="totalScore4D">Total Score 4D: 0</p>
+<p id="totalScore4E">Total Score 4E: 0</p>
+
+</div>
         
 {% endblock %}
 

@@ -19,67 +19,1290 @@
        <div class="row">
         <div class="row g-3">
           
-          <div class="col-xl-6">
+          <div class="col-xl-12">
             <div class="card">
             <div class="card-body">
-              <div class="card-body profile-card pt-4 d-flex flex-column align-items-left">
-                <h3>FACULTY SURVEYS</h3>
-          </div>
-          
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Faculty Feedback and Development Survey</h5>
-              <h6 class="card-subtitle mb-2 text-muted">Dear Faculty Members,</h6>
-              <p class="card-text">Your input is essential in our commitment to continuously improve our institution's educational programs and support for our valued faculty. We invite you to participate in the Faculty Feedback and Development Survey. This survey aims to gather your insights, experiences, and suggestions to help us enhance teaching, research, and professional development opportunities.</p>
-            </div>
-          </div>
 
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Faculty Feedback and Professional Development Survey</h5>
-              <h6 class="card-subtitle mb-2 text-muted">Dear Faculty Members,</h6>
-              <p class="card-text">Your expertise and dedication are vital to our institution's success. We value your contributions and are committed to providing you with the support and resources needed to excel in your roles as educators and scholars. We invite you to participate in the Faculty Feedback and Professional Development Survey.</p>
-            </div>
-          </div>
+             <div class="card-body profile-card pt-4 d-flex align-items-center">
+              <h3 class="mr-3">FACULTY EVALUATION</h3>
+              <div id="loadingSpinner" class="text-center" style="display: none;">
+                  <div class="spinner-border text-primary" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                  </div>
+                  Loading...
+              </div>
+</div>
+              
+<style>
+  .responsive-table {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -10px; /* Adjust margin as needed */
+  }
+
+  .responsive-table td {
+    flex: 1;
+    padding: 10px; /* Adjust padding as needed */
+    box-sizing: border-box;
+  }
+
+  .responsive-table h6 {
+    margin: 0;
+  }
+  .btnprinter-container {
+    text-align: left;
+  }
+
+  .btnprinter {
+    width: 50px;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .btnprinter i {
+    font-size: 24px; /* You can adjust the font size as needed */
+    color: #000; /* You can set the color as needed */
+  }
+
+  .box {
+    border: 1px solid #ced4da;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+  }
 
 
+  .options {
+    list-style: none;
+    padding-left: 4;
+  }
 
+  .options li {
+    margin-bottom: 5px;
+  }
+
+  #loadingSpinner {
+    margin-right: auto; /* This pushes the spinner to the right */
+    position:relative;
+    left:20px;
+    
+}
+</style>
+
+<form class="row g-3" action="/Feedback-Surveys/add-record" method="POST" id="yourFormId">
+
+  <div class="col-md-4">
+  
+   
+      <div class="form-floating mb-3">
+          <select class="form-select" id="select" name="select" aria-label="Faculty" required>
+              <option value=''>Select Faculty</option>
+          </select>
+          <label for="select">Faculty</label>
+      </div>
+  </div>
+
+  <div class="col-md-4">
+      <div class="form-floating mb-3">
+          <select class="form-select" id="schoolYear" name="schoolYear" aria-label="School Year" required disabled>
+              <option value=''></option>
+              <option value='2030'>2030</option>
+              <option value='2029'>2029</option>
+              <option value='2028'>2028</option>
+              <option value='2027'>2027</option>
+              <option value='2026'>2026</option>
+              <option value='2025'>2025</option>
+              <option value='2024'>2024</option>
+              <option value='2023'>2023</option>
+              <option value='2022'>2022</option>
+              <option value='2021'>2021</option>
+              <option value='2020'>2020</option>
+          </select>
+          <label for="schoolYear">School Year</label>
+      </div>
+  </div>
+
+  <div class="col-md-4">
+      <div class="form-floating mb-3">
+          <select class="form-select" id="semester" name="semester" aria-label="Semester" required disabled>
+              <option value=''></option>
+              <option value='First' >First Semester</option>
+              <option value='Second'>Second Semester</option>
+              <option value='Summer'>Summer Semester</option>
+          </select>
+          <label for="semester">Semester</label>
+      </div>
+  </div>
+
+
+<script>
+  $(document).ready(function () {
+      // Headers for AJAX request
+      
+      // Get the current year and month
+      var currentDate = new Date();
+      var currentYear = currentDate.getFullYear();
+      var currentMonth = currentDate.getMonth() + 1; // Months are zero-based
+
+
+      // Determine the default semester based on the current month
+      var defaultSemester;
+      if (currentMonth >= 1 && currentMonth <= 2) {
+          defaultSemester = 'First';
+      } else if (currentMonth >= 6 && currentMonth <= 7) {
+          defaultSemester = 'Second';
+      } else if (currentMonth == 9){
+          defaultSemester = 'Summer';
+      } else {
+        defaultSemester = 'Not available yet';
+      }
+
+
+      // Default values
+      var defaultSchoolYear = currentYear;
+
+      // Show loading spinner
+     $('#loadingSpinner').show();
+
+      // Fetch faculties using AJAX
+      $.ajax({
+          url: '/Feedback-Surveys/FISFaculty',
+          type: 'GET',
+          success: function (data) {
+            //    console.log('API Response:', data);
+
+              var selectElement = $('#select');
+              var promises = [];
+
+              // Populate the dropdown menu with faculties
+              $.each(data.Faculties, function (index, faculty) {
+                  var promise = new Promise(function (resolve) {
+                      // Check if faculty has records
+                      checkFacultyRecords(faculty.FacultyId,{{user.FacultyId}}, function (hasRecords) {
+                          if (!hasRecords) {
+                              // Construct full name using FirstName and LastName
+                              var fullName = faculty.FirstName + ' ' + faculty.LastName;
+
+                              selectElement.append($('<option>', {
+                                  value: faculty.FacultyId,
+                                  text: fullName
+                              }));
+                          }
+                          resolve();
+                      });
+                  });
+
+                  promises.push(promise);
+              });
+
+              // Wait for all promises to resolve before submitting the form
+              Promise.all(promises).then(function () {
+                  // Set default values for schoolYear and semester
+                  $('#schoolYear').val(defaultSchoolYear);
+                  $('#semester').val(defaultSemester);
+
+                  document.getElementById('School_Year').value = defaultSchoolYear;
+                  document.getElementById('SEMESTER').value = defaultSemester;
+
+                  // Form submission event
+                  $('#yourFormId').submit(function (event) {
+                      var selectElement = $('#select');
+                      var schoolYearElement = $('#schoolYear');
+                      var semesterElement = $('#semester');
+
+                      if (selectElement.val() === '' || schoolYearElement.val() === '' || semesterElement.val() === '') {
+                          alert('Please select values for all fields');
+                          event.preventDefault(); // Prevent the form from submitting
+                      }
+                  });
+                  $('#loadingSpinner').hide();
+              });
+          },
+          error: function (error) {
+              console.error('Error fetching faculties:', error);
+              $('#loadingSpinner').hide();
+          }
+      });
+
+      // Function to check if faculty has any records
+      function checkFacultyRecords(facultyId,EvaluatorId, callback) {
+          //   console.log('Checking faculty records for:', EvaluatorId);
+          $.ajax({
+              url: '/Feedback-Surveys/FISFaculty/Evaluations',
+              type: 'GET',
+              data2: {
+                  facultyId: facultyId,
+              },
+              success: function (data2) {
+                 //   console.log('API Response:', data2);
+                  // Check if there are any records for the specified faculty
+                  var hasRecords = data2.some(function (record) {
+
+                    const dateString = record.Year;
+                    const year = parseInt(dateString.substring(0, 4));
+                      // console.log('VAR:', record.Id,'VAR2:', facultyId,'VAR3:', record.EvaluatorId, 'VAR4:',record.Semester, 'VAR5:',record.Semester, 'VAR6:',year, 'VAR7:',defaultSchoolYear);
+                      return record.Id === facultyId && record.EvaluatorId === {{user.FacultyId}} && record.Semester === defaultSemester && year ===  defaultSchoolYear;
+                  });
+                  console.log('Has Records:', hasRecords);
+                  callback(hasRecords);
+              },
+              error: function (error) {
+                  console.error('Error checking faculty records:', error);
+                  callback(false); // Assume no records in case of an error
+              }
+          });
+      }
+  });
+</script>
+
+
+<div class="container mt-5">
+  <div class="d-grid gap-2 mt-3 col-md-12 d-flex flex-column align-items-end">
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const radioButtons = document.querySelectorAll('input[type="radio"]');
+
+      const totalScoreDisplayA = document.getElementById('totalScoreA');
+      const totalScoreDisplayB = document.getElementById('totalScoreB');
+      const totalScoreDisplayC = document.getElementById('totalScoreC');
+      const totalScoreDisplayD = document.getElementById('totalScoreD');
+      const totalScoreDisplayE = document.getElementById('totalScoreE');
+
+      const totalScoreDisplay2A = document.getElementById('totalScore2A');
+      const totalScoreDisplay2B = document.getElementById('totalScore2B');
+      const totalScoreDisplay2C = document.getElementById('totalScore2C');
+      const totalScoreDisplay2D = document.getElementById('totalScore2D');
+      const totalScoreDisplay2E = document.getElementById('totalScore2E');
+
+      const totalScoreDisplay3A = document.getElementById('totalScore3A');
+      const totalScoreDisplay3B = document.getElementById('totalScore3B');
+      const totalScoreDisplay3C = document.getElementById('totalScore3C');
+      const totalScoreDisplay3D = document.getElementById('totalScore3D');
+      const totalScoreDisplay3E = document.getElementById('totalScore3E');
+
+      const totalScoreDisplay4A = document.getElementById('totalScore4A');
+      const totalScoreDisplay4B = document.getElementById('totalScore4B');
+      const totalScoreDisplay4C = document.getElementById('totalScore4C');
+      const totalScoreDisplay4D = document.getElementById('totalScore4D');
+      const totalScoreDisplay4E = document.getElementById('totalScore4E');
+
+      const averageScoreDisplay = document.getElementById('AverageScore'); // Add this line
+
+      let totalScoreA = 0;
+      let totalScoreB = 0;
+      let totalScoreC = 0;
+      let totalScoreD = 0;
+      let totalScoreE = 0;
+
+      let totalScore2A = 0;
+      let totalScore2B = 0;
+      let totalScore2C = 0;
+      let totalScore2D = 0;
+      let totalScore2E = 0;
+
+      let totalScore3A = 0;
+      let totalScore3B = 0;
+      let totalScore3C = 0;
+      let totalScore3D = 0;
+      let totalScore3E = 0;
+
+      let totalScore4A = 0;
+      let totalScore4B = 0;
+      let totalScore4C = 0;
+      let totalScore4D = 0;
+      let totalScore4E = 0;
+  
+      radioButtons.forEach(function(radioButton) {
+        radioButton.addEventListener('change', function() {
+          const section = radioButton.closest('ol').getAttribute('data-section');
+          if (section === 'A') {
+            totalScoreA = calculateTotalScore('gridRadiosA');
+            totalScoreDisplayA.textContent = `Total Score A: ${totalScoreA}`;
+          } else if (section === 'B') {
+            totalScoreB = calculateTotalScore('gridRadiosB');
+            totalScoreDisplayB.textContent = `Total Score B: ${totalScoreB}`;
+          } else if (section === 'C') {
+            totalScoreC = calculateTotalScore('gridRadiosC');
+            totalScoreDisplayC.textContent = `Total Score C: ${totalScoreC}`;
+          } else if (section === 'D') {
+            totalScoreD = calculateTotalScore('gridRadiosD');
+            totalScoreDisplayD.textContent = `Total Score D: ${totalScoreD}`;
+          } else if (section === 'E') {
+            totalScoreE = calculateTotalScore('gridRadiosE');
+            totalScoreDisplayE.textContent = `Total Score E: ${totalScoreE}`;
+          }
+          else if (section === 'E') {
+            totalScoreE = calculateTotalScore('gridRadiosE');
+            totalScoreDisplayE.textContent = `Total Score E: ${totalScoreE}`;
+          }
+          else if (section === '2A') {
+            totalScore2A = calculateTotalScore('gridRadios2A');
+            totalScoreDisplay2A.textContent = `Total Score 2A: ${totalScore2A}`;
+          } else if (section === '2B') {
+            totalScore2B = calculateTotalScore('gridRadios2B');
+            totalScoreDisplay2B.textContent = `Total Score 2B: ${totalScore2B}`;
+          } else if (section === '2C') {
+            totalScore2C = calculateTotalScore('gridRadios2C');
+            totalScoreDisplay2C.textContent = `Total Score 2C: ${totalScore2C}`;
+          } else if (section === '2D') {
+            totalScore2D = calculateTotalScore('gridRadios2D');
+            totalScoreDisplay2D.textContent = `Total Score 2D: ${totalScore2D}`;
+          } else if (section === '2E') {
+            totalScore2E = calculateTotalScore('gridRadios2E');
+            totalScoreDisplay2E.textContent = `Total Score 2E: ${totalScore2E}`;
+          }
+
+          else if (section === '3A') {
+            totalScore3A = calculateTotalScore('gridRadios3A');
+            totalScoreDisplay3A.textContent = `Total Score 3A: ${totalScore3A}`;
+          } else if (section === '3B') {
+            totalScore3B = calculateTotalScore('gridRadios3B');
+            totalScoreDisplay3B.textContent = `Total Score 3B: ${totalScore3B}`;
+          } else if (section === '3C') {
+            totalScore3C = calculateTotalScore('gridRadios3C');
+            totalScoreDisplay3C.textContent = `Total Score 3C: ${totalScore3C}`;
+          } else if (section === '3D') {
+            totalScore3D = calculateTotalScore('gridRadios3D');
+            totalScoreDisplay3D.textContent = `Total Score 3D: ${totalScore3D}`;
+          } else if (section === '3E') {
+            totalScore3E = calculateTotalScore('gridRadios3E');
+            totalScoreDisplay3E.textContent = `Total Score 3E: ${totalScore3E}`;
+          }
+  
+          else if (section === '4A') {
+            totalScore4A = calculateTotalScore('gridRadios4A');
+            totalScoreDisplay4A.textContent = `Total Score 4A: ${totalScore4A}`;
+          } else if (section === '4B') {
+            totalScore4B = calculateTotalScore('gridRadios4B');
+            totalScoreDisplay4B.textContent = `Total Score 4B: ${totalScore4B}`;
+          } else if (section === '4C') {
+            totalScore4C = calculateTotalScore('gridRadios4C');
+            totalScoreDisplay4C.textContent = `Total Score 4C: ${totalScore4C}`;
+          } else if (section === '4D') {
+            totalScore4D = calculateTotalScore('gridRadios4D');
+            totalScoreDisplay4D.textContent = `Total Score 4D: ${totalScore4D}`;
+          } else if (section === '4E') {
+            totalScore4E = calculateTotalScore('gridRadios4E');
+            totalScoreDisplay4E.textContent = `Total Score 4E: ${totalScore4E}`;
+          }
+
+
+          // Calculate and display the average
+          const totalScores = [
+          totalScoreA, 
+          totalScoreB, 
+          totalScoreC, 
+          totalScoreD, 
+          totalScoreE,
+
+          totalScore2A, 
+          totalScore2B, 
+          totalScore2C, 
+          totalScore2D, 
+          totalScore2E,
+
+          totalScore3A, 
+          totalScore3B, 
+          totalScore3C, 
+          totalScore3D, 
+          totalScore3E,
+
+          totalScore4A, 
+          totalScore4B, 
+          totalScore4C, 
+          totalScore4D, 
+          totalScore4E,
+
+          ];
+          const totalSum = totalScores.reduce((sum, score) => sum + score, 0);
+          const averageScore = totalScores.length > 0 ? totalSum / totalScores.length : 0;
+          averageScoreDisplay.textContent = `Average Score: ${averageScore.toFixed(2)}`;
+
+          // Calculate averages
+          averageA = (totalScoreA + totalScoreB + totalScoreC + totalScoreD + totalScoreE) / 5;
+          averageB = (totalScore2A + totalScore2B + totalScore2C + totalScore2D + totalScore2E) / 5;
+          averageC = (totalScore3A + totalScore3B + totalScore3C + totalScore3D + totalScore3E) / 5;
+          averageD = (totalScore4A + totalScore4B + totalScore4C + totalScore4D + totalScore4E) / 5;
+
+          // Update input values
+          document.getElementById('averageInputA').value = averageA.toFixed(2);
+          document.getElementById('averageInputB').value = averageB.toFixed(2);
+          document.getElementById('averageInputC').value = averageC.toFixed(2);
+          document.getElementById('averageInputD').value = averageD.toFixed(2);
+
+          document.getElementById('AverageRate').value = averageScore.toFixed(2);
+
+
+        });
+      });
+  
+      function calculateTotalScore(radioGroupName) {
+        let sum = 0;
+        const radioButtonsInSection = document.querySelectorAll(`input[type="radio"][name="${radioGroupName}"]:checked`);
+        radioButtonsInSection.forEach(function(radioButton) {
+          sum += parseInt(radioButton.value);
+        });
+        return sum;
+      }
+      // Function to update averages based on current scores
+      function updateAverages() {
+        // Calculate averages
+        averageA = (totalScoreA + totalScoreB + totalScoreC + totalScoreD + totalScoreE) / 5;
+        averageB = (totalScore2A + totalScore2B + totalScore2C + totalScore2D + totalScore2E) / 5;
+        averageC = (totalScore3A + totalScore3B + totalScore3C + totalScore3D + totalScore3E) / 5;
+        averageD = (totalScore4A + totalScore4B + totalScore4C + totalScore4D + totalScore4E) / 5;
+
+        // Update input values
+        document.getElementById('averageInputA').value = averageA.toFixed(2);
+        document.getElementById('averageInputB').value = averageB.toFixed(2);
+        document.getElementById('averageInputC').value = averageC.toFixed(2);
+        document.getElementById('averageInputD').value = averageD.toFixed(2);
+      }
+
+      // Initial update of input values
+      updateAverages();
+    });
+  </script>
+  
+
+</div>
+  
+  <div class="border p-3">
+    
+      <label><strong>Evaluation Form</strong></label>
+      <br>
+      <br>
+    
+       <!-- start of list -->
+       
+        <ol class="list-group-items fw-bold">A. Commitment (Komitment/Pagtatalaga sa Sarili) 
+          <br><br>
+                <li class="fw-normal" >Demonstrates sensitivity to students` abilities to attend and absorb content information
+                  <ol type="A" class="fw-normal"  data-section="A">
+                  <ul>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadiosA" id="gridRadiosA1" value="5">
+                            <label class="form-check-label" for="gridRadiosA1">
+                              5 - Very Outstanding
+                            </label>
+                          </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadiosA" id="gridRadiosA2" value="4">
+                            <label class="form-check-label" for="gridRadiosA2">
+                              4 - Outstanding 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadiosA" id="gridRadiosA3" value="3">
+                            <label class="form-check-label" for="gridRadiosA3">
+                              3 - Satisfactory 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadiosA" id="gridRadiosA4" value="2">
+                            <label class="form-check-label" for="gridRadiosA4">
+                              2 - Fair 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadiosA" id="gridRadiosA5" value="1">
+                            <label class="form-check-label" for="gridRadiosA5">
+                              1 - Poor 
+                            </label>
+                        </div>
+                    </ul>
+                  </ol>
+                </li>
+                <li class="fw-normal" >Integrates sensitively his/her learning objectives into those of the students in a collaborative process
+                  <ol type="B" data-section="B">
+                  <ul>
+                      <div class="form-check">
+                          <input class="form-check-input" required type="radio" name="gridRadiosB" id="gridRadiosB1" value="5">
+                          <label class="form-check-label" for="gridRadiosB1">
+                            5 - Very Outstanding
+                          </label>
+                        </div>
+                      <div class="form-check">
+                          <input class="form-check-input" required type="radio" name="gridRadiosB" id="gridRadiosB2" value="4">
+                          <label class="form-check-label" for="gridRadiosB2">
+                            4 - Outstanding 
+                          </label>
+                      </div>
+                      <div class="form-check">
+                          <input class="form-check-input" required type="radio" name="gridRadiosB" id="gridRadiosB3" value="3">
+                          <label class="form-check-label" for="gridRadiosB3">
+                            3 - Satisfactory 
+                          </label>
+                      </div>
+                      <div class="form-check">
+                          <input class="form-check-input" required type="radio" name="gridRadiosB" id="gridRadiosB4" value="2">
+                          <label class="form-check-label" for="gridRadiosB4">
+                            2 - Fair 
+                          </label>
+                      </div>
+                      <div class="form-check">
+                          <input class="form-check-input" required type="radio" name="gridRadiosB" id="gridRadiosB5" value="1">
+                          <label class="form-check-label" for="gridRadiosB5">
+                            1 - Poor 
+                          </label>
+                      </div>
+                  </ul>
+                </ol>
+              </li>
+                <li class="fw-normal">Makes himself/herself available to students beyond official time
+                  <ol type="C" class="fw-normal"  data-section="C">  
+                  <ul>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadiosC" id="gridRadiosC1" value="5">
+                            <label class="form-check-label" for="gridRadiosC1">
+                              5 - Very Outstanding
+                            </label>
+                          </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadiosC" id="gridRadiosC2" value="4">
+                            <label class="form-check-label" for="gridRadiosC2">
+                              4 - Outstanding 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadiosC" id="gridRadiosC3" value="3">
+                            <label class="form-check-label" for="gridRadiosC3">
+                              3 - Satisfactory 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadiosC" id="gridRadiosC4" value="2">
+                            <label class="form-check-label" for="gridRadiosC4">
+                              2 - Fair 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadiosC" id="gridRadiosC5" value="1">
+                            <label class="form-check-label" for="gridRadiosC5">
+                              1 - Poor 
+                            </label>
+                        </div>
+                    </ul>
+                  </ol>
+                </li>
+              
+              
+                <li class="fw-normal">Regularly comes to class on time; well-groomed and well-prepared to complete assigned responsibilities.
+                  <ol type="D" class="fw-normal"  data-section="D"> 
+                  <ul>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadiosD" id="gridRadiosD1" value="5">
+                            <label class="form-check-label" for="gridRadiosD1">
+                              5 - Very Outstanding
+                            </label>
+                          </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadiosD" id="gridRadiosD2" value="4">
+                            <label class="form-check-label" for="gridRadiosD2">
+                              4 - Outstanding 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadiosD" id="gridRadiosD3" value="3">
+                            <label class="form-check-label" for="gridRadiosD3">
+                              3 - Satisfactory 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadiosD" id="gridRadiosD4" value="2">
+                            <label class="form-check-label" for="gridRadiosD4">
+                              2 - Fair 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadiosD" id="gridRadiosD5" value="1">
+                            <label class="form-check-label" for="gridRadiosD5">
+                              1 - Poor 
+                            </label>
+                        </div>
+                    </ul>
+                  </ol>
+                </li>
+              
+               
+                <li class="fw-normal">Keeps accurate records of students` performance and promptly submits the same
+                  <ol type="E" class="fw-normal"  data-section="E"> 
+                  <ul>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadiosE" id="gridRadiosE1" value="5">
+                            <label class="form-check-label" for="gridRadiosE1">
+                              5 - Very Outstanding
+                            </label>
+                          </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadiosE" id="gridRadiosE2" value="4">
+                            <label class="form-check-label" for="gridRadiosE2">
+                              4 - Outstanding 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadiosE" id="gridRadiosE3" value="3">
+                            <label class="form-check-label" for="gridRadiosE3">
+                              3 - Satisfactory 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadiosE" id="gridRadiosE4" value="2">
+                            <label class="form-check-label" for="gridRadiosE4">
+                              2 - Fair 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadiosE" id="gridRadiosE5" value="1">
+                            <label class="form-check-label" for="gridRadiosE5">
+                              1 - Poor 
+                            </label>
+                        </div>
+                    </ul>
+                     </ol>
+                </li>
+           
+        </ol> 
         <br>
+        <!-- B -->
+        <ol class="list-group-items fw-bold">B. Knowledge of Subject (Kaalaman sa Paksa)
+          <br><br>
+              <li class="fw-normal">Demonstrates mastery of the subject matter(explains the subject matter without relying solely on the prescribed textbook)
+                <ol type="2A" class="fw-normal"  data-section="2A"> 
+                  <ul>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2A" id="gridRadios2A1" value="5">
+                            <label class="form-check-label" for="gridRadios2A1">
+                              5 - Very Outstanding
+                            </label>
+                          </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2A" id="gridRadios2A2" value="4">
+                            <label class="form-check-label" for="gridRadios2A2">
+                              4 - Outstanding 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2A" id="gridRadios2A3" value="3">
+                            <label class="form-check-label" for="gridRadios2A3">
+                              3 - Satisfactory 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2A" id="gridRadios2A4" value="2">
+                            <label class="form-check-label" for="gridRadios2A4">
+                              2 - Fair 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2A" id="gridRadios2A5" value="1">
+                            <label class="form-check-label" for="gridRadios2A5">
+                              1 - Poor 
+                            </label>
+                        </div>
+                    </ul>
+                  </ol>
+                </li>
+
+                <li class="fw-normal" >Draws and shares information on the state-of the-art theories and practices in his/her discipline
+                  <ol type="2B" class="fw-normal"  data-section="2B">  
+                  <ul>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2B" id="gridRadios2B1" value="5">
+                            <label class="form-check-label" for="gridRadios2B1">
+                              5 - Very Outstanding
+                            </label>
+                          </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2B" id="gridRadios2B2" value="4">
+                            <label class="form-check-label" for="gridRadios2B2">
+                              4 - Outstanding 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2B" id="gridRadios2B3" value="3">
+                            <label class="form-check-label" for="gridRadios2B3">
+                              3 - Satisfactory 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2B" id="gridRadios2B4" value="2">
+                            <label class="form-check-label" for="gridRadios2B4">
+                              2 - Fair 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2B" id="gridRadios2B5" value="1">
+                            <label class="form-check-label" for="gridRadios2B5">
+                              1 - Poor 
+                            </label>
+                        </div>
+                    </ul>
+                  </ol>
+                </li>
+
+                <li class="fw-normal">Integrates subjects into practical circumstances and learning intents/purposes of students 
+                  <ol type="2C" class="fw-normal"  data-section="2C">  
+                  <ul>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2C" id="gridRadios2C1" value="5">
+                            <label class="form-check-label" for="gridRadios2C1">
+                              5 - Very Outstanding
+                            </label>
+                          </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2C" id="gridRadios2C2" value="4">
+                            <label class="form-check-label" for="gridRadios2C2">
+                              4 - Outstanding 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2C" id="gridRadios2C3" value="3">
+                            <label class="form-check-label" for="gridRadios2C3">
+                              3 - Satisfactory 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2C" id="gridRadios2C4" value="2">
+                            <label class="form-check-label" for="gridRadios2C4">
+                              2 - Fair 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2C" id="gridRadios2C5" value="1">
+                            <label class="form-check-label" for="gridRadios2C5">
+                              1 - Poor 
+                            </label>
+                        </div>
+                    </ul>
+                  </ol>
+                </li>
+
+                <li class="fw-normal">Explains the relevance of present topics to previous lessons and relates the subject matter to relevant current issues and/or daily life activities
+                  <ol type="2D" class="fw-normal"  data-section="2D">    
+                  <ul>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2D" id="gridRadios2D1" value="5">
+                            <label class="form-check-label" for="gridRadios2D1">
+                              5 - Very Outstanding
+                            </label>
+                          </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2D" id="gridRadios2D2" value="4">
+                            <label class="form-check-label" for="gridRadios2D2">
+                              4 - Outstanding 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2D" id="gridRadios2D3" value="3">
+                            <label class="form-check-label" for="gridRadios2D3">
+                              3 - Satisfactory 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2D" id="gridRadios2D4" value="2">
+                            <label class="form-check-label" for="gridRadios2D4">
+                              2 - Fair 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2D" id="gridRadios2D5" value="1">
+                            <label class="form-check-label" for="gridRadios2D5">
+                              1 - Poor 
+                            </label>
+                        </div>
+                    </ul>
+                  </ol>
+                </li>
+
+                <li class="fw-normal">Demonstrate up-to-date knowledge and/or awareness of current trends and issues in the subjects
+                  <ol type="2E" class="fw-normal"  data-section="2E">     
+                  <ul>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2E" id="gridRadios2E1" value="5">
+                            <label class="form-check-label" for="gridRadios2E1">
+                              5 - Very Outstanding
+                            </label>
+                          </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2E" id="gridRadios2E2" value="4">
+                            <label class="form-check-label" for="gridRadios2E2">
+                              4 - Outstanding 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2E" id="gridRadios2E3" value="3">
+                            <label class="form-check-label" for="gridRadios2E3">
+                              3 - Satisfactory 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2E" id="gridRadios2E4" value="2">
+                            <label class="form-check-label" for="gridRadios2E4">
+                              2 - Fair 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios2E" id="gridRadios2E5" value="1">
+                            <label class="form-check-label" for="gridRadios2E5">
+                              1 - Poor 
+                            </label>
+                        </div>
+                    </ul>
+                  </ol>
+                </li>
+           
+        </ol>
         <br>
-        <br>
 
-        <div class="card-body profile-card pt-4 d-flex flex-column align-items-left">
-          <h3>FEEDBACKS</h3>
-      </div>
+        <!-- C -->
+        <ol class="list-group-items fw-bold">C. Teaching for Independent Learning (Pagtuturo para sa Malayang Pagkatuto)
+          <br> <br>
+                <li class="fw-normal"> Creates strategies that allow students to practice using concepts they need to understand (interactive discussion)
+                  <ol type="3A" class="fw-normal"  data-section="3A">    
+                  <ul>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3A" id="gridRadios3A1" value="5">
+                            <label class="form-check-label" for="gridRadios3A1">
+                              5 - Very Outstanding
+                            </label>
+                          </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3A" id="gridRadios3A2" value="4">
+                            <label class="form-check-label" for="gridRadios3A2">
+                              4 - Outstanding 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3A" id="gridRadios3A3" value="3">
+                            <label class="form-check-label" for="gridRadios3A3">
+                              3 - Satisfactory 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3A" id="gridRadios3A4" value="2">
+                            <label class="form-check-label" for="gridRadios3A4">
+                              2 - Fair 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3A" id="gridRadios3A5" value="1">
+                            <label class="form-check-label" for="gridRadios3A5">
+                              1 - Poor 
+                            </label>
+                        </div>
+                    </ul>
+                  </ol>
+                </li>
+                <li class="fw-normal" >Enhances students` self-esteem and/or gives due recognition to students` performance/potentials
+                  <ol type="3B" class="fw-normal"  data-section="3B">   
+                  <ul>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3B" id="gridRadios3B1" value="5">
+                            <label class="form-check-label" for="gridRadios3B1">
+                              5 - Very Outstanding
+                            </label>
+                          </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3B" id="gridRadios3B2" value="4">
+                            <label class="form-check-label" for="gridRadios3B2">
+                              4 - Outstanding 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3B" id="gridRadios3B3" value="3">
+                            <label class="form-check-label" for="gridRadios3B3">
+                              3 - Satisfactory 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3B" id="gridRadios3B4" value="2">
+                            <label class="form-check-label" for="gridRadios3B4">
+                              2 - Fair 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3B" id="gridRadios3B5" value="1">
+                            <label class="form-check-label" for="gridRadios3B5">
+                              1 - Poor 
+                            </label>
+                        </div>
+                    </ul>
+                  </ol>
+                </li>
 
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Faculty Feedback and Development Review (FFDR)</h5>
-          <p class="card-text">Welcome to the Faculty Feedback and Development Review (FFDR) process. This process is designed to provide faculty members with constructive feedback on their performance and to support their ongoing professional development. Through this collaborative effort, we aim to recognize achievements, address challenges, and create a roadmap for growth that aligns with both individual and institutional goals.</p>
-        </div>
-      </div>
+                <li class="fw-normal">Allows students to create their own course objectives, realistically defines student-professor rules, and makes them accountable to their performance
+                  <ol type="3D" class="fw-normal"  data-section="3D">    
+                  <ul>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3D" id="gridRadios3D1" value="5">
+                            <label class="form-check-label" for="gridRadios3D1">
+                              5 - Very Outstanding
+                            </label>
+                          </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3D" id="gridRadios3D2" value="4">
+                            <label class="form-check-label" for="gridRadios3D2">
+                              4 - Outstanding 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3D" id="gridRadios3D3" value="3">
+                            <label class="form-check-label" for="gridRadios3D3">
+                              3 - Satisfactory 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3D" id="gridRadios3D4" value="2">
+                            <label class="form-check-label" for="gridRadios3D4">
+                              2 - Fair 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3D" id="gridRadios3D5" value="1">
+                            <label class="form-check-label" for="gridRadios3D5">
+                              1 - Poor 
+                            </label>
+                        </div>
+                    </ul>
+                  </ol>
+                </li>
+                <li class="fw-normal">Allows students to think independently, make their own decisions, and holds them accountable for their performance based largely on their success in executing decisions
+                  <ol type="3E" class="fw-normal"  data-section="3E">     
+                  <ul>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3E" id="gridRadios3E1" value="5">
+                            <label class="form-check-label" for="gridRadios3E1">
+                              5 - Very Outstanding
+                            </label>
+                          </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3E" id="gridRadios3E2" value="4">
+                            <label class="form-check-label" for="gridRadios3E2">
+                              4 - Outstanding 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3E" id="gridRadios3E3" value="3">
+                            <label class="form-check-label" for="gridRadios3E3">
+                              3 - Satisfactory 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3E" id="gridRadios3E4" value="2">
+                            <label class="form-check-label" for="gridRadios3E4">
+                              2 - Fair 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3E" id="gridRadios3E5" value="1">
+                            <label class="form-check-label" for="gridRadios3E5">
+                              1 - Poor 
+                            </label>
+                        </div>
+                    </ul>
+                  </ol>
+                </li>
 
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Faculty Empowerment and Reflection (FER)</h5>
-          <p class="card-text">Welcome to the Faculty Empowerment and Reflection (FER) program, a platform for fostering professional growth and creating a supportive environment for our esteemed faculty members. The FER program is dedicated to providing valuable feedback, recognizing accomplishments, and encouraging continuous development.</p>
-        </div>
-      </div>
+                <li class="fw-normal">Encourages students to learn beyond what is required and guides them on how to apply the concepts learned
+                  <ol type="3C" class="fw-normal"  data-section="3C">
+                  <ul>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3C" id="gridRadios3C1" value="5">
+                            <label class="form-check-label" for="gridRadios3C1">
+                              5 - Very Outstanding
+                            </label>
+                          </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3C" id="gridRadios3C2" value="4">
+                            <label class="form-check-label" for="gridRadios3C2">
+                              4 - Outstanding 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3C" id="gridRadios3C3" value="3">
+                            <label class="form-check-label" for="gridRadios3C3">
+                              3 - Satisfactory 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3C" id="gridRadios3C4" value="2">
+                            <label class="form-check-label" for="gridRadios3C4">
+                              2 - Fair 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios3C" id="gridRadios3C5" value="1">
+                            <label class="form-check-label" for="gridRadios3C5">
+                              1 - Poor 
+                            </label>
+                        </div>
+                    </ul>
+                  </ol>
+                </li>
+            </ol>
+       
+            <br>
 
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Academic Excellence Review and Development (AERD)</h5>
-          <p class="card-text">Welcome to the Academic Excellence Review and Development (AERD) process, a comprehensive initiative designed to support our faculty in achieving their highest potential. Through self-assessment, constructive feedback, and growth planning, the AERD process aims to facilitate continuous improvement, recognize achievements, and provide a roadmap for professional development.</p>
-        </div>
+        <!-- D -->
+        <ol class="list-group-items fw-bold">D. Management of Learning (Pamamahala sa Pagkatuto)
+      <br><br>
+                <li class="fw-normal">Creates opportunities for intensive and/or extensive contribution of students in the class activities (e.g., breaks class into dyads, triads, or buzz/task groups)
+                  <ol type="4A" class="fw-normal"  data-section="4A"> 
+                  <ul>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4A" id="gridRadios4A1" value="5">
+                            <label class="form-check-label" for="gridRadios4A1">
+                              5 - Very Outstanding
+                            </label>
+                          </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4A" id="gridRadios4A2" value="4">
+                            <label class="form-check-label" for="gridRadios4A2">
+                              4 - Outstanding 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4A" id="gridRadios4A3" value="3">
+                            <label class="form-check-label" for="gridRadios4A3">
+                              3 - Satisfactory 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4A" id="gridRadios4A4" value="2">
+                            <label class="form-check-label" for="gridRadios4A4">
+                              2 - Fair 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4A" id="gridRadios4A5" value="1">
+                            <label class="form-check-label" for="gridRadios4A5">
+                              1 - Poor 
+                            </label>
+                        </div>
+                    </ul>
+                  </ol>
+                </li>
+                <li class="fw-normal">Assumes roles as facilitator, resource person, coach, inquisitor, integrator, referee, in drawing students to contribute to knowledge and understanding of the concepts at hand
+                  <ol type="4B" class="fw-normal"  data-section="4B">   
+                  <ul>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4B" id="gridRadios4B1" value="5">
+                            <label class="form-check-label" for="gridRadios4B1">
+                              5 - Very Outstanding
+                            </label>
+                          </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4B" id="gridRadios4B2" value="4">
+                            <label class="form-check-label" for="gridRadios4B2">
+                              4 - Outstanding 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4B" id="gridRadios4B3" value="3">
+                            <label class="form-check-label" for="gridRadios4B3">
+                              3 - Satisfactory 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4B" id="gridRadios4B4" value="2">
+                            <label class="form-check-label" for="gridRadios4B4">
+                              2 - Fair 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4B" id="gridRadios4B5" value="1">
+                            <label class="form-check-label" for="gridRadios4B5">
+                              1 - Poor 
+                            </label>
+                        </div>
+                    </ul>
+                  </ol>
+                </li>
+                <li class="fw-normal"> Design and implements learning conditions and experiences that promote healthy exchanges and/or confrontations
+                  <ol type="4C" class="fw-normal"  data-section="4C">  
+                  <ul>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4C" id="gridRadios4C1" value="5">
+                            <label class="form-check-label" for="gridRadios4C1">
+                              5 - Very Outstanding
+                            </label>
+                          </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4C" id="gridRadios4C2" value="4">
+                            <label class="form-check-label" for="gridRadios4C2">
+                              4 - Outstanding 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4C" id="gridRadios4C3" value="3">
+                            <label class="form-check-label" for="gridRadios4C3">
+                              3 - Satisfactory 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4C" id="gridRadios4C4" value="2">
+                            <label class="form-check-label" for="gridRadios4C4">
+                              2 - Fair 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4C" id="gridRadios4C5" value="1">
+                            <label class="form-check-label" for="gridRadios4C5">
+                              1 - Poor 
+                            </label>
+                        </div>
+                    </ul>
+                  </ol>
+                </li>
+                <li class="fw-normal">Structures/re-structures learning and teaching-learning contexts to enhance the attainment of collective learning objectives
+                  <ol type="4D" class="fw-normal"  data-section="4D">   
+                  <ul>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4D" id="gridRadios4D1" value="5">
+                            <label class="form-check-label" for="gridRadios4D1">
+                              5 - Very Outstanding
+                            </label>
+                          </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4D" id="gridRadios4D2" value="4">
+                            <label class="form-check-label" for="gridRadios4D2">
+                              4 - Outstanding 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4D" id="gridRadios4D3" value="3">
+                            <label class="form-check-label" for="gridRadios4D3">
+                              3 - Satisfactory 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4D" id="gridRadios4D4" value="2">
+                            <label class="form-check-label" for="gridRadios4D4">
+                              2 - Fair 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4D" id="gridRadios4D5" value="1">
+                            <label class="form-check-label" for="gridRadios4D5">
+                              1 - Poor 
+                            </label>
+                        </div>
+                    </ul>
+                  </ol>
+                </li>
+                <li class="fw-normal">Uses instructional materials (audio/video materials: fieldtrips, film-showing, computer-aided instructions etc.) to reinforce learning processes
+                  <ol type="4E" class="fw-normal"  data-section="4E">   
+                  <ul>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4E" id="gridRadios4E1" value="5">
+                            <label class="form-check-label" for="gridRadios4E1">
+                              5 - Very Outstanding
+                            </label>
+                          </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4E" id="gridRadios4E2" value="4">
+                            <label class="form-check-label" for="gridRadios4E2">
+                              4 - Outstanding 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4E" id="gridRadios4E3" value="3">
+                            <label class="form-check-label" for="gridRadios4E3">
+                              3 - Satisfactory 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4E" id="gridRadios4E4" value="2">
+                            <label class="form-check-label" for="gridRadios4E4">
+                              2 - Fair 
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" required type="radio" name="gridRadios4E" id="gridRadios4E5" value="1">
+                            <label class="form-check-label" for="gridRadios4E5">
+                              1 - Poor 
+                            </label>
+                        </div>
+                    </ul>
+                  </ol>
+                </li>
+            </ol>
+     
+      <!-- Add more questions for Section 2 as needed -->
+  
+  <br><br>
+
+
+  </div>
+
+   
+  <div class="card-body profile-card pt-4 d-flex flex-column align-items-left">
+    <h4 id="AverageScore">Average Score: 0</h4>
+  </div>
+ 
+  <input type="text" id="averageInputA" name="averageInputA" hidden>
+  <input type="text" id="averageInputB" name="averageInputB" hidden>
+  <input type="text" id="averageInputC" name="averageInputC" hidden>
+  <input type="text" id="averageInputD" name="averageInputD" hidden>
+  <input type="text" id="AverageRate" name="AverageRate" hidden>
+  <input type="text" id="School_Year" name="School_Year" hidden>
+  <input type="text" id="SEMESTER" name="SEMESTER" hidden>
+  
+<div class="d-grid gap-2 mt-3 col-md-12 d-flex flex-column align-items-end">
+  <div class="col-md-2">
+      <div class="d-grid gap-2 mt-3">
+          <button type="submit" class="btn btn-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512" style="fill:#ffffff;position:relative; bottom:2px"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M433.941 129.941l-83.882-83.882A48 48 0 0 0 316.118 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V163.882a48 48 0 0 0-14.059-33.941zM224 416c-35.346 0-64-28.654-64-64 0-35.346 28.654-64 64-64s64 28.654 64 64c0 35.346-28.654 64-64 64zm96-304.52V212c0 6.627-5.373 12-12 12H76c-6.627 0-12-5.373-12-12V108c0-6.627 5.373-12 12-12h228.52c3.183 0 6.235 1.264 8.485 3.515l3.48 3.48A11.996 11.996 0 0 1 320 111.48z"/></svg>
+              Evaluate
+          </button>
+
+        </form>
       </div>
+      <br><br>
+  </div>
+</div>
+
+</div>
+<div hidden>
+<p id="totalScoreA">Total Score A: 0</p>
+<p id="totalScoreB">Total Score B: 0</p>
+<p id="totalScoreC">Total Score C: 0</p>
+<p id="totalScoreD">Total Score D: 0</p>
+<p id="totalScoreE">Total Score E: 0</p>
+
+<br>
+
+<p id="totalScore2A">Total Score 2A: 0</p>
+<p id="totalScore2B">Total Score 2B: 0</p>
+<p id="totalScore2C">Total Score 2C: 0</p>
+<p id="totalScore2D">Total Score 2D: 0</p>
+<p id="totalScore2E">Total Score 2E: 0</p>
+
+<br>
+
+<p id="totalScore3A">Total Score 3A: 0</p>
+<p id="totalScore3B">Total Score 3B: 0</p>
+<p id="totalScore3C">Total Score 3C: 0</p>
+<p id="totalScore3D">Total Score 3D: 0</p>
+<p id="totalScore3E">Total Score 3E: 0</p>
+
+<br>
+
+<p id="totalScore4A">Total Score 4A: 0</p>
+<p id="totalScore4B">Total Score 4B: 0</p>
+<p id="totalScore4C">Total Score 4C: 0</p>
+<p id="totalScore4D">Total Score 4D: 0</p>
+<p id="totalScore4E">Total Score 4E: 0</p>
+
+</div>
       
         </div>
       </div>
     </div>
-
-          <div class="col-xl-6">
-            <img src="{{ url_for('static', filename='images/Default-Images/sideview-image.png')}}" alt="side image" style="width: 100%; height: 100%">
-          </div> 
       </div>
     </div><!-- End Card with an image on left -->
 

@@ -89,6 +89,9 @@ class FISFaculty(db.Model, UserMixin):
     FISSpecialProject = db.relationship('FISSpecialProject')
     FISCapstone = db.relationship('FISCapstone')
     
+    FISUser_Notifications = db.relationship('FISUser_Notifications')
+    FISAdmin_Notifications = db.relationship('FISAdmin_Notifications')
+    FISRequests = db.relationship('FISRequests')
     
     # TOKEN
     FISLoginToken = db.relationship('FISLoginToken')
@@ -172,6 +175,10 @@ class FISFaculty(db.Model, UserMixin):
             'FISSpecialProject': self.FISSpecialProject,
             'FISCapstone': self.FISCapstone,
             
+            'FISUser_Notifications': self.FISUser_Notifications,
+            'FISAdmin_Notifications': self.FISAdmin_Notifications,
+            'FISRequests': self.FISRequests,
+            
             'FISLoginToken': self.FISLoginToken,
 
             
@@ -233,6 +240,10 @@ class FISAdmin(db.Model, UserMixin):
     FISPDS_CharacterReference = db.relationship('FISPDS_CharacterReference')
     FISPDS_Signature = db.relationship('FISPDS_Signature')
     
+    FISUser_Notifications = db.relationship('FISUser_Notifications')
+    FISAdmin_Notifications = db.relationship('FISAdmin_Notifications')
+    FISRequests = db.relationship('FISRequests')
+    
     FISLoginToken = db.relationship('FISLoginToken')
     
     def to_dict(self):
@@ -285,6 +296,10 @@ class FISAdmin(db.Model, UserMixin):
             'FISPDS_AdditionalQuestions': self.FISPDS_AdditionalQuestions,
             'FISPDS_CharacterReference': self.FISPDS_CharacterReference,
             'FISPDS_Signature': self.FISPDS_Signature,
+            
+            'FISUser_Notifications': self.FISUser_Notifications,
+            'FISAdmin_Notifications': self.FISAdmin_Notifications,
+            'FISRequests': self.FISRequests,
             
             'FISLoginToken': self.FISLoginToken,
         }
@@ -928,6 +943,7 @@ class FISEvaluations(db.Model):
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     Evaluator_Name = db.Column(db.String)
+    EvaluatorId = db.Column(db.Integer)
     Type = db.Column(db.String)
     acad_head = db.Column(db.Float)
     acad_head_a = db.Column(db.Float) 
@@ -964,6 +980,7 @@ class FISEvaluations(db.Model):
             'FacultyId': self.FacultyId,
             'AdminId': self.AdminId,
             'Evaluator_Name': self.Evaluator_Name,
+            'EvaluatorId': self.EvaluatorId,
             'Type': self.Type,
             'acad_head': self.acad_head,
             'acad_head_a': self.acad_head_a,
@@ -1852,18 +1869,65 @@ class FISUser_Notifications(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID 
+    notif_by = db.Column(db.Integer)
+    notifier_type = db.Column(db.String(50))  # "admin" or "faculty" or "system"
     DateTime = db.Column(db.DateTime(timezone=True), server_default=db.func.now())
+    updated_at = db.Column(db.DateTime(timezone=True), server_default=db.func.now())
     Status = db.Column(db.String(50), default="pending")
     Type = db.Column(db.String(50))
     Notification = db.Column(db.String)
     is_delete = db.Column(db.Boolean, default=False) 
+    
     
     def to_dict(self):
         return {
             'id': self.id,
             'FacultyId': self.FacultyId,
             'AdminId': self.AdminId,
+            'notif_by': self.notif_by,
+            'notifier_type': self.notifier_type,
             'DateTime': self.DateTime,
+            'updated_at': self.updated_at,
+            'Status': self.Status,
+            'Type': self.Type,
+            'Notification': self.Notification,
+            'is_delete': self.is_delete
+        }
+        
+    def get_id(self):
+        return str(self.id)  # Convert to string to ensure compatibility  
+
+# ------------------------------------------------
+
+
+# ------------------------------------------------
+# NOTIFICATION TABLE
+  
+class FISAdmin_Notifications(db.Model):
+    __tablename__ = 'FISAdmin_Notifications'
+
+    id = db.Column(db.Integer, primary_key=True)  # DataID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID 
+    notif_by = db.Column(db.Integer)
+    notifier_type = db.Column(db.String(50))  # "admin" or "faculty" or "system"
+    DateTime = db.Column(db.DateTime(timezone=True), server_default=db.func.now())
+    updated_at = db.Column(db.DateTime(timezone=True), server_default=db.func.now())
+    Status = db.Column(db.String(50), default="pending")
+    Type = db.Column(db.String(50))
+    Notification = db.Column(db.String)
+    is_delete = db.Column(db.Boolean, default=False) 
+    
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'FacultyId': self.FacultyId,
+            'AdminId': self.AdminId,
+            'notif_by': self.notif_by,
+            'notifier_type': self.notifier_type,
+            'DateTime': self.DateTime,
+            'updated_at': self.updated_at,
             'Status': self.Status,
             'Type': self.Type,
             'Notification': self.Notification,

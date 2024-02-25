@@ -560,6 +560,68 @@ def get_all_faculty_evaluations():
                     'self', 'self_a', 'self_b', 'self_c', 'self_d',
                     'peer', 'peer_a', 'peer_b', 'peer_c', 'peer_d',
                     'student', 'student_a', 'student_b', 'student_c', 'student_d',
+                    'school_year','semester','is_delete', 'Evaluator_Name', 'Type', 'EvaluatorId',
+                ]
+
+                for field in unwanted_fields:
+                    if field in faculty_data:
+                        del faculty_data[field]
+
+                profiles.append(faculty_data)
+
+            db.close()
+
+            return jsonify(profiles)
+
+        except ValidationError as e:
+            return jsonify({'error': f'Validation error: {e}'})
+        
+
+
+@API.route('/api/FISFaculty/Evaluations_secret', methods=['GET'])
+@admin_token_required # Get the API key from the request header
+def get_all_faculty_evaluations_secret():
+    token = request.headers.get('token')  # Get the API key from the request header
+    key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
+    key = key['key']
+    
+    if not key in API_KEYS.values():
+         return jsonify(message="access denied!"), 403
+    
+    else:
+        try:
+            # Get query parameters for pagination
+            page = int(request.args.get('page', 1))
+            per_page = int(request.args.get('per_page', 300))
+
+            # Calculate offset based on page and per_page values
+            offset = (page - 1) * per_page
+
+            db = SessionLocal()
+
+            # Query only the required subset of data based on offset and per_page
+            faculty_profiles = db.query(FISEvaluations).offset(offset).limit(per_page).all()
+
+            profiles = []
+
+            for faculty in faculty_profiles:
+                
+                faculty_data = FISEvaluations_Model.from_orm(faculty).dict()
+                faculty_data['Id'] = faculty_data['FacultyId']
+                faculty_data['EvaluatorId'] = faculty_data['EvaluatorId']
+                faculty_data['FacultyName'] = faculty_data['Evaluator_Name']
+
+                faculty_data['FacultyType'] = faculty_data['Type']
+                faculty_data['Semester'] = faculty_data['semester']  # Assuming 'semester' is already a field in FISEvaluations_Model
+                faculty_data['Year'] = faculty_data['school_year'].strftime("%Y-%m-%d %H:%M:%S.%f%z")
+
+                # Exclude unwanted fields
+                unwanted_fields = [
+                    'id', 'FacultyId', 'acad_head', 'acad_head_a', 'acad_head_b', 'acad_head_c', 'acad_head_d',
+                    'director', 'director_a', 'director_b', 'director_c', 'director_d',
+                    'self', 'self_a', 'self_b', 'self_c', 'self_d',
+                    'peer', 'peer_a', 'peer_b', 'peer_c', 'peer_d',
+                    'student', 'student_a', 'student_b', 'student_c', 'student_d',
                     'school_year','semester','is_delete', 'Evaluator_Name', 'Type',
                 ]
 
@@ -576,7 +638,7 @@ def get_all_faculty_evaluations():
         except ValidationError as e:
             return jsonify({'error': f'Validation error: {e}'})
         
-        
+
         
 @API.route('/api/FISFaculty/Professional-Development', methods=['GET', 'POST'])
 @admin_token_required

@@ -18,6 +18,7 @@ class FISEvaluations(Base):
     id = Column(Integer, primary_key=True)
     FacultyId = Column(Integer)
     Evaluator_Name = Column(String)
+    EvaluatorId = Column(Integer)
     Type = Column(String)
     acad_head = Column(Float)
     acad_head_a = Column(Float)
@@ -53,6 +54,7 @@ class FISEvaluations_Model(BaseModel):
     id: int
     FacultyId: int
     Evaluator_Name: Optional[str]
+    EvaluatorId: int
     Type: Optional[str]
     acad_head: float
     acad_head_a: float

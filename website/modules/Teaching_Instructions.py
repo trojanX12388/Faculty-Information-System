@@ -77,7 +77,12 @@ def TI_TA():
 
     # Fetch API data
     api_url = "https://schedulerserver-6e565d991c10.herokuapp.com/facultyloadings/getfacultyloading"  # Replace with the actual API endpoint
-    api_response = requests.get(api_url)
+    headers = {
+        'Authorization': 'Bearer '+ os.environ["API_TOKENS_SCHEDULER"],
+        'Content-Type': 'application/json'  # Adjust content type as needed
+    }
+    
+    api_response = requests.get(api_url,headers=headers)
     
     if api_response.status_code == 200:
         api_data = api_response.json()
@@ -86,16 +91,17 @@ def TI_TA():
         
     # Fetch API data semester
     api_url1 = "https://schedulerserver-6e565d991c10.herokuapp.com/semesters/getsemester"  # Replace with the actual API endpoint
-    api_response1 = requests.get(api_url1)
+    api_response1 = requests.get(api_url1, headers=headers)
     
     if api_response1.status_code == 200:
         semester = api_response1.json()
+
     else:
         semester = {"message": "Failed to fetch data", "data": []}
         
     # Fetch API data acad year
     api_url2 = "https://schedulerserver-6e565d991c10.herokuapp.com/academicyears/getacadyr"  # Replace with the actual API endpoint
-    api_response2 = requests.get(api_url2)
+    api_response2 = requests.get(api_url2, headers=headers)
     
     if api_response2.status_code == 200:
         acad_year = api_response2.json()

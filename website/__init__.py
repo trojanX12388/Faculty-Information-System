@@ -125,6 +125,11 @@ def create_app():
     from .modules.SystemAdmin import sysadmin
     app.register_blueprint(sysadmin, url_prefix='/')
     
+    # NOTIFICATION API ROUTES
+    
+    from .modules.Notifications import notification
+    app.register_blueprint(notification, url_prefix='/')
+    
     # LOADING LOGIN MANAGER CACHE
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login_denied'

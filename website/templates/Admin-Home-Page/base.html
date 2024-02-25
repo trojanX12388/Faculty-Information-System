@@ -27,6 +27,33 @@
   <link href="https://cdn.remixicon.com/releases/v1.2.2/remixicon.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
  
+
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.7/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.7/plugin/relativeTime.min.js"></script>
+
+  
+  <!-- Include jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <!-- Include DataTables CSS -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+  
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<!-- Include DataTables Buttons CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+
+<!-- Include DataTables Print Button JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
    <!-- Template Main CSS File -->
  <link rel="stylesheet" href="{{url_for('static', filename='css/homepage/style.css')}}"> {# MAIN HOMEPAGE CSS #}
  <link rel="stylesheet" href="{{url_for('static', filename='css/homepage/PDM-Basic-Details/uploadprofile.css')}}"> {# UPLOAD PROFILE CSS #}
@@ -57,79 +84,26 @@
         </li><!-- End Search Icon-->
 
         <li class="nav-item dropdown">
-
           <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
             <i class="bi bi-bell"></i>
-            <span class="badge bg-danger badge-number">4</span>
+            <span class="badge bg-danger badge-number" id="notification-count">0</span>
           </a><!-- End Notification Icon -->
-
+        
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
             <li class="dropdown-header">
-              You have 4 new notifications
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+              You have <span id="notification-count-text">0</span> Notifications
+              <a href="/auth/sysadmin/Requests"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
             </li>
             <li>
               <hr class="dropdown-divider">
             </li>
-
-            <li class="notification-item">
-              <i class="bi bi-exclamation-circle text-warning"></i>
-              <div>
-                <h4>Lorem Ipsum</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>30 min. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-x-circle text-danger"></i>
-              <div>
-                <h4>Atque rerum nesciunt</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>1 hr. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-check-circle text-success"></i>
-              <div>
-                <h4>Sit rerum fuga</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>2 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-info-circle text-primary"></i>
-              <div>
-                <h4>Dicta reprehenderit</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>4 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li class="dropdown-footer">
-              <a href="#">Show all notifications</a>
-            </li>
-
+        
+            <!-- Notifications will be dynamically added here -->
+        
           </ul><!-- End Notification Dropdown Items -->
-
+        
         </li><!-- End Notification Nav -->
+      
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
@@ -1050,6 +1024,101 @@
 
 
 {% endblock %}
+
+
+
+<script>
+  // Load the relativeTime plugin for dayjs
+  dayjs.extend(window.dayjs_plugin_relativeTime);
+
+  // Function to calculate custom human-readable time difference using dayjs
+  function calculateTimeDifference(dateTime) {
+    const diffInSeconds = dayjs().diff(dayjs(dateTime), 'seconds');
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    const diffInHours = Math.floor(diffInSeconds / 3600);
+    const diffInDays = Math.floor(diffInSeconds / 86400);
+
+    if (diffInSeconds < 60) {
+      return diffInSeconds + 's ago';
+    } else if (diffInMinutes < 60) {
+      return diffInMinutes + 'm ago';
+    } else if (diffInHours < 24) {
+      return diffInHours + 'h ago';
+    } else if (diffInDays < 7) {
+      return diffInDays + 'd ago';
+    } else if (diffInDays < 30) {
+      return Math.floor(diffInDays / 7) + 'w ago';
+    } else if (diffInDays < 365) {
+      return Math.floor(diffInDays / 30) + 'mo ago';
+    } else {
+      return Math.floor(diffInDays / 365) + 'y ago';
+    }
+  }
+  
+  // Variable to track whether "Show all" link has been added
+  var showAllLinkAdded = false;
+
+  // Function to fetch and display pending notifications
+  function fetchAndDisplayPendingNotifications() {
+    $.ajax({
+      url: '/api/Admin/Notifications',
+      type: 'GET',
+      dataType: 'json',
+      success: function (data) {
+        // Handle the response and update the HTML
+        var pendingRequests = data.requests.filter(function (request) {
+          return request.Status.toLowerCase() === 'pending';
+        });
+
+        if (pendingRequests.length > 0) {
+          // Sort pending notifications by DateTime in descending order
+          pendingRequests.sort(function (a, b) {
+            return new Date(b.DateTime) - new Date(a.DateTime);
+          });
+
+          // Update the notification count
+          $('#notification-count').text(pendingRequests.length);
+          $('#notification-count-text').text(pendingRequests.length);
+
+          // Clear existing pending notifications
+          $('.notifications .notification-item').remove();
+
+          // Loop through the latest 4 pending notifications and append them to the HTML
+          for (let index = 0; index < Math.min(4, pendingRequests.length); index++) {
+            var notification = pendingRequests[index];
+
+            var notificationItem = $('<li class="notification-item">');
+
+            var ProfileIcon = $('<img src="https://lh3.googleusercontent.com/d/'+notification.Profile_Pic+'" alt="Profile" class="rounded-circle" style="width:50px;height:50px;margin-right: 15px;"></img>');
+            var notificationContent = $('<div>');
+            var notificationTitle = $('<h4>').text(notification.Notification);
+            var identifierInfo = notification.Notif_By + ' (' + notification.IdentifierType + ': ' + notification.IdentifierId + ')';
+            var notificationDescription = $('<p>').text(identifierInfo + ' ' + calculateTimeDifference(notification.DateTime));
+
+            notificationContent.append(notificationTitle, notificationDescription);
+            notificationItem.append(ProfileIcon, notificationContent);
+            $('.notifications').append(notificationItem);
+
+          }
+
+        } else {
+          // Handle the case when there are no pending notifications
+          $('.notifications').html('<h6 style="margin-right: 15px;margin-left: 15px;">You have no notifications.</h6>');
+        }
+      },
+      error: function () {
+        // Handle the error case
+        $('.notifications').html('<h6 style="margin-right: 15px;margin-left: 15px;">No notifications available.</h6>');
+      }
+    });
+  }
+
+  // Initial fetch and display
+  fetchAndDisplayPendingNotifications();
+
+  // Reload pending notifications every minute
+  setInterval(fetchAndDisplayPendingNotifications, 60000);
+</script>
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
