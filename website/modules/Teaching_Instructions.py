@@ -369,8 +369,8 @@ def TI_TE():
         def convert_to_interpretation(grade):
             # Legend for conversion
             legend = {
-                (4.5, 5.0): 'Outstanding',
-                (3.5, 4.49): 'Very Satisfactory',
+                (4.5, 5.0): 'Very Outstanding',
+                (3.5, 4.49): 'Outstanding',
                 (2.5, 3.49): 'Satisfactory',
                 (1.5, 2.49): 'Fair',
                 (1.0, 1.49): 'Poor'
@@ -403,7 +403,7 @@ def TI_TE():
             director_b = year_sem.director_b
             director_c = year_sem.director_c
             director_d = year_sem.director_d
-            self = year_sem.self
+            self_eval = year_sem.self_eval
             self_a = year_sem.self_a
             self_b = year_sem.self_b
             self_c = year_sem.self_c
@@ -455,7 +455,7 @@ def TI_TE():
                             'director_calc': convert_to_percentage(director_calc),
                             'director_interpret': convert_to_interpretation(director_ave),
                             
-                            'self': convert_to_percentage(self),
+                            'self_eval': convert_to_percentage(self_eval),
                             'self_a': convert_to_percentage(self_a),
                             'self_b': convert_to_percentage(self_b),
                             'self_c': convert_to_percentage(self_c),
@@ -507,7 +507,7 @@ def TI_TE():
                             'director_calc': '',
                             'director_interpret': '',
                             
-                            'self': '',
+                            'self_eval': '',
                             'self_a': '',
                             'self_b': '',
                             'self_c': '',
@@ -558,7 +558,7 @@ def TI_TE():
             director_b = year_sem.director_b
             director_c = year_sem.director_c
             director_d = year_sem.director_d
-            self = year_sem.self
+            self_eval = year_sem.self_eval
             self_a = year_sem.self_a
             self_b = year_sem.self_b
             self_c = year_sem.self_c
@@ -611,7 +611,7 @@ def TI_TE():
                             'director_calc': convert_to_percentage(director_calc),
                             'director_interpret': convert_to_interpretation(director_ave),
                             
-                            'self': convert_to_percentage(self),
+                            'self_eval': convert_to_percentage(self_eval),
                             'self_a': convert_to_percentage(self_a),
                             'self_b': convert_to_percentage(self_b),
                             'self_c': convert_to_percentage(self_c),

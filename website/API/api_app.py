@@ -560,7 +560,9 @@ def get_all_faculty_evaluations():
                     'self_eval', 'self_a', 'self_b', 'self_c', 'self_d',
                     'peer', 'peer_a', 'peer_b', 'peer_c', 'peer_d',
                     'student', 'student_a', 'student_b', 'student_c', 'student_d',
-                    'school_year','semester','is_delete', 'Evaluator_Name', 'Type', 'EvaluatorId',
+                    'school_year','semester','is_delete', 'Evaluator_Name', 'Type', 'EvaluatorIds', 'AdminId', 
+                    'director_ids','acad_head_ids','fac_evaluators','acad_head_evaluators','direktor_evaluators',
+                    'student_evaluators',
                 ]
 
                 for field in unwanted_fields:
@@ -608,7 +610,7 @@ def get_all_faculty_evaluations_secret():
                 
                 faculty_data = FISEvaluations_Model.from_orm(faculty).dict()
                 faculty_data['Id'] = faculty_data['FacultyId']
-                faculty_data['EvaluatorId'] = faculty_data['EvaluatorId']
+                faculty_data['EvaluatorIds'] = faculty_data['EvaluatorIds']
                 faculty_data['FacultyName'] = faculty_data['Evaluator_Name']
 
                 faculty_data['FacultyType'] = faculty_data['Type']

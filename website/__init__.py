@@ -120,6 +120,9 @@ def create_app():
     from .modules.adminPDM import adminPDM
     app.register_blueprint(adminPDM, url_prefix='/')
     
+    from .modules.adminFeedback_Surveys import aFS
+    app.register_blueprint(aFS, url_prefix='/')
+    
     # SYSTEM ADMIN ROUTES
     
     from .modules.SystemAdmin import sysadmin

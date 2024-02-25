@@ -943,7 +943,16 @@ class FISEvaluations(db.Model):
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     Evaluator_Name = db.Column(db.String)
-    EvaluatorId = db.Column(db.Integer)
+    
+    EvaluatorIds = db.Column(db.String)
+    acad_head_ids = db.Column(db.String)
+    director_ids = db.Column(db.String)
+    
+    fac_evaluators = db.Column(db.Integer, default=0)
+    acad_head_evaluators = db.Column(db.Integer, default=0)
+    direktor_evaluators = db.Column(db.Integer, default=0)
+    student_evaluators = db.Column(db.Integer, default=0)
+    
     Type = db.Column(db.String)
     acad_head = db.Column(db.Float)
     acad_head_a = db.Column(db.Float) 
@@ -980,13 +989,19 @@ class FISEvaluations(db.Model):
             'FacultyId': self.FacultyId,
             'AdminId': self.AdminId,
             'Evaluator_Name': self.Evaluator_Name,
-            'EvaluatorId': self.EvaluatorId,
+            'EvaluatorIds': self.EvaluatorIds,
+            'fac_evaluators': self.fac_evaluators,
+            'acad_head_evaluators': self.acad_head_evaluators,
+            'direktor_evaluators': self.direktor_evaluators,
+            'student_evaluators': self.student_evaluators,
             'Type': self.Type,
+            'acad_head_ids': self.acad_head_ids,
             'acad_head': self.acad_head,
             'acad_head_a': self.acad_head_a,
             'acad_head_b': self.acad_head_b,
             'acad_head_c': self.acad_head_c,
             'acad_head_d': self.acad_head_d,
+            'director_ids': self.director_ids,
             'director': self.director,
             'director_a': self.director_a,
             'director_b': self.director_b,
