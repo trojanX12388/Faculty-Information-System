@@ -30,7 +30,7 @@ class FISEvaluations(Base):
     director_b = Column(Float)
     director_c = Column(Float)
     director_d = Column(Float)
-    self = Column(Float)
+    self_eval = Column(Float)
     self_a = Column(Float)
     self_b = Column(Float)
     self_c = Column(Float)
@@ -66,7 +66,7 @@ class FISEvaluations_Model(BaseModel):
     director_b: float
     director_c: float
     director_d: float
-    self: float
+    self_eval: float
     self_a: float
     self_b: float
     self_c: float

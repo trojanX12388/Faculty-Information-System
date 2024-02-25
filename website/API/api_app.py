@@ -547,8 +547,8 @@ def get_all_faculty_evaluations():
                 faculty_data['Students Interpretation'] = convert_to_interpretation(faculty_data['student'])
                 faculty_data['Peer Rating'] = convert_to_percentage(faculty_data['peer'])
                 faculty_data['Peer Interpretation'] = convert_to_interpretation(faculty_data['peer'])
-                faculty_data['Self Rating'] = convert_to_percentage(faculty_data['self'])
-                faculty_data['Self Interpretation'] = convert_to_interpretation(faculty_data['self'])
+                faculty_data['Self Rating'] = convert_to_percentage(faculty_data['self_eval'])
+                faculty_data['Self Interpretation'] = convert_to_interpretation(faculty_data['self_eval'])
                 faculty_data['FacultyType'] = faculty_data['Type']
                 faculty_data['Semester'] = faculty_data['semester']  # Assuming 'semester' is already a field in FISEvaluations_Model
                 faculty_data['Year'] = faculty_data['school_year'].strftime("%Y-%m-%d %H:%M:%S.%f%z")
@@ -557,7 +557,7 @@ def get_all_faculty_evaluations():
                 unwanted_fields = [
                     'id', 'FacultyId', 'acad_head', 'acad_head_a', 'acad_head_b', 'acad_head_c', 'acad_head_d',
                     'director', 'director_a', 'director_b', 'director_c', 'director_d',
-                    'self', 'self_a', 'self_b', 'self_c', 'self_d',
+                    'self_eval', 'self_a', 'self_b', 'self_c', 'self_d',
                     'peer', 'peer_a', 'peer_b', 'peer_c', 'peer_d',
                     'student', 'student_a', 'student_b', 'student_c', 'student_d',
                     'school_year','semester','is_delete', 'Evaluator_Name', 'Type', 'EvaluatorId',
@@ -619,7 +619,7 @@ def get_all_faculty_evaluations_secret():
                 unwanted_fields = [
                     'id', 'FacultyId', 'acad_head', 'acad_head_a', 'acad_head_b', 'acad_head_c', 'acad_head_d',
                     'director', 'director_a', 'director_b', 'director_c', 'director_d',
-                    'self', 'self_a', 'self_b', 'self_c', 'self_d',
+                    'self_eval', 'self_a', 'self_b', 'self_c', 'self_d',
                     'peer', 'peer_a', 'peer_b', 'peer_c', 'peer_d',
                     'student', 'student_a', 'student_b', 'student_c', 'student_d',
                     'school_year','semester','is_delete', 'Evaluator_Name', 'Type',

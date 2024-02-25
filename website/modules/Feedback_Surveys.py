@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, redirect, render_template, request, url_for, jsonify
+from flask import Flask, Blueprint, redirect, render_template, request, url_for, jsonify, flash
 from dotenv import load_dotenv
 from flask_login import login_required, current_user
 from pydrive.auth import GoogleAuth
@@ -107,33 +107,175 @@ def FS_add():
             schoolYear = request.form.get('School_Year')
             FacultyId = request.form.get('select')
             
-            print(AverageRate)
-            print(semester)
-            print(schoolYear)
-            print(FacultyId)
-            
+            school_year = datetime.strptime(f"{schoolYear}-02-02 00:00:00", "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d %H:%M:%S.000 +0800")
+
             # Get the highest ID using order_by and desc
             highest_id_record = FISEvaluations.query.order_by(desc(FISEvaluations.id)).first()
 
-            school_year = datetime.strptime(f"{schoolYear}-02-02 00:00:00", "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d %H:%M:%S.000 +0800")
             
-            add_record = FISEvaluations(id=highest_id_record.id+1,
-                                        FacultyId=FacultyId,
-                                        peer=AverageRate,
-                                        peer_a=averageInputA,
-                                        peer_b=averageInputB,
-                                        peer_c=averageInputC,
-                                        peer_d=averageInputD,
-                                        school_year=school_year,
-                                        semester=semester,
-                                        Type = current_user.FacultyType,
-                                        Evaluator_Name = str(current_user.LastName + ', ' + current_user.FirstName + ' ' + current_user.MiddleInitial),
-                                        EvaluatorId = current_user.FacultyId)
+            if FISEvaluations.query.filter_by(FacultyId=FacultyId, school_year = school_year, semester = semester, EvaluatorId = current_user.FacultyId).first():
+                try:
+                    u = update(FISEvaluations)
+                    u = u.values({"peer": AverageRate,
+                                "peer_a": averageInputA,
+                                "peer_b": averageInputB,
+                                "peer_c": averageInputC,
+                                "peer_d": averageInputD,
+                                "EvaluatorId": current_user.FacultyId,
+                                "Evaluator_Name": str(current_user.LastName + ', ' + current_user.FirstName + ' ' + current_user.MiddleInitial),
+                                })
+                    
+                    u = u.where((FISEvaluations.FacultyId == FacultyId) & (FISEvaluations.school_year == school_year) & (FISEvaluations.semester == semester) & (FISEvaluations.EvaluatorId == current_user.FacultyId))
+                    db.session.execute(u)
+                    db.session.commit()
+                    
+                    flash('Evaluated successfully1!', category='success')
+                    print("success1")
+                    db.session.close()   
+                    return redirect(url_for('FS.FS_H'))
+
+                except Exception as e:
+                    print(f"An error occurred1: {str(e)}")
+                    db.session.rollback()  # Rollback changes in case of an error
+                    flash('An error occurred while evaluating!', category='error')
+                       
+                    return redirect(url_for('FS.FS_H'))
+                
+            elif not FISEvaluations.query.filter_by(FacultyId=current_user.FacultyId, school_year = school_year, semester = semester).first():
+                try:
+                    add_record = FISEvaluations(id=highest_id_record.id+1,
+                                                FacultyId=FacultyId,
+                                                
+                                                acad_head=0,
+                                                acad_head_a=0,
+                                                acad_head_b=0,
+                                                acad_head_c=0,
+                                                acad_head_d=0,
+                                                
+                                                director=0,
+                                                director_a=0,
+                                                director_b=0,
+                                                director_c=0,
+                                                director_d=0,
+                                                
+                                                student=0,
+                                                student_a=0,
+                                                student_b=0,
+                                                student_c=0,
+                                                student_d=0,
+                                                
+                                                self_eval=AverageRate,
+                                                self_a=averageInputA,
+                                                self_b=averageInputB,
+                                                self_c=averageInputC,
+                                                self_d=averageInputD,
+                                                
+                                                peer=0,
+                                                peer_a=0,
+                                                peer_b=0,
+                                                peer_c=0,
+                                                peer_d=0,
+                                                
+                                                school_year=school_year,
+                                                semester=semester,
+                                                Type = current_user.FacultyType,
+                                                Evaluator_Name = str(current_user.LastName + ', ' + current_user.FirstName + ' ' + current_user.MiddleInitial),
+                                                EvaluatorId = current_user.FacultyId)
+                    db.session.add(add_record)
+                    db.session.commit() 
+                    flash('Evaluated successfully3!', category='success')
+                    print("success3")
+                    db.session.close()   
+                    return redirect(url_for('FS.FS_H')) 
+                 
+                except Exception as e:
+                    print(f"An error occurred3: {str(e)}")
+                    db.session.rollback()  # Rollback changes in case of an error
+                    flash('An error occurred while evaluating!', category='error') 
+                      
+                    return redirect(url_for('FS.FS_H'))
+                
+            elif not FISEvaluations.query.filter_by(FacultyId=FacultyId, school_year = school_year, semester = semester, EvaluatorId = current_user.FacultyId).first():
+                try:
+  
+                    add_record = FISEvaluations(
+                        id=highest_id_record.id + 1,
+                        FacultyId=FacultyId,
+                        AdminId=None,  # Set to appropriate value if needed
+                        Evaluator_Name=str(current_user.LastName + ', ' + current_user.FirstName + ' ' + current_user.MiddleInitial),
+                        EvaluatorId=current_user.FacultyId,
+                        Type=current_user.FacultyType,
+                        acad_head=0,
+                        acad_head_a=0,
+                        acad_head_b=0,
+                        acad_head_c=0,
+                        acad_head_d=0,
+                        director=0,
+                        director_a=0,
+                        director_b=0,
+                        director_c=0,
+                        director_d=0,
+                        self_eval=0,
+                        self_a=0,
+                        self_b=0,
+                        self_c=0,
+                        self_d=0,
+                        peer=AverageRate,  # Make sure AverageRate is defined
+                        peer_a=averageInputA,
+                        peer_b=averageInputB,
+                        peer_c=averageInputC,
+                        peer_d=averageInputD,
+                        student=0,
+                        student_a=0,
+                        student_b=0,
+                        student_c=0,
+                        student_d=0,
+                        school_year=school_year,
+                        semester=semester,
+                        is_delete=False,
+                    )
+
+                    db.session.add(add_record)
+                    db.session.commit()
+                    flash('Evaluated successfully4!', category='success')
+                    print("success4")
+                    db.session.close()
+                    return redirect(url_for('FS.FS_H'))
+
+                except Exception as e:
+                    print(f"An error occurred4: {str(e)}")
+                    db.session.rollback()
+                    flash('An error occurred while evaluating!', category='error')
+                    return redirect(url_for('FS.FS_H'))
+                
+            else:
+                try:
+                    u = update(FISEvaluations)
+                    u = u.values({"self_eval": AverageRate,
+                                "self_a": averageInputA,
+                                "self_b": averageInputB,
+                                "self_c": averageInputC,
+                                "self_d": averageInputD,
+                                "EvaluatorId": current_user.FacultyId,
+                                "Evaluator_Name": str(current_user.LastName + ', ' + current_user.FirstName + ' ' + current_user.MiddleInitial),
+                                })
+                    
+                    u = u.where((FISEvaluations.FacultyId == current_user.FacultyId) & (FISEvaluations.school_year == school_year) & (FISEvaluations.semester == semester))
+                    db.session.execute(u)
+                    db.session.commit()
+                    
+                    flash('Evaluated successfully2!', category='success')
+                    print("success2")
+                    db.session.close()   
+                    return redirect(url_for('FS.FS_H'))
+                
+                except Exception as e:
+                    print(f"An error occurred2: {str(e)}")
+                    db.session.rollback()  # Rollback changes in case of an error
+                    flash('An error occurred while evaluating!', category='error')
+                       
+                    return redirect(url_for('FS.FS_H'))
             
-            db.session.add(add_record)
-            db.session.commit()
-            db.session.close()
-            return redirect(url_for('FS.FS_H'))
         
 
 

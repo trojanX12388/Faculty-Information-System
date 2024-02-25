@@ -955,7 +955,7 @@ class FISEvaluations(db.Model):
     director_b = db.Column(db.Float)
     director_c = db.Column(db.Float)
     director_d = db.Column(db.Float)
-    self = db.Column(db.Float)
+    self_eval = db.Column(db.Float)
     self_a = db.Column(db.Float)
     self_b = db.Column(db.Float)
     self_c = db.Column(db.Float)
@@ -992,7 +992,7 @@ class FISEvaluations(db.Model):
             'director_b': self.director_b,
             'director_c': self.director_c,
             'director_d': self.director_d,
-            'self': self.self,
+            'self_eval': self.self_eval,
             'self_a': self.self_a,
             'self_b': self.self_b,
             'self_c': self.self_c,
