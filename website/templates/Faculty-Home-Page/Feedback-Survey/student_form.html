@@ -1,36 +1,36 @@
-{% extends "/Admin-Home-Page/base.html" %}{% block title %}Peer to Peer Evaluation{% endblock %} {% block content%}
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Student Faculty Evaluation{% endblock %} {% block content%}
 
 
 <main id="main" class="main">
 
-    <div class="pagetitle">
-      <h1>Faculty Evaluation</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item">Homepage</li>
-          <li class="breadcrumb-item">{{User}}</li>
-          <li class="breadcrumb-item active">Faculty Evaluation</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
+  <div class="pagetitle">
+    <h1>Student Faculty Evaluation</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">Homepage</li>
+        <li class="breadcrumb-item">{{User}}</li>
+        <li class="breadcrumb-item active">Student Faculty Evaluation</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
 
-    <section class="section">
-       <!-- Card with an image on left -->
-       <div class="row">
-        <div class="row g-3">
-          
-          <div class="col-xl-12">
-            <div class="card">
-            <div class="card-body">
+  <section class="section">
+     <!-- Card with an image on left -->
+     <div class="row">
+      <div class="row g-3">
+        
+        <div class="col-xl-12">
+          <div class="card">
+          <div class="card-body">
 
-             <div class="card-body profile-card pt-4 d-flex align-items-center">
-              <h3 class="mr-3">FACULTY EVALUATION</h3>
-              <div id="loadingSpinner" class="text-center" style="display: none;">
-                  <div class="spinner-border text-primary" role="status">
-                      <span class="visually-hidden">Loading...</span>
-                  </div>
-                  Loading...
-              </div>
+           <div class="card-body profile-card pt-4 d-flex align-items-center">
+            <h3 class="mr-3">STUDENT FACULTY EVALUATION</h3>
+            <div id="loadingSpinner" class="text-center" style="display: none;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                Loading...
+            </div>
 </div>
               
 <style>
@@ -91,7 +91,7 @@
 }
 </style>
 
-<form class="row g-3" action="/Admin-Feedback-Surveys/add-record" method="POST" id="yourFormId">
+<form class="row g-3" action="/Student/Feedback-Surveys/add-record" method="POST" id="yourFormId">
 
   <div class="col-md-4">
   
@@ -102,6 +102,7 @@
           </select>
           <label for="select">Faculty</label>
       </div>
+ 
   </div>
 
   <div class="col-md-4">
@@ -137,167 +138,126 @@
   </div>
 
 
-<script>
-  $(document).ready(function () {
-      // Headers for AJAX request
-      
-      // Get the current year and month
-      var currentDate = new Date();
-      var currentYear = currentDate.getFullYear();
-      var currentMonth = currentDate.getMonth() + 1; // Months are zero-based
+  <script>
+    $(document).ready(function () {
+        // Headers for AJAX request
 
-      // Determine the default semester based on the current month
-      var defaultSemester;
-      if (currentMonth >= 1 && currentMonth <= 2) {
-          defaultSemester = 'First';
-      } else if (currentMonth >= 6 && currentMonth <= 7) {
-          defaultSemester = 'Second';
-      } else if (currentMonth == 9) {
-          defaultSemester = 'Summer';
-      } else {
-          defaultSemester = 'Not available yet';
-      }
+        // Get the current year and month
+        var currentDate = new Date();
+        var currentYear = currentDate.getFullYear();
+        var currentMonth = currentDate.getMonth() + 1; // Months are zero-based
 
-      var acad_head = '';
-      var director_head = '';
+        // Determine the default semester based on the current month
+        var defaultSemester;
+        if (currentMonth >= 1 && currentMonth <= 2) {
+            defaultSemester = 'First';
+        } else if (currentMonth >= 6 && currentMonth <= 7) {
+            defaultSemester = 'Second';
+        } else if (currentMonth == 9) {
+            defaultSemester = 'Summer';
+        } else {
+            defaultSemester = 'Not available yet';
+        }
 
+        // Default values
+        var defaultSchoolYear = currentYear;
 
-      if ("{{user.AdminType}}" == "Academic Head" ) {
-        identifier = "Academic Head" ;
-    } else {
-      identifier = "Director";
-    }
-     
-      // Default values
-      var defaultSchoolYear = currentYear;
+        // Show loading spinner
+        $('#loadingSpinner').show();
 
-      // Show loading spinner
-      $('#loadingSpinner').show();
+        // Fetch faculties using AJAX
+        $.ajax({
+            url: '/Feedback-Surveys/FISFaculty',
+            type: 'GET',
+            success: function (data) {
+                //    console.log('API Response:', data);
 
-      // Fetch faculties using AJAX
-      $.ajax({
-          url: '/Admin-Feedback-Surveys/FISFaculty',
-          type: 'GET',
-          success: function (data) {
-              console.log('API Response:', data);
+                var selectElement = $('#select');
+                var promises = [];
 
-              var selectElement = $('#select');
-              var promises = [];
+                // Populate the dropdown menu with faculties
+                $.each(data.Faculties, function (index, faculty) {
+                    var promise = new Promise(function (resolve) {
+                        // Check if faculty has records
+                        checkFacultyRecords(faculty.FacultyId, {{user.FacultyId}}, function (hasRecords) {
+                            if (hasRecords) {
+                                // Construct full name using FirstName and LastName
+                                var fullName = faculty.FirstName + ' ' + faculty.LastName;
 
-              // Populate the dropdown menu with faculties
-              $.each(data.Faculties, function (index, faculty) {
-                  var promise = new Promise(function (resolve) {
-                      // Check if faculty has records
-                      checkFacultyRecords(faculty.FacultyId, {{user.AdminId}}, function (hasRecords) {
-                          if (!hasRecords) {
-                              // Construct full name using FirstName and LastName
-                              var fullName = faculty.FirstName + ' ' + faculty.LastName;
+                                selectElement.append($('<option>', {
+                                    value: faculty.FacultyId,
+                                    text: fullName
+                                }));
+                            }
+                            resolve();
+                        });
+                    });
 
-                              selectElement.append($('<option>', {
-                                  value: faculty.FacultyId,
-                                  text: fullName
-                              }));
-                          }
-                          resolve();
-                      });
-                  });
+                    promises.push(promise);
+                });
 
-                  promises.push(promise);
-              });
+                // Wait for all promises to resolve before submitting the form
+                Promise.all(promises).then(function () {
+                    // Set default values for schoolYear and semester
+                    $('#schoolYear').val(defaultSchoolYear);
+                    $('#semester').val(defaultSemester);
 
-              // Wait for all promises to resolve before submitting the form
-              Promise.all(promises).then(function () {
-                  // Set default values for schoolYear and semester
-                  $('#schoolYear').val(defaultSchoolYear);
-                  $('#semester').val(defaultSemester);
+                    document.getElementById('School_Year').value = defaultSchoolYear;
+                    document.getElementById('SEMESTER').value = defaultSemester;
 
-                  document.getElementById('School_Year').value = defaultSchoolYear;
-                  document.getElementById('SEMESTER').value = defaultSemester;
+                    // Form submission event
+                    $('#yourFormId').submit(function (event) {
+                        var selectElement = $('#select');
+                        var schoolYearElement = $('#schoolYear');
+                        var semesterElement = $('#semester');
 
-                  // Form submission event
-                  $('#yourFormId').submit(function (event) {
-                      var selectElement = $('#select');
-                      var schoolYearElement = $('#schoolYear');
-                      var semesterElement = $('#semester');
+                        if (selectElement.val() === '' || schoolYearElement.val() === '' || semesterElement.val() === '') {
+                            alert('Please select values for all fields');
+                            event.preventDefault(); // Prevent the form from submitting
+                        }
+                    });
+                    $('#loadingSpinner').hide();
+                });
+            },
+            error: function (error) {
+                // console.error('Error fetching faculties:', error);
+                $('#loadingSpinner').hide();
+            }
+        });
 
-                      if (selectElement.val() === '' || schoolYearElement.val() === '' || semesterElement.val() === '') {
-                          alert('Please select values for all fields');
-                          event.preventDefault(); // Prevent the form from submitting
-                      }
-                  });
-                  $('#loadingSpinner').hide();
-              });
-          },
-          error: function (error) {
-              console.error('Error fetching faculties:', error);
-              $('#loadingSpinner').hide();
-          }
-      });
-
-                // Function to check if faculty has any records
-          function checkFacultyRecords(facultyId, userId, callback) {
-            console.log('Checking faculty records for userId:', userId);
+        // Function to check if faculty has any records
+        function checkFacultyRecords(facultyId, evaluatorIds, callback) {
             $.ajax({
-                url: '/Admin-Feedback-Surveys/FISFaculty/Evaluations',
+                url: '/Feedback-Surveys/FISFaculty/Evaluations',
                 type: 'GET',
-                data: {
+                data2: {
                     facultyId: facultyId,
                 },
-                success: function (facultyRecords) {
-                    console.log('API Response:', facultyRecords);
+                success: function (data2) {
                     // Check if there are any records for the specified faculty
-                    var hasRecords = facultyRecords.some(function (record) {
+                    var hasRecords = data2.some(function (record) {
                         const dateString = record.Year;
                         const year = parseInt(dateString.substring(0, 4));
 
-                        // Convert evaluatorIds to an array
-                        const evaluatorIdsArray = (userId || '').toString().split(',').map(id => parseInt(id.trim()));
-
-                        
-
-                        if ("{{user.AdminType}}" == "Academic Head" ) {
-                          // Check if the record's EvaluatorIds include any of the specified values
-                        const hasMatchingEvaluator = evaluatorIdsArray.some(id => record.acad_head_ids.includes(id));
-                        
-                       // console.log('VAR:', record.Id, 'VAR2:', facultyId, 'VAR3:', userId, 'VAR4:', record.Semester, 'VAR5:', record.Semester, 'VAR6:', year, 'VAR7:', hasMatchingEvaluator);
-
+                        // console.log(hasMatchingEvaluator, evaluatorIds, record.EvaluatorIds , facultyId, record.Year, year , record.Semester)
                         return (
                             record.Id === facultyId &&
-                            hasMatchingEvaluator &&
                             record.Semester === defaultSemester &&
                             year === defaultSchoolYear
                         );
-
-                      } else {
-
-                        // Check if the record's EvaluatorIds include any of the specified values
-                        const hasMatchingEvaluator = evaluatorIdsArray.some(id => record.director_ids.includes(id));
-                        
-                      //  console.log('VAR:', record.Id, 'VAR2:', facultyId, 'VAR3:', userId, 'VAR4:', record.Semester, 'VAR5:', record.Semester, 'VAR6:', year, 'VAR7:', hasMatchingEvaluator);
-
-                        return (
-                            record.Id === facultyId &&
-                            hasMatchingEvaluator &&
-                            record.Semester === defaultSemester &&
-                            year === defaultSchoolYear
-                        );
-                      }
                     });
 
                     console.log('Has Records:', hasRecords);
-                    if (typeof callback === "function") {
-                        callback(hasRecords);
-                    }
+                    callback(hasRecords);
                 },
                 error: function (error) {
                     console.error('Error checking faculty records:', error);
-                    if (typeof callback === "function") {
-                        callback(false); // Assume no records in case of an error
-                    }
+                    callback(false); // Assume no records in case of an error
                 }
             });
-          }
-  });
+        }
+              
+    });
 </script>
 
 

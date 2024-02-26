@@ -482,6 +482,13 @@ def TI_TE():
                             'student_calc': convert_to_percentage(student_calc),
                             'student_interpret': convert_to_interpretation(student_ave),
                             
+                            'fac_evaluators': year_sem.fac_evaluators,
+                            'acad_head_evaluators': year_sem.acad_head_evaluators,
+                            'direktor_evaluators': year_sem.direktor_evaluators,
+                            'student_evaluators': year_sem.student_evaluators,
+                            
+                            'overall_evaluators': (year_sem.student_evaluators) + (year_sem.acad_head_evaluators) + (year_sem.fac_evaluators) + (year_sem.direktor_evaluators),
+                            
                             'general_rating': convert_to_percentage(general_rating),
                             'general_interpret': convert_to_interpretation(general_rating),
                             
@@ -533,6 +540,13 @@ def TI_TE():
                             'student_ave': '',
                             'student_calc': '',
                             'student_interpret': '',
+                            
+                            'fac_evaluators': 0,
+                            'acad_head_evaluators': 0,
+                            'direktor_evaluators': 0,
+                            'student_evaluators': 0,
+                            
+                            'overall_evaluators': 0,
                             
                             'general_rating': '',
                             'general_interpret': '',
@@ -637,6 +651,13 @@ def TI_TE():
                             'student_ave': convert_to_percentage(student_ave),
                             'student_calc': convert_to_percentage(student_calc),
                             'student_interpret': convert_to_interpretation(student_ave),
+                            
+                            'fac_evaluators': year_sem.fac_evaluators,
+                            'acad_head_evaluators': year_sem.acad_head_evaluators,
+                            'direktor_evaluators': year_sem.direktor_evaluators,
+                            'student_evaluators': year_sem.student_evaluators,
+                            
+                            'overall_evaluators': (year_sem.student_evaluators) + (year_sem.acad_head_evaluators) + (year_sem.fac_evaluators) + (year_sem.direktor_evaluators),
                             
                             'general_rating': convert_to_percentage(general_rating),
                             'general_interpret': convert_to_interpretation(general_rating),

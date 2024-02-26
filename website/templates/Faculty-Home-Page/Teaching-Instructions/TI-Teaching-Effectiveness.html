@@ -253,18 +253,39 @@
         
           <br><br>
           
-                    
+               
+          <style>
+            .align-right {
+              text-align: right;
+              margin-right: 20px; /* Adjust this value as needed */
+            }
+          </style>
                      
                     
-              {% if item_id.school_year != None %}
-          <h6>School Year & Semester: <strong>{{ item_id.school_year.strftime('%Y') }} {{item_id.semester}} Semester</strong></h6>
-          <h6>Overall Rating (Supervisor Evaluation + Student Evaluation): <strong>{{calc_data.general_rating}}</strong></h6>
-        <h6>Verbal Interpretation: <strong>{{calc_data.general_interpret}}</strong></h6>
+          {% if item_id.school_year != None %}
+          <h6>School Year & Semester: <strong style="margin-right: 20px;">{{ item_id.school_year.strftime('%Y') }} {{item_id.semester}} Semester</strong></h6>
+          <h6>Overall Rating (Supervisor Evaluation + Student Evaluation): <strong style="margin-right: 20px;">{{calc_data.general_rating}}</strong></h6>
+          <h6>Verbal Interpretation: <strong style="margin-right: 20px;">{{calc_data.general_interpret}}</strong></h6>
+        
+          <br>
+          <h6>Total Faculty Evaluators: <strong style="margin-right: 20px;">{{calc_data.fac_evaluators}}</strong></h6>
+          <h6>Total Academic Head Evaluators: <strong style="margin-right: 20px;">{{calc_data.acad_head_evaluators}}</strong></h6>
+          <h6>Total Director Evaluators: <strong style="margin-right: 20px;">{{calc_data.direktor_evaluators}}</strong></h6>
+          <h6>Total Student Evaluators: <strong style="margin-right: 20px;">{{calc_data.student_evaluators}}</strong></h6>
+          <br><br>
+          <h6>Overall Evaluators: <strong style="margin-right: 20px;">{{calc_data.overall_evaluators}}</strong></h6>
+        
         {% else %}
-        <h6>School Year & Semester: <strong></strong></h6>
-        <h6>Overall Rating (Supervisor Evaluation + Student Evaluation): <strong></strong></h6>
-      <h6>Verbal Interpretation: <strong></strong></h6>   
-          {% endif %}
+          <h6>School Year & Semester: <strong style="margin-right: 20px;"></strong></h6>
+          <h6>Overall Rating (Supervisor Evaluation + Student Evaluation): <strong style="margin-right: 20px;"></strong></h6>
+          <h6>Verbal Interpretation: <strong style="margin-right: 20px;"></strong></h6>   
+        
+          <br>
+          <h6>Total Faculty Evaluators: <strong style="margin-right: 20px;"></strong></h6>  
+          <h6>Total Academic Head Evaluators: <strong style="margin-right: 20px;"></strong></h6>
+          <h6>Total Director Evaluators: <strong style="margin-right: 20px;"></strong></h6>
+          <h6>Total Student Evaluators: <strong style="margin-right: 20px;"></strong></h6>
+        {% endif %}
         </div>
         
         

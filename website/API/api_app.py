@@ -609,6 +609,7 @@ def get_all_faculty_evaluations_secret():
             for faculty in faculty_profiles:
                 
                 faculty_data = FISEvaluations_Model.from_orm(faculty).dict()
+                faculty_data['itemId'] = faculty_data['id']
                 faculty_data['Id'] = faculty_data['FacultyId']
                 faculty_data['EvaluatorIds'] = faculty_data['EvaluatorIds']
                 faculty_data['FacultyName'] = faculty_data['Evaluator_Name']
@@ -619,7 +620,7 @@ def get_all_faculty_evaluations_secret():
 
                 # Exclude unwanted fields
                 unwanted_fields = [
-                    'id', 'FacultyId', 'acad_head', 'acad_head_a', 'acad_head_b', 'acad_head_c', 'acad_head_d',
+                    'FacultyId', 'acad_head', 'acad_head_a', 'acad_head_b', 'acad_head_c', 'acad_head_d',
                     'director', 'director_a', 'director_b', 'director_c', 'director_d',
                     'self_eval', 'self_a', 'self_b', 'self_c', 'self_d',
                     'peer', 'peer_a', 'peer_b', 'peer_c', 'peer_d',

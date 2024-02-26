@@ -14,7 +14,7 @@ load_dotenv()
 
 # DATABASE CONNECTION
 from website.models import db
-from sqlalchemy import update, desc
+from sqlalchemy import update, desc, text
 
 # LOADING MODEL CLASSES
 from website.models import FISAdmin, FISEvaluations, FISUser_Notifications, FISAdmin
@@ -114,17 +114,49 @@ def aFS_add():
             director_head = 0
             
             if current_user.AdminType == "Academic Head":
+                if FISEvaluations.query.filter_by(FacultyId=FacultyId,semester=semester, school_year = school_year ).first():
+                    evaluation_item_id = FISEvaluations.query.filter_by(FacultyId=FacultyId,semester=semester, school_year = school_year ).first()
+                    if evaluation_item_id.acad_head_ids == 'None':
+                        eval_id = str(current_user.AdminId)
+                    else:
+                        eval_id  = evaluation_item_id.acad_head_ids+","+str(current_user.AdminId)
+                else:
+                    eval_id = str(current_user.AdminId)
+            else:
+                if FISEvaluations.query.filter_by(FacultyId=FacultyId,semester=semester, school_year = school_year ).first():
+                    evaluation_item_id = FISEvaluations.query.filter_by(FacultyId=FacultyId,semester=semester, school_year = school_year ).first()
+                    if evaluation_item_id.director_ids == 'None':
+                        eval_id = str(current_user.AdminId)
+                    else:
+                        eval_id  = evaluation_item_id.director_ids+","+str(current_user.AdminId)
+                else:
+                    eval_id = str(current_user.AdminId)
+            
+            if current_user.AdminType == "Academic Head":
                 acad_head = 1
                 if FISEvaluations.query.filter_by(FacultyId=FacultyId, school_year = school_year, semester = semester).first():
+                    data = FISEvaluations.query.filter_by(FacultyId=FacultyId, school_year = school_year, semester = semester).first() 
                     try:
                         u = update(FISEvaluations)
-                        u = u.values({"acad_head": AverageRate,
-                                    "acad_head_a": averageInputA,
-                                    "acad_head_b": averageInputB,
-                                    "acad_head_c": averageInputC,
-                                    "acad_head_d": averageInputD,
-                                    "acad_head_id": acad_head,
-                                    })
+                        
+                        if(data.acad_head == 0):
+                            u = u.values({"acad_head": AverageRate,
+                                        "acad_head_a": averageInputA,
+                                        "acad_head_b": averageInputB,
+                                        "acad_head_c": averageInputC,
+                                        "acad_head_d": averageInputD,
+                                        "acad_head_ids": eval_id,
+                                        "acad_head_evaluators": text("acad_head_evaluators + 1"),
+                                        })
+                        else:
+                            u = u.values({"acad_head": (float(data.acad_head) + float(AverageRate)) / 2,
+                                        "acad_head_a": (float(data.acad_head_a) + float(averageInputA)) / 2,
+                                        "acad_head_b": (float(data.acad_head_b) + float(averageInputB)) / 2,
+                                        "acad_head_c": (float(data.acad_head_c) + float(averageInputC)) / 2,
+                                        "acad_head_d": (float(data.acad_head_d) + float(averageInputD)) / 2,
+                                        "acad_head_ids": eval_id,
+                                        "acad_head_evaluators": text("acad_head_evaluators + 1"),
+                                        })
                         
                         u = u.where((FISEvaluations.FacultyId == FacultyId) & (FISEvaluations.school_year == school_year) & (FISEvaluations.semester == semester))
                         db.session.execute(u)
@@ -159,15 +191,18 @@ def aFS_add():
                             id=highest_id_record.id + 1,
                             AdminId=None,
                             FacultyId=FacultyId,  # Set to appropriate value if needed
-                            Evaluator_Name="Academic Head",
-                            EvaluatorId=50016,
-                            Type=current_user.AdminType,
+                            Evaluator_Name="",
+                            EvaluatorIds="None",
+                            Type="",
+                            acad_head_evaluators = 1,
                             acad_head=AverageRate,
                             acad_head_a=averageInputA,
                             acad_head_b=averageInputB,
                             acad_head_c=averageInputC,
                             acad_head_d=averageInputD,
-                            acad_head_id=acad_head,
+                            acad_head_ids=eval_id,
+                            direktor_evaluators=0,
+                            director_ids="None",
                             director=0,
                             director_a=0,
                             director_b=0,
@@ -208,8 +243,8 @@ def aFS_add():
                         db.session.add(add_notif)
                         db.session.commit()
                         
-                        flash('Evaluated successfully4!', category='success')
-                        print("success4")
+                        flash('Evaluated successfully2!', category='success')
+                        print("success2")
                         db.session.close()
                         return redirect(url_for('aFS.aFS_H'))
 
@@ -221,16 +256,28 @@ def aFS_add():
             
             else:
                 director_head = 1
-                if FISEvaluations.query.filter_by(FacultyId=FacultyId, school_year = school_year, semester = semester).first():        
+                if FISEvaluations.query.filter_by(FacultyId=FacultyId, school_year = school_year, semester = semester).first():  
+                    data = FISEvaluations.query.filter_by(FacultyId=FacultyId, school_year = school_year, semester = semester).first()      
                     try:
                         u = update(FISEvaluations)
-                        u = u.values({"director": AverageRate,
-                                    "director_a": averageInputA,
-                                    "director_b": averageInputB,
-                                    "director_c": averageInputC,
-                                    "director_d": averageInputD,
-                                    "director_id": director_head,
-                                    })
+                        if(data.director == 0):
+                            u = u.values({"director": AverageRate,
+                                        "director_a": averageInputA,
+                                        "director_b": averageInputB,
+                                        "director_c": averageInputC,
+                                        "director_d": averageInputD,
+                                        "director_ids": eval_id,
+                                        "direktor_evaluators": text("direktor_evaluators + 1"),
+                                        })
+                        else:
+                            u = u.values({"director": (float(data.director) + float(AverageRate)) / 2,
+                                        "director_a": (float(data.director_a) + float(averageInputA)) / 2,
+                                        "director_b": (float(data.director_b) + float(averageInputB)) / 2,
+                                        "director_c": (float(data.director_c) + float(averageInputC)) / 2,
+                                        "director_d": (float(data.director_d) + float(averageInputD)) / 2,
+                                        "director_ids": eval_id,
+                                        "direktor_evaluators": text("direktor_evaluators + 1"),
+                                        })
                         
                         u = u.where((FISEvaluations.FacultyId == FacultyId) & (FISEvaluations.school_year == school_year) & (FISEvaluations.semester == semester))
                         db.session.execute(u)
@@ -249,7 +296,7 @@ def aFS_add():
                         db.session.commit()
                         
                         flash('Evaluated successfully1!', category='success')
-                        print("success1")
+                        print("success3")
                         db.session.close()   
                         return redirect(url_for('aFS.aFS_H'))
 
@@ -265,20 +312,23 @@ def aFS_add():
                             id=highest_id_record.id + 1,
                             AdminId=None,
                             FacultyId=FacultyId,  # Set to appropriate value if needed
-                            Evaluator_Name="Director",
-                            EvaluatorId=50018,
-                            Type=current_user.AdminType,
+                            Evaluator_Name="",
+                            EvaluatorIds="None",
+                            Type="",
+                            acad_head_ids="None",
                             acad_head=0,
                             acad_head_a=0,
                             acad_head_b=0,
                             acad_head_c=0,
                             acad_head_d=0,
+                            acad_head_evaluators = 0,
+                            direktor_evaluators = 1,
                             director=AverageRate,
                             director_a=averageInputA,
                             director_b=averageInputB,
                             director_c=averageInputC,
                             director_d=averageInputD,
-                            director_id=director_head,
+                            director_ids=eval_id,
                             self_eval=0,
                             self_a=0,
                             self_b=0,
