@@ -431,12 +431,15 @@
       </li>
     -->
       
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="/Mandatory-Requirements">
-          <i class="bi bi-exclamation-octagon-fill"></i>
-          <span>MANDATORY REQUIREMENTS</span>
-        </a>
-      </li><!-- End MANDATORY REQUIREMENTS Nav -->
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="/Mandatory-Requirements">
+        <i class="bi bi-exclamation-octagon-fill"></i>
+        <span>MANDATORY REQUIREMENTS</span>
+        <span id="mandatory-requirements-warning" style="display: none; color: red;"> <!-- Add this span with an appropriate style -->
+          <i class="bi bi-exclamation-triangle-fill"></i> Warning!
+        </span>
+      </a>
+    </li><!-- End MANDATORY REQUIREMENTS Nav -->
 
      <!--   <li class="nav-item">
         <a class="nav-link collapsed" href="/Records">
@@ -577,6 +580,43 @@
 
   // Reload pending notifications every minute
   setInterval(fetchAndDisplayPendingNotifications, 60000);
+</script>
+
+
+
+
+<script>
+  // Function to fetch and display pending notifications
+  function checkMandatoryRequirements() {
+    $.ajax({
+      url: '/Mandatory-Requirements/api/get-record',
+      type: 'GET',
+      dataType: 'json',
+      success: function (data) {
+        // Check if both year and FacultyId are not null
+        if (data.record.length > 0 && data.record[0].year !== null && data.record[0].FacultyId !== null) {
+          // Hide the warning sign
+          $('#mandatory-requirements-warning').hide();
+        } else {
+          // Show the warning sign
+          $('#mandatory-requirements-warning').show();
+        }
+
+        // Rest of your existing code to handle pending notifications...
+      },
+      error: function () {
+        // Handle the error case
+        // Hide the warning sign on error
+        $('#mandatory-requirements-warning').hide();
+      }
+    });
+  }
+
+  // Initial fetch and display
+  checkMandatoryRequirements();
+
+  // Reload pending notifications every minute
+  setInterval(checkMandatoryRequirements, 60000);
 </script>
 
 

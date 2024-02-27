@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, redirect, render_template, request, url_for, flash
+from flask import Flask, Blueprint, redirect, render_template, request, url_for, flash, jsonify, abort
 from dotenv import load_dotenv
 from flask_login import login_required, current_user
 from pydrive.auth import GoogleAuth
@@ -527,4 +527,323 @@ def MR_add_exams():
                 flash('Unsuccessfully uploaded. Please try again...', category='error')
                 return redirect(url_for('MR.MR_H'))   
            
+
+
+
+
+
+
+  
+@MR.route('/Mandatory-Requirements/api/get-record', methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def MR_api_record():
+    
+    # Fetch all data from FISRequests
+    year = str(datetime.now().year)
+    requests = FISMandatoryRequirements.query.filter_by(FacultyId=current_user.FacultyId,year=year).first()
+    isnotified = FISUser_Notifications.query.filter_by(FacultyId=current_user.FacultyId, Type='mandatory').all()
+    
+    # Create a list to store the selected fields for each log entry
+    formatted_requests = []
+    # print("pass1")
+    if requests:
+        # print("pass2")
+        if isnotified:  
+            # print("notified")
+            if requests.classrecord is None:  # If no record exists in database yet
+                required_notifications = [
+            "You Have no requirements for Class Record in year : " + year,]
+
+                for required_notification in required_notifications:
+                    existing_notification = FISUser_Notifications.query.filter_by(
+                        FacultyId=current_user.FacultyId,
+                        Notification=required_notification
+                    ).first()
+
+                    if not existing_notification:
+                        # print(f"Notification does not exist, adding: {required_notification}")
+                        add_notif = FISUser_Notifications(
+                            FacultyId=current_user.FacultyId,
+                            Status="pending",
+                            Type="mandatory",
+                            notif_by=None,
+                            notifier_type="System",
+                            Notification=required_notification,
+                        )
+
+                        db.session.add(add_notif)
+
+                db.session.commit()
+                db.session.close()
+
+                # Create a dictionary with the required data
+                formatted_request = {
+                    'year': None,
+                    'FacultyId': None,
+                }
+
+                formatted_requests.append(formatted_request)
+                
             
+            elif requests.gradingsheet is None:  # If no record exists in database yet
+                # print("has notif but no grading sheet")
+                required_notifications = ["You Have no requirements for Grading Sheet in year : " + year,]
+
+                for required_notification in required_notifications:
+                    existing_notification = FISUser_Notifications.query.filter_by(
+                        FacultyId=current_user.FacultyId,
+                        Notification=required_notification
+                    ).first()
+
+                    if not existing_notification:
+                        # print(f"Notification does not exist, adding: {required_notification}")
+                        add_notif = FISUser_Notifications(
+                            FacultyId=current_user.FacultyId,
+                            Status="pending",
+                            Type="mandatory",
+                            notif_by=None,
+                            notifier_type="System",
+                            Notification=required_notification,
+                        )
+
+                        db.session.add(add_notif)
+
+                db.session.commit()
+                db.session.close()
+
+                # Create a dictionary with the required data
+                formatted_request = {
+                    'year': None,
+                    'FacultyId': None,
+                }
+
+                formatted_requests.append(formatted_request)
+                
+            elif requests.exams is None:  # If no record exists in database yet
+                # print("has notif but no exam")
+                required_notifications = ["You Have no requirements for Exams in year : " + year,]
+
+                for required_notification in required_notifications:
+                    existing_notification = FISUser_Notifications.query.filter_by(
+                        FacultyId=current_user.FacultyId,
+                        Notification=required_notification
+                    ).first()
+
+                    if not existing_notification:
+                        # print(f"Notification does not exist, adding: {required_notification}")
+                        add_notif = FISUser_Notifications(
+                            FacultyId=current_user.FacultyId,
+                            Status="pending",
+                            Type="mandatory",
+                            notif_by=None,
+                            notifier_type="System",
+                            Notification=required_notification,
+                        )
+
+                        db.session.add(add_notif)
+
+                db.session.commit()
+                db.session.close()
+
+                # Create a dictionary with the required data
+                formatted_request = {
+                    'year': None,
+                    'FacultyId': None,
+                }
+
+                formatted_requests.append(formatted_request)
+                
+            else:               # If there are records in the database
+                # print("has notif and requirements")
+                year = requests.year 
+                facultyid = requests.FacultyId 
+
+                # Create a dictionary with the required data
+                formatted_request = {
+                    'year': year, 
+                    'FacultyId': facultyid, 
+                }
+                
+                formatted_requests.append(formatted_request)
+                
+        else:  # If there are records in the database
+            # print("notnotified")
+            if requests.classrecord is None:  # If no record exists in database yet
+                # print("not notif but no record")
+                add_notif = FISUser_Notifications(
+                FacultyId=current_user.FacultyId,
+                Status= "pending",
+                Type= "mandatory",
+                notif_by = None,
+                notifier_type = "System",
+                Notification = "You Have no requirements for Class Record in year : " + year,
+                )
+                
+                db.session.add(add_notif)
+                db.session.commit()
+                db.session.close()
+                
+                # Create a dictionary with the required data
+                formatted_request = {
+                    'year': None, 
+                    'FacultyId': None, 
+                }
+                
+                formatted_requests.append(formatted_request)
+            
+            elif requests.gradingsheet is None:  # If no record exists in database yet
+                # print("not notif but no grading sheet")
+                add_notif = FISUser_Notifications(
+                FacultyId=current_user.FacultyId,
+                Status= "pending",
+                Type= "mandatory",
+                notif_by = None,
+                notifier_type = "System",
+                Notification = "You Have no requirements for Grading Sheet in year : " + year,
+                )
+                
+                db.session.add(add_notif)
+                db.session.commit()
+                db.session.close()
+                
+                # Create a dictionary with the required data
+                formatted_request = {
+                    'year': None, 
+                    'FacultyId': None, 
+                }
+                
+                formatted_requests.append(formatted_request)
+                
+            elif requests.exams is None:  # If no record exists in database yet
+                # print("not notif but no exam")
+                add_notif = FISUser_Notifications(
+                FacultyId=current_user.FacultyId,
+                Status= "pending",
+                Type= "mandatory",
+                notif_by = None,
+                notifier_type = "System",
+                Notification = "You Have no requirements for Exams in year : " + year,
+                )
+                
+                db.session.add(add_notif)
+                db.session.commit()
+                db.session.close()
+                
+                # Create a dictionary with the required data
+                formatted_request = {
+                    'year': None, 
+                    'FacultyId': None, 
+                }
+                
+                formatted_requests.append(formatted_request)
+                
+            else:               # If there are records in the database
+                # print("not notif and has requirements")
+                year = requests.year 
+                facultyid = requests.FacultyId 
+
+                # Create a dictionary with the required data
+                formatted_request = {
+                    'year': year, 
+                    'FacultyId': facultyid, 
+                }
+                
+                formatted_requests.append(formatted_request)
+            
+    elif isnotified:
+        required_notifications = [
+            "You Have no requirements for Class Record in year : " + year,
+            "You Have no requirements for Grading Sheet in year : " + year,
+            "You Have no requirements for Exams in year : " + year,
+        ]
+
+        for required_notification in required_notifications:
+            existing_notification = FISUser_Notifications.query.filter_by(
+                FacultyId=current_user.FacultyId,
+                Notification=required_notification
+            ).first()
+
+            if not existing_notification:
+                # print(f"Notification does not exist, adding: {required_notification}")
+                add_notif = FISUser_Notifications(
+                    FacultyId=current_user.FacultyId,
+                    Status="pending",
+                    Type="mandatory",
+                    notif_by=None,
+                    notifier_type="System",
+                    Notification=required_notification,
+                )
+
+                db.session.add(add_notif)
+
+        db.session.commit()
+        db.session.close()
+
+        # Create a dictionary with the required data
+        formatted_request = {
+            'year': None,
+            'FacultyId': None,
+        }
+
+        formatted_requests.append(formatted_request)
+    else:
+        # print("notified to all requirements")
+        
+        add_notif1 = FISUser_Notifications(
+        FacultyId=current_user.FacultyId,
+        Status= "pending",
+        Type= "mandatory",
+        notif_by = None,
+        notifier_type = "System",
+        Notification = "You Have no requirements for Class Record in year : " + year,
+        )
+        
+        db.session.add(add_notif1)
+        db.session.commit()
+        
+        add_notif2 = FISUser_Notifications(
+        FacultyId=current_user.FacultyId,
+        Status= "pending",
+        Type= "mandatory",
+        notif_by = None,
+        notifier_type = "System",
+        Notification = "You Have no requirements for Grading Sheet in year : " + year,
+        )
+        
+        db.session.add(add_notif2)
+        db.session.commit()
+        
+        add_notif3 = FISUser_Notifications(
+        FacultyId=current_user.FacultyId,
+        Status= "pending",
+        Type= "mandatory",
+        notif_by = None,
+        notifier_type = "System",
+        Notification = "You Have no requirements for Exams in year : " + year,
+        )
+        
+        db.session.add(add_notif3)
+        db.session.commit()
+        
+        db.session.close()
+        
+        # Create a dictionary with the required data
+        formatted_request = {
+            'year': None, 
+            'FacultyId': None, 
+        }
+        
+        formatted_requests.append(formatted_request)    
+        
+    # print("pass9")
+    
+    # Create a dictionary with the required data
+    api_response_data = {
+        'record': formatted_requests
+    }
+
+    # print("pass10")
+    
+    # Return the data as JSON using Flask's jsonify
+    return jsonify(api_response_data)
