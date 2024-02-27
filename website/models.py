@@ -1814,17 +1814,28 @@ class FISMandatoryRequirements(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID 
-    requirement_item = db.Column(db.String(50)) 
+    classrecord = db.Column(db.String(50)) 
+    gradingsheet = db.Column(db.String(50)) 
+    exams = db.Column(db.String(50)) 
+    classrecord_status = db.Column(db.String(50), default='None')
+    gradingsheet_status = db.Column(db.String(50), default='None')
+    exams_status = db.Column(db.String(50), default='None')
+    year = db.Column(db.String(50)) 
     is_delete = db.Column(db.Boolean, default=False) 
     
-
     def to_dict(self):
         return {
             'id': self.id,
             'FacultyId': self.FacultyId,
             # 'AdminId': self.AdminId,
-            'requirement_item': self.requirement_item,
-            'is_delete': self.is_delete
+            'classrecord': self.classrecord,
+            'exams': self.exams,
+            'gradingsheet': self.gradingsheet,
+            'classrecord_status': self.classrecord_status,
+            'exams_status': self.exams_status,
+            'gradingsheet_status': self.gradingsheet_status,
+            'year': self.year,
+            'is_delete': self.is_delete,
         }
         
     def get_id(self):

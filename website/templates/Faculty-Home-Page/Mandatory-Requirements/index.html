@@ -82,41 +82,294 @@
                   background-color: #1A2432;
                   color: white; /* Set text color to white for better visibility */
                 }
+                .close {
+                  background: none;
+                  border: none;
+                  padding: 0;
+                  cursor: pointer;
+              }
+            
+              .close-icon {
+                  color: #000; /* Set the color you want for the "x" */
+                  font-size: 20px; /* Set the font size for the "x" */
+              }
+              .hidden-file-input {
+                display: none;
+              }
               </style>
 
           </div>
         </div>
       </div>
 
+      <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+        <h3><strong>REQUIREMENTS FOR YEAR</strong></h3>
+        <h6><strong>{{ records.year }}</strong></h6>
+      </div>
+
+      
+      <form class="row g-3" action="/Mandatory-Requirements" method="POST" id="yourFormId">
+
+        <div class="col-md-6">
+          <div class="form-floating mb-3">
+            <select class="form-select" id="select" name="select" aria-label="State" required>
+              <option value=''>Select Year</option>
+              {% for data in user.FISMandatoryRequirements %}
+                {% if data.id != None %}
+                  <option value="{{data.id}}">{{ data.year }}</option>
+                {% else %}
+                  
+                {% endif %}
+              {% endfor %}  
+            </select>
+            <label for="floatingSelect">Year</label>
+          </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="d-grid gap-2 mt-3">
+                <button type="submit" class="btn btn-primary">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512" style="fill:#ffffff;position:relative; bottom:2px"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M433.941 129.941l-83.882-83.882A48 48 0 0 0 316.118 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V163.882a48 48 0 0 0-14.059-33.941zM224 416c-35.346 0-64-28.654-64-64 0-35.346 28.654-64 64-64s64 28.654 64 64c0 35.346-28.654 64-64 64zm96-304.52V212c0 6.627-5.373 12-12 12H76c-6.627 0-12-5.373-12-12V108c0-6.627 5.373-12 12-12h228.52c3.183 0 6.235 1.264 8.485 3.515l3.48 3.48A11.996 11.996 0 0 1 320 111.48z"/></svg>
+                  Select</button>
+            </div>
+            <br><br>
+        </div>
+
+      </form>
+
+      <script>
+        document.getElementById('yourFormId').addEventListener('submit', function (event) {
+          var selectElement = document.getElementById('select');
+          
+          if (selectElement.value === '') {
+            alert('Please select a value for School Year & Semester');
+            event.preventDefault(); // Prevent the form from submitting
+          }
+        });
+      </script>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+          {% for category, message in messages %}
+              {% if category == 'error' %}
+                  <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-between" role="alert" style="z-index:1;">
+                      <div>{{ message }}</div>
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="closeNotification(this)">
+                          <span aria-hidden="true" class="close-icon">&times;</span>
+                      </button>
+                  </div>
+              {% elif category == 'success' %}
+                  <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between" role="alert" style="z-index:1;">
+                      <div>{{ message }}</div>
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="closeNotification(this)">
+                          <span aria-hidden="true" class="close-icon">&times;</span>
+                      </button>
+                  </div>
+              {% endif %}
+          {% endfor %}
+      {% endif %}
+  {% endwith %}
+
+  <script>
+    function closeNotification(button) {
+        // Find the parent notification element and remove it
+        var notification = button.closest('.alert');
+        notification.remove();
+    }
+</script>
+
           <table class="table table-bordered">
             <thead>
               <tr>
                 <th scope="col">DOCUMENTS REQUIRED</th>
                 <th scope="col">DESCRIPTION</th>
+                <th scope="col">UPLOAD</th>
                 <th scope="col">STATUS</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td class="text-decoration-underline"><a href="#">Class Records</a></td>
+                <td class="text-decoration-underline"><a href="https://drive.google.com/file/d/{{records.classrecord}}/view" target="_blank">Class Records</a></td>
                 <td>Faculty members are typically expected to hold a doctoral degree (Ph.D.) in the relevant field. This signifies a high...</a></td>
-                <td><h6 class="badge bg-success" style="width:158px;height:20px;">PASSED</h6></td>
+                <td>
+                  <button type="button" class="btn btn-secondary rounded-pill" data-bs-toggle="modal" data-bs-target="#uploadclassrecord"><i class="bi bi-file-earmark-text"></i></button>
+              </td>
+          
+                {% if records.classrecord_status == 'Done' %}
+                <td><h6 class="badge bg-success" style="width:158px;height:20px;">SUBMITTED</h6></td>
+                {%elif records.classrecord_status == 'Pending'%}
+                <td><h6 class="badge bg-warning" style="width:158px;height:20px;">PENDING</h6></td>
+                {%else%}
+                <td><h6 class="badge bg-danger" style="width:158px;height:20px;">NOT SUBMITTED</h6></td>
+                {%endif%}
               </tr>
               <tr>
-                <td class="text-decoration-underline"><a href="#">Grading Sheet</a></td>
+                <td class="text-decoration-underline"><a href="https://drive.google.com/file/d/{{records.gradingsheet}}/view" target="_blank">Grading Sheet</a></td>
                 <td>Previous teaching experience, preferably at the tertiary level, is crucial. This requirement ensures that faculty...</td>
-                <td><h6 class="badge bg-danger" style="width:158px;height:20px;">FAILED</h6></td>
+                <td>
+                  <button type="button" class="btn btn-secondary rounded-pill" data-bs-toggle="modal" data-bs-target="#uploadgradingsheet"><i class="bi bi-file-earmark-text"></i></button>
+              </td>
+              {% if records.gradingsheet_status == 'Done' %}
+              <td><h6 class="badge bg-success" style="width:158px;height:20px;">SUBMITTED</h6></td>
+              {%elif records.gradingsheet_status == 'Pending'%}
+              <td><h6 class="badge bg-warning" style="width:158px;height:20px;">PENDING</h6></td>
+              {%else%}
+              <td><h6 class="badge bg-danger" style="width:158px;height:20px;">NOT SUBMITTED</h6></td>
+              {%endif%}
               </tr>
               <tr>
-                <td class="text-decoration-underline"><a href="#">Exams</a></td>
+                <td class="text-decoration-underline"><a href="https://drive.google.com/file/d/{{records.exams}}/view" target="_blank">Exams</a></td>
                 <td>A strong record of research and publications is essential. This demonstrates the faculty member’s  commitment...</td>
-                <td><h6 class="badge bg-warning" style="width:158px;height:20px;">ON GOING</h6></td>
+                <td>
+                  <button type="button" class="btn btn-secondary rounded-pill" data-bs-toggle="modal" data-bs-target="#uploadexams"><i class="bi bi-file-earmark-text"></i></button>
+              </td>
+              {% if records.exams_status == 'Done' %}
+              <td><h6 class="badge bg-success" style="width:158px;height:20px;">SUBMITTED</h6></td>
+              {%elif records.exams_status == 'Pending'%}
+              <td><h6 class="badge bg-warning" style="width:158px;height:20px;">PENDING</h6></td>
+              {%else%}
+              <td><h6 class="badge bg-danger" style="width:158px;height:20px;">NOT SUBMITTED</h6></td>
+              {%endif%}
+
               </tr>
              
             </tbody>
           </table>
           <!-- End Bordered Table -->
 
+            <!-- UPLOAD CLASS RECORD Modal-->
+
+            <div class="modal fade" id="uploadclassrecord" tabindex="-1">
+              <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Upload Class Record</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+
+                    <form method="POST" action="/Mandatory-Requirements/upload-classrecord" enctype="multipart/form-data" accept-charset="utf-8" >      
+                      
+                          <div class="row mb-3">
+                
+                            <label for="btnup" class="col-sm-2 col-form-label">File Upload</label>
+                
+                            <div class="col-sm-10">
+                
+                              <div class="col-sm-10">
+                                <br>
+                                <span id="fileNameDisplay"></span>
+                                <button type="button" id="btnup" class="btn btn-warning btn-sm" onclick="document.getElementById('fileup').click()">Browse File</button>
+                                <input type="file" value="" name="fileup" id="fileup" class="hidden-file-input" required></input>
+                                <input type="text" id="base64" name="base64" hidden></input>
+                                
+                              </div>
+                              
+                            </div>
+                          </div>
+              
+                </div>
+                  <div class="modal-footer">
+                    <input type="hidden" name="id" value="{{records.classrecord}}"></input>
+                    <input type="hidden" name="year" value="{{records.year}}"></input>
+
+                    <input type="hidden" name="file_id" value=""></input>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Upload</button>
+                  </div>
+            </form>
+                </div>
+              </div>
+            </div><!-- End CLASS RECORD Modal-->
+
+
+              <!-- UPLOAD GRADING SHEET Modal-->
+
+              <div class="modal fade" id="uploadgradingsheet" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Upload Grading Sheet</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+  
+                      <form method="POST" action="/Mandatory-Requirements/upload-gradingsheet" enctype="multipart/form-data" accept-charset="utf-8" >      
+                        
+                            <div class="row mb-3">
+                  
+                              <label for="btnup2" class="col-sm-2 col-form-label">File Upload</label>
+                  
+                              <div class="col-sm-10">
+                  
+                                <div class="col-sm-10">
+                                  <br>
+                                  <span id="fileNameDisplay2"></span>
+                                  <button type="button" id="btnup2" class="btn btn-warning btn-sm" onclick="document.getElementById('fileup2').click()">Browse File</button>
+                                  <input type="file" value="" name="fileup2" id="fileup2" class="hidden-file-input" required></input>
+                                  <input type="text" id="base642" name="base642" hidden></input>
+                                  
+                                </div>
+                                
+                              </div>
+                            </div>
+                
+                  </div>
+                    <div class="modal-footer">
+                      <input type="hidden" name="id2" value=""></input>
+                      <input type="hidden" name="file_id2" value=""></input>
+                      <input type="hidden" name="year" value="{{records.year}}"></input>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
+                      <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Upload</button>
+                    </div>
+              </form>
+                  </div>
+                </div>
+              </div><!-- End GRADING SHEET Modal-->
+
+                <!-- UPLOAD EXAMS Modal-->
+
+                <div class="modal fade" id="uploadexams" tabindex="-1">
+                  <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Upload Exams</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+    
+                        <form method="POST" action="/Mandatory-Requirements/upload-exams" enctype="multipart/form-data" accept-charset="utf-8" >      
+                          
+                              <div class="row mb-3">
+                    
+                                <label for="btnup3" class="col-sm-2 col-form-label">File Upload</label>
+                    
+                                <div class="col-sm-10">
+                    
+                                  <div class="col-sm-10">
+                                    <br>
+                                    <span id="fileNameDisplay3"></span>
+                                    <button type="button" id="btnup3" class="btn btn-warning btn-sm" onclick="document.getElementById('fileup3').click()">Browse File</button>
+                                    <input type="file" value="" name="fileup3" id="fileup3" class="hidden-file-input" required></input>
+                                    <input type="text" id="base643" name="base643" hidden></input>
+                                    
+                                  </div>
+                                  
+                                </div>
+                              </div>
+                  
+                    </div>
+                      <div class="modal-footer">
+                        <input type="hidden" name="id3" value=""></input>
+                        <input type="hidden" name="file_id3" value=""></input>
+                        <input type="hidden" name="year" value="{{records.year}}"></input>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Upload</button>
+                      </div>
+                </form>
+                    </div>
+                  </div>
+                </div><!-- End GRADING SHEET Modal-->
 
 </section>
 
@@ -126,8 +379,95 @@
   </main><!-- End #main -->
 
 
-  {% endblock %}
+
+  <script>
+    $('#fileup').change(function () {
+        async function toBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            });
+        }
+  
+        async function Main() {
+            const fileInput = document.querySelector('#fileup');
+            const file = fileInput.files[0];
+            
+            // Display the file name
+            const fileNameDisplay = document.getElementById('fileNameDisplay');
+            fileNameDisplay.textContent = file.name;
+  
+            // Convert file to base64
+            const value = await toBase64(file);
+            document.getElementById("base64").setAttribute('value', value);
+        }
+  
+        Main();
+    });
+  </script>
+
+  
+
+  <script>
+    $('#fileup2').change(function () {
+        async function toBase642(file2) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file2);
+            });
+        }
+  
+        async function Main2() {
+            const fileInput2 = document.querySelector('#fileup2');
+            const file2 = fileInput2.files[0];
+            
+            // Display the file name
+            const fileNameDisplay2 = document.getElementById('fileNameDisplay2');
+            fileNameDisplay2.textContent = file2.name;
+  
+            // Convert file to base64
+            const value2 = await toBase642(file2);
+            document.getElementById("base642").setAttribute('value', value2);
+        }
+  
+        Main2();
+    });
+  </script>
+
+  <script>
+    $('#fileup3').change(function () {
+        async function toBase643(file3) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file3);
+            });
+        }
+  
+        async function Main3() {
+            const fileInput3 = document.querySelector('#fileup3');
+            const file3 = fileInput3.files[0];
+            
+            // Display the file name
+            const fileNameDisplay3 = document.getElementById('fileNameDisplay3');
+            fileNameDisplay3.textContent = file3.name;
+  
+            // Convert file to base64
+            const value3 = await toBase643(file3);
+            document.getElementById("base643").setAttribute('value', value3);
+        }
+  
+        Main3();
+    });
+  </script>
+
+
 
 {% endblock %}
-
+{% endblock %}
       

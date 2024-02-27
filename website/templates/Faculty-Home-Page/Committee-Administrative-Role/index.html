@@ -104,10 +104,14 @@
                     <tr>
                       <td class="w-50">{{data.Date}}</td>
                       <td class="w-50">{{data.Time}}</td>
-                      <th class="w-30" scope="row">{{data.FirstName}} {{data.LastName}}</th>
+                      <th class="w-30" scope="row"><a href="https://scds.onrender.com/faculty" target="_blank">{{data.FirstName}} {{data.LastName}}</a></th>
                       <td class="w-50">{{data.Description}}</td>
                       <td class="w-50">Incident Investigator</td>
-                      <td class="w-50">{{data.Status}}</td>
+                      {% if data.Status == 'pending' %}
+                      <td><h6 class="badge bg-warning" style="width:158px;height:20px;">{{data.Status}}</h6></td>
+                      {% else %}
+                      <td><h6 class="badge bg-success" style="width:158px;height:20px;">{{data.Status}}</h6></td>
+                      {% endif %}
                     </tr>
                     {% else %}
  
