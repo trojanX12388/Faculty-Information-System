@@ -18,7 +18,7 @@ from website.models import db
 from sqlalchemy import update
 
 # LOADING MODEL CLASSES
-from website.models import FISFaculty, FISMandatoryRequirements, FISUser_Notifications
+from website.models import FISFaculty, FISMandatoryRequirements, FISUser_Notifications, FISAdmin_Notifications
 
 # LOADING FUNCTION CHECK TOKEN
 from website.Token.token_check import Check_Token
@@ -78,40 +78,52 @@ def MR_H():
         
         # VERIFYING IF DATA OF CURRENT USER EXISTS
         if current_user.FISMandatoryRequirements:
+            if FISMandatoryRequirements.query.filter_by(FacultyId=current_user.FacultyId, year=str(datetime.now().year)).order_by(desc(FISMandatoryRequirements.id)).first():
+                record = FISMandatoryRequirements.query.filter_by(FacultyId=current_user.FacultyId, year=str(datetime.now().year)).order_by(desc(FISMandatoryRequirements.id)).first()
+
+                classrecord = record.classrecord
+                gradingsheet = record.gradingsheet
+                exams = record.exams
+                classrecord_status = record.classrecord_status
+                gradingsheet_status = record.gradingsheet_status
+                exams_status = record.exams_status
+                year = record.year
+
+    
+                records = {
+                                'classrecord': classrecord,
+                                'gradingsheet': gradingsheet,
+                                'exams': exams,
+                                'classrecord_status': classrecord_status,
+                                'gradingsheet_status': gradingsheet_status,
+                                'exams_status': exams_status,
+                                'year': year,
+                
+                            }
+                
+            else:
+                records = {
+                                'classrecord': "",
+                                'gradingsheet': "",
+                                'exams': "",
+                                'classrecord_status': "None",
+                                'gradingsheet_status': "None",
+                                'exams_status': "None",
+                                'year': str(datetime.now().year),
+
+                            }
         
-            record = FISMandatoryRequirements.query.filter_by(FacultyId=current_user.FacultyId, year=str(datetime.now().year)).order_by(desc(FISMandatoryRequirements.id)).first()
-
-            classrecord = record.classrecord
-            gradingsheet = record.gradingsheet
-            exams = record.exams
-            classrecord_status = record.classrecord_status
-            gradingsheet_status = record.gradingsheet_status
-            exams_status = record.exams_status
-            year = record.year
-
-  
-            records = {
-                            'classrecord': classrecord,
-                            'gradingsheet': gradingsheet,
-                            'exams': exams,
-                            'classrecord_status': classrecord_status,
-                            'gradingsheet_status': gradingsheet_status,
-                            'exams_status': exams_status,
-                            'year': year,
-              
-                        }
-            
         else:
-            records = {
-                            'classrecord': "",
-                            'gradingsheet': "",
-                            'exams': "",
-                            'classrecord_status': "None",
-                            'gradingsheet_status': "None",
-                            'exams_status': "None",
-                            'year': str(datetime.now().year),
+                records = {
+                                'classrecord': "",
+                                'gradingsheet': "",
+                                'exams': "",
+                                'classrecord_status': "None",
+                                'gradingsheet_status': "None",
+                                'exams_status': "None",
+                                'year': str(datetime.now().year),
 
-                        }
+                            }
                     
             
         if request.method == 'POST':
@@ -166,7 +178,7 @@ def MR_add_classrecord():
         if FISMandatoryRequirements.query.filter_by(FacultyId=current_user.FacultyId,year=year).first():
             id = FISMandatoryRequirements.query.filter_by(FacultyId=current_user.FacultyId,year=year).first()
             try:
-                
+               
                 url = """data:application/pdf;base64,{}""".format(file)
                         
                 filename, m = urlretrieve(url)
@@ -199,7 +211,8 @@ def MR_add_classrecord():
                 db.session.execute(u)
                 db.session.commit()
                 
-                add_notif = FISUser_Notifications(
+                
+                add_notif = FISAdmin_Notifications(
                 AdminId='10001',
                 Status= "pending",
                 Type= "notif",
@@ -253,7 +266,7 @@ def MR_add_classrecord():
                 db.session.add(add_record)
                 db.session.commit()
                 
-                add_notif = FISUser_Notifications(
+                add_notif = FISAdmin_Notifications(
                 AdminId='10001',
                 Status= "pending",
                 Type= "notif",
@@ -326,7 +339,7 @@ def MR_add_gradingsheet():
                 db.session.execute(u)
                 db.session.commit()
                 
-                add_notif = FISUser_Notifications(
+                add_notif = FISAdmin_Notifications(
                 AdminId='10001',
                 Status= "pending",
                 Type= "notif",
@@ -380,7 +393,7 @@ def MR_add_gradingsheet():
                 db.session.add(add_record)
                 db.session.commit()
                 
-                add_notif = FISUser_Notifications(
+                add_notif = FISAdmin_Notifications(
                 AdminId='10001',
                 Status= "pending",
                 Type= "notif",
@@ -454,7 +467,7 @@ def MR_add_exams():
                 db.session.execute(u)
                 db.session.commit()
                 
-                add_notif = FISUser_Notifications(
+                add_notif = FISAdmin_Notifications(
                 AdminId='10001',
                 Status= "pending",
                 Type= "notif",
@@ -508,7 +521,7 @@ def MR_add_exams():
                 db.session.add(add_record)
                 db.session.commit()
                 
-                add_notif = FISUser_Notifications(
+                add_notif = FISAdmin_Notifications(
                 AdminId='10001',
                 Status= "pending",
                 Type= "notif",

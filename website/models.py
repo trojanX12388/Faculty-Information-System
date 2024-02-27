@@ -397,6 +397,7 @@ class FISPDS_ContactDetails(db.Model):
     AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     Email = db.Column(db.String(50))  
     mobile_number = db.Column(db.String(11)) 
+    tel_number = db.Column(db.String(20)) 
     perm_country = db.Column(db.String(50))
     perm_region = db.Column(db.String(50))    
     perm_province = db.Column(db.String(50))  
@@ -422,6 +423,7 @@ class FISPDS_ContactDetails(db.Model):
             'AdminId': self.AdminId,
             'Email': self.Email,
             'mobile_number': self.mobile_number,
+            'tel_number': self.tel_number,
             'perm_country': self.perm_country,
             'perm_region': self.perm_region,
             'perm_province': self.perm_province,

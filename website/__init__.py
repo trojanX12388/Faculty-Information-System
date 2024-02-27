@@ -112,6 +112,9 @@ def create_app():
     from .modules.Schedule_Management import SM
     app.register_blueprint(SM, url_prefix='/')
     
+    from .modules.FacultyNotifications_Manager import facultynotification
+    app.register_blueprint(facultynotification, url_prefix='/')
+    
     # ADMIN ROUTES
     
     from .modules.Admin import admin

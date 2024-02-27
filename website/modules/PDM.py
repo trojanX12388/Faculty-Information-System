@@ -373,6 +373,7 @@ def PDM_CD():
             data =  {'FISPDS_ContactDetails':
                     {'email':"",
                      'mobile_number':"",
+                     'tel_number':"",
                      'perm_country':"",
                      'perm_region':"",
                      'perm_province':"",
@@ -398,6 +399,7 @@ def PDM_CD():
             # VALUES
             email = request.form.get('email')
             mobile_number = request.form.get('mobile_number')
+            tel_number = request.form.get('tel_number')
             perm_country = request.form.get('perm_country')
             perm_region = request.form.get('perm_region')
             perm_province = request.form.get('perm_province')
@@ -417,7 +419,8 @@ def PDM_CD():
             if FISPDS_ContactDetails.query.filter_by(FacultyId=current_user.FacultyId).first():
                 u = update(FISPDS_ContactDetails)
                 u = u.values({"Email": email,
-                            "mobile_number": mobile_number,
+                             "mobile_number": mobile_number,
+                            "tel_number": tel_number,
                             "perm_country": perm_country,
                             "perm_region": perm_region,
                             "perm_province": perm_province,
@@ -439,9 +442,7 @@ def PDM_CD():
                 db.session.commit()
                 
                 u = update(FISFaculty)
-                u = u.values({"Email": email,
-                            "MobileNumber": mobile_number,
-                            "ResidentialAddress": res_address,
+                u = u.values({"ResidentialAddress": res_address,
                             })
                 u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
                 db.session.execute(u)
@@ -454,6 +455,7 @@ def PDM_CD():
                 
                 add_record = FISPDS_ContactDetails(  Email = email,
                                                     mobile_number = mobile_number,
+                                                    tel_number = tel_number,
                                                     perm_country = perm_country,
                                                     perm_region = perm_region,
                                                     perm_province = perm_province,
@@ -474,8 +476,7 @@ def PDM_CD():
                 db.session.commit()
                 
                 u = update(FISFaculty)
-                u = u.values({"Email": email,
-                            "MobileNumber": mobile_number,
+                u = u.values({
                             "ResidentialAddress": res_address,
                             })
                 u = u.where(FISFaculty.FacultyId == current_user.FacultyId)

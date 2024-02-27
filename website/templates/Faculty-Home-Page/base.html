@@ -96,7 +96,7 @@
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
             <li class="dropdown-header">
               You have <span id="notification-count-text">0</span> Notifications
-              <a href="/auth/sysadmin/Requests"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+              <a href="/Faculty-Notifications"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
             </li>
             <li>
               <hr class="dropdown-divider">
@@ -529,7 +529,7 @@
       success: function (data) {
         // Handle the response and update the HTML
         var pendingRequests = data.requests.filter(function (request) {
-          return request.Status.toLowerCase() === 'pending';
+          return request.Status.toLowerCase() === 'pending' || request.Type.toLowerCase() === 'mandatory';
         });
 
         if (pendingRequests.length > 0) {

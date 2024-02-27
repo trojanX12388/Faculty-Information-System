@@ -1,0 +1,368 @@
+{% extends "/Faculty-Home-Page/base.html" %}{% block title %}Notifications{% endblock %} {% block content%}
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<!-- Include DataTables Buttons CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+
+<!-- Include DataTables Print Button JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Notifications</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{User}}</li>
+          <li class="breadcrumb-item active">Notifications</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <style>
+ 
+        .btnprinter-container {
+          text-align: right;
+        }
+      
+        .btnprinter {
+          width: 50px;
+          background-color: transparent;
+          border: none;
+          padding: 0;
+          cursor: pointer;
+        }
+      
+        .btnprinter i {
+          font-size: 24px; /* You can adjust the font size as needed */
+          color: #000; /* You can set the color as needed */
+        }
+      </style>
+
+      <style>
+        .table {
+            width: 100%;
+        }
+    </style>
+
+      <section class="section">
+        <div class="row">
+            <div class="card">
+                <br>
+                <div class="card-body">
+                  
+                    <div class="card-body">
+                     
+        
+                      <!-- Bordered Tabs Justified -->
+                      <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+                        <li class="nav-item flex-fill" role="presentation">
+                          <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-home" type="button" role="tab" aria-controls="home" aria-selected="true" tabindex="-1">Notifs <h6 style="color:red">{{notifs+update}}</h6></button>
+                        </li>
+                        <li class="nav-item flex-fill" role="presentation">
+                          <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-profile" type="button" role="tab" aria-controls="profile" aria-selected="false" tabindex="-1">Pending <h6 style="color:red">{{pending}}</h6></button>
+                        </li>
+                        <li class="nav-item flex-fill" role="presentation">
+                          <button class="nav-link w-100 " id="contact-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-contact" type="button" role="tab" aria-controls="contact" aria-selected="false" >Mandatory <h6 style="color:red">{{mandatory}}</h6></button>
+                        </li>
+                        
+                        <li class="nav-item flex-fill" role="presentation">
+                          <button class="nav-link w-100 " id="read-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-read" type="button" role="tab" aria-controls="read" aria-selected="false" >Marked as read <h6 style="color:red">{{read}}</h6></button>
+                        </li>
+                        <li class="nav-item flex-fill" role="presentation">
+                          <button class="nav-link w-100 " id="done-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-done" type="button" role="tab" aria-controls="done" aria-selected="false" >Done <h6 style="color:red">{{done}}</h6></button>
+                        </li>
+
+                        <li class="nav-item flex-fill" role="presentation">
+                          <button class="nav-link w-100 " id="trash-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-trash" type="button" role="tab" aria-controls="trash" aria-selected="false" >Trash <h6 style="color:red">{{trash}}</h6></button>
+                        </li>
+                      </ul>
+                      <div class="tab-content pt-2" id="borderedTabJustifiedContent">
+                        <div class="tab-pane fade active show" id="bordered-justified-home" role="tabpanel" aria-labelledby="home-tab">
+                          
+                          <br><br>
+                          
+                          <h5 class="card-title">Notifications</h5>
+                          <table class="table datatable w-100">
+                                                      
+                            <thead>
+                                <tr>
+                                    <th scope="col">Notifier ID</th>
+                                    <th scope="col">Account Type</th>
+                                    <th scope="col">Content</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Time</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              {% for data in user.FISUser_Notifications %}
+                              {% if data.Type == 'notif' or  data.Type == 'update'%} 
+                                    <tr>
+                                      <td scope="col">{{data.notif_by}}</td>
+                                      <td>{{data.notifier_type}}</td>
+                                      <td>{{data.Notification}}</td>
+                                      <td>{{data.DateTime.strftime("%B %d, %Y")}}</td>
+                                      <td>{{data.DateTime.strftime("%I:%M %p")}}</td>
+                                      <td>
+                                        <form method="POST" action="/Faculty-Notifications/read">
+                                        <button type="submit" name="id" class="btn btn-outline-primary rounded-pill" value="{{data.id}}"><i class="bi bi-check-circle"></i></button>
+                                        </form>
+                                        <form method="POST" action="/Faculty-Notifications/trash">
+                                        <button type="submit" name="id" class="btn btn-outline-danger rounded-pill" value="{{data.id}}"><i class="bi bi-trash"></i></button>
+                                      </form>
+                                    </td>
+                                  </tr>
+                              {%else%}
+
+                              {% endif %}
+
+                              {% endfor%}
+
+
+                            </tbody>
+                        </table><!-- End Table with stripped rows -->
+                         
+                        </div>
+                        <div class="tab-pane fade" id="bordered-justified-profile" role="tabpanel" aria-labelledby="profile-tab">
+
+                          <br><br>
+                          <h5 class="card-title">Pendings</h5>
+                        <table class="table datatable w-100">
+                                                    
+                          <thead>
+                            <tr>
+                                <th scope="col">Notifier ID</th>
+                                <th scope="col">Account Type</th>
+                                <th scope="col">Content</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% for data in user.FISUser_Notifications %}
+                          {% if data.Type == 'pending'%} 
+                                <tr>
+                                  <td scope="col">{{data.notif_by}}</td>
+                                  <td>{{data.notifier_type}}</td>
+                                  <td>{{data.Notification}}</td>
+                                  <td>{{data.DateTime.strftime("%B %d, %Y")}}</td>
+                                  <td>{{data.DateTime.strftime("%I:%M %p")}}</td>
+                              </tr>
+                          {%else%}
+
+                          {% endif %}
+
+                          {% endfor%}
+
+
+                        </tbody>
+                    </table><!-- End Table with stripped rows -->
+                         
+                        </div>
+                        <div class="tab-pane fade" id="bordered-justified-contact" role="tabpanel" aria-labelledby="contact-tab">
+                        
+                          <br><br>
+                          <h5 class="card-title">Mandatory Requirements</h5>
+                            <table class="table datatable w-100">
+                                                        
+                              <thead>
+                                <tr>
+                                    <th scope="col">Notifier ID</th>
+                                    <th scope="col">Account Type</th>
+                                    <th scope="col">Content</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              {% for data in user.FISUser_Notifications %}
+                              {% if data.Type == 'mandatory'%} 
+                                    <tr>
+                                      <td scope="col">{{data.notif_by}}</td>
+                                      <td>{{data.notifier_type}}</td>
+                                      <td>{{data.Notification}}</td>
+                                      <td>{{data.DateTime.strftime("%B %d, %Y")}}</td>
+                                      <td>{{data.DateTime.strftime("%I:%M %p")}}</td>
+                                  </tr>
+                              {%else%}
+
+                              {% endif %}
+
+                              {% endfor%}
+
+
+                            </tbody>
+                        </table><!-- End Table with stripped rows -->
+
+                        </div>
+
+                        <div class="tab-pane fade" id="bordered-justified-read" role="tabpanel" aria-labelledby="read-tab">
+                        
+                          <br><br>
+                          <h5 class="card-title">Marked as read</h5>
+                            <table class="table datatable w-100">
+                                                        
+                                <thead>
+                                <tr>
+                                    <th scope="col">Notifier ID</th>
+                                    <th scope="col">Account Type</th>
+                                    <th scope="col">Content</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Time</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              {% for data in user.FISUser_Notifications %}
+                              {% if data.Type == 'read'%} 
+                                    <tr>
+                                      <td scope="col">{{data.notif_by}}</td>
+                                      <td>{{data.notifier_type}}</td>
+                                      <td>{{data.Notification}}</td>
+                                      <td>{{data.DateTime.strftime("%B %d, %Y")}}</td>
+                                      <td>{{data.DateTime.strftime("%I:%M %p")}}</td>
+                                      <td>
+                                        <form method="POST" action="/Faculty-Notifications/unread">
+                                        <button type="submit" name="id" class="btn btn-outline-primary rounded-pill" value="{{data.id}}"><i class="bi bi-arrow-return-left"></i></button>
+                                        </form>
+                                        <form method="POST" action="/Faculty-Notifications/trash">
+                                        <button type="submit" name="id" class="btn btn-outline-danger rounded-pill" value="{{data.id}}"><i class="bi bi-trash"></i></button>
+                                      </form>
+                                    </td>
+                                  </tr>
+                              {%else%}
+
+                              {% endif %}
+
+                              {% endfor%}
+
+
+                            </tbody>
+                        </table><!-- End Table with stripped rows -->
+
+                        </div>
+
+                        <div class="tab-pane fade" id="bordered-justified-done" role="tabpanel" aria-labelledby="done-tab">
+                        
+                          <br><br>
+                          <h5 class="card-title">Done Notifications</h5>
+                            <table class="table datatable w-100">
+                                                        
+                              <thead>
+                                <tr>
+                                    <th scope="col">Notifier ID</th>
+                                    <th scope="col">Account Type</th>
+                                    <th scope="col">Content</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Time</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                              {% for data in user.FISUser_Notifications %}
+                              {% if data.Type == 'done'%} 
+                                    <tr>
+                                      <td scope="col">{{data.notif_by}}</td>
+                                      <td>{{data.notifier_type}}</td>
+                                      <td>{{data.Notification}}</td>
+                                      <td>{{data.DateTime.strftime("%B %d, %Y")}}</td>
+                                      <td>{{data.DateTime.strftime("%I:%M %p")}}</td>
+                                      <td>
+                                        <form method="POST" action="/Faculty-Notifications/read">
+                                        <button type="submit" name="id" class="btn btn-outline-primary rounded-pill" value="{{data.id}}"><i class="bi bi-check-circle"></i></button>
+                                        </form>
+                                        <form method="POST" action="/Faculty-Notifications/trash">
+                                        <button type="submit" name="id" class="btn btn-outline-danger rounded-pill" value="{{data.id}}"><i class="bi bi-trash"></i></button>
+                                      </form>
+                                    </td>
+                                  </tr>
+                              {%else%}
+
+                              {% endif %}
+
+                              {% endfor%}
+
+
+                            </tbody>
+                        </table><!-- End Table with stripped rows -->
+
+
+                        </div>
+
+                        <div class="tab-pane fade" id="bordered-justified-trash" role="tabpanel" aria-labelledby="trash-tab">
+                        
+                          <br><br>
+                          <h5 class="card-title">Trashed Notifications</h5>
+                            <table class="table datatable w-100">
+                                                        
+                                <thead>
+                                <tr>
+                                    <th scope="col">Notifier ID</th>
+                                    <th scope="col">Account Type</th>
+                                    <th scope="col">Content</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Time</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              {% for data in user.FISUser_Notifications %}
+                              {% if data.Type == 'trash'%} 
+                                    <tr>
+                                      <td scope="col">{{data.notif_by}}</td>
+                                      <td>{{data.notifier_type}}</td>
+                                      <td>{{data.Notification}}</td>
+                                      <td>{{data.DateTime.strftime("%B %d, %Y")}}</td>
+                                      <td>{{data.DateTime.strftime("%I:%M %p")}}</td>
+                                      <td>
+                                        <form method="POST" action="/Faculty-Notifications/unread">
+                                          <button type="submit" name="id" class="btn btn-outline-primary rounded-pill" value="{{data.id}}"><i class="bi bi-arrow-return-left"></i></button>
+                                          </form>
+                                        <form method="POST" action="/Faculty-Notifications/delete">
+                                          <button type="submit" name="id" class="btn btn-outline-danger rounded-pill" value="{{data.id}}"><i class="bi bi-x-circle"></i></button>
+                                        </form>
+                                      </td>
+                                      
+                                  </tr>
+                              {%else%}
+
+                              {% endif %}
+
+                              {% endfor%}
+
+
+                            </tbody>
+                        </table><!-- End Table with stripped rows -->
+
+                        </div>
+
+
+                      </div><!-- End Bordered Tabs Justified -->
+        
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+  </main><!-- End #main -->
+
+
+
+{% endblock %}
+
+      
