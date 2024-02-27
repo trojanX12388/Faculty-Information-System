@@ -174,13 +174,13 @@ def aFS_add():
                         db.session.add(add_notif)
                         db.session.commit()
                         
-                        flash('Evaluated successfully1!', category='success')
-                        print("success1")
+                        flash('Evaluated successfully!', category='success')
+                        # print("success1")
                         db.session.close()   
                         return redirect(url_for('aFS.aFS_H'))
 
                     except Exception as e:
-                        print(f"An error occurred1: {str(e)}")
+                        # print(f"An error occurred1: {str(e)}")
                         db.session.rollback()  # Rollback changes in case of an error
                         flash('An error occurred while evaluating!', category='error')
                         
@@ -243,13 +243,13 @@ def aFS_add():
                         db.session.add(add_notif)
                         db.session.commit()
                         
-                        flash('Evaluated successfully2!', category='success')
-                        print("success2")
+                        flash('Evaluated successfully!', category='success')
+                        # print("success2")
                         db.session.close()
                         return redirect(url_for('aFS.aFS_H'))
 
                     except Exception as e:
-                        print(f"An error occurred4: {str(e)}")
+                        # print(f"An error occurred4: {str(e)}")
                         db.session.rollback()
                         flash('An error occurred while evaluating!', category='error')
                         return redirect(url_for('aFS.aFS_H'))
@@ -295,8 +295,8 @@ def aFS_add():
                         db.session.add(add_notif)
                         db.session.commit()
                         
-                        flash('Evaluated successfully1!', category='success')
-                        print("success3")
+                        flash('Evaluated successfully!', category='success')
+                        # print("success3")
                         db.session.close()   
                         return redirect(url_for('aFS.aFS_H'))
 
@@ -334,7 +334,7 @@ def aFS_add():
                             self_b=0,
                             self_c=0,
                             self_d=0,
-                            peer=0,  # Make sure AverageRate is defined
+                            peer=0,
                             peer_a=0,
                             peer_b=0,
                             peer_c=0,
@@ -364,13 +364,13 @@ def aFS_add():
                         db.session.add(add_notif)
                         db.session.commit()
                         
-                        flash('Evaluated successfully4!', category='success')
-                        print("success4")
+                        flash('Evaluated successfully!', category='success')
+                        # print("success4")
                         db.session.close()
                         return redirect(url_for('aFS.aFS_H'))
 
                     except Exception as e:
-                        print(f"An error occurred4: {str(e)}")
+                        # print(f"An error occurred4: {str(e)}")
                         db.session.rollback()
                         flash('An error occurred while evaluating!', category='error')
                         return redirect(url_for('aFS.aFS_H'))

@@ -124,6 +124,21 @@ def TI_TA():
         
     # print(rooms)
 
+    # ... (your existing code)
+    course_names_dict = {}
+
+    # Iterate through the fetched data
+    for entry in api_data.get("data", []):
+        # Check if facultyid matches current_user_id
+        if entry.get("facultyid") == current_user.FacultyId:
+            # Fetch and store the course_description
+            current_course_description = entry.get("course_description")
+
+            # If the course_description is not already in the dictionary, add it as subject_a, subject_b, etc.
+            if current_course_description not in course_names_dict.values():
+                next_subject = chr(97 + len(course_names_dict))  # Use ASCII characters for subject_a, subject_b, etc.
+                course_names_dict[next_subject] = current_course_description
+
     return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Teaching-Assignments.html", 
                            User=username.FirstName + " " + username.LastName,
                            faculty_code=username.FacultyCode,
@@ -131,6 +146,7 @@ def TI_TA():
                            TI="show",
                            activate_TA="active",
                            profile_pic=ProfilePic,
+                           course_names_dict = course_names_dict,
                            api_data=api_data,
                            semester = semester,
                            acad_year = acad_year,

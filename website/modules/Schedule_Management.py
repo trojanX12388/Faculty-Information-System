@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, redirect, render_template, request, url_for
+from flask import Flask, Blueprint, redirect, render_template, request, url_for, jsonify
 from dotenv import load_dotenv
 from flask_login import login_required, current_user
 from pydrive.auth import GoogleAuth
@@ -231,4 +231,80 @@ def SM_SE():
                                profile_pic=ProfilePic)
         
         
+
+
+
+
+
+# ------------------------------- TEACHING ASSIGNMENTS ----------------------------  
+import requests
+
+@SM.route("/Schedule/api/get", methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def SM_Schedules():
+    
+      # Fetch API data
+    api_url = "https://schedulerserver-6e565d991c10.herokuapp.com/facultyloadings/getfacultyloading"  # Replace with the actual API endpoint
+    headers = {
+        'Authorization': 'Bearer '+ os.environ["API_TOKENS_SCHEDULER"],
+        'Content-Type': 'application/json'  # Adjust content type as needed
+    }
+    
+    api_response = requests.get(api_url,headers=headers)
+    
+    if api_response.status_code == 200:
+        api_data = api_response.json()
+        return jsonify(api_data)
+    else:
+        api_data = {"message": "Failed to fetch data", "data": []}
+        return jsonify(api_data)
+   
+   
+
+@SM.route("/Schedule/api/get-semester", methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def SM_Schedules_sem():
+    
+      # Fetch API data
+    api_url = "https://schedulerserver-6e565d991c10.herokuapp.com/semesters/getsemester"  # Replace with the actual API endpoint
+    headers = {
+        'Authorization': 'Bearer '+ os.environ["API_TOKENS_SCHEDULER"],
+        'Content-Type': 'application/json'  # Adjust content type as needed
+    }
+    
+    api_response = requests.get(api_url,headers=headers)
+    
+    if api_response.status_code == 200:
+        api_data = api_response.json()
+        return jsonify(api_data)
+    else:
+        api_data = {"message": "Failed to fetch data", "data": []}
+        return jsonify(api_data)
+
+
+@SM.route("/Schedule/api/get-acadyear", methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def SM_Schedules_acadyear():
+    
+      # Fetch API data
+    api_url = "https://schedulerserver-6e565d991c10.herokuapp.com/academicyears/getacadyr"  # Replace with the actual API endpoint
+    headers = {
+        'Authorization': 'Bearer '+ os.environ["API_TOKENS_SCHEDULER"],
+        'Content-Type': 'application/json'  # Adjust content type as needed
+    }
+    
+    api_response = requests.get(api_url,headers=headers)
+    
+    if api_response.status_code == 200:
+        api_data = api_response.json()
+        return jsonify(api_data)
+    else:
+        api_data = {"message": "Failed to fetch data", "data": []}
+        return jsonify(api_data)
+   
+ 
+ 
         

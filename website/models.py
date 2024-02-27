@@ -82,6 +82,7 @@ class FISFaculty(db.Model, UserMixin):
     FISSubjectAssigned = db.relationship('FISSubjectAssigned')
     FISTeachingAssignments = db.relationship('FISTeachingAssignments')
     FISMandatoryRequirements = db.relationship('FISMandatoryRequirements')
+    FISMedicalInformation = db.relationship('FISMedicalInformation')
     
     FISAdvisingStudent = db.relationship('FISAdvisingStudent')
     FISMentoringStudent = db.relationship('FISMentoringStudent')
@@ -169,6 +170,7 @@ class FISFaculty(db.Model, UserMixin):
             'FISSubjectAssigned': self.FISSubjectAssigned,
             'FISTeachingAssignments': self.FISTeachingAssignments,
             'FISMandatoryRequirements': self.FISMandatoryRequirements,
+            'FISMedicalInformation': self.FISMedicalInformation,
             
             'FISAdvisingStudent': self.FISAdvisingStudent,
             'FISMentoringStudent': self.FISMentoringStudent,
@@ -1063,6 +1065,62 @@ class FISInstructionalMaterialsDeveloped(db.Model):
 
 # ------------------------------------------------
 
+
+# ------------------------------------------------
+# MEDICAL INFORMATION
+# ------------------------------------------------
+
+class FISMedicalInformation(db.Model):
+    __tablename__ = 'FISMedicalInformation'
+
+    id = db.Column(db.Integer, primary_key=True)  # DataID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    # AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    contact_person_name = db.Column(db.String) 
+    home_contact_number = db.Column(db.String)
+    address = db.Column(db.String)
+    work_phone_number = db.Column(db.String)
+    gridRadiosvaccine = db.Column(db.Boolean, default=False)
+    gridRadiosBooster = db.Column(db.Boolean, default=False)
+    medical_problem1 = db.Column(db.String, default="None")
+    medical_problem2 = db.Column(db.String, default="None")
+    medical_problem3 = db.Column(db.String, default="None")
+    medical_problem4 = db.Column(db.String, default="None")
+    medical_problem5 = db.Column(db.String, default="None")
+    medical_problem6 = db.Column(db.String, default="None")
+    
+    q1 = db.Column(db.Boolean, default=False)
+    q2 = db.Column(db.Boolean, default=False)
+    q3 = db.Column(db.Boolean, default=False)
+
+    is_delete = db.Column(db.Boolean, default=False) 
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'FacultyId': self.FacultyId,
+            'contact_person_name': self.contact_person_name,
+            'home_contact_number': self.home_contact_number,
+            'address': self.address,
+            'work_phone_number': self.work_phone_number,
+            'gridRadiosvaccine': self.gridRadiosvaccine,
+            'gridRadiosBooster': self.gridRadiosBooster,
+            'medical_problem1': self.medical_problem1,
+            'medical_problem2': self.medical_problem2,
+            'medical_problem3': self.medical_problem3,
+            'medical_problem4': self.medical_problem4,
+            'medical_problem5': self.medical_problem5,
+            'medical_problem6': self.medical_problem6,
+            'q1': self.q1,
+            'q2': self.q2,
+            'q3': self.q3,
+            'is_delete': self.is_delete
+        }
+        
+    def get_id(self):
+        return str(self.id)  # Convert to string to ensure compatibility 
+
+# ------------------------------------------------
 
 # ------------------------------------------------
 # CAPSTONE

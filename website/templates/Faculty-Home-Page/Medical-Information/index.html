@@ -66,27 +66,37 @@
                   </p>
               </div>
           </div>
+
+  <form action="/Medical-Information" method="POST">
           <div class="row m-md-2">
               <div class="card-title"> <p class="medical w-25  ps-md-2">In Case of Emeergency</p>
               </div>
               <div class="col-lg-6">
                   <p class="mb-md-3 fw-bold">Name:
                       <br>
-                      <span class="fw-normal">Name here</span>
+                      <div class="col-sm-10">
+                        <input name="contact_person_name" type="text" class="form-control" required value="{{contact_person_name}}">
+                      </div>
                   </p>
                   <p class="mb-md-3 fw-bold">Home Contact Number:
                       <br>
-                      <span class="fw-normal">Number here</span>
+                      <div class="col-sm-10">
+                        <input name="home_contact_number" type="text" class="form-control" required value="{{home_contact_number}}">
+                      </div>
                   </p>
               </div>
               <div class="col-lg-6">
                   <p class="mb-md-3 fw-bold">Address:
                       <br>
-                      <span class="fw-normal">Address here</span>
+                      <div class="col-sm-10">
+                        <input name="address" type="text" class="form-control" required value="{{address}}">
+                      </div>
                   </p>
                   <p class="mb-md-3 fw-bold">Work Phone Number: 
                       <br>
-                      <span class="fw-normal">Number here</span>
+                      <div class="col-sm-10">
+                        <input name="work_phone_number" type="text" class="form-control" required value="{{work_phone_number}}">
+                      </div>
                   </p>
               </div>
           </div>
@@ -96,80 +106,147 @@
               <div class="col-lg-6">
                   <p class="mb-md-3 fw-bold">SARS CoV (Corona Virus):
                       <br>
-                      <span class="fw-normal">Negative</span>
+                      <span class="fw-normal"></span>
                   </p>
                   <p class="mb-md-3 fw-bold">Have you had Coronavirus Vaccination?:
                       <br>
-                      <span class="fw-normal">YES</span>
+                      <div class="col-sm-10">
+                        {% if gridRadiosvaccine == True %}
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="gridRadiosvaccine" id="gridRadios1" value="True" checked>
+                          <label class="form-check-label" for="gridRadios1">
+                            Yes
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="gridRadiosvaccine" id="gridRadios2" value="False">
+                          <label class="form-check-label" for="gridRadios2">
+                            No
+                          </label>
+                        </div>
+                        {% else %}
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="gridRadiosvaccine" id="gridRadios1" value="True">
+                          <label class="form-check-label" for="gridRadios1">
+                            Yes
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="gridRadiosvaccine" id="gridRadios2" value="False" checked>
+                          <label class="form-check-label" for="gridRadios2">
+                            No
+                          </label>
+                        </div>
+                        {% endif %}
+                      </div>
                   </p>
-                  <p class="mb-md-3 fw-bold">List of any Medical Problems:
-                      <br>
-                      <li class="fw-normal ms-md-3">List here</li>
-                      <li class="fw-normal ms-md-3">List here</li>
-                      <li class="fw-normal ms-md-3">List here</li>
-                  </p>
+                  <br><br>
+                
+                <p class="mb-md-3 fw-bold">List of any Medical Problems:
+                  <br> <br>
+                  <input name="medical_problem1" type="text" class="fw-normal ms-md-3" placeholder="List here" value="{{medical_problem1}}">
+                  <input name="medical_problem2" type="text" class="fw-normal ms-md-3" placeholder="List here" value="{{medical_problem2}}">
+                  <input name="medical_problem3" type="text" class="fw-normal ms-md-3" placeholder="List here" value="{{medical_problem3}}">
+                  <input name="medical_problem4" type="text" class="fw-normal ms-md-3" placeholder="List here" value="{{medical_problem4}}">
+                  <input name="medical_problem5" type="text" class="fw-normal ms-md-3" placeholder="List here" value="{{medical_problem5}}">
+                  <input name="medical_problem6" type="text" class="fw-normal ms-md-3" placeholder="List here" value="{{medical_problem6}}">
+                </p>
+
               </div>
               <div class="col-lg-6">
-                  <p class="mb-md-3 fw-bold">Have you had Booster?:
-                      <br>
-                      <span class="fw-normal">Yes</span>
-                  </p>
-              </div>
+                <p class="mb-md-3 fw-bold">Have you had Booster?:
+                    <br>
+                    <div class="col-sm-10">
+                      {% if gridRadiosBooster == True %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gridRadiosBooster" id="gridRadios3" value="True" checked>
+                            <label class="form-check-label" for="gridRadios3">
+                                Yes
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gridRadiosBooster" id="gridRadios4" value="False">
+                            <label class="form-check-label" for="gridRadios4">
+                                No
+                            </label>
+                        </div>
+                        {% else %}
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="gridRadiosBooster" id="gridRadios3" value="True">
+                          <label class="form-check-label" for="gridRadios3">
+                              Yes
+                          </label>
+                      </div>
+                      <div class="form-check">
+                          <input class="form-check-input" type="radio" name="gridRadiosBooster" id="gridRadios4" value="False" checked>
+                          <label class="form-check-label" for="gridRadios4">
+                              No
+                          </label>
+                      </div>
+                        {% endif %}
+                    </div>
+                </p>
+            </div>
           </div>
-          <div class="row m-md-2">
-              <div class="card-title"> <p class="medical w-25 ps-md-2">Additional Information:</p></div>
 
-              <div class="w-100">
-                <div class="card">
-                  <div class="card-body">
-                  <h6 class="card-title">Medical Information</h6>
-                  <table class="table table">
-                    <thead>
-                      <tr>
-                        <th class="w-50" scope="col" class="card-title col-md-6 ">QUESTION</th>
-                        <th scope="col"class="card-title col-md-3">ANSWER</th>
-                        <th scope="col"class="card-title col-md-3">DETAILS</th>
-                      </tr>
-                      <tr>
-                        <td></td>
-                       <td></td>
-                       <td></td>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td scope="row">1. Are you related by consanguinity or affinity to the appointing or recommending authority, or the chief of bureau or office or the person who has intermediate supervision over you in the Office, Bureau or Department where you will be appointed,</td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td scope="row">a. within the third degree?</td>
-                        <td>No</td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td scope="row">b. within the fourth degree (for Local Government Unit - Career Employees)?</td>
-                        <td>Yes</td>
-                        <td></td>
-                      </tr>
-                    </tbody>
-                  </table>
-              </div>
-          </div>
+          <div class="row m-md-2">
+    <div class="card-title">
+        <p class="medical w-25 ps-md-2">Additional Information:</p>
+    </div>
+
+    <div class="w-100">
+      <div class="card">
+        <div class="card-body">
+          <table class="table table">
+            <thead>
+              <tr>
+                <th class="w-50" scope="col" class="card-title col-md-6">QUESTION</th>
+                <th scope="col" class="card-title col-md-3">YES</th>
+                <th scope="col" class="card-title col-md-3">NO</th>
+              </tr>
+              <tr>
+                <td>1. Have you ever been diagnosed with a chronic medical condition?</td>
+                {% if q1 == "True" %}
+                <td><input type="radio" name="q1" value="True" checked></td>
+                <td><input type="radio" name="q1" value="False"></td>
+                {% else %}
+                <td><input type="radio" name="q1" value="True"></td>
+                <td><input type="radio" name="q1" value="False" checked></td>
+                {% endif %}
+              </tr>
+              <tr>
+                <td>2. Are you currently taking any prescription medications?</td>
+                {% if q2 == "True" %}
+                <td><input type="radio" name="q2" value="True" checked></td>
+                <td><input type="radio" name="q2" value="False"></td>
+                {% else %}
+                <td><input type="radio" name="q2" value="True"></td>
+                <td><input type="radio" name="q2" value="False" checked></td>
+                {% endif %}
+              </tr>
+              <tr>
+                <td>3. Have you undergone major surgery in the past five years?</td>
+                {% if q3 == "True" %}
+                <td><input type="radio" name="q3" value="True" checked></td>
+                <td><input type="radio" name="q3" value="False"></td>
+                {% else %}
+                <td><input type="radio" name="q3" value="True"></td>
+                <td><input type="radio" name="q3" value="False" checked></td>
+                {% endif %}
+              </tr>
+            </thead>
+          </table>
         </div>
       </div>
-      
-      <p class="">To print the faculty medical information, click the print icon. <a href="#" class="bx bxs-printer"></a></p>
+    </div>
+
+        <br><br>
+
+  <button id="submitBtn" onclick="validateForm(this)" class="btn btn-primary float-end">Update</button>
+
+</form>
+
+   
   </section>
 
  

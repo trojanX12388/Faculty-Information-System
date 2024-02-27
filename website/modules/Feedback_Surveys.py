@@ -168,13 +168,13 @@ def FS_add():
                         db.session.add(add_notif)
                         db.session.commit()
                         
-                        flash('Evaluated successfully1!', category='success')
-                        print("success1")
+                        flash('Evaluated successfully!', category='success')
+                        # print("success1")
                         db.session.close()   
                         return redirect(url_for('FS.FS_H'))
                     
                     except Exception as e:
-                        print(f"An error occurred1: {str(e)}")
+                        # print(f"An error occurred1: {str(e)}")
                         db.session.rollback()  # Rollback changes in case of an error
                         flash('An error occurred while evaluating!', category='error')
                         
@@ -218,13 +218,13 @@ def FS_add():
                         db.session.add(add_notif)
                         db.session.commit()
                         
-                        flash('Evaluated successfully2!', category='success')
-                        print("success2")
+                        flash('Evaluated successfully!', category='success')
+                        # print("success2")
                         db.session.close()   
                         return redirect(url_for('FS.FS_H'))
 
                     except Exception as e:
-                        print(f"An error occurred1: {str(e)}")
+                        # print(f"An error occurred1: {str(e)}")
                         db.session.rollback()  # Rollback changes in case of an error
                         flash('An error occurred while evaluating!', category='error')
                         
@@ -291,13 +291,13 @@ def FS_add():
                         db.session.add(add_notif)
                         db.session.commit()
                         
-                        flash('Evaluated successfully3!', category='success')
-                        print("success3")
+                        flash('Evaluated successfully!', category='success')
+                        # print("success3")
                         db.session.close()   
                         return redirect(url_for('FS.FS_H')) 
                     
                     except Exception as e:
-                        print(f"An error occurred3: {str(e)}")
+                        # print(f"An error occurred3: {str(e)}")
                         db.session.rollback()  # Rollback changes in case of an error
                         flash('An error occurred while evaluating!', category='error') 
                         
@@ -359,19 +359,19 @@ def FS_add():
                         db.session.add(add_notif)
                         db.session.commit()
                         
-                        flash('Evaluated successfully4!', category='success')
-                        print("success4")
+                        flash('Evaluated successfully!', category='success')
+                        # print("success4")
                         db.session.close()
                         return redirect(url_for('FS.FS_H'))
 
                     except Exception as e:
-                        print(f"An error occurred4: {str(e)}")
+                        # print(f"An error occurred4: {str(e)}")
                         db.session.rollback()
                         flash('An error occurred while evaluating!', category='error')
                         return redirect(url_for('FS.FS_H'))
           
             else:
-                print(f"An error occurred5")
+                # print(f"An error occurred5")
                 flash('An error occurred while evaluating!', category='error')
                 return redirect(url_for('FS.FS_H'))
             
@@ -529,19 +529,19 @@ def SFS_add():
                         db.session.commit()
                         
                         flash('Evaluated successfully!', category='success')
-                        print("success1")
+                        # print("success1")
                         db.session.close()   
                         return redirect(url_for('FS.SFS_H'))
                     
                     except Exception as e:
-                        print(f"An error occurred1: {str(e)}")
+                        # print(f"An error occurred1: {str(e)}")
                         db.session.rollback()  # Rollback changes in case of an error
                         flash('An error occurred while evaluating!', category='error')
                         
                         return redirect(url_for('FS.SFS_H'))   
           
             else:
-                print(f"An error occurred5")
+                # print(f"An error occurred5")
                 flash('An error occurred while evaluating!', category='error')
                 return redirect(url_for('FS.SFS_H'))
             

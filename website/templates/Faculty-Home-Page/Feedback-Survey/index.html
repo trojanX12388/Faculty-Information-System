@@ -89,7 +89,50 @@
     left:20px;
     
 }
+
+.close {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.close-icon {
+  color: #000; /* Set the color you want for the "x" */
+  font-size: 20px; /* Set the font size for the "x" */
+}
+
 </style>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    {% for category, message in messages %}
+        {% if category == 'error' %}
+            <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-between" role="alert" style="z-index:1;">
+                <div>{{ message }}</div>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="closeNotification(this)">
+                    <span aria-hidden="true" class="close-icon">&times;</span>
+                </button>
+            </div>
+        {% elif category == 'success' %}
+            <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between" role="alert" style="z-index:1;">
+                <div>{{ message }}</div>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="closeNotification(this)">
+                    <span aria-hidden="true" class="close-icon">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+{% endwith %}
+
+<script>
+function closeNotification(button) {
+  // Find the parent notification element and remove it
+  var notification = button.closest('.alert');
+  notification.remove();
+}
+</script>
 
 <form class="row g-3" action="/Feedback-Surveys/add-record" method="POST" id="yourFormId">
 

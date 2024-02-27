@@ -82,135 +82,6 @@
         </div>
         <div id="classScheduleTableBody"></div>
         
-        <script>
-            // Function to format time as HH:mm
-            function formatTime(timeString) {
-                const time = new Date(timeString);
-                const hours = time.getHours().toString().padStart(2, '0');
-                const minutes = time.getMinutes().toString().padStart(2, '0');
-                return `${hours}:${minutes}`;
-            }
-        
-            $('#searchButton').on('click', function () {
-                // Get selected values and names from dropdowns
-                const academicYearId = $('#academicyearDropdown option:selected').data('id');
-                const semesterId = $('#semesterDropdown option:selected').data('id');
-                const programId = $('#programDropdown option:selected').data('id');
-                const classId = $('#classDropdown option:selected').data('id');
-        
-                // Make a request to get academic year name
-                $.ajax({
-                    url: `https://schedulerserver-6e565d991c10.herokuapp.com/academicyears/getacadyr?id=${academicYearId}`,
-                    type: 'GET',
-                    success: function (academicYearData) {
-                        const academicYearName = academicYearData.name;
-        
-                        // Make a request to get semester name
-                        $.ajax({
-                            url: `https://schedulerserver-6e565d991c10.herokuapp.com/semesters/getsemester?id=${semesterId}`,
-                            type: 'GET',
-                            success: function (semesterData) {
-                                const semesterName = semesterData.name;
-        
-                                // Make a request to get program/course name
-                                $.ajax({
-                                    url: `https://schedulerserver-6e565d991c10.herokuapp.com/courses/getcourse?id=${programId}`,
-                                    type: 'GET',
-                                    success: function (programData) {
-                                        const programName = programData.name || programData.code;
-        
-                                        // Make a request to get class name
-                                        $.ajax({
-                                            url: `https://schedulerserver-6e565d991c10.herokuapp.com/classes/getclass?id=${classId}`,
-                                            type: 'GET',
-                                            success: function (classData) {
-                                                const className = classData.classname;
-        
-                                                // Make a request to get filtered schedule data
-                                                $.ajax({
-                                                    url: "https://schedulerserver-6e565d991c10.herokuapp.com/manageschedules/filtersched",
-                                                    type: 'GET',
-                                                    data: {
-                                                        acadyear_id: academicYearId,
-                                                        semester_id: semesterId,
-                                                        course_id: programId,
-                                                        class_id: classId
-                                                    },
-                                                    headers: {
-                                                        'Authorization': `Bearer ${getToken()}`
-                                                    },
-                                                    success: function (response) {
-                                                        // Populate the table with the filtered data
-                                                        populateScheduleTable(response, academicYearName, semesterName, programName, className);
-                                                    },
-                                                    error: function (xhr, status, error) {
-                                                        console.log('Error fetching filtered schedule data:', xhr.responseText);
-                                                    }
-                                                });
-                                            },
-                                            error: function (xhr, status, error) {
-                                                console.log('Error fetching class data:', xhr.responseText);
-                                            }
-                                        });
-                                    },
-                                    error: function (xhr, status, error) {
-                                        console.log('Error fetching program data:', xhr.responseText);
-                                    }
-                                });
-                            },
-                            error: function (xhr, status, error) {
-                                console.log('Error fetching semester data:', xhr.responseText);
-                            }
-                        });
-                    },
-                    error: function (xhr, status, error) {
-                        console.log('Error fetching academic year data:', xhr.responseText);
-                    }
-                });
-            });
-        
-            // Function to populate the table
-            function populateScheduleTable(data, academicYearName, semesterName, programName, className) {
-                const scheduleTableBody = $('#classScheduleTableBody');
-                scheduleTableBody.empty(); // Clear existing rows
-        
-                if (data && data.length > 0) {
-                    data.forEach(function (schedule) {
-                        // Shorten day and format time
-                        const shortenedDay = schedule.day.substring(0, 3);
-                        const formattedTime = `${formatTime(schedule.start_time)} - ${formatTime(schedule.end_time)}`;
-        
-                        // Make a separate request to get room details based on room_id (if needed)
-        
-                        // Append the row to the table
-                        scheduleTableBody.append(`
-                            <tr>
-                                <td class="text-center"></td>
-                                <td>${schedule.subject_code}</td>
-                                <td>${schedule.subject_name}</td>
-                                <td class="text-center">${schedule.lecture_hours}</td>
-                                <td class="text-center">${schedule.lab_hours}</td>
-                                <td class="text-center">${schedule.units}</td>
-                                <td class="text-center">${shortenedDay} ${formattedTime}</td>
-                                <td class="text-center">${roomNumber}</td>
-                                <td class="text-center">${academicYearName}</td>
-                                <td class="text-center">${semesterName}</td>
-                                <td class="text-center">${programName}</td>
-                                <td class="text-center">${className}</td>
-                            </tr>
-                        `);
-                    });
-                } else {
-                    console.log('No schedule data found.');
-                }
-            }
-        </script>
-
-          <!-- Add a Print button -->
-          <div class="btnprinter-container">
-            <button id="btnPrintDetail2" class="btnprinter" onclick="printCalendar()"><i class="bi bi-printer"></i></button>
-          </div>
-
               <div id="calendar" class="p-4 bg-white rounded-2 shadow"></div>
               
                   <!-- Modal -->
@@ -220,6 +91,9 @@
                       <p id="eventStart" class="mb-4"></p>
                       <p id="eventType" class="mb-4"></p>
                       <p id="eventDate" class="mb-4"></p>
+                     
+                      <p id="eventTime"></p> <!-- Add this line for displaying time -->
+                      <br>
                       <p id="eventDescription" class="mb-4"></p>
                       <p id="eventStatus" class="mb-4"></p>
                       <div style="display: flex; justify-content: flex-end;">
@@ -230,124 +104,212 @@
 
                 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
                 <script>
-                  document.addEventListener('DOMContentLoaded', function() {
-                      var calendarEl = document.getElementById('calendar');
+                    document.addEventListener('DOMContentLoaded', function () {
+                        var calendarEl = document.getElementById('calendar');
+                
+                        // API endpoints
+                        var apiEndpoint = "http://127.0.0.1:8000/Schedule/api/get";
+                        var acadYearEndpoint = "http://127.0.0.1:8000/Schedule/api/get-acadyear";
+                
+                        // Faculty ID you want to filter by
+                        var facultyIdToFilter = "{{user.FacultyId}}";
+                
+                        // Fetch acadYear data from the API endpoint
+                        fetch(acadYearEndpoint)
+                            .then(response => response.json())
+                            .then(acadYearData => {
+                                // Check if the response has data and is an array
+                                if (acadYearData && Array.isArray(acadYearData.data)) {
+                                    console.log("Fetched academic year data:", acadYearData.data);
+                
+                                    // Fetch data from the main API endpoint
+                                    fetch(apiEndpoint)
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            // Check if the response has data and is an array
+                                            if (data && Array.isArray(data.data)) {
+                                                console.log("Fetched data:", data.data);
+                
+                                                // Sample data for events
+                                                let eventsData = [];
+                
+                                                // Iterate through the data array
+                                                data.data.forEach(apiData => {
+                                                    // Check if facultyId matches the current faculty
+                                                    if (apiData.facultyid === parseInt(facultyIdToFilter)) {
+                                                        // Calculate start date based on academic year start
+                                                        var acadYearStart = calculateAcadYearStart(acadYearData.data, apiData.acadyear_id);
+                                                        calculateAndAddEvents(apiData.day.toLowerCase(), acadYearStart, eventsData, apiData);
+                                                    }
+                                                });
+                
+                                                console.log("Final Events Data:", eventsData);
+                
+                                                // Initialize FullCalendar with eventsData
+                                                var calendar = new FullCalendar.Calendar(calendarEl, {
+                                                    initialView: 'dayGridMonth',
+                                                    headerToolbar: {
+                                                        left: 'prev,next today',
+                                                        center: 'title',
+                                                        right: 'dayGridMonth,timeGridWeek,timeGridDay',
+                                                    },
+                                                    events: eventsData,
+                                                    // Event click function
+                                                    eventClick: function (info) {
+                                                        // Display event details in a modal
+                                                        var eventTitleElement = document.getElementById('eventTitle');
+                                                        var eventTypeElement = document.getElementById('eventType');
+                                                        var eventDateElement = document.getElementById('eventDate');
+                                                        var eventTimeElement = document.getElementById('eventTime');
+                                                        var eventDescriptionElement = document.getElementById('eventDescription');
+                                                        var eventStatusElement = document.getElementById('eventStatus');
 
-                      // Sample data for events
-                      let eventsData = [
-                      {
-                        title: 'Database Management - BSIT 4-1',
-                        start: '2024-02-10',
-                        backgroundColor: '#FF5733',
-                        extendedProps: {
-                            classSchedule: true,
-                            type: 'Lecture',
-                            description: 'Database Management class for BSIT 4-1',
-                            status: 'Approved',
-                        },
-                    },
-                    {
-                        title: 'Database Management - BSIT 4-1',
-                        start: '2024-02-09',
-                        backgroundColor: '#FF5733',
-                        extendedProps: {
-                            classSchedule: true,
-                            type: 'Lecture',
-                            description: 'Database Management class for BSIT 4-1',
-                            status: 'Approved',
-                        },
-                    },
-                    {
-                        title: 'Programming 3 - BSIT 3-1',
-                        start: '2024-02-07',
-                        backgroundColor: '#5733FF',
-                        extendedProps: {
-                            classSchedule: true,
-                            type: 'Lecture',
-                            description: 'Programming 3 class for BSIT 3-1',
-                            status: 'Approved',
-                        },
-                    },
-                    {
-                        title: 'Web Dev - BSIT 4-1',
-                        start: '2024-02-12',
-                        backgroundColor: '#FF5733',
-                        extendedProps: {
-                            classSchedule: true,
-                            type: 'Lab',
-                            description: 'Web Development lab for BSIT 4-1',
-                            status: 'Approved',
-                        },
-                    },
-                    {
-                        title: 'Programming 3 - BSIT 3-1',
-                        start: '2024-02-14',
-                        backgroundColor: '#5733FF',
-                        extendedProps: {
-                            classSchedule: true,
-                            type: 'Lecture',
-                            description: 'Programming 3 class for BSIT 3-1',
-                            status: 'Approved',
-                        },
-                    },
-                    {
-                        title: 'Class 2',
-                        start: '2024-09-15',
-                        backgroundColor: '#33FF57',
-                        extendedProps: {
-                            classSchedule: true,
-                            type: 'Class',
-                            description: 'Class 2 schedule',
-                            status: 'Approved',
-                        },
-                    },
-                    {
-                        title: 'Meeting 2',
-                        start: '2024-09-16',
-                        backgroundColor: '#5733FF',
-                        extendedProps: {
-                            classSchedule: true,
-                            type: 'Meeting',
-                            description: 'Meeting 2 schedule',
-                            status: 'Approved',
-                        },
-                    },
-                  ];
+                                                        // Check if elements are not null before setting text content
+                                                        if (eventTitleElement && eventTypeElement && eventDateElement && eventTimeElement && eventDescriptionElement && eventStatusElement) {
+                                                            eventTitleElement.textContent = info.event.title;
+                                                            eventTypeElement.textContent = 'Type : ' + info.event.extendedProps.type;
+                                                            eventDateElement.textContent = 'Schedule: ' + info.event.start.toLocaleDateString();
+                                                            
+                                                            // Get formatted time from start to end
+                                                            var formattedTime = formatTime(info.event.start) + ' - ' + formatTime(info.event.end);
+                                                            eventTimeElement.textContent = 'Time: ' + formattedTime;
+                                                            
+                                                            eventDescriptionElement.textContent = 'Description: ' + info.event.extendedProps.description;
+                                                            eventStatusElement.textContent = 'Status: ' + info.event.extendedProps.status;
 
-                  var calendar = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'dayGridMonth',
-                    headerToolbar: {
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: 'dayGridMonth,timeGridWeek,timeGridDay',
-                    },
-                    events: eventsData,
-                    eventClick: function(info) {
-                      // Display event details in a modal
-                      document.getElementById('eventTitle').textContent = info.event.title;
-                      document.getElementById('eventType').textContent = 'Subject : ' + info.event.extendedProps.type;
-                      document.getElementById('eventDate').textContent = 'Schedule: ' + info.event.start.toLocaleDateString();
-                      document.getElementById('eventDescription').textContent = 'Description: ' + info.event.extendedProps.description;
-                      document.getElementById('eventStatus').textContent = 'Status: ' + info.event.extendedProps.status;
+                                                            // Open the modal
+                                                            document.getElementById('eventModal').style.display = 'block';
+                                                        }
+                                                    },
+                                                    eventDidMount: function (info) {
+                                                        // Set background color for each event after it's mounted
+                                                        var el = info.el;
+                                                        if (el) {
+                                                            el.style.backgroundColor = info.event.backgroundColor;
+                                                        }
+                                                    },
+                                                });
+                
+                                                // Close modal when close button is clicked
+                                                document.getElementById('closeModal').addEventListener('click', function () {
+                                                    document.getElementById('eventModal').style.display = 'none';
+                                                });
+                
+                                                calendar.render();
+                                            }
+                                        })
+                                        .catch(error => console.error('Error fetching data:', error));
+                                }
+                            })
+                            .catch(error => console.error('Error fetching academic year data:', error));
+                
+                                // Function to format time to 12-hour format with AM/PM
+                                function formatTime(date) {
+                                    var hours = date.getHours();
+                                    var minutes = date.getMinutes();
+                                    var ampm = hours >= 12 ? 'PM' : 'AM';
+                                    hours = hours % 12 || 12; // Handle midnight (0:00) as 12:00 AM
+                                    return hours + ':' + (minutes < 10 ? '0' : '') + minutes + ' ' + ampm;
+                                }
 
-                      // Open the modal
-                      document.getElementById('eventModal').style.display = 'block';
-                  },
-                    eventRender: function(info) {
-                        // Set background color for each event
-                        info.el.style.backgroundColor = info.event.backgroundColor;
-                    },
-                });
-
-                // Close modal when close button is clicked
-                document.getElementById('closeModal').addEventListener('click', function() {
-                    document.getElementById('eventModal').style.display = 'none';
-                });
-
-                calendar.render();
-                });
+                                    function calculateAndAddEvents(day, acadYearStart, eventsData, apiData) {
+                                        // Check if acadYearStart is valid
+                                        if (!acadYearStart || !(acadYearStart instanceof Date)) {
+                                            console.error('Invalid academic year start date:', acadYearStart);
+                                            return;
+                                        }
+                                    
+                                        // Define the days of the week
+                                        var daysOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+                                    
+                                        // Find the index of the provided day in the daysOfWeek array
+                                        var dayIndex = daysOfWeek.indexOf(day.toLowerCase());
+                                    
+                                        // Check if the provided day is valid
+                                        if (dayIndex !== -1) {
+                                            // Calculate the start date by adding the difference to the academic year start date
+                                            var startDate = new Date(acadYearStart);
+                                    
+                                            // Calculate the difference between the provided day and the current day of the week
+                                            var dayDifference = (dayIndex + 7 - startDate.getDay()) % 7;
+                                    
+                                            startDate.setDate(startDate.getDate() + dayDifference);
+                                    
+                                            // Define the month ranges for each semester based on the semester ID
+                                            var semesterMonths = {
+                                                '9887b76f-bc04-4f7f-a404-8e2fc5fc31b8': [9, 10, 11, 0, 1], // First Semester: October to February
+                                                '6127f4d1-73f9-4d57-9840-0ab14d599602': [2, 3, 4, 5, 6],     // Second Semester: March to July
+                                                '8c739071-aeb7-4335-a96d-8f41b06f5079': [7, 8],               // Summer Term: August to September
+                                            };
+                                    
+                                            // Get the allowed months for the current semester
+                                            var allowedMonths = semesterMonths[apiData.semester_id] || [];
+                                    
+                                            // Get the academic year end date
+                                            var acadYearEnd = new Date(acadYearStart);
+                                            acadYearEnd.setFullYear(acadYearEnd.getFullYear() + 1);
+                                            acadYearEnd.setDate(acadYearEnd.getDate() - 1);
+                                    
+                                            // Repeat the event for the entire academic year and the next year
+                                            while (startDate <= acadYearEnd) {
+                                                // Check if the event month is in the allowed range for the semester
+                                                if (allowedMonths.includes(startDate.getMonth())) {
+                                                    // Combine the date and time to create the start datetime for the event
+                                                    var startDatetime = new Date(startDate);
+                                                    startDatetime.setHours(apiData.fstart_time.split(':')[0]);
+                                                    startDatetime.setMinutes(apiData.fstart_time.split(':')[1]);
+                                    
+                                                    // Combine the date and time to create the end datetime for the event
+                                                    var endDatetime = new Date(startDate);
+                                                    endDatetime.setHours(apiData.fend_time.split(':')[0]);
+                                                    endDatetime.setMinutes(apiData.fend_time.split(':')[1]);
+                                    
+                                                    eventsData.push({
+                                                        title: apiData.course_description + ' - ' + apiData.classname,
+                                                        start: startDatetime,
+                                                        end: endDatetime,
+                                                        backgroundColor: '#FF5733',
+                                                        extendedProps: {
+                                                            classSchedule: true,
+                                                            type: 'Lecture',
+                                                            description: apiData.course_description + ' class for ' + apiData.classname,
+                                                            status: 'Approved',
+                                                        },
+                                                    });
+                                                }
+                                    
+                                                // Move to the next week
+                                                startDate.setDate(startDate.getDate() + 7);
+                                            }
+                                        } else {
+                                            console.error('Invalid day:', day);
+                                        }
+                                    }
+                                            
+                        // Function to calculate the academic year start date based on acadyear_id
+                        function calculateAcadYearStart(acadYearData, acadyearId) {
+                            // Find the academic year for the given acadyear_id
+                            var acadYear = acadYearData.find(acadYear => acadYear.id === acadyearId);
+                
+                            if (!acadYear) {
+                                console.error('Invalid acadyear_id:', acadyearId);
+                                return null;
+                            }
+                
+                            // Extract start year from the academic year name
+                            var acadYearNameParts = acadYear.name.split(' ');
+                            var acadYearStartYear = parseInt(acadYearNameParts[1].split('-')[0]);
+                
+                            // Assuming academic year starts on September 1st of the start year
+                            var acadYearStart = new Date(acadYearStartYear, 8, 1); // 8 represents September (zero-based month index)
+                
+                            // Log the extracted date for debugging
+                            console.log('Acad Year Start (calculated):', acadYearStart);
+                
+                            return acadYearStart;
+                        }
+                    });
                 </script>
-
              
 
              
@@ -361,19 +323,7 @@
  
 
   </main><!-- End #main -->
-  <script>
-    $(document).ready(function () {
-        // Call populateScheduleTable with sample data (replace with your actual data)
-        const sampleData = [
-            { subject_code: 'CS101', subject_name: 'Introduction to Computer Science', lecture_hours: 3, lab_hours: 2, units: 4, day: 'Monday', start_time: '08:00:00', end_time: '10:00:00' },
-            // Add more sample data as needed
-        ];
-
-        // Call populateScheduleTable with the sample data
-        populateScheduleTable(sampleData, '2022-2023', 'Fall Semester', 'BSIT', 'Class A');
-    });
-</script>
-
+  
   {% endblock %}
 
 {% endblock %}

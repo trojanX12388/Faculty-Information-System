@@ -56,25 +56,23 @@
           </style>
 
           <div class="d-block mt-md-3">
-            <br>
+            <h5><strong>COURSES</strong></h5>
             <table class="responsive-table">
-              {% for subjects in user.FISSubjectAssigned %}
-     
-              {% if subjects.id != None %}
+              {% if course_names_dict %}
               <tr>
-                <td><h6>{{subjects.subject_a}} Professor</h6></td>
-                <td style="padding: 0 2em;"><h6>{{subjects.subject_b}} Professor</h6></td>
+                <td><h6>{{ course_names_dict.a }}</h6></td>
+                <td style="padding: 0 2em;"><h6>{{ course_names_dict.b }}</h6></td>
                 <td style="padding: 0 2em;"><h6></h6></td>
               </tr>
               <tr>
-                <td><h6>{{subjects.subject_c}} Professor</h6></td>
+                <td><h6>{{course_names_dict.c}}</h6></td>
                 <td style="padding: 0 2em;"><h6></h6></td>
               </tr>
               <tr>
-                <td><h6>{{subjects.subject_d}} Professor</h6></td>
+                <td><h6>{{course_names_dict.d}}</h6></td>
                 <td style="padding: 0 2em;"><h6></h6></td>
               </tr>
-              {% else %}
+            {% else %}
               <tr>
                 <td><h6></h6></td>
                 <td style="padding: 0 2em;"><h6></h6></td>
@@ -89,10 +87,7 @@
                 <td style="padding: 0 2em;"><h6></h6></td>
               </tr>
      
-              {% endif %}
-
-
-           {% endfor %}  
+              {% endif %} 
             </table>
             <br>
           </div>
@@ -129,7 +124,7 @@
                 </thead>
                 <tbody>
                     {% for data in api_data.data %}
-                        {% if data.facultyname == user.FirstName + " " + user.LastName %}
+                        {% if data.facultyid == user.FacultyId %}
                             <tr>
                                 <td>{{ data.roomname }}</td>
                                 <td>{{ data.course_code }}</td>
