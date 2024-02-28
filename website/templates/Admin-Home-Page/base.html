@@ -5,7 +5,8 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>{% block title %}Admin Page{% endblock %}</title> 
+  <title id="notification-count-title"></title>
+  
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -96,7 +97,7 @@
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
             <li class="dropdown-header">
               You have <span id="notification-count-text">0</span> Notifications
-              <a href="/auth/sysadmin/Requests"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+              <a href="/Admin-Notifications"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
             </li>
             <li>
               <hr class="dropdown-divider">
@@ -1072,15 +1073,19 @@
       success: function (data) {
         // Handle the response and update the HTML
         var pendingRequests = data.requests.filter(function (request) {
-          return request.Status.toLowerCase() === 'pending';
+          return request.Status.toLowerCase() === 'pending' || request.Type.toLowerCase() === 'mandatory';
         });
-
+        
+        var newTitle = "{% block title %}Admin Page{% endblock %}";
+        
         if (pendingRequests.length > 0) {
           // Sort pending notifications by DateTime in descending order
           pendingRequests.sort(function (a, b) {
             return new Date(b.DateTime) - new Date(a.DateTime);
           });
-
+          
+          document.getElementById("notification-count-title").innerText = newTitle + ' ' + '(' + pendingRequests.length + ')';
+          
           // Update the notification count
           $('#notification-count').text(pendingRequests.length);
           $('#notification-count-text').text(pendingRequests.length);
@@ -1108,11 +1113,16 @@
 
         } else {
           // Handle the case when there are no pending notifications
+          
+          document.getElementById("notification-count-title").innerText = newTitle;
+
           $('.notifications').html('<h6 style="margin-right: 15px;margin-left: 15px;">You have no notifications.</h6>');
         }
       },
       error: function () {
         // Handle the error case
+        
+          document.getElementById("notification-count-title").innerText = newTitle;
         $('.notifications').html('<h6 style="margin-right: 15px;margin-left: 15px;">No notifications available.</h6>');
       }
     });

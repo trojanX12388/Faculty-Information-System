@@ -20,6 +20,8 @@
                   <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-basic-details">Edit</button>
                 </li>
 
+                {% for data in data.FISPDS_FamilyBackground %}
+                {% if loop.first %}
               </ul>
 
               <div class="tab-content pt-2">
@@ -30,81 +32,81 @@
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label ">Surname</div>
-                    <div class="col-lg-9 col-md-8"></div>
+                    <div class="col-lg-9 col-md-8">{{data.spouse_surname}}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">First Name</div>
-                    <div class="col-lg-9 col-md-8"></div>
+                    <div class="col-lg-9 col-md-8">{{data.spouse_firstname}}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Middle Name</div>
-                    <div class="col-lg-9 col-md-8"></div>
+                    <div class="col-lg-9 col-md-8">{{data.spouse_middlename}}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Name Extension</div>
-                    <div class="col-lg-9 col-md-8"></div>
+                    <div class="col-lg-9 col-md-8">{{data.spouse_nameextension}}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label ">Occupation</div>
-                    <div class="col-lg-9 col-md-8"></div>
+                    <div class="col-lg-9 col-md-8">{{data.spouse_occupation}}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Employer/Business Name</div>
-                    <div class="col-lg-9 col-md-8"></div>
+                    <div class="col-lg-9 col-md-8">{{data.spouse_employer}}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Business Address</div>
-                    <div class="col-lg-9 col-md-8"></div>
+                    <div class="col-lg-9 col-md-8">{{data.spouse_businessaddress}}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Telephone Number</div>
-                    <div class="col-lg-9 col-md-8"></div>
+                    <div class="col-lg-9 col-md-8">{{data.spouse_telephone}}</div>
                   </div>
 
                   <h5 class="card-title fw-bold">Father</h5>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label ">Surname</div>
-                    <div class="col-lg-9 col-md-8"></div>
+                    <div class="col-lg-9 col-md-8">{{data.father_surname}}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">First Name</div>
-                    <div class="col-lg-9 col-md-8"></div>
+                    <div class="col-lg-9 col-md-8">{{data.father_firstname}}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Middle Name</div>
-                    <div class="col-lg-9 col-md-8"></div>
+                    <div class="col-lg-9 col-md-8">{{data.father_middlename}}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Name Extension</div>
-                    <div class="col-lg-9 col-md-8"></div>
+                    <div class="col-lg-9 col-md-8">{{data.father_nameextension}}</div>
                   </div>
 
                   <h5 class="card-title fw-bold">Mother</h5>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label ">Surname</div>
-                    <div class="col-lg-9 col-md-8"></div>
+                    <div class="col-lg-9 col-md-8">{{data.mother_surname}}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">First Name</div>
-                    <div class="col-lg-9 col-md-8"></div>
+                    <div class="col-lg-9 col-md-8">{{data.mother_firstname}}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Middle Name</div>
-                    <div class="col-lg-9 col-md-8"></div>
+                    <div class="col-lg-9 col-md-8">{{data.mother_middlename}}</div>
                   </div>
                 </div>
 
@@ -125,56 +127,56 @@
                     <div class="row mb-3">
                       <label for="SpouseSurname" class="col-md-4 col-lg-3 col-form-label">Surname</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="SpouseSurname" type="text" class="form-control" id="SpouseSurname" value="" >
+                        <input name="SpouseSurname" type="text" class="form-control" id="SpouseSurname" value="{{data.spouse_surname}}" >
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="SpouseFirstName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="SpouseFirstName" type="text" class="form-control" id="SpouseFirstName" value="">
+                        <input name="SpouseFirstName" type="text" class="form-control" id="SpouseFirstName" value="{{data.spouse_firstname}}">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="SpouseMiddleName" class="col-md-4 col-lg-3 col-form-label">Middle Name</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="SpouseMiddleName" type="text" class="form-control" id="SpouseMiddleName" value="">
+                        <input name="SpouseMiddleName" type="text" class="form-control" id="SpouseMiddleName" value="{{data.spouse_middlename}}">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="SpouseExtension" class="col-md-4 col-lg-3 col-form-label">Name Extension</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="SpouseExtension" type="text" class="form-control" id="Extension" value="">
+                        <input name="SpouseExtension" type="text" class="form-control" id="Extension" value="{{data.spouse_nameextension}}">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="Occupation" class="col-md-4 col-lg-3 col-form-label">Occupation</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="Occupation" type="text" class="form-control" id="Occupation" value="">
+                        <input name="Occupation" type="text" class="form-control" id="Occupation" value="{{data.spouse_occupation}}">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="SpouseBusiness" class="col-md-4 col-lg-3 col-form-label">Employer/Business Name</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="SpouseBusiness" type="text" class="form-control" id="Business" value="">
+                        <input name="SpouseBusiness" type="text" class="form-control" id="Business" value="{{data.spouse_employer}}">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="BusinessAddress" class="col-md-4 col-lg-3 col-form-label">Business Address</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="BusinessAddress" type="text" class="form-control" id="BusinessAddress" value="">
+                        <input name="BusinessAddress" type="text" class="form-control" id="BusinessAddress" value="{{data.spouse_businessaddress}}">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="SpouseTelephone" class="col-md-4 col-lg-3 col-form-label">Telephone Number</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="SpouseTelephone" type="text" class="form-control" id="Telephone" value="">
+                        <input name="SpouseTelephone" type="text" class="form-control" id="Telephone" value="{{data.spouse_telephone}}">
                       </div>
                     </div>
                     
@@ -183,28 +185,28 @@
                     <div class="row mb-3">
                       <label for="FatherSurname" class="col-md-4 col-lg-3 col-form-label">Surname</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="FatherSurname" type="text" class="form-control" id="FatherSurname" value="" >
+                        <input name="FatherSurname" type="text" class="form-control" id="FatherSurname" value="{{data.father_surname}}" >
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="FatherFirstName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="FatherFirstName" type="text" class="form-control" id="FatherFirstName" value="">
+                        <input name="FatherFirstName" type="text" class="form-control" id="FatherFirstName" value="{{data.father_firstname}}">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="FatherMiddleName" class="col-md-4 col-lg-3 col-form-label">Middle Name</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="FatherMiddleName" type="text" class="form-control" id="FatherMiddleName" value="">
+                        <input name="FatherMiddleName" type="text" class="form-control" id="FatherMiddleName" value="{{data.father_middlename}}">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="FatherExtension" class="col-md-4 col-lg-3 col-form-label">Name Extension</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="FatherExtension" type="text" class="form-control" id="Extension" value="">
+                        <input name="FatherExtension" type="text" class="form-control" id="Extension" value="{{data.father_nameextension}}">
                       </div>
                     </div>
 
@@ -213,25 +215,26 @@
                     <div class="row mb-3">
                       <label for="MotherSurname" class="col-md-4 col-lg-3 col-form-label">Surname</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="MotherSurname" type="text" class="form-control" id="MotherSurname" value="" >
+                        <input name="MotherSurname" type="text" class="form-control" id="MotherSurname" value="{{data.mother_surname}}" >
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="MotherFirstName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="MotherFirstName" type="text" class="form-control" id="MotherFirstName" value="">
+                        <input name="MotherFirstName" type="text" class="form-control" id="MotherFirstName" value="{{data.mother_firstname}}">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="MotherMiddleName" class="col-md-4 col-lg-3 col-form-label">Middle Name</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="MotherMiddleName" type="text" class="form-control" id="MotherMiddleName" value="">
+                        <input name="MotherMiddleName" type="text" class="form-control" id="MotherMiddleName" value="{{data.mother_middlename}}">
                       </div>
                     </div>
 
-                    
+                      {%endif%}
+                    {% endfor %}
                     <div class="text-center">
                       <button type="submit" class="btn btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512" style="fill:#ffffff;position:relative; bottom:2px"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M433.941 129.941l-83.882-83.882A48 48 0 0 0 316.118 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V163.882a48 48 0 0 0-14.059-33.941zM224 416c-35.346 0-64-28.654-64-64 0-35.346 28.654-64 64-64s64 28.654 64 64c0 35.346-28.654 64-64 64zm96-304.52V212c0 6.627-5.373 12-12 12H76c-6.627 0-12-5.373-12-12V108c0-6.627 5.373-12 12-12h228.52c3.183 0 6.235 1.264 8.485 3.515l3.48 3.48A11.996 11.996 0 0 1 320 111.48z"/></svg>
@@ -244,7 +247,7 @@
 
               <br>
               <br>
-              
+
             <h5 class="card-title fw-bold">Children</h5>
             <h6 class="">Click the button 
                 <button type="button" class="btn btn-sm btn-outline-primary rounded-pill"><i class="bi bi-file-earmark-text" style="position:relative;bottom:3px"></i></button>
@@ -266,13 +269,13 @@
               </thead>
              
               <tbody>
-             {% for data in user.FISPDS_FamilyBackground %}
+             {% for data in user.FISPDS_FamilyBackground_Children %}
          
              {% if data.full_name != None %}
             
                 <tr>
                   <th scope="row">{{data.full_name}}</th>
-                  <td></td>
+                  <td>{{data.birthdate}}</td>
                   <td>
                     <button type="submit" class="btn btn-outline-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#d{{data.id}}"><i class="bi bi-trash"></i></button>
                     <button type="button" class="btn btn-outline-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#{{data.id}}"><i class="bi bi-file-earmark-text"></i></button>
@@ -290,7 +293,7 @@
                       </div>
                       <div class="modal-body">
 
-                <form action="/PDM-Family-Background" method="POST" enctype="multipart/form-data" accept-charset="utf-8" class="row g-3">
+                <form action="/PDM-Family-Background/update-children" method="POST" enctype="multipart/form-data" accept-charset="utf-8" class="row g-3">
                         <br>
                           <div class="col-md-10 my-md-3">
                             <div class="form-floating">
@@ -301,7 +304,7 @@
 
                         <div class="col-md-10 my-md-3">
                           <div class="form-floating">
-                            <input type="date" name="FamilyBirthday" class="form-control" id="floatingBirthday" placeholder="Birthday" value="{{data.FamilyBirthday}}" required>
+                            <input type="date" name="birthdate" class="form-control" id="floatingBirthday" placeholder="Birthday" value="{{data.birthdate}}" required>
                             <label for="floatingBirthday">Birthday</label>
                           </div>
                         </div>
@@ -328,7 +331,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-                      <form action="/PDM-Family-Background/delete-record" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+                      <form action="/PDM-Family-Background/delete-children" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
                           <input type="hidden" name="id" value="{{data.id}}"></input>
                         <h5 class="modal-title">Are you sure you want to delete this record?</h5>
                         <div class="modal-footer">
@@ -368,7 +371,7 @@
                     </div>
                     <div class="modal-body">
 
-              <form action="/PDM-Family-Background/add-record" method="POST" enctype="multipart/form-data" accept-charset="utf-8" class="row g-3">
+              <form action="/PDM-Family-Background/add-children" method="POST" enctype="multipart/form-data" accept-charset="utf-8" class="row g-3">
 
                         <div class="col-md-10">
                           <div class="form-floating">
@@ -379,7 +382,7 @@
 
                         <div class="col-md-10">
                           <div class="form-floating">
-                            <input type="date" name="FamilyBirthday" class="form-control" id="floatingBirthday" placeholder="Birthday" required>
+                            <input type="date" name="birthdate" class="form-control" id="floatingBirthday" placeholder="Birthday" required>
                             <label for="floatingBirthday">Birthday</label>
                           </div>
                         </div>

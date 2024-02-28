@@ -50,6 +50,7 @@ class FISFaculty(db.Model, UserMixin):
     FISPDS_PersonalDetails = db.relationship('FISPDS_PersonalDetails')
     FISPDS_ContactDetails = db.relationship('FISPDS_ContactDetails')
     FISPDS_FamilyBackground = db.relationship('FISPDS_FamilyBackground')
+    FISPDS_FamilyBackground_Children = db.relationship('FISPDS_FamilyBackground_Children')
     FISPDS_EducationalBackground = db.relationship('FISPDS_EducationalBackground')
     FISPDS_Eligibity = db.relationship('FISPDS_Eligibity')
     FISPDS_WorkExperience = db.relationship('FISPDS_WorkExperience')
@@ -137,6 +138,7 @@ class FISFaculty(db.Model, UserMixin):
             'FISPDS_PersonalDetails': self.FISPDS_PersonalDetails,
             'FISPDS_ContactDetails': self.FISPDS_ContactDetails,
             'FISPDS_FamilyBackground': self.FISPDS_FamilyBackground,
+            'FISPDS_FamilyBackground_Children': self.FISPDS_FamilyBackground_Children,
             'FISPDS_EducationalBackground': self.FISPDS_EducationalBackground,
             'FISPDS_Eligibity': self.FISPDS_Eligibity,
             'FISPDS_WorkExperience': self.FISPDS_WorkExperience,
@@ -229,6 +231,7 @@ class FISAdmin(db.Model, UserMixin):
     FISPDS_PersonalDetails = db.relationship('FISPDS_PersonalDetails')
     FISPDS_ContactDetails = db.relationship('FISPDS_ContactDetails')
     FISPDS_FamilyBackground = db.relationship('FISPDS_FamilyBackground')
+    FISPDS_FamilyBackground_Children = db.relationship('FISPDS_FamilyBackground_Children')
     FISPDS_EducationalBackground = db.relationship('FISPDS_EducationalBackground')
     FISPDS_Eligibity = db.relationship('FISPDS_Eligibity')
     FISPDS_WorkExperience = db.relationship('FISPDS_WorkExperience')
@@ -286,6 +289,7 @@ class FISAdmin(db.Model, UserMixin):
             'FISPDS_PersonalDetails': self.FISPDS_PersonalDetails,
             'FISPDS_ContactDetails': self.FISPDS_ContactDetails,
             'FISPDS_FamilyBackground': self.FISPDS_FamilyBackground,
+            'FISPDS_FamilyBackground_Children': self.FISPDS_FamilyBackground_Children,
             'FISPDS_EducationalBackground': self.FISPDS_EducationalBackground,
             'FISPDS_Eligibity': self.FISPDS_Eligibity,
             'FISPDS_WorkExperience': self.FISPDS_WorkExperience,
@@ -454,8 +458,60 @@ class FISPDS_FamilyBackground(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # DataID
     FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
     AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
+    
+    spouse_surname = db.Column(db.String(50))  
+    spouse_firstname = db.Column(db.String(50))  
+    spouse_middlename = db.Column(db.String(50))  
+    spouse_nameextension = db.Column(db.String(50))  
+    spouse_occupation = db.Column(db.String(50))  
+    spouse_employer = db.Column(db.String(50))  
+    spouse_businessaddress = db.Column(db.String(50))  
+    spouse_telephone = db.Column(db.String(50)) 
+    father_surname = db.Column(db.String(50))  
+    father_firstname = db.Column(db.String(50))  
+    father_middlename = db.Column(db.String(50))  
+    father_nameextension = db.Column(db.String(50)) 
+    mother_surname = db.Column(db.String(50))  
+    mother_firstname = db.Column(db.String(50))  
+    mother_middlename = db.Column(db.String(50))   
+    is_delete = db.Column(db.Boolean, default=False) 
+    
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'FacultyId': self.FacultyId,
+            'AdminId': self.AdminId,
+            'spouse_surname': self.spouse_surname,
+            'spouse_firstname': self.spouse_firstname,
+            'spouse_middlename': self.spouse_middlename,
+            'spouse_nameextension': self.spouse_nameextension,
+            'spouse_occupation': self.spouse_occupation,
+            'spouse_employer': self.spouse_employer,
+            'spouse_businessaddress': self.spouse_businessaddress,
+            'spouse_telephone': self.spouse_telephone,
+            'father_surname': self.father_surname,
+            'father_firstname': self.father_firstname,
+            'father_middlename': self.father_middlename,
+            'father_nameextension': self.father_nameextension,
+            'mother_surname': self.mother_surname,
+            'mother_firstname': self.mother_firstname,
+            'mother_middlename': self.mother_middlename,
+            'is_delete': self.is_delete,
+        }
+        
+    def get_id(self):
+        return str(self.id)    
+ 
+   
+class FISPDS_FamilyBackground_Children(db.Model):
+    __tablename__ = 'FISPDS_FamilyBackground_Children'
+
+    id = db.Column(db.Integer, primary_key=True)  # DataID
+    FacultyId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId'), nullable=True)  # FacultyID
+    AdminId = db.Column(db.Integer, db.ForeignKey('FISAdmin.AdminId'), nullable=True)  # AdminID
     full_name = db.Column(db.String(50))  
-    relationship = db.Column(db.String(50))  
+    birthdate = db.Column(db.Date, nullable=False)  # Birthdate  
     is_delete = db.Column(db.Boolean, default=False) 
     
 
@@ -465,14 +521,13 @@ class FISPDS_FamilyBackground(db.Model):
             'FacultyId': self.FacultyId,
             'AdminId': self.AdminId,
             'full_name': self.full_name,
-            'relationship': self.relationship,
+            'birthdate': self.birthdate,
             'is_delete': self.is_delete,
             
         }
         
     def get_id(self):
-        return str(self.id)  # Convert to string to ensure compatibility     
-    
+        return str(self.id)  # Convert to string to ensure compatibility       
 
 # PDS Educational Background  
   

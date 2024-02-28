@@ -126,6 +126,9 @@ def create_app():
     from .modules.adminFeedback_Surveys import aFS
     app.register_blueprint(aFS, url_prefix='/')
     
+    from .modules.AdminNotifications_Manager import adminnotification
+    app.register_blueprint(adminnotification, url_prefix='/')
+    
     # SYSTEM ADMIN ROUTES
     
     from .modules.SystemAdmin import sysadmin

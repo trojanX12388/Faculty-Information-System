@@ -23,7 +23,7 @@ from sqlalchemy import update
 from website.models import FISFaculty
 
 # LOADING MODEL PDS_TABLES
-from website.models import FISPDS_PersonalDetails, FISPDS_ContactDetails, FISPDS_FamilyBackground, FISPDS_EducationalBackground, FISPDS_Eligibity, FISPDS_WorkExperience, FISPDS_VoluntaryWork, FISPDS_TrainingSeminars, FISPDS_OutstandingAchievements, FISPDS_OfficeShipsMemberships, FISPDS_AgencyMembership, FISPDS_TeacherInformation, FISPDS_AdditionalQuestions, FISPDS_CharacterReference,FISPDS_Signature
+from website.models import FISPDS_PersonalDetails, FISPDS_ContactDetails, FISPDS_FamilyBackground, FISPDS_FamilyBackground_Children, FISPDS_EducationalBackground, FISPDS_Eligibity, FISPDS_WorkExperience, FISPDS_VoluntaryWork, FISPDS_TrainingSeminars, FISPDS_OutstandingAchievements, FISPDS_OfficeShipsMemberships, FISPDS_AgencyMembership, FISPDS_TeacherInformation, FISPDS_AdditionalQuestions, FISPDS_CharacterReference,FISPDS_Signature
    
 # LOADING FUNCTION CHECK TOKEN
 from website.Token.token_check import Check_Token
@@ -514,25 +514,99 @@ def PDM_FB():
         else:
             ProfilePic=username.ProfilePic
             
+        # VERIFYING IF DATA OF CURRENT USER EXISTS
+        if current_user.FISPDS_FamilyBackground:
+            data = current_user
+        else:
+            data =  {'FISPDS_FamilyBackground':
+                    {'spouse_surname': "",
+                    'spouse_firstname': "",
+                    'spouse_middlename': "",
+                    'spouse_nameextension': "",
+                    'spouse_occupation': "",
+                    'spouse_employer': "",
+                    'spouse_businessaddress': "",
+                    'spouse_telephone': "",
+                    'father_surname': "",
+                    'father_firstname': "",
+                    'father_middlename': "",
+                    'father_nameextension': "",
+                    'mother_surname': "",
+                    'mother_firstname': "",
+                    'mother_middlename': "",
+                    }
+                    }    
+            
          # UPDATE 
         
         if request.method == 'POST':
+            spouse_surname = request.form.get('SpouseSurname')
+            spouse_firstname = request.form.get('SpouseFirstName')
+            spouse_middlename = request.form.get('SpouseMiddleName')
+            spouse_nameextension = request.form.get('SpouseExtension')
+            spouse_occupation = request.form.get('Occupation')
+            spouse_employer = request.form.get('SpouseBusiness')
+            spouse_businessaddress = request.form.get('BusinessAddress')
+            spouse_telephone = request.form.get('SpouseTelephone')
+            
+            father_surname = request.form.get('FatherSurname')
+            father_firstname = request.form.get('FatherFirstName')
+            father_middlename = request.form.get('FatherMiddleName')
+            father_nameextension = request.form.get('FatherExtension')
+            
+            mother_surname = request.form.get('MotherSurname')
+            mother_firstname = request.form.get('MotherFirstName')
+            mother_middlename = request.form.get('MotherMiddleName')
          
             # VALUES
-           
-            full_name = request.form.get('full_name')
-            relationship = request.form.get('relationship')
-            id = request.form.get('id')
-
-            u = update(FISPDS_FamilyBackground)
-            u = u.values({"full_name": full_name,
-                          "relationship": relationship
-                          })
-            u = u.where(FISPDS_FamilyBackground.id == id)
-            db.session.execute(u)
-            db.session.commit()
-            db.session.close()
-            return redirect(url_for('PDM.PDM_FB'))
+            if FISPDS_FamilyBackground.query.filter_by(FacultyId=current_user.FacultyId).first():
+                
+             
+                u = update(FISPDS_FamilyBackground)
+                u = u.values({'spouse_surname': spouse_surname,
+                                'spouse_firstname': spouse_firstname,
+                                'spouse_middlename': spouse_middlename,
+                                'spouse_nameextension': spouse_nameextension,
+                                'spouse_occupation': spouse_occupation,
+                                'spouse_employer': spouse_employer,
+                                'spouse_businessaddress': spouse_businessaddress,
+                                'spouse_telephone': spouse_telephone,
+                                'father_surname': father_surname,
+                                'father_firstname': father_firstname,
+                                'father_middlename': father_middlename,
+                                'father_nameextension': father_nameextension,
+                                'mother_surname': mother_surname,
+                                'mother_firstname': mother_firstname,
+                                'mother_middlename': mother_middlename,
+                            })
+                u = u.where(FISPDS_FamilyBackground.FacultyId == current_user.FacultyId)
+                db.session.execute(u)
+                db.session.commit()
+                print("update")
+                return redirect(url_for('PDM.PDM_FB'))
+            
+            else:
+                print("add")
+                add_record = FISPDS_FamilyBackground( spouse_surname = spouse_surname, 
+                                                    spouse_firstname = spouse_firstname, 
+                                                    spouse_middlename = spouse_middlename, 
+                                                    spouse_nameextension = spouse_nameextension, 
+                                                    spouse_occupation = spouse_occupation, 
+                                                    spouse_employer = spouse_employer, 
+                                                    spouse_businessaddress = spouse_businessaddress, 
+                                                    spouse_telephone = spouse_telephone,
+                                                    father_surname = father_surname, 
+                                                    father_firstname = father_firstname, 
+                                                    father_middlename = father_middlename, 
+                                                    father_nameextension = father_nameextension,
+                                                    mother_surname = mother_surname, 
+                                                    mother_firstname = mother_firstname, 
+                                                    mother_middlename = mother_middlename, 
+                                                    FacultyId = current_user.FacultyId)
+                db.session.add(add_record)
+                db.session.commit()
+                
+                return redirect(url_for('PDM.PDM_FB'))
             
                                 
         return render_template("Faculty-Home-Page/Personal-Data-Management-Page/PDM-Family-Background.html", 
@@ -540,10 +614,12 @@ def PDM_FB():
                                profile_pic=ProfilePic,
                                PDM="show",
                                user = current_user,
+                               data = data,
                                age = str(calculateAge(date(current_user.BirthDate.year, current_user.BirthDate.month, current_user.BirthDate.day))),
                                activate_FB="active")
  
-@PDM.route("/PDM-Family-Background/add-record", methods=['GET', 'POST'])
+ 
+@PDM.route("/PDM-Family-Background/add-children", methods=['GET', 'POST'])
 @login_required
 def PDM_FBadd():
 
@@ -554,22 +630,45 @@ def PDM_FBadd():
             # VALUES
            
             full_name = request.form.get('full_name')
-            relationship = request.form.get('relationship')
+            birthdate = request.form.get('birthdate')
            
-            add_record = FISPDS_FamilyBackground(full_name=full_name,relationship=relationship,FacultyId = current_user.FacultyId)
+            add_record = FISPDS_FamilyBackground_Children(full_name=full_name,birthdate=birthdate,FacultyId = current_user.FacultyId)
             
             db.session.add(add_record)
             db.session.commit()
             db.session.close()
             return redirect(url_for('PDM.PDM_FB'))
+        
+        
+@PDM.route("/PDM-Family-Background/update-children", methods=['GET', 'POST'])
+@login_required
+def PDM_FBupdate():
 
-@PDM.route("/PDM-Family-Background/delete-record", methods=['GET', 'POST'])
+         if request.method == 'POST':
+         
+            # VALUES
+           
+            full_name = request.form.get('full_name')
+            birthdate = request.form.get('birthdate')
+            id = request.form.get('id')
+
+            u = update(FISPDS_FamilyBackground_Children)
+            u = u.values({"full_name": full_name,
+                          "birthdate": birthdate
+                          })
+            u = u.where(FISPDS_FamilyBackground_Children.id == id)
+            db.session.execute(u)
+            db.session.commit()
+            db.session.close()
+            return redirect(url_for('PDM.PDM_FB'))
+
+@PDM.route("/PDM-Family-Background/delete-children", methods=['GET', 'POST'])
 @login_required
 def PDM_FBdel():
 
          # DELETE RECORD
          
-        # def delete(self, item_id):
+        # def delete( item_id):
         # item = ItemModel.query.get_or_404(item_id)
         # db.session.delete(item)
         # db.session.commit()
@@ -578,7 +677,7 @@ def PDM_FBdel():
         id = request.form.get('id')
         
 
-        data = FISPDS_FamilyBackground.query.filter_by(id=id).first() 
+        data = FISPDS_FamilyBackground_Children.query.filter_by(id=id).first() 
         
         if data:
             db.session.delete(data)
