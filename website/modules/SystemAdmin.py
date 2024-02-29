@@ -32,7 +32,7 @@ from website.models import db
 from sqlalchemy import update
 
 # LOADING MODEL CLASSES
-from website.models import FISFaculty, FISAdmin, FISLoginToken, FISSystemAdmin, FISSystemAdmin_Log, FISUser_Log, FISRequests
+from website.models import FISFaculty, FISAdmin, FISLoginToken, FISSystemAdmin, FISSystemAdmin_Log, FISUser_Log, FISRequests, FISUser_Notifications, FISAdmin_Notifications
 
 
 # LOAD JWT MODULE
@@ -625,6 +625,19 @@ def sysadminFM_update_info():
               
             db.session.add(add_log)
             db.session.commit()
+            
+            add_notif = FISUser_Notifications(
+                    FacultyId=id,
+                    Status= "pending",
+                    Type= "notif",
+                    notif_by = None,
+                    notifier_type = "System",
+                    Notification = "Updated your basic information" ,
+                    )
+                    
+            db.session.add(add_notif)
+            db.session.commit()
+                    
             db.session.close()
             flash('Updated successfully!', category='success')
             
@@ -698,6 +711,18 @@ def sysadminFM_update_pass():
                     db.session.add(add_log)
                     db.session.commit()
                     
+                    add_notif = FISUser_Notifications(
+                    FacultyId=id,
+                    Status= "pending",
+                    Type= "notif",
+                    notif_by = None,
+                    notifier_type = "System",
+                    Notification = "Updated your password" ,
+                    )
+                    
+                    db.session.add(add_notif)
+                    db.session.commit()
+                    
                     db.session.close()
                     
                     change_pass_email(new_password, email)
@@ -747,6 +772,18 @@ def sysadminFM_update_status():
                     
                     db.session.add(add_log)
                     db.session.commit()
+                    
+                    add_notif = FISUser_Notifications(
+                    FacultyId=id,
+                    Status= "pending",
+                    Type= "notif",
+                    notif_by = None,
+                    notifier_type = "System",
+                    Notification = "Disabled your account" ,
+                    )
+                    
+                    db.session.add(add_notif)
+                    db.session.commit()
                 
                 else:   
                     add_log = FISSystemAdmin_Log(
@@ -756,6 +793,18 @@ def sysadminFM_update_status():
                     )
                     
                     db.session.add(add_log)
+                    db.session.commit()
+                    
+                    add_notif = FISUser_Notifications(
+                    FacultyId=id,
+                    Status= "pending",
+                    Type= "notif",
+                    notif_by = None,
+                    notifier_type = "System",
+                    Notification = "Updated your account status to " + str(status) ,
+                    )
+                    
+                    db.session.add(add_notif)
                     db.session.commit()
                 
                 db.session.close()
@@ -1050,6 +1099,18 @@ def sysadminAM_update_info():
             db.session.add(add_log)
             db.session.commit()
             
+            add_notif = FISAdmin_Notifications(
+            AdminId=id,
+            Status= "pending",
+            Type= "notif",
+            notif_by = None,
+            notifier_type = "System",
+            Notification = "Updated your basic information",
+            )
+            
+            db.session.add(add_notif)
+            db.session.commit()
+            
             db.session.close()
             flash('Updated successfully!', category='success')
             
@@ -1118,6 +1179,18 @@ def sysadminAM_update_pass():
                     db.session.add(add_log)
                     db.session.commit()
                     
+                    add_notif = FISAdmin_Notifications(
+                    AdminId=id,
+                    Status= "pending",
+                    Type= "notif",
+                    notif_by = None,
+                    notifier_type = "System",
+                    Notification = "Updated your account password.",
+                    )
+                    
+                    db.session.add(add_notif)
+                    db.session.commit()
+                    
                     db.session.close()
                     
                     change_pass_email(new_password, email)
@@ -1167,6 +1240,19 @@ def sysadminAM_update_status():
                     
                     db.session.add(add_log)
                     db.session.commit()
+                    
+                    add_notif = FISAdmin_Notifications(
+                    AdminId=id,
+                    Status= "pending",
+                    Type= "notif",
+                    notif_by = None,
+                    notifier_type = "System",
+                    Notification = "Your account has been disabled",
+                    )
+                    
+                    db.session.add(add_notif)
+                    db.session.commit()
+                    
                 
                 else:   
                     add_log = FISSystemAdmin_Log(
@@ -1177,6 +1263,19 @@ def sysadminAM_update_status():
                     
                     db.session.add(add_log)
                     db.session.commit()
+                    
+                    add_notif = FISAdmin_Notifications(
+                    AdminId=id,
+                    Status= "pending",
+                    Type= "notif",
+                    notif_by = None,
+                    notifier_type = "System",
+                    Notification = "Updated your account status to  " + str(status),
+                    )
+                    
+                    db.session.add(add_notif)
+                    db.session.commit()
+                    
                 
                 db.session.close()
                 
@@ -1236,7 +1335,7 @@ def sysadminAM_update_requests():
         try:
             if status == "pending":
                 u = update(FISRequests)
-                u = u.values({"Status": value,})
+                u = u.values({"Status": value,"updated_at": datetime.datetime.now(),})
                 
                 u = u.where(FISRequests.id == id)
                 db.session.execute(u)
@@ -1261,6 +1360,38 @@ def sysadminAM_update_requests():
     return redirect(url_for('sysadmin.sysadminR'))
 
 
+
+@sysadmin.route('/auth/sysadmin/Requests/action-decline', methods=['GET', 'POST'])
+@login_required
+@SysCheck_Token
+def sysadminAM_update_requests_decline():
+    
+      # UPDATE RECORD
+    if request.method == 'POST':
+   
+        # VALUES
+        
+        value = request.form.get('value')
+        status = request.form.get('status')
+        id = request.form.get('id')
+        
+        try:
+            if status == "pending":
+                u = update(FISRequests)
+                u = u.values({"Status": value,"updated_at": datetime.datetime.now(),})
+                
+                u = u.where(FISRequests.id == id)
+                db.session.execute(u)
+                db.session.commit()
+                db.session.close()
+           
+                flash('Request successfully declined!', category='success')
+            
+        except:
+            flash('Request was unsuccessfully updated... please try again.', category='error')
+       
+                   
+    return redirect(url_for('sysadmin.sysadminR'))
 
 
 
@@ -1757,6 +1888,7 @@ def sysadmin_api_sysadmin_requests():
             'DateTime': request.DateTime.strftime("%Y-%m-%d %H:%M:%S"),  # Format datetime as string
             'Status': request.Status,
             'Request': request.Request,
+            'message': request.message,
             'IdentifierType': identifier_type,
             'IdentifierName': identifier_name,
             'Profile_Pic': identifier_entry.ProfilePic,

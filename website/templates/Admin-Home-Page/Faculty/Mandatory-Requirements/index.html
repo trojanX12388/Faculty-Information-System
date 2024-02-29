@@ -1,0 +1,192 @@
+{% extends "/Admin-Home-Page/base.html" %}{% block title %}{{faculty_data.FirstName}} {{faculty_data.LastName}} Mandatory Requirements{% endblock %} {% block content%}
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<!-- Include DataTables Buttons CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+
+<!-- Include DataTables Print Button JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+
+<main id="main" class="main">
+
+  {% block Mandatory_Requirements %}
+    <div class="pagetitle">
+      <h1>Mandatory Requirements</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Homepage</a></li>
+          <li class="breadcrumb-item"><a href="/faculty-member/{{ faculty_data.FacultyId }}">{{faculty_data.FirstName}} {{faculty_data.LastName}}</a></li>
+          <li class="breadcrumb-item active">Mandatory Requirements</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+
+        <div class="card">
+          <div class="card-body profile-card pt-4 d-flex flex-col align-items-start">
+            <img src="https://lh3.googleusercontent.com/d/{{faculty_data.ProfilePic}}" alt="Profile" class="rounded-circle" style="width:150px; height:150px;">
+            <div class="mx-md-3" style="position:relative;left:30px;">
+              <div class="w-100">
+                <h4 class="my-0">{{faculty_data.FirstName}} {{faculty_data.MiddleInitial}} {{faculty_data.LastName}}</h4>
+                <br>
+                <small class="text-muted mt-sm-1">{{faculty_data.Rank}}</small>
+                <br>
+                <small class="text-muted mt-sm-1">{{faculty_data.Degree}}</small>
+                <br>
+                <small class="text-muted mt-sm-1">{{faculty_data.FacultyType}}</small>
+              </div>
+          </div>
+        </div>
+        <style>
+          .transparent-background {
+              background-color: transparent !important;
+              border-color: transparent !important;
+              color: #000 !important; /* Set text color to black or the desired color */
+          }
+      
+          .transparent-background .bi {
+              color: #000 !important; /* Set icon color to black or the desired color */
+          }
+      </style>
+      
+      <div class="container-fluid">
+          <div class="row justify-content-end">
+              <div class="col-md-2">
+                  <button type="button" onclick="redirectToURL()" class="btn btn-secondary mt-3 btn-block transparent-background" style="position: relative; bottom: 120px;">
+                      <i class="bi bi-arrow-left-square">Back</i> 
+                  </button>
+              </div>
+          </div>
+      </div>
+                  
+                  <script>
+                    function redirectToURL() {
+                      window.location.href = '/faculty-member/{{ faculty_data.FacultyId }}';
+                    }
+                  </script>
+        </div>
+
+<div class="card">
+      <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+        <h3><strong>REQUIREMENTS FOR YEAR</strong></h3>
+        <h6><strong>{{ records.year }}</strong></h6>
+      </div>
+
+      
+      <form class="row g-3" action="/faculty-member/{{faculty_id}}/mandatory-requirements" method="POST" id="yourFormId">
+
+        <div class="col-md-6">
+          <div class="form-floating mb-3">
+            <select class="form-select" id="select" name="select" aria-label="State" required>
+              <option value=''>Select Year</option>
+              {% for data in faculty_mandatory %}
+                {% if data.id != None %}
+                  <option value="{{data.id}}">{{ data.year }}</option>
+                {% else %}
+                  
+                {% endif %}
+              {% endfor %}  
+            </select>
+            <label for="floatingSelect">Year</label>
+          </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="d-grid gap-2 mt-3">
+                <button type="submit" class="btn btn-primary">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512" style="fill:#ffffff;position:relative; bottom:2px"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M433.941 129.941l-83.882-83.882A48 48 0 0 0 316.118 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V163.882a48 48 0 0 0-14.059-33.941zM224 416c-35.346 0-64-28.654-64-64 0-35.346 28.654-64 64-64s64 28.654 64 64c0 35.346-28.654 64-64 64zm96-304.52V212c0 6.627-5.373 12-12 12H76c-6.627 0-12-5.373-12-12V108c0-6.627 5.373-12 12-12h228.52c3.183 0 6.235 1.264 8.485 3.515l3.48 3.48A11.996 11.996 0 0 1 320 111.48z"/></svg>
+                  Select</button>
+            </div>
+            <br><br>
+        </div>
+
+      </form>
+
+      <script>
+        document.getElementById('yourFormId').addEventListener('submit', function (event) {
+          var selectElement = document.getElementById('select');
+          
+          if (selectElement.value === '') {
+            alert('Please select a value for School Year & Semester');
+            event.preventDefault(); // Prevent the form from submitting
+          }
+        });
+      </script>
+
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">DOCUMENTS REQUIRED</th>
+                <th scope="col">DESCRIPTION</th>
+                <th scope="col">STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-decoration-underline"><a href="https://drive.google.com/file/d/{{records.classrecord}}/view" target="_blank">Class Records</a></td>
+                <td>Faculty members are typically expected to hold a doctoral degree (Ph.D.) in the relevant field. This signifies a high...</a></td>
+    
+                {% if records.classrecord_status == 'Done' %}
+                <td><h6 class="badge bg-success" style="width:158px;height:20px;">SUBMITTED</h6></td>
+                {%elif records.classrecord_status == 'Pending'%}
+                <td><h6 class="badge bg-warning" style="width:158px;height:20px;">PENDING</h6></td>
+                {%else%}
+                <td><h6 class="badge bg-danger" style="width:158px;height:20px;">NOT SUBMITTED</h6></td>
+                {%endif%}
+              </tr>
+              <tr>
+                <td class="text-decoration-underline"><a href="https://drive.google.com/file/d/{{records.gradingsheet}}/view" target="_blank">Grading Sheet</a></td>
+                <td>Previous teaching experience, preferably at the tertiary level, is crucial. This requirement ensures that faculty...</td>
+               
+              {% if records.gradingsheet_status == 'Done' %}
+              <td><h6 class="badge bg-success" style="width:158px;height:20px;">SUBMITTED</h6></td>
+              {%elif records.gradingsheet_status == 'Pending'%}
+              <td><h6 class="badge bg-warning" style="width:158px;height:20px;">PENDING</h6></td>
+              {%else%}
+              <td><h6 class="badge bg-danger" style="width:158px;height:20px;">NOT SUBMITTED</h6></td>
+              {%endif%}
+              </tr>
+              <tr>
+                <td class="text-decoration-underline"><a href="https://drive.google.com/file/d/{{records.exams}}/view" target="_blank">Exams</a></td>
+                <td>A strong record of research and publications is essential. This demonstrates the faculty member’s  commitment...</td>
+             
+              {% if records.exams_status == 'Done' %}
+              <td><h6 class="badge bg-success" style="width:158px;height:20px;">SUBMITTED</h6></td>
+              {%elif records.exams_status == 'Pending'%}
+              <td><h6 class="badge bg-warning" style="width:158px;height:20px;">PENDING</h6></td>
+              {%else%}
+              <td><h6 class="badge bg-danger" style="width:158px;height:20px;">NOT SUBMITTED</h6></td>
+              {%endif%}
+
+              </tr>
+             
+            </tbody>
+          </table>
+          <!-- End Bordered Table -->
+        </div>
+      
+
+</section>
+
+
+
+
+  </main><!-- End #main -->
+
+
+
+{% endblock %}
+{% endblock %}
+      

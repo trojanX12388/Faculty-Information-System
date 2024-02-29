@@ -32,7 +32,7 @@ from sqlalchemy import update
 from website.models import FISAdmin, FISAdmin, FISLoginToken, FISSystemAdmin, FISUser_Log, Project, Users
 
 # LOADING FACULTY MODULES
-from website.models import FISProfessionalDevelopment, FacultyResearchPaper
+from website.models import FISProfessionalDevelopment, FacultyResearchPaper, ESISUser, IncidentReport, Student, FISMandatoryRequirements
 
 
 # LOAD JWT MODULE
@@ -667,6 +667,64 @@ def admin_viewPD(faculty_id):
 
 
 
+@admin.route("/faculty-member/<faculty_id>/extension-projects")
+@login_required
+@Check_Token
+def admin_viewExtension(faculty_id):
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+    username = FISAdmin.query.filter_by(AdminId=current_user.AdminId).first() 
+    
+    if username.ProfilePic == None:
+        ProfilePic=profile_default
+    else:
+        ProfilePic=username.ProfilePic
+    
+    API_TOKENS = ast.literal_eval(os.environ["API_TOKENS"])
+    selected_token = API_TOKENS.get('WEBSITE1_API_TOKEN')
+    
+    if os.getenv('FLASK_ENV') == 'production':
+        base_url = 'https://pupqcfis-com.onrender.com'
+    else:
+        base_url = 'http://127.0.0.1:8000' 
+
+    endpoint = '/api/FISFaculty/'+faculty_id
+    url = f'{base_url}{endpoint}'
+    
+    api_key = selected_token
+
+    headers = {
+        'Authorization': 'API Key',
+        'token': api_key,  # 'token' key with the API key value
+        'Content-Type': 'application/json'  # Adjust content type as needed
+    }
+
+    # Make a GET request to the API with the API key in the headers
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        # Process the API response data
+        api_data = response.json()
+
+    ESISid = ESISUser.query.filter_by(FacultyId=faculty_id).first()
+
+    if ESISid is not None:
+        project = Project.query.filter_by(LeadProponentId=ESISid.UserId).all()
+    else:
+        project = None
+    
+    return render_template("Admin-Home-Page/Faculty/Extension-Projects/index.html", 
+                           User= username.FirstName + " " + username.LastName,
+                           user= current_user,
+                           faculty_data = api_data['Faculties'],
+                           faculty_id = faculty_id,
+                           project = project,
+                           profile_pic=ProfilePic)   
+    
+ 
+
+
+
+
 @admin.route("/faculty-member/<faculty_id>/research-publications")
 @login_required
 @Check_Token
@@ -705,17 +763,6 @@ def admin_viewResearch(faculty_id):
         # Process the API response data
         api_data = response.json()
 
-    date_string = api_data['Faculties']['BirthDate']
-
-    # Parse the string into a datetime object
-    date_object = datetime.datetime.strptime(date_string, '%a, %d %b %Y %H:%M:%S %Z')
-    BirthDate = date_object.strftime('%b %d %Y')
-    
-    date_string = api_data['Faculties']['DateHired']
-
-    # Parse the string into a datetime object
-    date_object = datetime.datetime.strptime(date_string, '%a, %d %b %Y %H:%M:%S %Z')
-    date_hired = date_object.strftime('%b %d %Y')
     
     risid = Users.query.filter_by(faculty_id=faculty_id).first() 
        
@@ -730,24 +777,205 @@ def admin_viewResearch(faculty_id):
                            User= username.FirstName + " " + username.LastName,
                            user= current_user,
                            faculty_data = api_data['Faculties'],
-                           BirthDate = BirthDate,
                            faculty_id = faculty_id,
                            research_publication = research_publication,
-                           date_hired = date_hired,
                            profile_pic=ProfilePic)   
+
+
+
+
+@admin.route("/faculty-member/<faculty_id>/roles")
+@login_required
+@Check_Token
+def admin_viewRoles(faculty_id):
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+    username = FISAdmin.query.filter_by(AdminId=current_user.AdminId).first() 
     
- 
+    if username.ProfilePic == None:
+        ProfilePic=profile_default
+    else:
+        ProfilePic=username.ProfilePic
+    
+    API_TOKENS = ast.literal_eval(os.environ["API_TOKENS"])
+    selected_token = API_TOKENS.get('WEBSITE1_API_TOKEN')
+    
+    if os.getenv('FLASK_ENV') == 'production':
+        base_url = 'https://pupqcfis-com.onrender.com'
+    else:
+        base_url = 'http://127.0.0.1:8000' 
+
+    endpoint = '/api/FISFaculty/'+faculty_id
+    url = f'{base_url}{endpoint}'
+    
+    api_key = selected_token
+
+    headers = {
+        'Authorization': 'API Key',
+        'token': api_key,  # 'token' key with the API key value
+        'Content-Type': 'application/json'  # Adjust content type as needed
+    }
+
+    # Make a GET request to the API with the API key in the headers
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        # Process the API response data
+        api_data = response.json()
+
+    roles = IncidentReport.query.join(Student, IncidentReport.StudentId == Student.StudentId).\
+            add_columns(
+                IncidentReport.Date,
+                IncidentReport.Time,
+                IncidentReport.Description,
+                IncidentReport.Status,
+                Student.FirstName,
+                Student.LastName
+            ).\
+            filter(IncidentReport.InvestigatorId == faculty_id).all()
+    
+    if roles is not None:
+            faculty_roles = roles
+        
+    else:
+        faculty_roles = None
+   
+    return render_template("Admin-Home-Page/Faculty/Faculty-Roles/index.html", 
+                           User= username.FirstName + " " + username.LastName,
+                           user= current_user,
+                           faculty_data = api_data['Faculties'],
+                           faculty_id = faculty_id,
+                           faculty_roles = faculty_roles,
+                           profile_pic=ProfilePic)   
 
 
 
 
 
+@admin.route("/faculty-member/<faculty_id>/mandatory-requirements", methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def admin_viewMandatory(faculty_id):
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+    username = FISAdmin.query.filter_by(AdminId=current_user.AdminId).first() 
+    from sqlalchemy import desc
+
+    if username.ProfilePic == None:
+        ProfilePic=profile_default
+    else:
+        ProfilePic=username.ProfilePic
+    
+    API_TOKENS = ast.literal_eval(os.environ["API_TOKENS"])
+    selected_token = API_TOKENS.get('WEBSITE1_API_TOKEN')
+    
+    if os.getenv('FLASK_ENV') == 'production':
+        base_url = 'https://pupqcfis-com.onrender.com'
+    else:
+        base_url = 'http://127.0.0.1:8000' 
+
+    endpoint = '/api/FISFaculty/'+faculty_id
+    url = f'{base_url}{endpoint}'
+    
+    api_key = selected_token
+
+    headers = {
+        'Authorization': 'API Key',
+        'token': api_key,  # 'token' key with the API key value
+        'Content-Type': 'application/json'  # Adjust content type as needed
+    }
+
+    # Make a GET request to the API with the API key in the headers
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        # Process the API response data
+        api_data = response.json()
+
+    faculty_mandatory = FISMandatoryRequirements.query.filter_by(FacultyId=faculty_id).all()
+
+    # VERIFYING IF DATA OF CURRENT USER EXISTS
+    if faculty_mandatory:
+        if FISMandatoryRequirements.query.filter_by(FacultyId=faculty_id, year=str(datetime.datetime.now().year)).order_by(desc(FISMandatoryRequirements.id)).first():
+            record = FISMandatoryRequirements.query.filter_by(FacultyId=faculty_id, year=str(datetime.datetime.now().year)).order_by(desc(FISMandatoryRequirements.id)).first()
+
+            classrecord = record.classrecord
+            gradingsheet = record.gradingsheet
+            exams = record.exams
+            classrecord_status = record.classrecord_status
+            gradingsheet_status = record.gradingsheet_status
+            exams_status = record.exams_status
+            year = record.year
 
 
+            records = {
+                            'classrecord': classrecord,
+                            'gradingsheet': gradingsheet,
+                            'exams': exams,
+                            'classrecord_status': classrecord_status,
+                            'gradingsheet_status': gradingsheet_status,
+                            'exams_status': exams_status,
+                            'year': year,
+            
+                        }
+            
+        else:
+            records = {
+                            'classrecord': "",
+                            'gradingsheet': "",
+                            'exams': "",
+                            'classrecord_status': "None",
+                            'gradingsheet_status': "None",
+                            'exams_status': "None",
+                            'year': str(datetime.datetime.now().year),
+
+                        }
+    
+    else:
+            records = {
+                            'classrecord': "",
+                            'gradingsheet': "",
+                            'exams': "",
+                            'classrecord_status': "None",
+                            'gradingsheet_status': "None",
+                            'exams_status': "None",
+                            'year': str(datetime.datetime.now().year),
+
+                        }
+                
+        
+    if request.method == 'POST':
+    
+        select = request.form.get('select')
+        record = FISMandatoryRequirements.query.filter_by(FacultyId=faculty_id, id=select).first()
+
+        classrecord = record.classrecord
+        gradingsheet = record.gradingsheet
+        exams = record.exams
+        classrecord_status = record.classrecord_status
+        gradingsheet_status = record.gradingsheet_status
+        exams_status = record.exams_status
+        year = record.year
 
 
-
-
+        records = {
+                        'classrecord': classrecord,
+                        'gradingsheet': gradingsheet,
+                        'exams': exams,
+                        'classrecord_status': classrecord_status,
+                        'gradingsheet_status': gradingsheet_status,
+                        'exams_status': exams_status,
+                        'year': year,
+            
+                    }
+        
+        
+    return render_template("Admin-Home-Page/Faculty/Mandatory-Requirements/index.html", 
+                           User= username.FirstName + " " + username.LastName,
+                           user= current_user,
+                           faculty_data = api_data['Faculties'],
+                           faculty_id = faculty_id,
+                           records = records,
+                           faculty_mandatory = faculty_mandatory,
+                           profile_pic=ProfilePic)   
 
 
 

@@ -23,8 +23,8 @@
       <h1>Professional Development</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item">Homepage</li>
-          <li class="breadcrumb-item">{{faculty_data.FirstName}} {{faculty_data.LastName}}</li>
+          <li class="breadcrumb-item"><a href="/">Homepage</a></li>
+          <li class="breadcrumb-item"><a href="/faculty-member/{{ faculty_data.FacultyId }}">{{faculty_data.FirstName}} {{faculty_data.LastName}}</a></li>
           <li class="breadcrumb-item active">Professional Development</li>
         </ol>
       </nav>
@@ -105,12 +105,37 @@
               <br>
               <small class="text-muted mt-sm-1">{{faculty_data.FacultyType}}</small>
             </div>
-  
         </div>
       </div>
+      <style>
+        .transparent-background {
+            background-color: transparent !important;
+            border-color: transparent !important;
+            color: #000 !important; /* Set text color to black or the desired color */
+        }
+    
+        .transparent-background .bi {
+            color: #000 !important; /* Set icon color to black or the desired color */
+        }
+    </style>
+    
+    <div class="container-fluid">
+        <div class="row justify-content-end">
+            <div class="col-md-2">
+                <button type="button" onclick="redirectToURL()" class="btn btn-secondary mt-3 btn-block transparent-background" style="position: relative; bottom: 120px;">
+                    <i class="bi bi-arrow-left-square">Back</i> 
+                </button>
+            </div>
+        </div>
+    </div>
+                
+                <script>
+                  function redirectToURL() {
+                    window.location.href = '/faculty-member/{{ faculty_data.FacultyId }}';
+                  }
+                </script>
       </div>
       
-
       <div class="d-flex flex-row">
       
         <div class="card ms-md-2 w-100 mb-0 pb-0">

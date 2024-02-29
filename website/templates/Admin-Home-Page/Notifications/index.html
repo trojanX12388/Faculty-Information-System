@@ -116,11 +116,23 @@
                                 {% if data.id in unique_notif_ids %}
                                     {% if data.Type == 'notif' or  data.Type == 'update' %}
                                         <tr>
-                                          {% for faculty in all_faculties %}
-                                            {% if faculty.FacultyId == data.notif_by %}
-                                              <td>{{faculty.FirstName}} {{faculty.LastName}}</td>
-                                            {% endif %}
-                                          {% endfor %}
+                                          {% if data.notifier_type == 'Faculty' %}
+
+                                            {% for faculty in all_faculties %}
+
+                                              {% if faculty.FacultyId == data.notif_by %}
+
+                                                <td>{{faculty.FirstName}} {{faculty.LastName}}</td>
+
+                                              {% endif %}
+
+                                            {% endfor %}
+
+                                            {% else %}
+
+                                            <td>System Admin</td>
+
+                                          {% endif %}
                                             
                                             <td>{{data.notif_by}}</td>
                                             <td>{{data.notifier_type}}</td>
@@ -165,12 +177,24 @@
                           {% for data in all_notif %}
                               {% if data.id in unique_notif_ids %}
                                   {% if data.Type == 'pending' %}
-                                      <tr>
-                                        {% for faculty in all_faculties %}
-                                            {% if faculty.FacultyId == data.notif_by %}
-                                              <td>{{faculty.FirstName}} {{faculty.LastName}}</td>
-                                            {% endif %}
-                                          {% endfor %}
+                                  <tr>
+                                    {% if data.notifier_type == 'Faculty' %}
+
+                                      {% for faculty in all_faculties %}
+
+                                        {% if faculty.FacultyId == data.notif_by %}
+
+                                          <td>{{faculty.FirstName}} {{faculty.LastName}}</td>
+
+                                        {% endif %}
+
+                                      {% endfor %}
+
+                                      {% else %}
+
+                                      <td>System Admin</td>
+
+                                    {% endif %}
                                              
                                           <td>{{data.notif_by}}</td>
                                           <td>{{data.notifier_type}}</td>
@@ -224,12 +248,24 @@
                               {% for data in all_notif %}
                                   {% if data.id in unique_notif_ids %}
                                       {% if data.Type == 'mandatory'%}
-                                          <tr>
-                                            {% for faculty in all_faculties %}
+                                      <tr>
+                                        {% if data.notifier_type == 'Faculty' %}
+
+                                          {% for faculty in all_faculties %}
+
                                             {% if faculty.FacultyId == data.notif_by %}
+
                                               <td>{{faculty.FirstName}} {{faculty.LastName}}</td>
+
                                             {% endif %}
+
                                           {% endfor %}
+
+                                          {% else %}
+
+                                          <td>System Admin</td>
+
+                                        {% endif %}
                                              
                                               <td>{{data.notif_by}}</td>
                                               <td>{{data.notifier_type}}</td>
@@ -285,12 +321,24 @@
                               {% for data in all_notif %}
                                   {% if data.id in unique_notif_ids %}
                                       {% if data.Type == 'read' %}
-                                          <tr>
+                                      <tr>
+                                        {% if data.notifier_type == 'Faculty' %}
+
                                           {% for faculty in all_faculties %}
+
                                             {% if faculty.FacultyId == data.notif_by %}
+
                                               <td>{{faculty.FirstName}} {{faculty.LastName}}</td>
+
                                             {% endif %}
+
                                           {% endfor %}
+
+                                          {% else %}
+
+                                          <td>System Admin</td>
+
+                                        {% endif %}
                                          
                                               <td>{{data.notif_by}}</td>
                                               <td>{{data.notifier_type}}</td>
@@ -335,11 +383,24 @@
                               {% for data in all_notif %}
                                   {% if data.id in unique_notif_ids %}
                                       {% if data.Type == 'done' %}
-                                          <tr>{% for faculty in all_faculties %}
+                                      <tr>
+                                        {% if data.notifier_type == 'Faculty' %}
+
+                                          {% for faculty in all_faculties %}
+
                                             {% if faculty.FacultyId == data.notif_by %}
+
                                               <td>{{faculty.FirstName}} {{faculty.LastName}}</td>
+
                                             {% endif %}
+
                                           {% endfor %}
+
+                                          {% else %}
+
+                                          <td>System Admin</td>
+
+                                        {% endif %}
                                               
                                               <td>{{data.notif_by}}</td>
                                               <td>{{data.notifier_type}}</td>
@@ -382,12 +443,24 @@
                               {% for data in all_notif %}
                                   {% if data.id in unique_notif_ids %}
                                       {% if data.Type == 'decline' %}
-                                          <tr>
+                                      <tr>
+                                        {% if data.notifier_type == 'Faculty' %}
+
                                           {% for faculty in all_faculties %}
+
                                             {% if faculty.FacultyId == data.notif_by %}
+
                                               <td>{{faculty.FirstName}} {{faculty.LastName}}</td>
+
                                             {% endif %}
+
                                           {% endfor %}
+
+                                          {% else %}
+
+                                          <td>System Admin</td>
+
+                                        {% endif %}
                                               <td>{{data.notif_by}}</td>
                                               <td>{{data.notifier_type}}</td>
                                               <td>{{data.Notification}}</td>
@@ -429,11 +502,24 @@
                               {% for data in all_notif %}
                                   {% if data.id in unique_notif_ids %}
                                       {% if data.Type == 'trash' %}
-                                          <tr>{% for faculty in all_faculties %}
+                                      <tr>
+                                        {% if data.notifier_type == 'Faculty' %}
+
+                                          {% for faculty in all_faculties %}
+
                                             {% if faculty.FacultyId == data.notif_by %}
+
                                               <td>{{faculty.FirstName}} {{faculty.LastName}}</td>
+
                                             {% endif %}
+
                                           {% endfor %}
+
+                                          {% else %}
+
+                                          <td>System Admin</td>
+
+                                        {% endif %}
                                               
                                               <td>{{data.notif_by}}</td>
                                               <td>{{data.notifier_type}}</td>

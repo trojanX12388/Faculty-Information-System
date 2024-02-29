@@ -2099,12 +2099,12 @@ class IncidentReport(db.Model):
     Id = db.Column(db.Integer, primary_key=True, nullable=False) #ReportID
     Date = db.Column(db.String(20), nullable=False) #Date
     Time = db.Column(db.String(20), nullable=False) #Time
-    IncidentId = db.Column(db.Integer, db.ForeignKey('SCDSIncidentType.IncidentTypeId', ondelete="CASCADE")) #IncidentTypeID
     LocationId = db.Column(db.Integer, db.ForeignKey('SCDSLocation.LocationId', ondelete="CASCADE")) #LocationID
     StudentId = db.Column(db.Integer, db.ForeignKey('SPSStudent.StudentId', ondelete="CASCADE")) #StudentID
     ComplainantId = db.Column(db.Integer, db.ForeignKey('SPSStudent.StudentId', ondelete="CASCADE")) #ComplainantID
     InvestigatorId = db.Column(db.Integer, db.ForeignKey('FISFaculty.FacultyId', ondelete="CASCADE"), nullable=True) #InvestigatorID
     Description = db.Column(db.Text, nullable=False) #Description
+    Sanction = db.Column(db.Text, nullable=False, default='pending') #Sanction
     Status = db.Column(db.String(20), nullable=False, default='pending') #Status
     IsAccessible = db.Column(db.Boolean, nullable=False, default=False) #IsAccessible
     
@@ -2112,12 +2112,12 @@ class IncidentReport(db.Model):
         return {
             'Date': self.Date,
             'Time': self.Time,
-            'IncidentId': self.IncidentId,
             'LocationId': self.LocationId,
             'StudentId': self.StudentId,
-            'ComplainantID': self.ComplainantId,
+            'ComplainantID': self.ComplainantID,
             'InvestigatorId': self.InvestigatorId,
-            'Description': self.Description,
+            'Description': self.Description, 
+            'Sanction': self.Sanction,
             'Status': self.Status,
             'IsAccessible': self.IsAccessible
         }

@@ -180,13 +180,16 @@
                 <div class="card-body"><br>
                   <img src="https://lh3.googleusercontent.com/d/${notification.Profile_Pic}" alt="Profile" class="rounded-circle" style="width:80px;height:80px;margin-right: 15px;"></img>
                   <br><br>
-                  <h5 class="mb-0">${notification.Request}</h5> 
+                  <h5 class="mb-0 fw-bold">${notification.Request}</h5> 
                   <small class="text-muted fst-italic">${calculateTimeDate(notification.DateTime)}</small>
                   <br><br><h6>Details:</h6>
                   <p class="bi bi-dot fw-bold">Name: <span class="fw-normal">${notification.IdentifierName}</span></p>
                   <p class="bi bi-dot fw-bold">Employee ID: <span class="fw-normal">${notification.IdentifierId}</span></p>
                   <p class="bi bi-dot fw-bold">ID Type: <span class="fw-normal">${notification.IdentifierType}</span></p>
-                  <p class="bi bi-dot fw-bold">Requesting: <span class="fw-normal">${notification.Request}</span></p>
+                  <br><br>
+                  <h6 class="fw-bold">Message:</h6>
+                    <br>
+                    <span class="fw-normal">${notification.message}</span>
                   <br><br>
                   <div class="d-flex justify-content-end">
                 <form action="/auth/sysadmin/Requests/action" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
@@ -195,7 +198,7 @@
                     <input required type="hidden" name="id" value="${notification.id}"></input>
                     <button type="submit" class="btn btn-secondary btn-sm">Mark as Done</button>
                 </form>
-                <form action="/auth/sysadmin/Requests/action" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+                <form action="/auth/sysadmin/Requests/action-decline" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
                   <input name="value" type="hidden"  value="declined"/>
                   <input required type="hidden" name="id" value="${notification.id}"></input>  
                   <input required type="hidden" name="status" value="${notification.Status}"></input>
@@ -305,16 +308,19 @@
                   </div>
                   <img src="https://lh3.googleusercontent.com/d/${notification2.Profile_Pic}" alt="Profile" class="rounded-circle" style="width:80px;height:80px;margin-right: 15px;"></img>
                   <br><br>
-                  <h5 class="mb-0">${notification2.Request}</h5>   
+                  <h5 class="mb-0 fw-bold">${notification2.Request}</h5>   
                  
                   <small class="text-muted fst-italic">${calculateTimeDate(notification2.DateTime)}</small>
                   <br><br><h6>Details:</h6>
                   <p class="bi bi-dot fw-bold">Name: <span class="fw-normal">${notification2.IdentifierName}</span></p>
                   <p class="bi bi-dot fw-bold">Employee ID: <span class="fw-normal">${notification2.IdentifierId}</span></p>
                   <p class="bi bi-dot fw-bold">ID Type: <span class="fw-normal">${notification2.IdentifierType}</span></p>
-                  <p class="bi bi-dot fw-bold">Requesting: <span class="fw-normal">${notification2.Request}</span></p>
-                  <br>
-                  <p class="bi bi-dot fw-bold">Respond At: <span class="fw-normal">${calculateTimeDate(notification2.updated_at)}</span></p>
+                  <br><br>
+                  <h6 class="fw-bold">Message:</h6>
+                    <br>
+                    <span class="fw-normal">${notification2.message}</span>
+                  <br><br><br>
+                  <p class="fw-bold">Respond At: <span class="fw-normal">${calculateTimeDate(notification2.updated_at)}</span></p>
                   <br><br>
                   <div class="d-flex justify-content-end">
                     <form action="/auth/sysadmin/Requests/action" method="POST" enctype="multipart/form-data2" accept-charset="utf-8">

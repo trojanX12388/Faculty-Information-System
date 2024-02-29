@@ -26,8 +26,8 @@
       <h1>Research Report</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item">Homepage</li>
-          <li class="breadcrumb-item">{{faculty_data.FirstName}} {{faculty_data.LastName}}</li>
+          <li class="breadcrumb-item"><a href="/">Homepage</a></li>
+          <li class="breadcrumb-item"><a href="/faculty-member/{{ faculty_data.FacultyId }}">{{faculty_data.FirstName}} {{faculty_data.LastName}}</a></li>
           <li class="breadcrumb-item active">Research Innovation For Creative Work</li>
         </ol>
       </nav>
@@ -76,11 +76,42 @@
               <div class="mx-md-3" style="position:relative;left:30px;">
                 <div class="w-100">
                   <h4 class="my-0">{{faculty_data.FirstName}} {{faculty_data.MiddleInitial}} {{faculty_data.LastName}}</h4>
+                  <br>
                   <small class="text-muted mt-sm-1">{{faculty_data.Rank}}</small>
+                  <br>
+                  <small class="text-muted mt-sm-1">{{faculty_data.Degree}}</small>
+                  <br>
+                  <small class="text-muted mt-sm-1">{{faculty_data.FacultyType}}</small>
                 </div>
-      
             </div>
           </div>
+          <style>
+            .transparent-background {
+                background-color: transparent !important;
+                border-color: transparent !important;
+                color: #000 !important; /* Set text color to black or the desired color */
+            }
+        
+            .transparent-background .bi {
+                color: #000 !important; /* Set icon color to black or the desired color */
+            }
+        </style>
+        
+        <div class="container-fluid">
+            <div class="row justify-content-end">
+                <div class="col-md-2">
+                    <button type="button" onclick="redirectToURL()" class="btn btn-secondary mt-3 btn-block transparent-background" style="position: relative; bottom: 120px;">
+                        <i class="bi bi-arrow-left-square">Back</i> 
+                    </button>
+                </div>
+            </div>
+        </div>
+                    
+                    <script>
+                      function redirectToURL() {
+                        window.location.href = '/faculty-member/{{ faculty_data.FacultyId }}';
+                      }
+                    </script>
           </div>
           
           <div class="card">

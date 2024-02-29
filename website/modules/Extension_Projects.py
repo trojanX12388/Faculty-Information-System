@@ -80,26 +80,7 @@ def R_H():
         else:
             ProfilePic=username.ProfilePic
            
-        
-        # # UPDATE PROFILE BASIC DETAILS
-        
-        # if request.method == 'POST':
-
-        #     # UPDATE BASIC DETAILS
-        #     # VALUES
-        #     faculty_code = request.form.get('faculty_code')
-        #     honorific = request.form.get('honorific')
-
-        #     u = update(FISFaculty)
-        #     u = u.values({"faculty_code": faculty_code,
-        #                   "honorific": honorific
-        #                   })
-        #     u = u.where(FISFaculty.FacultyId == current_user.FacultyId)
-        #     db.session.execute(u)
-        #     db.session.commit()
-        #     db.session.close()
-        #     return redirect(url_for('PDM.PDM_BD')) 
-           
+    
             
         return render_template("Faculty-Home-Page/Extension-Projects/index.html", 
                                User= username.FirstName + " " + username.LastName,

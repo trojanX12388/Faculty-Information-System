@@ -152,20 +152,6 @@ def AN_H():
                     decline += 1
                 else:
                     notifs += 1
-
-        # if request.method == 'POST':
-        
-        #     select = request.form.get('select')
-            
-        #     exams_status = record.exams_status
-        #     year = record.year
-
-  
-        #     records = {
-        #                     'exams_status': exams_status,
-        #                     'year': year,
-              
-        #                 }
         
         return render_template("Admin-Home-Page/Notifications/index.html", 
                                User= username.FirstName + " " + username.LastName,
@@ -332,7 +318,7 @@ def AN_T():
             id = request.form.get('id')
 
             u = update(FISAdmin_Notifications)
-            u = u.values({"Type": 'trash',})
+            u = u.values({"Type": 'trash', "Status": 'trash',})
             
             u = u.where(FISAdmin_Notifications.id == id)
             
