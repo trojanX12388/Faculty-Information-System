@@ -1,0 +1,166 @@
+{% extends "/Admin-Home-Page/base.html" %}{% block title %}{{faculty_data.FirstName}} {{faculty_data.LastName}} Professional Development{% endblock %} {% block content%}
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<!-- Include DataTables Buttons CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+
+<!-- Include DataTables Print Button JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Professional Development</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{faculty_data.FirstName}} {{faculty_data.LastName}}</li>
+          <li class="breadcrumb-item active">Professional Development</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <style>
+      .responsive-table {
+        display: flex;
+        flex-wrap: wrap;
+        margin: -10px; /* Adjust margin as needed */
+      }
+    
+      .responsive-table td {
+        flex: 1;
+        padding: 10px; /* Adjust padding as needed */
+        box-sizing: border-box;
+        background-color: #f2f2f2 !important; /* !important to override DataTables styles */
+      }
+    
+      .responsive-table h6 {
+        margin: 0;
+      }
+    
+      .btnprinter-container {
+        text-align: right;
+      }
+    
+      .btnprinter {
+        width: 50px;
+        background-color: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+      }
+    
+      .btnprinter i {
+        font-size: 24px; /* You can adjust the font size as needed */
+        color: #000; /* You can set the color as needed */
+      }
+          
+    .records{
+      background-color: #1F2739;
+      color: #ffffff;
+      border-radius: 4px;
+    }
+    .records-top {
+      background-color: #F2F5F9;
+    }
+    .workshop {
+      background-color: #1F2739;
+    }
+    .close {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+  }
+
+  .close-icon {
+      color: #000; /* Set the color you want for the "x" */
+      font-size: 20px; /* Set the font size for the "x" */
+  }
+
+    </style>
+ 
+    <section class="section">
+
+      <div class="card">
+        <div class="card-body profile-card pt-4 d-flex flex-col align-items-start">
+          <img src="https://lh3.googleusercontent.com/d/{{faculty_data.ProfilePic}}" alt="Profile" class="rounded-circle" style="width:150px; height:150px;">
+          <div class="mx-md-3" style="position:relative;left:30px;">
+            <div class="w-100">
+              <h4 class="my-0">{{faculty_data.FirstName}} {{faculty_data.MiddleInitial}} {{faculty_data.LastName}}</h4>
+              <br>
+              <small class="text-muted mt-sm-1">{{faculty_data.Rank}}</small>
+              <br>
+              <small class="text-muted mt-sm-1">{{faculty_data.Degree}}</small>
+              <br>
+              <small class="text-muted mt-sm-1">{{faculty_data.FacultyType}}</small>
+            </div>
+  
+        </div>
+      </div>
+      </div>
+      
+
+      <div class="d-flex flex-row">
+      
+        <div class="card ms-md-2 w-100 mb-0 pb-0">
+            <div class="card-body">
+              <h5 class="card-title">Learning and Development Interventions, Training, Seminar, Conference, Workshop, or Short Course Attended</h5>
+             
+              <!-- Table with stripped rows -->
+              <table class="table datatable">
+                <thead>
+                  <tr>
+                    <th scope="col">TITLE</th>
+                    <th scope="col">INCLUSIVE DATES</th>
+                    <th scope="col">NUMBER OF HOURS</th>
+                    <th scope="col">CONDUCTED BY</th>
+                    <th scope="col">TYPE</th>
+                    <th scope="col">PROOF</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  {% for data in project %}
+                  {% if data.title != None %}
+                        <tr>
+                            <td>{{ data.title }}</td>
+                            <td>{{ data.date_start }} to {{ data.date_end }}</td>
+                            <td>{{ data.hours }} Hour/s</td>
+                            <td>{{ data.conducted_by }}</td>
+                            <td>{{ data.type }}</td>
+                            <td><a href="https://drive.google.com/file/d/{{data.file_id}}/view" target="_blank">View</a></td>
+                        </tr>
+              
+                {% else %}
+      
+                {% endif %}
+
+                {% endfor %}
+
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+            </div>
+        </div>
+    </div>
+     
+    </section>
+
+  </main><!-- End #main -->
+
+
+
+{% endblock %}
+
+      

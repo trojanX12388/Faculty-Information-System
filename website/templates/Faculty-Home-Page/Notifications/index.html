@@ -98,7 +98,8 @@
                                                       
                             <thead>
                                 <tr>
-                                    <th scope="col">Notifier ID</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">ID</th>
                                     <th scope="col">Account Type</th>
                                     <th scope="col">Content</th>
                                     <th scope="col">Date</th>
@@ -110,6 +111,25 @@
                               {% for data in user.FISUser_Notifications %}
                               {% if data.Type == 'notif' or  data.Type == 'update'%} 
                                     <tr>
+                                  {% if data.notifier_type == 'Faculty' %}
+                                      {% for faculty in all_faculties %}
+                                        {% if faculty.FacultyId == data.FacultyId %}
+                                          <td>{{ faculty.FirstName }} {{ faculty.LastName }}</td>
+                                        {% endif %}
+                                      {% endfor %}
+
+                                  {% elif data.notifier_type == 'Admin' %}
+
+                                    {% for admin in all_admin %}
+                                      {% if admin.AdminId == data.notif_by %}
+                                        <td>{{ admin.FirstName }} {{ admin.LastName }}</td>
+                                      {% endif %}
+                                    {% endfor %}
+                                  {% else %}
+                                    <td>System Administrator</td>
+                                {% endif %}
+                              
+                                    
                                       <td scope="col">{{data.notif_by}}</td>
                                       <td>{{data.notifier_type}}</td>
                                       <td>{{data.Notification}}</td>
@@ -124,6 +144,7 @@
                                       </form>
                                     </td>
                                   </tr>
+                                 
                               {%else%}
 
                               {% endif %}
@@ -143,7 +164,8 @@
                                                     
                           <thead>
                             <tr>
-                                <th scope="col">Notifier ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">ID</th>
                                 <th scope="col">Account Type</th>
                                 <th scope="col">Content</th>
                                 <th scope="col">Date</th>
@@ -154,6 +176,24 @@
                           {% for data in user.FISUser_Notifications %}
                           {% if data.Type == 'pending'%} 
                                 <tr>
+                                  {% if data.notifier_type == 'Faculty' %}
+                                      {% for faculty in all_faculties %}
+                                        {% if faculty.FacultyId == data.FacultyId %}
+                                          <td>{{ faculty.FirstName }} {{ faculty.LastName }}</td>
+                                        {% endif %}
+                                      {% endfor %}
+
+                                  {% elif data.notifier_type == 'Admin' %}
+
+                                    {% for admin in all_admin %}
+                                      {% if admin.AdminId == data.notif_by %}
+                                        <td>{{ admin.FirstName }} {{ admin.LastName }}</td>
+                                      {% endif %}
+                                    {% endfor %}
+                                  {% else %}
+                                    <td>System Administrator</td>
+                                {% endif %}
+
                                   <td scope="col">{{data.notif_by}}</td>
                                   <td>{{data.notifier_type}}</td>
                                   <td>{{data.Notification}}</td>
@@ -179,7 +219,8 @@
                                                         
                               <thead>
                                 <tr>
-                                    <th scope="col">Notifier ID</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">ID</th>
                                     <th scope="col">Account Type</th>
                                     <th scope="col">Content</th>
                                     <th scope="col">Date</th>
@@ -190,6 +231,23 @@
                               {% for data in user.FISUser_Notifications %}
                               {% if data.Type == 'mandatory'%} 
                                     <tr>
+                                      {% if data.notifier_type == 'Faculty' %}
+                                      {% for faculty in all_faculties %}
+                                        {% if faculty.FacultyId == data.FacultyId %}
+                                          <td>{{ faculty.FirstName }} {{ faculty.LastName }}</td>
+                                        {% endif %}
+                                      {% endfor %}
+
+                                  {% elif data.notifier_type == 'Admin' %}
+
+                                    {% for admin in all_admin %}
+                                      {% if admin.AdminId == data.notif_by %}
+                                        <td>{{ admin.FirstName }} {{ admin.LastName }}</td>
+                                      {% endif %}
+                                    {% endfor %}
+                                  {% else %}
+                                    <td>System Administrator</td>
+                                {% endif %}
                                       <td scope="col">{{data.notif_by}}</td>
                                       <td>{{data.notifier_type}}</td>
                                       <td>{{data.Notification}}</td>
@@ -216,7 +274,8 @@
                                                         
                                 <thead>
                                 <tr>
-                                    <th scope="col">Notifier ID</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">ID</th>
                                     <th scope="col">Account Type</th>
                                     <th scope="col">Content</th>
                                     <th scope="col">Date</th>
@@ -228,6 +287,23 @@
                               {% for data in user.FISUser_Notifications %}
                               {% if data.Type == 'read'%} 
                                     <tr>
+                                      {% if data.notifier_type == 'Faculty' %}
+                                      {% for faculty in all_faculties %}
+                                        {% if faculty.FacultyId == data.FacultyId %}
+                                          <td>{{ faculty.FirstName }} {{ faculty.LastName }}</td>
+                                        {% endif %}
+                                      {% endfor %}
+
+                                  {% elif data.notifier_type == 'Admin' %}
+
+                                    {% for admin in all_admin %}
+                                      {% if admin.AdminId == data.notif_by %}
+                                        <td>{{ admin.FirstName }} {{ admin.LastName }}</td>
+                                      {% endif %}
+                                    {% endfor %}
+                                  {% else %}
+                                    <td>System Administrator</td>
+                                {% endif %}
                                       <td scope="col">{{data.notif_by}}</td>
                                       <td>{{data.notifier_type}}</td>
                                       <td>{{data.Notification}}</td>
@@ -262,7 +338,8 @@
                                                         
                               <thead>
                                 <tr>
-                                    <th scope="col">Notifier ID</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">ID</th>
                                     <th scope="col">Account Type</th>
                                     <th scope="col">Content</th>
                                     <th scope="col">Date</th>
@@ -271,10 +348,26 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                  {% for data in user.FISUser_Notifications %}
+                                  {% if data.Type == 'done'%} 
+                                  <tr>
+                                    {% if data.notifier_type == 'Faculty' %}
+                                    {% for faculty in all_faculties %}
+                                      {% if faculty.FacultyId == data.FacultyId %}
+                                        <td>{{ faculty.FirstName }} {{ faculty.LastName }}</td>
+                                      {% endif %}
+                                    {% endfor %}
 
-                              {% for data in user.FISUser_Notifications %}
-                              {% if data.Type == 'done'%} 
-                                    <tr>
+                                {% elif data.notifier_type == 'Admin' %}
+
+                                  {% for admin in all_admin %}
+                                    {% if admin.AdminId == data.notif_by %}
+                                      <td>{{ admin.FirstName }} {{ admin.LastName }}</td>
+                                    {% endif %}
+                                  {% endfor %}
+                                {% else %}
+                                  <td>System Administrator</td>
+                              {% endif %}
                                       <td scope="col">{{data.notif_by}}</td>
                                       <td>{{data.notifier_type}}</td>
                                       <td>{{data.Notification}}</td>
@@ -310,7 +403,8 @@
                                                         
                                 <thead>
                                 <tr>
-                                    <th scope="col">Notifier ID</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">ID</th>
                                     <th scope="col">Account Type</th>
                                     <th scope="col">Content</th>
                                     <th scope="col">Date</th>
@@ -322,6 +416,23 @@
                               {% for data in user.FISUser_Notifications %}
                               {% if data.Type == 'trash'%} 
                                     <tr>
+                                      {% if data.notifier_type == 'Faculty' %}
+                                      {% for faculty in all_faculties %}
+                                        {% if faculty.FacultyId == data.FacultyId %}
+                                          <td>{{ faculty.FirstName }} {{ faculty.LastName }}</td>
+                                        {% endif %}
+                                      {% endfor %}
+
+                                  {% elif data.notifier_type == 'Admin' %}
+
+                                    {% for admin in all_admin %}
+                                      {% if admin.AdminId == data.notif_by %}
+                                        <td>{{ admin.FirstName }} {{ admin.LastName }}</td>
+                                      {% endif %}
+                                    {% endfor %}
+                                  {% else %}
+                                    <td>System Administrator</td>
+                                {% endif %}
                                       <td scope="col">{{data.notif_by}}</td>
                                       <td>{{data.notifier_type}}</td>
                                       <td>{{data.Notification}}</td>

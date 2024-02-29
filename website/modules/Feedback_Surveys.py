@@ -267,6 +267,8 @@ def FS_add():
                                                     peer_c=0,
                                                     peer_d=0,
                                                     
+                                                    director_ids="None",
+                                                    acad_head_ids="None",
                                                     school_year=school_year,
                                                     semester=semester,
                                                     Type = current_user.FacultyType,
@@ -311,6 +313,8 @@ def FS_add():
                             FacultyId=FacultyId,
                             AdminId=None,  # Set to appropriate value if needed
                             Evaluator_Name="",
+                            director_ids="None",
+                            acad_head_ids="None",
                             EvaluatorIds= eval_id,
                             fac_evaluators = 1,
                             Type="",

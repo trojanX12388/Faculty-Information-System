@@ -29,7 +29,10 @@ from website.models import db
 from sqlalchemy import update
 
 # LOADING MODEL CLASSES
-from website.models import FISAdmin, FISAdmin, FISLoginToken, FISSystemAdmin, FISUser_Log
+from website.models import FISAdmin, FISAdmin, FISLoginToken, FISSystemAdmin, FISUser_Log, Project, Users
+
+# LOADING FACULTY MODULES
+from website.models import FISProfessionalDevelopment, FacultyResearchPaper
 
 
 # LOAD JWT MODULE
@@ -467,6 +470,11 @@ def adminH():
         db = SessionLocal()  # Assuming you have your session initialized
         faculty_active = count_faculty_tokens_with_account_ids(db)
         db.close()  # Remember to close the session when you're done
+           
+        all_projects = Project.query.all()
+
+        # Count the number of items
+        total_projects = len(all_projects) 
                               
         return render_template("Admin-Home-Page/base.html", 
                                User= username.FirstName + " " + username.LastName,
@@ -520,6 +528,8 @@ def adminH():
                                total_instructors_percentage = "{:.2f}".format((total_instructors / total_faculty)*100),
                                total_assistProfs_percentage = "{:.2f}".format((total_assistProfs / total_faculty)*100),
                                total_assocProfs_percentage = "{:.2f}".format((total_assocProfs / total_faculty)*100),
+                               
+                               total_projects = total_projects,
                                
                                faculty_active = faculty_active,
                                profile_pic=ProfilePic)
@@ -585,6 +595,203 @@ def admin_viewFM(faculty_id):
                            BirthDate = BirthDate,
                            date_hired = date_hired,
                            profile_pic=ProfilePic)
+
+
+
+
+
+@admin.route("/faculty-member/<faculty_id>/professional-development")
+@login_required
+@Check_Token
+def admin_viewPD(faculty_id):
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+    username = FISAdmin.query.filter_by(AdminId=current_user.AdminId).first() 
+    
+    if username.ProfilePic == None:
+        ProfilePic=profile_default
+    else:
+        ProfilePic=username.ProfilePic
+    
+    API_TOKENS = ast.literal_eval(os.environ["API_TOKENS"])
+    selected_token = API_TOKENS.get('WEBSITE1_API_TOKEN')
+    
+    if os.getenv('FLASK_ENV') == 'production':
+        base_url = 'https://pupqcfis-com.onrender.com'
+    else:
+        base_url = 'http://127.0.0.1:8000' 
+
+    endpoint = '/api/FISFaculty/'+faculty_id
+    url = f'{base_url}{endpoint}'
+    
+    api_key = selected_token
+
+    headers = {
+        'Authorization': 'API Key',
+        'token': api_key,  # 'token' key with the API key value
+        'Content-Type': 'application/json'  # Adjust content type as needed
+    }
+
+    # Make a GET request to the API with the API key in the headers
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        # Process the API response data
+        api_data = response.json()
+
+    date_string = api_data['Faculties']['BirthDate']
+
+    # Parse the string into a datetime object
+    date_object = datetime.datetime.strptime(date_string, '%a, %d %b %Y %H:%M:%S %Z')
+    BirthDate = date_object.strftime('%b %d %Y')
+    
+    date_string = api_data['Faculties']['DateHired']
+
+    # Parse the string into a datetime object
+    date_object = datetime.datetime.strptime(date_string, '%a, %d %b %Y %H:%M:%S %Z')
+    date_hired = date_object.strftime('%b %d %Y')
+    
+    project = FISProfessionalDevelopment.query.filter_by(FacultyId=faculty_id).all() 
+    
+    
+    return render_template("Admin-Home-Page/Faculty/Professional-Development/Professional-Development.html", 
+                           User= username.FirstName + " " + username.LastName,
+                           user= current_user,
+                           faculty_data = api_data['Faculties'],
+                           BirthDate = BirthDate,
+                           faculty_id = faculty_id,
+                           project = project,
+                           date_hired = date_hired,
+                           profile_pic=ProfilePic)   
+    
+ 
+
+
+
+@admin.route("/faculty-member/<faculty_id>/research-publications")
+@login_required
+@Check_Token
+def admin_viewResearch(faculty_id):
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+    username = FISAdmin.query.filter_by(AdminId=current_user.AdminId).first() 
+    
+    if username.ProfilePic == None:
+        ProfilePic=profile_default
+    else:
+        ProfilePic=username.ProfilePic
+    
+    API_TOKENS = ast.literal_eval(os.environ["API_TOKENS"])
+    selected_token = API_TOKENS.get('WEBSITE1_API_TOKEN')
+    
+    if os.getenv('FLASK_ENV') == 'production':
+        base_url = 'https://pupqcfis-com.onrender.com'
+    else:
+        base_url = 'http://127.0.0.1:8000' 
+
+    endpoint = '/api/FISFaculty/'+faculty_id
+    url = f'{base_url}{endpoint}'
+    
+    api_key = selected_token
+
+    headers = {
+        'Authorization': 'API Key',
+        'token': api_key,  # 'token' key with the API key value
+        'Content-Type': 'application/json'  # Adjust content type as needed
+    }
+
+    # Make a GET request to the API with the API key in the headers
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        # Process the API response data
+        api_data = response.json()
+
+    date_string = api_data['Faculties']['BirthDate']
+
+    # Parse the string into a datetime object
+    date_object = datetime.datetime.strptime(date_string, '%a, %d %b %Y %H:%M:%S %Z')
+    BirthDate = date_object.strftime('%b %d %Y')
+    
+    date_string = api_data['Faculties']['DateHired']
+
+    # Parse the string into a datetime object
+    date_object = datetime.datetime.strptime(date_string, '%a, %d %b %Y %H:%M:%S %Z')
+    date_hired = date_object.strftime('%b %d %Y')
+    
+    risid = Users.query.filter_by(faculty_id=faculty_id).first() 
+       
+    if risid is not None:
+        research_publication = FacultyResearchPaper.query.filter_by(user_id=risid.id).all()
+    
+    else:
+        research_publication =  None 
+    
+    
+    return render_template("Admin-Home-Page/Faculty/Research-Publications/Research-Report.html", 
+                           User= username.FirstName + " " + username.LastName,
+                           user= current_user,
+                           faculty_data = api_data['Faculties'],
+                           BirthDate = BirthDate,
+                           faculty_id = faculty_id,
+                           research_publication = research_publication,
+                           date_hired = date_hired,
+                           profile_pic=ProfilePic)   
+    
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # -----------------------------------------------------------------

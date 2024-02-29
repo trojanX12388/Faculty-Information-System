@@ -452,6 +452,25 @@ def sysadminFM_ADD():
         
         password = last_name+'temp'+str(random.randint(1000, 9999))
         
+        if type == 'Instructor':
+            units_value = 12
+        elif type == 'Lecturer':
+            units_value = 9
+        elif type == 'Reseacher':
+            units_value = 2
+        elif type == 'Professor':
+            units_value = 15
+        elif type == 'Assistant Professor':
+            units_value = 12
+        elif type == 'Associate Professor':
+            units_value = 15
+        elif type == 'Visiting Professor':
+            units_value = 9
+        elif type == 'Emeritus Professor':
+            units_value = 1
+        else:
+            units_value = '' # You can set a default value if needed
+            
         # Check if email already exists
         existing_email = FISFaculty.query.filter_by(Email=email).first()
         if existing_email:
@@ -478,7 +497,7 @@ def sysadminFM_ADD():
                     MobileNumber=number,
                     FacultyType=type,
                     Rank=rank,
-                    Units=units,
+                    Units=units_value,
                     Degree=degree,
                     DateHired=date_hired,
                     PreferredSchedule=day+':'+time,
@@ -545,15 +564,33 @@ def sysadminFM_update_info():
         day = request.form.get('day')
         time = request.form.get('time')
         specialization = request.form.get('specialization')
-        id = request.form.get('id')
+        id = request.form.get('id2')
 
         calc_age = calculateAgeFromString(birth_date)
         
         PreferredSchedule=day+':'+time,
         
-        
+        if type == 'Instructor':
+            units_value = 12
+        elif type == 'Lecturer':
+            units_value = 9
+        elif type == 'Reseacher':
+            units_value = 2
+        elif type == 'Professor':
+            units_value = 15
+        elif type == 'Assistant Professor':
+            units_value = 12
+        elif type == 'Associate Professor':
+            units_value = 15
+        elif type == 'Visiting Professor':
+            units_value = 9
+        elif type == 'Emeritus Professor':
+            units_value = 1
+        else:
+            units_value = '' # You can set a default value if needed
         
         try:
+          
             u = update(FISFaculty)
             u = u.values({"FirstName": first_name,
                             "LastName": last_name,
@@ -569,7 +606,7 @@ def sysadminFM_update_info():
                             "MobileNumber": number,
                             "FacultyType": type,
                             "Rank": rank,
-                            "Units": units,
+                            "Units": units_value,
                             "Degree": degree,
                             "DateHired": date_hired,
                             "PreferredSchedule": PreferredSchedule,
@@ -578,22 +615,25 @@ def sysadminFM_update_info():
             
             u = u.where(FISFaculty.FacultyId == id)
             db.session.execute(u)
-
-            db.session.close()
-            
+            db.session.commit()
+        
             add_log = FISSystemAdmin_Log(
                     FacultyId=id,  # Set the new ID
                     Status= "update",
                     Log = "Update Info",
                 )
-                
+              
             db.session.add(add_log)
             db.session.commit()
             db.session.close()
             flash('Updated successfully!', category='success')
             
-        except:
+        except IntegrityError as e:
+            # Catch database integrity errors, like unique constraint violations
+            db.session.rollback()
+            traceback.print_exc()  # Print detailed error information to console
             flash('Faculty Information was unsuccessfully updated... please try again.', category='error')
+            print(e)
                     
         return redirect(url_for('sysadmin.sysadminFM'))
 

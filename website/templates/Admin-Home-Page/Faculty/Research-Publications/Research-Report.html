@@ -1,0 +1,202 @@
+{% extends "/Admin-Home-Page/base.html" %}{% block title %}{{faculty_data.FirstName}} {{faculty_data.LastName}} Research Report{% endblock %} {% block content%}
+
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<!-- Include DataTables Buttons CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+
+<!-- Include DataTables Print Button JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+
+<main id="main" class="main">
+
+
+  <div class="row">
+    <div class="pagetitle">
+      <h1>Research Report</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Homepage</li>
+          <li class="breadcrumb-item">{{faculty_data.FirstName}} {{faculty_data.LastName}}</li>
+          <li class="breadcrumb-item active">Research Innovation For Creative Work</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <style>
+        .responsive-table {
+          display: flex;
+          flex-wrap: wrap;
+          margin: -10px; /* Adjust margin as needed */
+        }
+      
+        .responsive-table td {
+          flex: 1;
+          padding: 10px; /* Adjust padding as needed */
+          box-sizing: border-box;
+        }
+      
+        .responsive-table h6 {
+          margin: 0;
+        }
+        .btnprinter-container {
+          text-align: right;
+        }
+      
+        .btnprinter {
+          width: 50px;
+          background-color: transparent;
+          border: none;
+          padding: 0;
+          cursor: pointer;
+        }
+      
+        .btnprinter i {
+          font-size: 24px; /* You can adjust the font size as needed */
+          color: #000; /* You can set the color as needed */
+        }
+      </style>
+
+    <section class="section">
+        <div class="row">
+
+          <div class="card">
+            <div class="card-body profile-card pt-4 d-flex flex-col align-items-start">
+              <img src="https://lh3.googleusercontent.com/d/{{faculty_data.ProfilePic}}" alt="Profile" class="rounded-circle" style="width:150px; height:150px;">
+              <div class="mx-md-3" style="position:relative;left:30px;">
+                <div class="w-100">
+                  <h4 class="my-0">{{faculty_data.FirstName}} {{faculty_data.MiddleInitial}} {{faculty_data.LastName}}</h4>
+                  <small class="text-muted mt-sm-1">{{faculty_data.Rank}}</small>
+                </div>
+      
+            </div>
+          </div>
+          </div>
+          
+          <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Research Publication</h5>
+                
+                <br><br>
+                  
+                <table id="table1" class="display no-wrap" style="width:100%"> 
+                  <thead>
+                    <tr>
+                      <th scope="col">Year</th>
+                      <th scope="col">Title (and DOI)</th>
+                      <th scope="col">Co-Researchers</th>
+                      <th scope="col">Fund Source</th>
+                      <th scope="col">Date Started</th>
+                      <th scope="col">Date Completed</th>
+                      <th scope="col">Date Publication</th>
+                      <th scope="col">Title of the Journal</th>
+                      <th scope="col">Journal Indexing</th>
+                      <th scope="col">Online Link</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% if research_publication != None %}
+
+                    {% for data in research_publication %}
+
+                    {% if data.id != None %}
+                    <tr>
+                      <th class="w-30" scope="row">{{data.date_publish.strftime('%Y').split('-')[0]}}</th>
+                      <td class="w-50">{{data.title}}</td>
+                      <td class="w-50"></td>
+                      <td class="w-50"></td>
+                      <td class="w-50"></td>
+                      <td class="w-50"></td>
+                      <td class="w-50">{{data.date_publish}}</td>
+                      <td class="w-50"></td>
+                      <td class="w-50">{{data.category}}</td>
+                      <td class="w-50"><a href="{{data.file_path}}" target="_blank">view</a></td>
+                    </tr>
+                    {% else %}
+ 
+                    {% endif %}
+    
+    
+                 {% endfor %}  
+
+                 {% else %}
+                
+                 {% endif %}
+                  </tbody>
+                </table><!-- End Table with stripped rows -->
+           
+            </div>
+        </div>
+      </section>
+
+  </main><!-- End #main -->
+
+
+  <script>
+    $(document).ready(function() {
+      // Function to initialize DataTable for a given table ID
+      function initializeDataTable(tableId, buttonId, title, customExportColumns) {
+        var dataTable = $(tableId).DataTable({
+          dom: 'BPlfrtip',
+          responsive: true,
+          columnDefs: [
+            {
+              searchPanes: {
+                show: true
+              },
+              targets: [0]
+            },
+            {
+              searchPanes: {
+                show: false
+              },
+              targets: [2]
+            }
+          ],
+          buttons: [
+            {
+              extend: 'print',
+              class: 'buttons-print',
+              title: title, // Set the title for each table
+              messageBottom: null,
+              exportOptions: {
+                columns: customExportColumns
+              },
+              text: 'Print'
+            }
+          ]
+        });
+  
+         // Initially hide the DataTables print button
+        dataTable.buttons('.buttons-print').nodes().addClass('d-none');
+  
+        $('#' + buttonId).on('click', function() {
+          // Trigger the DataTables print button click
+          dataTable.buttons('.buttons-print').trigger();
+        });
+      }
+  
+      // Customize your export options for each table
+      var exportColumnsTable1 = [ 0, 1, 2, 3, 4, 5, 6 ];
+      var exportColumnsTable2 = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
+  
+      // Initialize DataTables for each table
+      initializeDataTable('#table1', 'btnPrintDetail1', 'Teaching Assignments Schedules', exportColumnsTable1);
+      initializeDataTable('#table2', 'btnPrintDetail2', 'Teaching Assignments Activities', exportColumnsTable2);
+    });
+  </script>
+
+
+{% endblock %}
+
+      

@@ -205,7 +205,7 @@ def MR_add_classrecord():
                 u = u.values({
                             "classrecord": '%s'%(file1['id']),
                             "year": year,
-                            "classrecord_status": "Pending",
+                            "classrecord_status": "pending",
                             })
                 u = u.where(FISMandatoryRequirements.id == id.id)
                 db.session.execute(u)
@@ -215,9 +215,10 @@ def MR_add_classrecord():
                 add_notif = FISAdmin_Notifications(
                 AdminId='10001',
                 Status= "pending",
-                Type= "notif",
+                Type= "mandatory",
                 notif_by = current_user.FacultyId,
                 notifier_type = "Faculty",
+                file_id = '%s'%(file1['id']),
                 Notification = "Updated Class Record for year : " + year,
                 )
                 
@@ -269,9 +270,10 @@ def MR_add_classrecord():
                 add_notif = FISAdmin_Notifications(
                 AdminId='10001',
                 Status= "pending",
-                Type= "notif",
+                Type= "mandatory",
                 notif_by = current_user.FacultyId,
                 notifier_type = "Faculty",
+                file_id = '%s'%(file1['id']),
                 Notification = "Uploaded Class Record for year : " + year,
                 )
                 
@@ -342,9 +344,10 @@ def MR_add_gradingsheet():
                 add_notif = FISAdmin_Notifications(
                 AdminId='10001',
                 Status= "pending",
-                Type= "notif",
+                Type= "mandatory",
                 notif_by = current_user.FacultyId,
                 notifier_type = "Faculty",
+                file_id = '%s'%(file1['id']),
                 Notification = "Updated Grading Sheet for year : " + year,
                 )
                 
@@ -396,9 +399,10 @@ def MR_add_gradingsheet():
                 add_notif = FISAdmin_Notifications(
                 AdminId='10001',
                 Status= "pending",
-                Type= "notif",
+                Type= "mandatory",
                 notif_by = current_user.FacultyId,
                 notifier_type = "Faculty",
+                file_id = '%s'%(file1['id']),
                 Notification = "Uploaded Grading Sheet for year : " + year,
                 )
                 
@@ -470,9 +474,10 @@ def MR_add_exams():
                 add_notif = FISAdmin_Notifications(
                 AdminId='10001',
                 Status= "pending",
-                Type= "notif",
+                Type= "mandatory",
                 notif_by = current_user.FacultyId,
                 notifier_type = "Faculty",
+                file_id = '%s'%(file1['id']),
                 Notification = "Updated Exams for year : " + year,
                 )
                 
@@ -524,9 +529,10 @@ def MR_add_exams():
                 add_notif = FISAdmin_Notifications(
                 AdminId='10001',
                 Status= "pending",
-                Type= "notif",
+                Type= "mandatory",
                 notif_by = current_user.FacultyId,
                 notifier_type = "Faculty",
+                file_id = '%s'%(file1['id']),
                 Notification = "Uploaded Exams for year : " + year,
                 )
                 

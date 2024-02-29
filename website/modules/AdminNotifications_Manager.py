@@ -32,7 +32,7 @@ from website.models import db
 from sqlalchemy import update
 
 # LOADING MODEL CLASSES
-from website.models import FISAdmin, FISAdmin, FISAdmin_Notifications, FISSystemAdmin, FISAdmin_Notifications
+from website.models import FISAdmin, FISAdmin, FISAdmin_Notifications, FISSystemAdmin, FISUser_Notifications, FISFaculty
 
 
 # LOAD JWT MODULE
@@ -97,6 +97,7 @@ def AN_H():
             ProfilePic=username.ProfilePic
          
         done = 0
+        decline = 0
         notifs = 0
         read = 0
         update = 0
@@ -108,7 +109,8 @@ def AN_H():
 
         unique_notif_ids = set()
         
-
+        all_faculties = FISFaculty.query.all() 
+        
         # Iterate through current_user notifications
         for notif in current_user.FISAdmin_Notifications:
             unique_notif_ids.add(notif.id)  # Add unique notif IDs
@@ -124,6 +126,8 @@ def AN_H():
                 mandatory += 1
             elif notif.Type == 'trash':
                 trash += 1
+            elif notif.Type == 'decline':
+                decline += 1
             else:
                 notifs += 1
 
@@ -144,21 +148,11 @@ def AN_H():
                     mandatory += 1
                 elif notif.Type == 'trash':
                     trash += 1
+                elif notif.Type == 'decline':
+                    decline += 1
                 else:
                     notifs += 1
 
-        # Now you can use the counts as needed
-        print("done:", done)
-        print("pending:", pending)
-        print("read:", read)
-        print("update:", update)
-        print("mandatory:", mandatory)
-        print("trash:", trash)
-        print("other_notifs:", notifs)
-        
-        print(all_notif)
-        print(unique_notif_ids)
-        
         # if request.method == 'POST':
         
         #     select = request.form.get('select')
@@ -185,6 +179,8 @@ def AN_H():
                                 trash=trash,
                                 unique_notif_ids = unique_notif_ids,
                                 all_notif = all_notif,
+                                decline = decline,
+                                all_faculties = all_faculties,
                                 
                             #    records = records,
                                profile_pic=ProfilePic)
@@ -239,6 +235,89 @@ def AN_UR():
             
             return redirect(url_for('adminnotification.AN_H'))
         
+
+
+
+@adminnotification.route("/Admin-Notifications/decline", methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def AN_DE():
+   # UPDATE 
+        
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            id = request.form.get('id')
+            facultyid = request.form.get('facultyid')
+            notif = request.form.get('notif')
+
+            u = update(FISAdmin_Notifications)
+            u = u.values({"Type": 'decline',"Status": 'decline',})
+            
+            u = u.where(FISAdmin_Notifications.id == id)
+            
+            db.session.execute(u)
+            db.session.commit()
+            
+            add_notif = FISUser_Notifications(
+            FacultyId=facultyid,
+            Status= "pending",
+            Type= "notif",
+            notif_by = int(current_user.AdminId),
+            notifier_type = "Admin",
+            Notification = "Admin declined your "+notif+".",
+            )
+            
+            db.session.add(add_notif)
+            db.session.commit()
+            
+            db.session.close()
+            
+            return redirect(url_for('adminnotification.AN_H'))
+
+
+
+
+@adminnotification.route("/Admin-Notifications/done", methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def AN_DONE():
+   # UPDATE 
+        
+        if request.method == 'POST':
+         
+            # VALUES
+           
+            id = request.form.get('id')
+            facultyid = request.form.get('facultyid')
+            notif = request.form.get('notif')
+
+            u = update(FISAdmin_Notifications)
+            u = u.values({"Type": 'done',"Status": 'done',})
+            
+            u = u.where(FISAdmin_Notifications.id == id)
+            
+            db.session.execute(u)
+            db.session.commit()
+            
+            add_notif = FISUser_Notifications(
+            FacultyId=facultyid,
+            Status= "pending",
+            Type= "done",
+            notif_by = int(current_user.AdminId),
+            notifier_type = "Admin",
+            Notification = "Admin approved your "+notif+".",
+            )
+            
+            db.session.add(add_notif)
+            db.session.commit()
+            
+            db.session.close()
+            
+            return redirect(url_for('adminnotification.AN_H'))
+
+
 
 @adminnotification.route("/Admin-Notifications/trash", methods=['GET', 'POST'])
 @login_required

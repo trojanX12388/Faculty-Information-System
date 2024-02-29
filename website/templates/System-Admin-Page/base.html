@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>{% block title %}System Admin{% endblock %}</title> 
+  <title id="notification-count-title"></title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -904,13 +904,17 @@
           return request.Status.toLowerCase() === 'pending';
         });
 
+        var newTitle = "{% block title %}System Admin{% endblock %}";
+
         if (pendingRequests.length > 0) {
           // Sort pending notifications by DateTime in descending order
           pendingRequests.sort(function (a, b) {
             return new Date(b.DateTime) - new Date(a.DateTime);
           });
 
-          // Update the notification count
+           document.getElementById("notification-count-title").innerText = newTitle + ' ' + '(' + pendingRequests.length + ')';
+         
+           // Update the notification count
           $('#notification-count').text(pendingRequests.length);
           $('#notification-count-text').text(pendingRequests.length);
 
@@ -936,11 +940,13 @@
           }
 
         } else {
+          document.getElementById("notification-count-title").innerText = newTitle;
           // Handle the case when there are no pending notifications
           $('.notifications').html('<h6 style="margin-right: 15px;margin-left: 15px;">You have no pending actions.</h6>');
         }
       },
       error: function () {
+        document.getElementById("notification-count-title").innerText = newTitle;
         // Handle the error case
         $('.notifications').html('<h6 style="margin-right: 15px;margin-left: 15px;">No pending actions available.</h6>');
       }

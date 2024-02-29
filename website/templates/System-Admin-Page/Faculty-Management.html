@@ -342,8 +342,14 @@
                
                                 <select class="form-select" name="type" id="{{faculty_id}}type" style="height:40px;" aria-label="{{faculty_id}}type">
                                   <option selected value="{{faculty_info['FacultyType']}}">{{faculty_info['FacultyType']}}</option>
-                                  <option value="Full Time">Full Time</option>
-                                  <option value="Part Time">Part Time</option>
+                                  <option value="Instructor">Instructor</option>
+                                  <option value="Lecturer">Lecturer</option>
+                                  <option value="Reseacher">Reseacher</option>
+                                  <option value="Professor">Professor</option>
+                                  <option value="Assistant Professor">Assistant Professor</option>
+                                  <option value="Associate Professor">Associate Professor</option>
+                                  <option value="Visiting Professor">Visiting Professor</option>
+                                  <option value="Emeritus Professor">Emeritus Professor</option>
                                 </select>
                            
                           </div> 
@@ -383,9 +389,49 @@
                         <div class="row mb-3">
                           <label for="{{faculty_id}}units" class="col-md-4 col-lg-3 col-form-label">Units</label>
                           <div class="col-md-8 col-lg-9">
-                              <input required name="units" type="text" class="form-control" id="{{faculty_id}}units" pattern="\d+(\.\d{1,2})?" title="Enter a valid decimal number" value="{{faculty_info['Units']}}"/>
+                              <input required name="units" type="text" class="form-control" id="{{faculty_id}}units" pattern="\d+(\.\d{1,2})?" title="Enter a valid decimal number" value="{{faculty_info['Units']}}" disabled/>
                           </div>
                       </div>
+                
+      
+                                <script>
+                                  document.getElementById('{{faculty_id}}type').addEventListener('change', function() {
+                                    var unitInput{{faculty_id}} = document.getElementById('{{faculty_id}}units');
+                                    var typeValue{{faculty_id}} = this.value;
+                                
+                                    switch (typeValue{{faculty_id}}) {
+                                      case 'Instructor':
+                                        unitInput{{faculty_id}}.value = 12;
+                                        break;
+                                      case 'Lecturer':
+                                        unitInput{{faculty_id}}.value = 9;
+                                        break;
+                                      case 'Reseacher':
+                                        unitInput{{faculty_id}}.value = 2;
+                                        break;
+                                      case 'Professor':
+                                        unitInput{{faculty_id}}.value = 15;
+                                        break;
+                                      case 'Assistant Professor':
+                                        unitInput{{faculty_id}}.value = 12;
+                                        break;
+                                      case 'Associate Professor':
+                                        unitInput{{faculty_id}}.value = 15;
+                                        break;
+                                      case 'Visiting Professor':
+                                        unitInput{{faculty_id}}.value = 9;
+                                        break;
+                                      case 'Emeritus Professor':
+                                        unitInput{{faculty_id}}.value = 1;
+                                        break;
+                                      default:
+                                        unitInput{{faculty_id}}.value = 12; // You can set a default value if needed
+                                    }
+                                
+                                    unitInput{{faculty_id}}.setAttribute('value', unitInput{{faculty_id}}.value); // Set the value attribute
+                                    unitInput{{faculty_id}}.disabled = true; // If you want to disable the input after setting the value
+                                  });
+                                </script>
           
                         <div class="row mb-3">
                           <label for="{{faculty_id}}degree" class="col-md-4 col-lg-3 col-form-label">Degree</label>
@@ -513,7 +559,7 @@
                     </div>  
 
                     <div class="modal-footer">
-                      <input required type="hidden" name="id" value="{{faculty_id}}"></input> 
+                      <input required type="hidden" name="id2" value="{{faculty_id}}"></input> 
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancel</button>
                       <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Update</button>
                     </div>
@@ -527,7 +573,7 @@
                           <div class="modal-body">
 
                           <h5 class="card-title">Change Password</h5>
-                    <form action="/auth/sysadmin/Faculty-Management/update-pass" method="POST" enctype="multipart/form-data" accept-charset="utf-8" id="passform">
+                    <form action="/auth/sysadmin/Faculty-Management/update-pass" method="POST" enctype="multipart/form-data" accept-charset="utf-8" id="passform{{faculty_id}}">
                           <div class="row mb-3">
                               <label for="{{faculty_id}}new_password" class="col-md-4 col-lg-3 col-form-label">New Password</label>
                               <div class="col-md-8 col-lg-9">
@@ -560,7 +606,7 @@
 
                   <script>
                     document.addEventListener('DOMContentLoaded', function () {
-                        var form = document.querySelector('#passform'); // Fix: use #passform for ID selector
+                        var form = document.querySelector('#passform{{faculty_id}}'); // Fix: use #passform for ID selector
                 
                         form.addEventListener('submit', function (event) {
                             var newPassword = document.getElementById('{{faculty_id}}new_password').value;
@@ -795,13 +841,17 @@
                 <label for="type" class="col-md-4 col-lg-3 col-form-label">Faculty Type</label>
                 <div class="col-md-8 col-lg-9">
                   <div class="col-md-10" style="width:100%;">
-     
-                      <select class="form-select" name="type" id="type" style="height:40px;" aria-label="type">
-                        <option value="Full Time">Full Time</option>
-                        <option value="Part Time">Part Time</option>
-                      </select>
-                 
-                </div> 
+                    <select class="form-select" name="type" id="type" style="height:40px;" aria-label="type">
+                      <option value="Instructor">Instructor</option>
+                      <option value="Lecturer">Lecturer</option>
+                      <option value="Reseacher">Reseacher</option>
+                      <option value="Professor">Professor</option>
+                      <option value="Assistant Professor">Assistant Professor</option>
+                      <option value="Associate Professor">Associate Professor</option>
+                      <option value="Visiting Professor">Visiting Professor</option>
+                      <option value="Emeritus Professor">Emeritus Professor</option>
+                    </select>
+                  </div> 
                 </div>
               </div>
 
@@ -837,9 +887,48 @@
               <div class="row mb-3">
                 <label for="units" class="col-md-4 col-lg-3 col-form-label">Units</label>
                 <div class="col-md-8 col-lg-9">
-                    <input required name="units" type="text" class="form-control" id="units" pattern="\d+(\.\d{1,2})?" title="Enter a valid decimal number" />
+                  <input required name="units" type="text" class="form-control" id="units" pattern="\d+(\.\d{1,2})?" title="Enter a valid decimal number" disabled />
                 </div>
-            </div>
+              </div>
+            
+                        <script>
+                          document.getElementById('type').addEventListener('change', function() {
+                            var unitInput = document.getElementById('units');
+                            var typeValue = this.value;
+                        
+                            switch (typeValue) {
+                              case 'Instructor':
+                                unitInput.value = 12;
+                                break;
+                              case 'Lecturer':
+                                unitInput.value = 9;
+                                break;
+                              case 'Reseacher':
+                                unitInput.value = 2;
+                                break;
+                              case 'Professor':
+                                unitInput.value = 15;
+                                break;
+                              case 'Assistant Professor':
+                                unitInput.value = 12;
+                                break;
+                              case 'Associate Professor':
+                                unitInput.value = 15;
+                                break;
+                              case 'Visiting Professor':
+                                unitInput.value = 9;
+                                break;
+                              case 'Emeritus Professor':
+                                unitInput.value = 1;
+                                break;
+                              default:
+                                unitInput.value = 12; // You can set a default value if needed
+                            }
+                        
+                            unitInput.setAttribute('value', unitInput.value); // Set the value attribute
+                            unitInput.disabled = true; // If you want to disable the input after setting the value
+                          });
+                        </script>
 
               <div class="row mb-3">
                 <label for="degree" class="col-md-4 col-lg-3 col-form-label">Degree</label>

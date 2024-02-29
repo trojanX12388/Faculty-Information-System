@@ -85,6 +85,10 @@
                         </li>
 
                         <li class="nav-item flex-fill" role="presentation">
+                          <button class="nav-link w-100 " id="decline-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-decline" type="button" role="tab" aria-controls="decline" aria-selected="false" >Declined<h6 style="color:red">{{decline}}</h6></button>
+                        </li>
+
+                        <li class="nav-item flex-fill" role="presentation">
                           <button class="nav-link w-100 " id="trash-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-trash" type="button" role="tab" aria-controls="trash" aria-selected="false" >Trash <h6 style="color:red">{{trash}}</h6></button>
                         </li>
                       </ul>
@@ -98,7 +102,8 @@
                           <table class="table datatable w-100">
                             <thead>
                                 <tr>
-                                    <th scope="col">Notifier ID</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">ID</th>
                                     <th scope="col">Account Type</th>
                                     <th scope="col">Content</th>
                                     <th scope="col">Date</th>
@@ -111,6 +116,12 @@
                                 {% if data.id in unique_notif_ids %}
                                     {% if data.Type == 'notif' or  data.Type == 'update' %}
                                         <tr>
+                                          {% for faculty in all_faculties %}
+                                            {% if faculty.FacultyId == data.notif_by %}
+                                              <td>{{faculty.FirstName}} {{faculty.LastName}}</td>
+                                            {% endif %}
+                                          {% endfor %}
+                                            
                                             <td>{{data.notif_by}}</td>
                                             <td>{{data.notifier_type}}</td>
                                             <td>{{data.Notification}}</td>
@@ -140,9 +151,11 @@
                                                     
                           <thead>
                             <tr>
-                                <th scope="col">Notifier ID</th>
+                                <th scope="col">Name </th>
+                                <th scope="col">ID</th>
                                 <th scope="col">Account Type</th>
                                 <th scope="col">Content</th>
+                                <th scope="col">Attachement</th>
                                 <th scope="col">Date</th>
                                 <th scope="col">Time</th>
                                 <th scope="col">Action</th>
@@ -153,16 +166,31 @@
                               {% if data.id in unique_notif_ids %}
                                   {% if data.Type == 'pending' %}
                                       <tr>
+                                        {% for faculty in all_faculties %}
+                                            {% if faculty.FacultyId == data.notif_by %}
+                                              <td>{{faculty.FirstName}} {{faculty.LastName}}</td>
+                                            {% endif %}
+                                          {% endfor %}
+                                             
                                           <td>{{data.notif_by}}</td>
                                           <td>{{data.notifier_type}}</td>
                                           <td>{{data.Notification}}</td>
+                                          {% if data.file_id != None %}
+                                          <td><a href="https://drive.google.com/file/d/{{data.file_id}}/view" target="_blank">view</a></td>
+                                          {% else %}
+                                          <td>None</td>
+                                          {% endif %}
                                           <td>{{data.DateTime.strftime("%B %d, %Y")}}</td>
                                           <td>{{data.DateTime.strftime("%I:%M %p")}}</td>
                                           <td>
                                             <form method="POST" action="/Admin-Notifications/done">
+                                              <input type="hidden" name="facultyid" value="{{data.notif_by}}">
+                                              <input type="hidden" name="notif" value="{{data.Notification}}">
                                             <button type="submit" name="id" class="btn btn-outline-primary rounded-pill" value="{{data.id}}"><i class="bi bi-check-circle"></i></button>
                                             </form>
                                             <form method="POST" action="/Admin-Notifications/decline">
+                                              <input type="hidden" name="facultyid" value="{{data.notif_by}}">
+                                              <input type="hidden" name="notif" value="{{data.Notification}}">
                                             <button type="submit" name="id" class="btn btn-outline-danger rounded-pill" value="{{data.id}}"><i class="bi bi-x-circle"></i></button>
                                           </form>
                                         </td>
@@ -182,9 +210,11 @@
                                                         
                               <thead>
                                 <tr>
-                                    <th scope="col">Notifier ID</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">ID</th>
                                     <th scope="col">Account Type</th>
                                     <th scope="col">Content</th>
+                                    <th scope="col">Attachement</th>
                                     <th scope="col">Date</th>
                                     <th scope="col">Time</th>
                                     <th scope="col">Action</th>
@@ -195,16 +225,33 @@
                                   {% if data.id in unique_notif_ids %}
                                       {% if data.Type == 'mandatory'%}
                                           <tr>
+                                            {% for faculty in all_faculties %}
+                                            {% if faculty.FacultyId == data.notif_by %}
+                                              <td>{{faculty.FirstName}} {{faculty.LastName}}</td>
+                                            {% endif %}
+                                          {% endfor %}
+                                             
                                               <td>{{data.notif_by}}</td>
                                               <td>{{data.notifier_type}}</td>
                                               <td>{{data.Notification}}</td>
+
+                                              {% if data.file_id != None %}
+                                              <td><a href="https://drive.google.com/file/d/{{data.file_id}}/view" target="_blank">view</a></td>
+                                              {% else %}
+                                              <td>None</td>
+                                              {% endif %}
+                                             
                                               <td>{{data.DateTime.strftime("%B %d, %Y")}}</td>
                                               <td>{{data.DateTime.strftime("%I:%M %p")}}</td>
                                               <td>
                                                 <form method="POST" action="/Admin-Notifications/done">
+                                                  <input type="hidden" name="facultyid" value="{{data.notif_by}}">
+                                              <input type="hidden" name="notif" value="{{data.Notification}}">
                                                 <button type="submit" name="id" class="btn btn-outline-primary rounded-pill" value="{{data.id}}"><i class="bi bi-check-circle"></i></button>
                                                 </form>
                                                 <form method="POST" action="/Admin-Notifications/decline">
+                                                  <input type="hidden" name="facultyid" value="{{data.notif_by}}">
+                                              <input type="hidden" name="notif" value="{{data.Notification}}">
                                                 <button type="submit" name="id" class="btn btn-outline-danger rounded-pill" value="{{data.id}}"><i class="bi bi-x-circle"></i></button>
                                               </form>
                                             </td>
@@ -225,7 +272,8 @@
                                                         
                                 <thead>
                                 <tr>
-                                    <th scope="col">Notifier ID</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">ID</th>
                                     <th scope="col">Account Type</th>
                                     <th scope="col">Content</th>
                                     <th scope="col">Date</th>
@@ -238,6 +286,12 @@
                                   {% if data.id in unique_notif_ids %}
                                       {% if data.Type == 'read' %}
                                           <tr>
+                                          {% for faculty in all_faculties %}
+                                            {% if faculty.FacultyId == data.notif_by %}
+                                              <td>{{faculty.FirstName}} {{faculty.LastName}}</td>
+                                            {% endif %}
+                                          {% endfor %}
+                                         
                                               <td>{{data.notif_by}}</td>
                                               <td>{{data.notifier_type}}</td>
                                               <td>{{data.Notification}}</td>
@@ -268,7 +322,8 @@
                                                         
                               <thead>
                                 <tr>
-                                    <th scope="col">Notifier ID</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">ID</th>
                                     <th scope="col">Account Type</th>
                                     <th scope="col">Content</th>
                                     <th scope="col">Date</th>
@@ -280,7 +335,12 @@
                               {% for data in all_notif %}
                                   {% if data.id in unique_notif_ids %}
                                       {% if data.Type == 'done' %}
-                                          <tr>
+                                          <tr>{% for faculty in all_faculties %}
+                                            {% if faculty.FacultyId == data.notif_by %}
+                                              <td>{{faculty.FirstName}} {{faculty.LastName}}</td>
+                                            {% endif %}
+                                          {% endfor %}
+                                              
                                               <td>{{data.notif_by}}</td>
                                               <td>{{data.notifier_type}}</td>
                                               <td>{{data.Notification}}</td>
@@ -301,6 +361,52 @@
 
                         </div>
 
+                        <div class="tab-pane fade" id="bordered-justified-decline" role="tabpanel" aria-labelledby="decline-tab">
+                        
+                          <br><br>
+                          <h5 class="card-title">Declined</h5>
+                            <table class="table datatable w-100">
+                                                        
+                                <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Account Type</th>
+                                    <th scope="col">Content</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Time</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              {% for data in all_notif %}
+                                  {% if data.id in unique_notif_ids %}
+                                      {% if data.Type == 'decline' %}
+                                          <tr>
+                                          {% for faculty in all_faculties %}
+                                            {% if faculty.FacultyId == data.notif_by %}
+                                              <td>{{faculty.FirstName}} {{faculty.LastName}}</td>
+                                            {% endif %}
+                                          {% endfor %}
+                                              <td>{{data.notif_by}}</td>
+                                              <td>{{data.notifier_type}}</td>
+                                              <td>{{data.Notification}}</td>
+                                              <td>{{data.DateTime.strftime("%B %d, %Y")}}</td>
+                                              <td>{{data.DateTime.strftime("%I:%M %p")}}</td>
+                                              <td>
+                                                <form method="POST" action="/Admin-Notifications/trash">
+                                                  <button type="submit" name="id" class="btn btn-outline-danger rounded-pill" value="{{data.id}}"><i class="bi bi-x-circle"></i></button>
+                                                </form>
+                                              </td>
+                                          </tr>
+                                      {% endif %}
+                                  {% endif %}
+                              {% endfor %}
+                          </tbody>
+                        </table><!-- End Table with stripped rows -->
+
+                        </div>
+
                         <div class="tab-pane fade" id="bordered-justified-trash" role="tabpanel" aria-labelledby="trash-tab">
                         
                           <br><br>
@@ -309,7 +415,9 @@
                                                         
                                 <thead>
                                 <tr>
-                                    <th scope="col">Notifier ID</th>
+                                  
+                                    <th scope="col">Name</th>
+                                    <th scope="col">ID</th>
                                     <th scope="col">Account Type</th>
                                     <th scope="col">Content</th>
                                     <th scope="col">Date</th>
@@ -321,7 +429,12 @@
                               {% for data in all_notif %}
                                   {% if data.id in unique_notif_ids %}
                                       {% if data.Type == 'trash' %}
-                                          <tr>
+                                          <tr>{% for faculty in all_faculties %}
+                                            {% if faculty.FacultyId == data.notif_by %}
+                                              <td>{{faculty.FirstName}} {{faculty.LastName}}</td>
+                                            {% endif %}
+                                          {% endfor %}
+                                              
                                               <td>{{data.notif_by}}</td>
                                               <td>{{data.notifier_type}}</td>
                                               <td>{{data.Notification}}</td>

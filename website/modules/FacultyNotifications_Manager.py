@@ -103,7 +103,7 @@ def FN_H():
         pending=0
         mandatory=0
         trash=0
-           
+        
         for notif in current_user.FISUser_Notifications:
             if notif.Type == 'done' :
                 done +=1 
@@ -121,20 +121,9 @@ def FN_H():
                 notifs +=1
             
 
-        # if request.method == 'POST':
-        
-        #     select = request.form.get('select')
-            
-        #     exams_status = record.exams_status
-        #     year = record.year
-
-  
-        #     records = {
-        #                     'exams_status': exams_status,
-        #                     'year': year,
-              
-        #                 }
-        
+        all_faculties = FISFaculty.query.all() 
+        all_admin = FISAdmin.query.all() 
+    
         return render_template("Faculty-Home-Page/Notifications/index.html", 
                                User= username.FirstName + " " + username.LastName,
                                faculty_code= username.FacultyCode,
@@ -146,6 +135,8 @@ def FN_H():
                                 pending=pending,
                                 mandatory=mandatory,
                                 trash=trash,
+                                all_admin = all_admin,
+                                all_faculties = all_faculties,
                             #    records = records,
                                profile_pic=ProfilePic)
         

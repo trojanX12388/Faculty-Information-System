@@ -1978,6 +1978,7 @@ class FISRequests(db.Model):
     Status = db.Column(db.String(50), default="pending")
     Type = db.Column(db.String(50))
     Request = db.Column(db.String)
+    message = db.Column(db.String(50))
     is_delete = db.Column(db.Boolean, default=False) 
     
     
@@ -1991,6 +1992,7 @@ class FISRequests(db.Model):
             'Status': self.Status,
             'Type': self.Type,
             'Request': self.Request,
+            'message': self.message,
             'is_delete': self.is_delete
         }
         
@@ -2057,6 +2059,7 @@ class FISAdmin_Notifications(db.Model):
     Status = db.Column(db.String(50), default="pending")
     Type = db.Column(db.String(50))
     Notification = db.Column(db.String)
+    file_id = db.Column(db.String(50))
     is_delete = db.Column(db.Boolean, default=False) 
     
     
@@ -2072,6 +2075,7 @@ class FISAdmin_Notifications(db.Model):
             'Status': self.Status,
             'Type': self.Type,
             'Notification': self.Notification,
+            'file_id': self.file_id,
             'is_delete': self.is_delete
         }
         
