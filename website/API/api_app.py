@@ -637,6 +637,104 @@ def get_all_faculty_evaluations_secret():
             return jsonify({'error': f'Validation error: {e}'})
         
 
+
+
+@API.route('/api/FISFaculty/Evaluations_Database', methods=['GET'])
+@admin_token_required # Get the API key from the request header
+def get_all_faculty_evaluations_database():
+    token = request.headers.get('token')  # Get the API key from the request header
+    key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
+    key = key['key']
+    
+    if not key in API_KEYS.values():
+         return jsonify(message="access denied!"), 403
+    
+    else:
+        try:
+            # Get query parameters for pagination
+            page = int(request.args.get('page', 1))
+            per_page = int(request.args.get('per_page', 300))
+
+            # Calculate offset based on page and per_page values
+            offset = (page - 1) * per_page
+
+            db = SessionLocal()
+
+            # Query only the required subset of data based on offset and per_page
+            faculty_profiles = db.query(FISEvaluations).offset(offset).limit(per_page).all()
+
+            profiles = []
+
+            for faculty in faculty_profiles:
+                
+                faculty_data = FISEvaluations_Model.from_orm(faculty).dict()
+                faculty_data['id'] = faculty_data['id']
+                faculty_data['FacultyId'] = faculty_data['FacultyId']
+                faculty_data['Name'] = faculty_data['Evaluator_Name']
+             
+                faculty_data['acad_head_a'] = faculty_data['acad_head_a']
+                faculty_data['acad_head_b'] = faculty_data['acad_head_b']
+                faculty_data['acad_head_c'] = faculty_data['acad_head_c']
+                faculty_data['acad_head_d'] = faculty_data['acad_head_d']
+               
+                faculty_data['director_a'] = faculty_data['director_a']
+                faculty_data['director_b'] = faculty_data['director_b']
+                faculty_data['director_c'] = faculty_data['director_c']
+                faculty_data['director_d'] = faculty_data['director_d']
+          
+                faculty_data['self_a'] = faculty_data['self_a']
+                faculty_data['self_b'] = faculty_data['self_b']
+                faculty_data['self_c'] = faculty_data['self_c']
+                faculty_data['self_d'] = faculty_data['self_d']
+        
+                faculty_data['peer_a'] = faculty_data['peer_a']
+                faculty_data['peer_b'] = faculty_data['peer_b']
+                faculty_data['peer_c'] = faculty_data['peer_c']
+                faculty_data['peer_d'] = faculty_data['peer_d']
+             
+                faculty_data['student_a'] = faculty_data['student_a']
+                faculty_data['student_b'] = faculty_data['student_b']
+                faculty_data['student_c'] = faculty_data['student_c']
+                faculty_data['student_d'] = faculty_data['student_d']
+                
+                faculty_data['school_year'] = str(int(faculty_data['school_year'].strftime("%Y"))-1) + '-' + str(int(faculty_data['school_year'].strftime("%Y")))
+                faculty_data['semester'] = faculty_data['semester']
+                faculty_data['Type'] = faculty_data['Type']
+                
+                # Exclude unwanted fields
+                unwanted_fields = [
+                    'acad_head', 
+                    'director',
+                    'self_eval',
+                    'peer',
+                    'student',
+                    'is_delete',
+                    'EvaluatorIds',
+                    'acad_head_ids',
+                    'director_ids',
+                    'Evaluator_Name',
+                    
+                ]
+
+                for field in unwanted_fields:
+                    if field in faculty_data:
+                        del faculty_data[field]
+
+                profiles.append(faculty_data)
+
+            db.close()
+
+            return jsonify(profiles)
+
+        except ValidationError as e:
+            return jsonify({'error': f'Validation error: {e}'})
+        
+
+
+
+
+
+
         
 @API.route('/api/FISFaculty/Professional-Development', methods=['GET', 'POST'])
 @admin_token_required
