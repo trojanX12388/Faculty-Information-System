@@ -456,7 +456,7 @@ def sysadminFM_ADD():
             units_value = 12
         elif type == 'Lecturer':
             units_value = 9
-        elif type == 'Reseacher':
+        elif type == 'Researcher':
             units_value = 2
         elif type == 'Professor':
             units_value = 15
@@ -574,7 +574,7 @@ def sysadminFM_update_info():
             units_value = 12
         elif type == 'Lecturer':
             units_value = 9
-        elif type == 'Reseacher':
+        elif type == 'Researcher':
             units_value = 2
         elif type == 'Professor':
             units_value = 15

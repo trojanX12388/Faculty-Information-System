@@ -39,7 +39,7 @@ API_KEYS = ast.literal_eval(os.environ["API_KEYS"])
 # ---------------------------------------------------------
 
 # LOAD MODELS
-from .model_class.faculty_profile import FISFaculty
+from .model_class.faculty_profile import FISFaculty, RISFaculty, Users
 # LOAD MODELS
 from .model_class.admin_profile import FISAdmin
 # PDS
@@ -54,7 +54,7 @@ from .model_class.professional_development import FISProfessionalDevelopment
 
 # LOAD PYDANTIC MODELS
 from .model_class.admin_profile import FISAdmin_Model
-from .model_class.faculty_profile import FISFaculty_Model
+from .model_class.faculty_profile import FISFaculty_Model, RISUsers_Model , RISFaculty_Model
 # PDS 
 from .model_class.pds_model import FISPDS_PersonalDetails_Model,FISPDS_ContactDetails_Model
 from .model_class.admin_pds_model import AdminFISPDS_PersonalDetails_Model,AdminFISPDS_ContactDetails_Model
@@ -65,6 +65,10 @@ from .model_class.evaluations import FISEvaluations_Model
 # LOAD PROFESSIONAL DEVELOPMENT MODELS
 from .model_class.professional_development import FISProfessionalDevelopment_Model
 
+
+# RIS MODELS
+from .model_class.research_papers import FacultyResearchPaper
+from .model_class.research_papers import  FacultyResearchPaper_Model
 # ---------------------------------------------------------
 
 # MAIN API V1
@@ -83,57 +87,48 @@ CORS(app, origins=["*"],
 
 from sqlalchemy.orm import aliased
 
+# API route for getting FISFaculty data
 @API.route('/api/all/FISFaculty', methods=['GET'])
-@admin_token_required  # Get the API key from the request header
+@admin_token_required
 def get_combined_profile():
-    # token = request.headers.get('token')  # Get the API key from the request header
-    # key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
-    # key = key['key']
+    db = SessionLocal()
+    try:
+        # Define the FROM clause explicitly with join conditions
+        combined_data = db.query(FISFaculty, FISPDS_PersonalDetails, FISPDS_ContactDetails).select_from(
+            FISFaculty
+        ).outerjoin(
+            FISPDS_PersonalDetails, FISFaculty.FacultyId == FISPDS_PersonalDetails.FacultyId
+        ).outerjoin(
+            FISPDS_ContactDetails, FISFaculty.FacultyId == FISPDS_ContactDetails.FacultyId
+        ).all()
 
-    # if key not in API_KEYS.values():
-    #     return jsonify(message="access denied!"), 403
+        # Create a dictionary to store combined data with FacultyId as keys
+        combined_profile_by_id = {}
 
-    # else:
-        db = SessionLocal()
-        try:
-            # Perform outer joins with FISFaculty, FISPDS_PersonalDetails, and FISPDS_ContactDetails
-            faculty_alias = aliased(FISFaculty)
-            personal_details_alias = aliased(FISPDS_PersonalDetails)
-            contact_details_alias = aliased(FISPDS_ContactDetails)
+        for faculty, pds_personal_details, pds_contact_details in combined_data:
+            faculty_dict = FISFaculty_Model.from_orm(faculty).dict()
+            faculty_id = faculty.FacultyId
 
-            combined_data = db.query(FISFaculty, personal_details_alias, contact_details_alias).outerjoin(
-                personal_details_alias, FISFaculty.FacultyId == personal_details_alias.FacultyId
-            ).outerjoin(
-                contact_details_alias, FISFaculty.FacultyId == contact_details_alias.FacultyId
-            ).all()
+            if pds_personal_details:
+                faculty_dict['FISPDS_PersonalDetails'] = FISPDS_PersonalDetails_Model.from_orm(pds_personal_details).dict()
+            else:
+                faculty_dict['FISPDS_PersonalDetails'] = None
 
-            # Create a dictionary to store combined data with FacultyId as keys
-            combined_profile_by_id = {}
+            if pds_contact_details:
+                faculty_dict['FISPDS_ContactDetails'] = FISPDS_ContactDetails_Model.from_orm(pds_contact_details).dict()
+            else:
+                faculty_dict['FISPDS_ContactDetails'] = None
 
-            for faculty, pds_personal_details, pds_contact_details in combined_data:
-                faculty_dict = FISFaculty_Model.from_orm(faculty).dict()
-                faculty_id = faculty.FacultyId
+            # Store combined data with FacultyId as keys in the dictionary
+            combined_profile_by_id[faculty_id] = faculty_dict
 
-                if pds_personal_details:
-                    faculty_dict['FISPDS_PersonalDetails'] = FISPDS_PersonalDetails_Model.from_orm(pds_personal_details).dict()
-                else:
-                    faculty_dict['FISPDS_PersonalDetails'] = None
+        return jsonify({'Faculties': combined_profile_by_id})
 
-                if pds_contact_details:
-                    faculty_dict['FISPDS_ContactDetails'] = FISPDS_ContactDetails_Model.from_orm(pds_contact_details).dict()
-                else:
-                    faculty_dict['FISPDS_ContactDetails'] = None
-
-                # Store combined data with FacultyId as keys in the dictionary
-                combined_profile_by_id[faculty_id] = faculty_dict
-
-            return jsonify({'Faculties': combined_profile_by_id})
-
-        except ValidationError as e:
-            return jsonify({'error': f'Validation error: {e}'})
-        finally:
-            db.close()
-
+    except ValidationError as e:
+        return jsonify({'error': f'Validation error: {e}'})
+    finally:
+        db.close()
+        
 
 @API.route('/api/all/FISAdmin', methods=['GET'])
 @admin_token_required  # Get the API key from the request header
@@ -694,3 +689,135 @@ def get_all_faculty_PD():
 
         except ValidationError as e:
             return jsonify({'error': f'Validation error: {e}'})
+        
+        
+
+# RIS MODULE INTEGRATION
+
+# API route for getting RISUsers data
+@API.route('/api/RISUsers', methods=['GET', 'POST'])
+@admin_token_required
+def get_ris_users():
+    token = request.headers.get('token')  # Get the API key from the request header
+    key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
+    key = key['key']
+
+    if key not in API_KEYS.values():
+        return jsonify(message="access denied!"), 403
+
+    else:
+        db = SessionLocal()
+
+        # Query only the required subset of data where faculty_id is not None
+        ris_users = db.query(Users).filter(Users.faculty_id.isnot(None)).all()
+
+        ris_users_data = []
+
+        for ris_user in ris_users:
+            ris_user_data = RISUsers_Model.from_orm(ris_user).dict()
+            ris_users_data.append(ris_user_data)
+
+        db.close()
+
+        return jsonify(ris_users_data)
+    
+    
+
+# API route for getting faculty research papers
+@API.route('/api/RISUsers/Research_Papers', methods=['GET', 'POST'])
+@admin_token_required
+def get_all_faculty_research_papers():
+    token = request.headers.get('token')  # Get the API key from the request header
+    key = jwt.decode(token, app.config['SECRET_KEY'], algorithms="HS256")
+    key = key['key']
+
+    if key not in API_KEYS.values():
+        return jsonify(message="access denied!"), 403
+
+    else:
+        try:
+            # Get query parameters for pagination
+            page = int(request.args.get('page', 1))
+            per_page = int(request.args.get('per_page', 300))
+
+            # Calculate offset based on page and per_page values
+            offset = (page - 1) * per_page
+
+            db = SessionLocal()
+
+            # Query only the required subset of data based on offset and per_page
+            faculty_research_papers = db.query(FacultyResearchPaper).offset(offset).limit(per_page).all()
+
+            # Get faculty IDs from the /api/RISUsers route
+            ris_users_data = get_ris_users_data()
+
+            research_papers_data = []
+
+            for research_paper in faculty_research_papers:
+                research_paper_data = FacultyResearchPaper_Model.from_orm(research_paper).dict()
+
+                # Find the corresponding ris_user_data based on user_id
+                matching_ris_user = next(
+                    (ris_user for ris_user in ris_users_data if ris_user['id'] == research_paper_data['user_id']),
+                    None
+                )
+
+                if matching_ris_user:
+                    # Get additional faculty information based on matching ris_user_data
+                    
+                    faculty_info = get_faculty_info_by_id(matching_ris_user['faculty_id'])
+                    formatted_publication_year = (
+                        research_paper_data['date_publish'].strftime('%Y-%m-%d')
+                        if research_paper_data['date_publish']
+                        else None
+                    )
+                    # Format the data as per the specified format
+                    formatted_data = {
+                        "Author": f"{faculty_info['LastName']}, {faculty_info['FirstName']} {faculty_info['MiddleInitial']}",
+                        "Research Title": research_paper_data['title'],
+                        "Publication Year": formatted_publication_year,
+                        "Publisher": research_paper_data['publisher'],
+                        "Category": research_paper_data['category'],
+                        "Author Type": "Faculty"
+                    }
+
+                    research_papers_data.append(formatted_data)
+
+            db.close()
+
+            return jsonify(research_papers_data)
+
+        except ValidationError as e:
+            return jsonify({'error': f'Validation error: {e}'})
+
+# Helper function to get faculty data from /api/RISUsers route
+def get_ris_users_data():
+    db = SessionLocal()
+
+    # Query only the required subset of data based on FacultyId
+    ris_users = db.query(Users).all()
+
+    ris_users_data = []
+
+    for ris_user in ris_users:
+        ris_user_data = RISUsers_Model.from_orm(ris_user).dict()
+        ris_users_data.append(ris_user_data)
+
+    db.close()
+
+    return ris_users_data
+
+# Helper function to get faculty information by faculty_id
+def get_faculty_info_by_id(faculty_id):
+    db = SessionLocal()
+
+    # Query faculty information based on faculty_id
+    faculty_info = db.query(RISFaculty).filter_by(FacultyId=faculty_id).first()
+
+    db.close()
+
+    # Return faculty information as a dictionary
+    if faculty_info:
+        return RISFaculty_Model.from_orm(faculty_info).dict()
+    else:
+        return {}

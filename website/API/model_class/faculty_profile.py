@@ -3,15 +3,15 @@ from pydantic import BaseModel, Field
 from typing import Optional
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Boolean, Float, DateTime  
+from sqlalchemy.orm import relationship
+from sqlalchemy import ForeignKey
 
 Base = declarative_base()
 
 import datetime
 
 
-# FACULTY PROFILE
-# --------------------------------------------------------------
-
+# FISFaculty Model
 class FISFaculty(Base):
     __tablename__ = 'FISFaculty'
 
@@ -50,7 +50,7 @@ class FISFaculty_Model(BaseModel):
     FacultyType: str
     Rank: str
     Units: float
-    FirstName: str  = "" 
+    FirstName: str = "" 
     LastName: str = ""
     MiddleName: Optional[str]
     MiddleInitial: Optional[str]
@@ -74,6 +74,44 @@ class FISFaculty_Model(BaseModel):
 
     class Config:
         orm_mode = True
-        from_attributes=True
+        from_attributes = True
+        
+       
 
-# --------------------------------------------------------------
+# RIS MODULE INTEGRATION
+
+# RISFaculty Model
+class RISFaculty(Base):
+    __table_args__ = {'extend_existing': True}
+    __tablename__ = 'FISFaculty'  # Reuse the same table as FISFaculty
+
+    FacultyId = Column(Integer, primary_key=True, index=True)
+    FirstName = Column(String)
+    LastName = Column(String)
+    MiddleInitial = Column(String)
+
+# Pydantic model for data validation
+class RISFaculty_Model(BaseModel):
+    FacultyId: int
+    FirstName: str = "" 
+    LastName: str = ""
+    MiddleInitial: Optional[str]
+
+    class Config:
+        orm_mode = True
+        from_attributes = True
+        
+        
+class Users(Base):
+    __tablename__ = 'RISUsers'
+
+    id = Column(String, primary_key=True)
+    faculty_id = Column(Integer, nullable=True)
+
+class RISUsers_Model(BaseModel):
+    id: Optional[str]
+    faculty_id: Optional[int]
+
+    class Config:
+        orm_mode = True
+        from_attributes = True
