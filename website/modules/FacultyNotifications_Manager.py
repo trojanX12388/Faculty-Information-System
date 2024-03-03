@@ -204,7 +204,7 @@ def FN_T():
             id = request.form.get('id')
 
             u = update(FISUser_Notifications)
-            u = u.values({"Type": 'trash',})
+            u = u.values({"Type": 'trash', "Status": 'trash',})
             
             u = u.where(FISUser_Notifications.id == id)
             

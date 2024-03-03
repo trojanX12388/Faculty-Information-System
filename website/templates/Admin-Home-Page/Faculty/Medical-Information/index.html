@@ -1,0 +1,321 @@
+{% extends "/Admin-Home-Page/base.html" %}{% block title %}{{faculty_data.FirstName}} {{faculty_data.LastName}} Extension Projects{% endblock %} {% block content%}
+
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<!-- Include DataTables Buttons CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+
+<!-- Include DataTables Print Button JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+
+<main id="main" class="main">
+
+  {% block Mandatory_Requirements %}
+    <div class="pagetitle">
+      <h1>Medical Record</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Homepage</a></li>
+          <li class="breadcrumb-item"><a href="/faculty-member/{{ faculty_data.FacultyId }}">{{faculty_data.FirstName}} {{faculty_data.LastName}}</a></li>
+          <li class="breadcrumb-item active">Medical Information</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+     
+    
+            <div class="card">
+              <div class="card-body profile-card pt-4 d-flex flex-col align-items-start">
+                <img src="https://lh3.googleusercontent.com/d/{{faculty_data.ProfilePic}}" alt="Profile" class="rounded-circle" style="width:150px; height:150px;">
+                <div class="mx-md-3" style="position:relative;left:30px;">
+                  <div class="w-100">
+                    <h4 class="my-0">{{faculty_data.FirstName}} {{faculty_data.MiddleInitial}} {{faculty_data.LastName}}</h4>
+                    <br>
+                    <small class="text-muted mt-sm-1">{{faculty_data.Rank}}</small>
+                    <br>
+                    <small class="text-muted mt-sm-1">{{faculty_data.Degree}}</small>
+                    <br>
+                    <small class="text-muted mt-sm-1">{{faculty_data.FacultyType}}</small>
+                  </div>
+              </div>
+            </div>
+            <style>
+              .transparent-background {
+                  background-color: transparent !important;
+                  border-color: transparent !important;
+                  color: #000 !important; /* Set text color to black or the desired color */
+              }
+          
+              .transparent-background .bi {
+                  color: #000 !important; /* Set icon color to black or the desired color */
+              }
+          </style>
+          
+          <div class="container-fluid">
+              <div class="row justify-content-end">
+                  <div class="col-md-2">
+                      <button type="button" onclick="redirectToURL()" class="btn btn-secondary mt-3 btn-block transparent-background" style="position: relative; bottom: 120px;">
+                          <i class="bi bi-arrow-left-square">Back</i> 
+                      </button>
+                  </div>
+              </div>
+          </div>
+                      
+                      <script>
+                        function redirectToURL() {
+                          window.location.href = '/faculty-member/{{ faculty_data.FacultyId }}';
+                        }
+                      </script>
+            </div>
+
+       <div class="card">
+            <div class="row m-md-2">
+
+              <div class="card-title"> <p class="medical w-25 ps-md-2">Medical Information</p>
+              </div>
+              <div class="col-lg-6">
+                  <p class="mb-md-3 fw-bold">Name:
+                      <br>
+                      <span class="fw-normal">{{faculty_data.FirstName}} {{faculty_data.MiddleInitial}} {{faculty_data.LastName}}</span>
+                  </p>
+                  <p class="mb-md-3 fw-bold">Contact Number:
+                      <br>
+                      <span class="fw-normal">{{faculty_data.MobileNumber}}</span>
+                  </p>
+                  <p class="mb-md-3 fw-bold">Address:
+                      <br>
+                      <span class="fw-normal">{{faculty_data.ResidentialAddress}}</span>
+                  </p>
+              </div>
+              <div class="col-lg-6">
+                  <p class="mb-md-3 fw-bold">Birthdate:
+                      <br>
+
+                      <span class="fw-normal" id="birthDateSpan">{{faculty_data.BirthDate}}</span>
+
+                      <script>
+                      // Assuming faculty_data.BirthDate is a string representing the date "Tue, 08 Feb 1994 00:00:00 GMT"
+                      var originalDate = new Date(document.getElementById('birthDateSpan').innerText);
+
+                      // Format the date as "YYYY-MM-DD"
+                      var formattedDate = originalDate.toISOString().split('T')[0];
+
+                      // Update the content of the span with the formatted date
+                      document.getElementById('birthDateSpan').innerText = formattedDate;
+                      </script>
+
+
+                  </p>
+                  <p class="mb-md-3 fw-bold">Weight: 
+                      <br>
+                      <span class="fw-normal">{{weight}} kg</span>
+                  </p>
+                  <p class="mb-md-3 fw-bold">Height: 
+                      <br>
+                      <span class="fw-normal">{{height}} cm</span>
+                  </p>
+              </div>
+          </div>
+
+          <div class="row m-md-2">
+              <div class="card-title"> <p class="medical w-25  ps-md-2">In Case of Emeergency</p>
+              </div>
+              <div class="col-lg-6">
+                  <p class="mb-md-3 fw-bold">Name:
+                      <br>
+                      <div class="col-sm-10">
+                        <input disabled name="contact_person_name" type="text" class="form-control" required value="{{contact_person_name}}">
+                      </div>
+                  </p>
+                  <p class="mb-md-3 fw-bold">Home Contact Number:
+                      <br>
+                      <div class="col-sm-10">
+                        <input disabled name="home_contact_number" type="text" class="form-control" required value="{{home_contact_number}}">
+                      </div>
+                  </p>
+              </div>
+              <div class="col-lg-6">
+                  <p class="mb-md-3 fw-bold">Address:
+                      <br>
+                      <div class="col-sm-10">
+                        <input disabled name="address" type="text" class="form-control" required value="{{address}}">
+                      </div>
+                  </p>
+                  <p class="mb-md-3 fw-bold">Work Phone Number: 
+                      <br>
+                      <div class="col-sm-10">
+                        <input disabled name="work_phone_number" type="text" class="form-control" required value="{{work_phone_number}}">
+                      </div>
+                  </p>
+              </div>
+          </div>
+          <div class="row m-md-2">
+              <div class="card-title"> <p class="medical w-25  ps-md-2">General Medical History</p>
+              </div>
+              <div class="col-lg-6">
+                  <p class="mb-md-3 fw-bold">SARS CoV (Corona Virus):
+                      <br>
+                      <span class="fw-normal"></span>
+                  </p>
+                  <p class="mb-md-3 fw-bold">Have you had Coronavirus Vaccination?:
+                      <br>
+                      <div class="col-sm-10">
+                        {% if gridRadiosvaccine == True %}
+                        <div class="form-check">
+                          <input disabled class="form-check-input" type="radio" name="gridRadiosvaccine" id="gridRadios1" value="True" checked>
+                          <label class="form-check-label" for="gridRadios1">
+                            Yes
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input disabled class="form-check-input" type="radio" name="gridRadiosvaccine" id="gridRadios2" value="False">
+                          <label class="form-check-label" for="gridRadios2">
+                            No
+                          </label>
+                        </div>
+                        {% else %}
+                        <div class="form-check">
+                          <input disabled class="form-check-input" type="radio" name="gridRadiosvaccine" id="gridRadios1" value="True">
+                          <label class="form-check-label" for="gridRadios1">
+                            Yes
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input disabled class="form-check-input" type="radio" name="gridRadiosvaccine" id="gridRadios2" value="False" checked>
+                          <label class="form-check-label" for="gridRadios2">
+                            No
+                          </label>
+                        </div>
+                        {% endif %}
+                      </div>
+                  </p>
+                  <br><br>
+                
+                <p class="mb-md-3 fw-bold">List of any Medical Problems:
+                  <br> <br>
+                  <input disabled name="medical_problem1" type="text" class="fw-normal ms-md-3" placeholder="List here" value="{{medical_problem1}}">
+                  <input disabled name="medical_problem2" type="text" class="fw-normal ms-md-3" placeholder="List here" value="{{medical_problem2}}">
+                  <input disabled name="medical_problem3" type="text" class="fw-normal ms-md-3" placeholder="List here" value="{{medical_problem3}}">
+                  <input disabled name="medical_problem4" type="text" class="fw-normal ms-md-3" placeholder="List here" value="{{medical_problem4}}">
+                  <input disabled name="medical_problem5" type="text" class="fw-normal ms-md-3" placeholder="List here" value="{{medical_problem5}}">
+                  <input disabled name="medical_problem6" type="text" class="fw-normal ms-md-3" placeholder="List here" value="{{medical_problem6}}">
+                </p>
+
+              </div>
+              <div class="col-lg-6">
+                <p class="mb-md-3 fw-bold">Have you had Booster?:
+                    <br>
+                    <div class="col-sm-10">
+                      {% if gridRadiosBooster == True %}
+                        <div class="form-check">
+                            <input disabled class="form-check-input" type="radio" name="gridRadiosBooster" id="gridRadios3" value="True" checked>
+                            <label class="form-check-label" for="gridRadios3">
+                                Yes
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input disabled class="form-check-input" type="radio" name="gridRadiosBooster" id="gridRadios4" value="False">
+                            <label class="form-check-label" for="gridRadios4">
+                                No
+                            </label>
+                        </div>
+                        {% else %}
+                        <div class="form-check">
+                          <input disabled class="form-check-input" type="radio" name="gridRadiosBooster" id="gridRadios3" value="True">
+                          <label class="form-check-label" for="gridRadios3">
+                              Yes
+                          </label>
+                      </div>
+                      <div class="form-check">
+                          <input disabled class="form-check-input" type="radio" name="gridRadiosBooster" id="gridRadios4" value="False" checked>
+                          <label class="form-check-label" for="gridRadios4">
+                              No
+                          </label>
+                      </div>
+                        {% endif %}
+                    </div>
+                </p>
+            </div>
+          </div>
+
+          <div class="row m-md-2">
+    <div class="card-title">
+        <p class="medical w-25 ps-md-2">Additional Information:</p>
+    </div>
+
+    <div class="w-100">
+      <div class="card">
+        <div class="card-body">
+          <table class="table table">
+            <thead>
+              <tr>
+                <th class="w-50" scope="col" class="card-title col-md-6">QUESTION</th>
+                <th scope="col" class="card-title col-md-3">YES</th>
+                <th scope="col" class="card-title col-md-3">NO</th>
+              </tr>
+              <tr>
+                <td>1. Have you ever been diagnosed with a chronic medical condition?</td>
+                {% if q1 == "True" %}
+                <td><input type="radio" disabled name="q1" value="True" checked></td>
+                <td><input type="radio" disabled name="q1" value="False"></td>
+                {% else %}
+                <td><input type="radio" disabled name="q1" value="True"></td>
+                <td><input type="radio" disabled name="q1" value="False" checked></td>
+                {% endif %}
+              </tr>
+              <tr>
+                <td>2. Are you currently taking any prescription medications?</td>
+                {% if q2 == "True" %}
+                <td><input type="radio" disabled name="q2" value="True" checked></td>
+                <td><input type="radio" disabled name="q2" value="False"></td>
+                {% else %}
+                <td><input type="radio" disabled name="q2" value="True"></td>
+                <td><input type="radio" disabled name="q2" value="False" checked></td>
+                {% endif %}
+              </tr>
+              <tr>
+                <td>3. Have you undergone major surgery in the past five years?</td>
+                {% if q3 == "True" %}
+                <td><input type="radio" disabled name="q3" value="True" checked></td>
+                <td><input type="radio" disabled name="q3" value="False"></td>
+                {% else %}
+                <td><input type="radio" disabled name="q3" value="True"></td>
+                <td><input type="radio" disabled name="q3" value="False" checked></td>
+                {% endif %}
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+
+        <br><br>
+
+
+    </div>
+
+  </div>
+   
+  </section>
+
+ 
+
+  </main><!-- End #main -->
+
+
+  {% endblock %}
+
+{% endblock %}
+
+      

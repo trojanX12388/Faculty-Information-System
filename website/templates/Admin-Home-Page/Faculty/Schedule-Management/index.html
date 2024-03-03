@@ -1,0 +1,376 @@
+{% extends "/Admin-Home-Page/base.html" %}{% block title %}{{faculty_data.FirstName}} {{faculty_data.LastName}} Extension Projects{% endblock %} {% block content%}
+
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<!-- Include DataTables Buttons CSS and JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+
+<!-- Include DataTables Print Button JS -->
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+
+<main id="main" class="main">
+
+  {% block Mandatory_Requirements %}
+    <div class="pagetitle">
+      <h1>Class Schedule</h1>
+      <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Homepage</a></li>
+            <li class="breadcrumb-item"><a href="/faculty-member/{{ faculty_data.FacultyId }}">{{faculty_data.FirstName}} {{faculty_data.LastName}}</a></li>
+            <li class="breadcrumb-item active">Schedule Management</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+
+        <div class="card">
+            <div class="card-body profile-card pt-4 d-flex flex-col align-items-start">
+              <img src="https://lh3.googleusercontent.com/d/{{faculty_data.ProfilePic}}" alt="Profile" class="rounded-circle" style="width:150px; height:150px;">
+              <div class="mx-md-3" style="position:relative;left:30px;">
+                <div class="w-100">
+                  <h4 class="my-0">{{faculty_data.FirstName}} {{faculty_data.MiddleInitial}} {{faculty_data.LastName}}</h4>
+                  <br>
+                  <small class="text-muted mt-sm-1">{{faculty_data.Rank}}</small>
+                  <br>
+                  <small class="text-muted mt-sm-1">{{faculty_data.Degree}}</small>
+                  <br>
+                  <small class="text-muted mt-sm-1">{{faculty_data.FacultyType}}</small>
+                </div>
+            </div>
+          </div>
+          <style>
+            .transparent-background {
+                background-color: transparent !important;
+                border-color: transparent !important;
+                color: #000 !important; /* Set text color to black or the desired color */
+            }
+        
+            .transparent-background .bi {
+                color: #000 !important; /* Set icon color to black or the desired color */
+            }
+        </style>
+        
+        <div class="container-fluid">
+            <div class="row justify-content-end">
+                <div class="col-md-2">
+                    <button type="button" onclick="redirectToURL()" class="btn btn-secondary mt-3 btn-block transparent-background" style="position: relative; bottom: 120px;">
+                        <i class="bi bi-arrow-left-square">Back</i> 
+                    </button>
+                </div>
+            </div>
+        </div>
+                    
+                    <script>
+                      function redirectToURL() {
+                        window.location.href = '/faculty-member/{{ faculty_data.FacultyId }}';
+                      }
+                    </script>
+          </div>
+
+          <!-- calendar -->
+          <div class="card m-sm-2">
+              <div class="card-body">
+                <style>
+                  .fc-daygrid-day.fc-day-today {
+                      background-color: rgba(242, 203, 5, 0.25)!important;
+                  }
+                  .fc-daygrid-event, .fc-timegrid-event {
+                      border: none;
+                      color: white;
+                  }
+                  .fc-daygrid-event-dot {
+                      display: none;
+                  }
+                  .fc-event-time {
+                      padding-left: 5px;
+                  }
+                  .modal-content {
+                     
+                      margin: 15% auto; /* Adjust the top margin to center vertically */
+                      background-color: white;
+                      padding: 20px;
+                      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                      border-radius: 8px;
+                  }
+                  .btnprinter-container {
+                    text-align: right;
+                  }
+                
+                  .btnprinter {
+                    width: 50px;
+                    background-color: transparent;
+                    border: none;
+                    padding: 0;
+                    cursor: pointer;
+                  }
+                
+                  .btnprinter i {
+                    font-size: 24px; /* You can adjust the font size as needed */
+                    color: #000; /* You can set the color as needed */
+                  }
+              </style>
+          </head>
+          <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+            <h5><strong>Class Schedules</strong></h5>
+        </div>
+        <div id="classScheduleTableBody"></div>
+        
+              <div id="calendar" class="p-4 bg-white rounded-2 shadow"></div>
+              
+                  <!-- Modal -->
+                <div id="eventModal" class="modal">
+                  <div class="modal-content w-100 max-w-md">
+                      <h2 class="fs-2 fw-semibold mb-4" id="eventTitle"></h2>
+                      <p id="eventStart" class="mb-4"></p>
+                      <p id="eventType" class="mb-4"></p>
+                      <p id="eventDate" class="mb-4"></p>
+                     
+                      <p id="eventTime"></p> <!-- Add this line for displaying time -->
+                      <br>
+                      <p id="eventDescription" class="mb-4"></p>
+                      <p id="eventStatus" class="mb-4"></p>
+                      <div style="display: flex; justify-content: flex-end;">
+                          <button type="button" id="closeModal" class="bg-secondary text-white px-4 py-2 rounded-3 mt-4">Close</button>
+                      </div>
+                  </div>
+                </div>
+
+                <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        var calendarEl = document.getElementById('calendar');
+                
+                        // API endpoints
+                        var apiEndpoint = "/Schedule/api/get";
+                        var acadYearEndpoint = "/Schedule/api/get-acadyear";
+                
+                        // Faculty ID you want to filter by
+                        var facultyIdToFilter = "{{faculty_id}}";
+                
+                        // Fetch acadYear data from the API endpoint
+                        fetch(acadYearEndpoint)
+                            .then(response => response.json())
+                            .then(acadYearData => {
+                                // Check if the response has data and is an array
+                                if (acadYearData && Array.isArray(acadYearData.data)) {
+                                    console.log("Fetched academic year data:", acadYearData.data);
+                
+                                    // Fetch data from the main API endpoint
+                                    fetch(apiEndpoint)
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            // Check if the response has data and is an array
+                                            if (data && Array.isArray(data.data)) {
+                                                console.log("Fetched data:", data.data);
+                
+                                                // Sample data for events
+                                                let eventsData = [];
+                
+                                                // Iterate through the data array
+                                                data.data.forEach(apiData => {
+                                                    // Check if facultyId matches the current faculty
+                                                    if (apiData.facultyid === parseInt(facultyIdToFilter)) {
+                                                        // Calculate start date based on academic year start
+                                                        var acadYearStart = calculateAcadYearStart(acadYearData.data, apiData.acadyear_id);
+                                                        calculateAndAddEvents(apiData.day.toLowerCase(), acadYearStart, eventsData, apiData);
+                                                    }
+                                                });
+                
+                                                console.log("Final Events Data:", eventsData);
+                
+                                                // Initialize FullCalendar with eventsData
+                                                var calendar = new FullCalendar.Calendar(calendarEl, {
+                                                    initialView: 'dayGridMonth',
+                                                    headerToolbar: {
+                                                        left: 'prev,next today',
+                                                        center: 'title',
+                                                        right: 'dayGridMonth,timeGridWeek,timeGridDay',
+                                                    },
+                                                    events: eventsData,
+                                                    // Event click function
+                                                    eventClick: function (info) {
+                                                        // Display event details in a modal
+                                                        var eventTitleElement = document.getElementById('eventTitle');
+                                                        var eventTypeElement = document.getElementById('eventType');
+                                                        var eventDateElement = document.getElementById('eventDate');
+                                                        var eventTimeElement = document.getElementById('eventTime');
+                                                        var eventDescriptionElement = document.getElementById('eventDescription');
+                                                        var eventStatusElement = document.getElementById('eventStatus');
+
+                                                        // Check if elements are not null before setting text content
+                                                        if (eventTitleElement && eventTypeElement && eventDateElement && eventTimeElement && eventDescriptionElement && eventStatusElement) {
+                                                            eventTitleElement.textContent = info.event.title;
+                                                            eventTypeElement.textContent = 'Type : ' + info.event.extendedProps.type;
+                                                            eventDateElement.textContent = 'Schedule: ' + info.event.start.toLocaleDateString();
+                                                            
+                                                            // Get formatted time from start to end
+                                                            var formattedTime = formatTime(info.event.start) + ' - ' + formatTime(info.event.end);
+                                                            eventTimeElement.textContent = 'Time: ' + formattedTime;
+                                                            
+                                                            eventDescriptionElement.textContent = 'Description: ' + info.event.extendedProps.description;
+                                                            eventStatusElement.textContent = 'Status: ' + info.event.extendedProps.status;
+
+                                                            // Open the modal
+                                                            document.getElementById('eventModal').style.display = 'block';
+                                                        }
+                                                    },
+                                                    eventDidMount: function (info) {
+                                                        // Set background color for each event after it's mounted
+                                                        var el = info.el;
+                                                        if (el) {
+                                                            el.style.backgroundColor = info.event.backgroundColor;
+                                                        }
+                                                    },
+                                                });
+                
+                                                // Close modal when close button is clicked
+                                                document.getElementById('closeModal').addEventListener('click', function () {
+                                                    document.getElementById('eventModal').style.display = 'none';
+                                                });
+                
+                                                calendar.render();
+                                            }
+                                        })
+                                        .catch(error => console.error('Error fetching data:', error));
+                                }
+                            })
+                            .catch(error => console.error('Error fetching academic year data:', error));
+                
+                                // Function to format time to 12-hour format with AM/PM
+                                function formatTime(date) {
+                                    var hours = date.getHours();
+                                    var minutes = date.getMinutes();
+                                    var ampm = hours >= 12 ? 'PM' : 'AM';
+                                    hours = hours % 12 || 12; // Handle midnight (0:00) as 12:00 AM
+                                    return hours + ':' + (minutes < 10 ? '0' : '') + minutes + ' ' + ampm;
+                                }
+
+                                    function calculateAndAddEvents(day, acadYearStart, eventsData, apiData) {
+                                        // Check if acadYearStart is valid
+                                        if (!acadYearStart || !(acadYearStart instanceof Date)) {
+                                            console.error('Invalid academic year start date:', acadYearStart);
+                                            return;
+                                        }
+                                    
+                                        // Define the days of the week
+                                        var daysOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+                                    
+                                        // Find the index of the provided day in the daysOfWeek array
+                                        var dayIndex = daysOfWeek.indexOf(day.toLowerCase());
+                                    
+                                        // Check if the provided day is valid
+                                        if (dayIndex !== -1) {
+                                            // Calculate the start date by adding the difference to the academic year start date
+                                            var startDate = new Date(acadYearStart);
+                                    
+                                            // Calculate the difference between the provided day and the current day of the week
+                                            var dayDifference = (dayIndex + 7 - startDate.getDay()) % 7;
+                                    
+                                            startDate.setDate(startDate.getDate() + dayDifference);
+                                    
+                                            // Define the month ranges for each semester based on the semester ID
+                                            var semesterMonths = {
+                                                '9887b76f-bc04-4f7f-a404-8e2fc5fc31b8': [9, 10, 11, 0, 1], // First Semester: October to February
+                                                '6127f4d1-73f9-4d57-9840-0ab14d599602': [2, 3, 4, 5, 6],     // Second Semester: March to July
+                                                '8c739071-aeb7-4335-a96d-8f41b06f5079': [7, 8],               // Summer Term: August to September
+                                            };
+                                    
+                                            // Get the allowed months for the current semester
+                                            var allowedMonths = semesterMonths[apiData.semester_id] || [];
+                                    
+                                            // Get the academic year end date
+                                            var acadYearEnd = new Date(acadYearStart);
+                                            acadYearEnd.setFullYear(acadYearEnd.getFullYear() + 1);
+                                            acadYearEnd.setDate(acadYearEnd.getDate() - 1);
+                                    
+                                            // Repeat the event for the entire academic year and the next year
+                                            while (startDate <= acadYearEnd) {
+                                                // Check if the event month is in the allowed range for the semester
+                                                if (allowedMonths.includes(startDate.getMonth())) {
+                                                    // Combine the date and time to create the start datetime for the event
+                                                    var startDatetime = new Date(startDate);
+                                                    startDatetime.setHours(apiData.fstart_time.split(':')[0]);
+                                                    startDatetime.setMinutes(apiData.fstart_time.split(':')[1]);
+                                    
+                                                    // Combine the date and time to create the end datetime for the event
+                                                    var endDatetime = new Date(startDate);
+                                                    endDatetime.setHours(apiData.fend_time.split(':')[0]);
+                                                    endDatetime.setMinutes(apiData.fend_time.split(':')[1]);
+                                    
+                                                    eventsData.push({
+                                                        title: apiData.course_description + ' - ' + apiData.classname,
+                                                        start: startDatetime,
+                                                        end: endDatetime,
+                                                        backgroundColor: '#FF5733',
+                                                        extendedProps: {
+                                                            classSchedule: true,
+                                                            type: 'Lecture',
+                                                            description: apiData.course_description + ' class for ' + apiData.classname,
+                                                            status: 'Approved',
+                                                        },
+                                                    });
+                                                }
+                                    
+                                                // Move to the next week
+                                                startDate.setDate(startDate.getDate() + 7);
+                                            }
+                                        } else {
+                                            console.error('Invalid day:', day);
+                                        }
+                                    }
+                                            
+                        // Function to calculate the academic year start date based on acadyear_id
+                        function calculateAcadYearStart(acadYearData, acadyearId) {
+                            // Find the academic year for the given acadyear_id
+                            var acadYear = acadYearData.find(acadYear => acadYear.id === acadyearId);
+                
+                            if (!acadYear) {
+                                console.error('Invalid acadyear_id:', acadyearId);
+                                return null;
+                            }
+                
+                            // Extract start year from the academic year name
+                            var acadYearNameParts = acadYear.name.split(' ');
+                            var acadYearStartYear = parseInt(acadYearNameParts[1].split('-')[0]);
+                
+                            // Assuming academic year starts on September 1st of the start year
+                            var acadYearStart = new Date(acadYearStartYear, 8, 1); // 8 represents September (zero-based month index)
+                
+                            // Log the extracted date for debugging
+                            console.log('Acad Year Start (calculated):', acadYearStart);
+                
+                            return acadYearStart;
+                        }
+                    });
+                </script>
+             
+
+             
+              </div>
+          </div>
+    
+      </div>
+  </section>
+
+
+ 
+
+  </main><!-- End #main -->
+  
+  {% endblock %}
+
+{% endblock %}
+
+      

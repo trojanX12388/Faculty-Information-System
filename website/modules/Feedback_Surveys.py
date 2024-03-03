@@ -231,7 +231,7 @@ def FS_add():
                         return redirect(url_for('FS.FS_H'))
                 
             elif FISEvaluations.query.filter_by(FacultyId=FacultyId,semester=semester, school_year = school_year ).first() == None:
-                if current_user.FacultyId == FacultyId:
+                if str(current_user.FacultyId) == str(FacultyId):
                     try:
                         add_record = FISEvaluations(
                                                     id=highest_id_record.id+1,

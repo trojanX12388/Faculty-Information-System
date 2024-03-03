@@ -26,13 +26,13 @@ from wtforms.validators import DataRequired, Email
 
 # DATABASE CONNECTION
 from website.models import db
-from sqlalchemy import update
+from sqlalchemy import update, or_
 
 # LOADING MODEL CLASSES
 from website.models import FISAdmin, FISAdmin, FISLoginToken, FISSystemAdmin, FISUser_Log, Project, Users
 
 # LOADING FACULTY MODULES
-from website.models import FISProfessionalDevelopment, FacultyResearchPaper, ESISUser, IncidentReport, Student, FISMandatoryRequirements
+from website.models import FISProfessionalDevelopment, FacultyResearchPaper, ESISUser, IncidentReport, Student, FISMandatoryRequirements, FISMedicalInformation, FISPDS_PersonalDetails
 
 
 # LOAD JWT MODULE
@@ -370,15 +370,33 @@ def adminH():
         total_assistProf_IV = 0
         total_assistProf_V = 0
         
-        full_time = 0
-        part_time = 0
+        instructor = 0
+        lecturer = 0
+        researcher = 0
+        professor = 0
+        assistant = 0
+        visiting = 0
+        associate = 0
+        emeritus = 0
+        
+        faculty_active = 0
+        faculty_disabled = 0
+        faculty_locked = 0
+        faculty_deactivated = 0
         
         # Initialize dictionaries to store counts of part-time and full-time faculty hired each year
         from collections import defaultdict
         from datetime import datetime
         
-        part_time_counts = defaultdict(int)
-        full_time_counts = defaultdict(int)
+        instructor_counts = defaultdict(int)
+        lecturer_counts = defaultdict(int)
+        researcher_counts = defaultdict(int)
+        professor_counts = defaultdict(int)
+        assistant_counts = defaultdict(int)
+        visiting_counts = defaultdict(int)
+        associate_counts = defaultdict(int)
+        emeritus_counts = defaultdict(int)
+        
         
         if response.status_code == 200:
             # Process the API response data
@@ -392,24 +410,50 @@ def adminH():
                 faculty_rank = faculty_info['Rank']
                 faculty_type = faculty_info['FacultyType']
                 faculty_hired_date = faculty_info['DateHired']
+                faculty_status = faculty_info['Status']
 
+                
                 if faculty_hired_date:
                     # Convert the date string to a datetime object and extract the year
                     hired_date = datetime.strptime(faculty_hired_date, '%a, %d %b %Y %H:%M:%S %Z')
                     hired_year = hired_date.year
 
                     # Increment the counts for the respective employment type and year
-                    if faculty_type == 'Part Time':
-                        part_time_counts[hired_year] += 1
-                    elif faculty_type == 'Full Time':
-                        full_time_counts[hired_year] += 1
+                    if faculty_type == 'Instructor':
+                        instructor_counts[hired_year] += 1
+                    elif faculty_type == 'Lecturer':
+                        lecturer_counts[hired_year] += 1
+                    elif faculty_type == 'Researcher':
+                        researcher_counts[hired_year] += 1
+                    elif faculty_type == 'Professor':
+                        professor_counts[hired_year] += 1
+                    elif faculty_type == 'Assistant Professor':
+                        assistant_counts[hired_year] += 1
+                    elif faculty_type == 'Associate Professor':
+                        associate_counts[hired_year] += 1
+                    elif faculty_type == 'Visiting Professor':
+                        visiting_counts[hired_year] += 1
+                    elif faculty_type == 'Emeritus Professor':
+                        emeritus_counts[hired_year] += 1
 
                 
                         
-                if faculty_type == 'Full Time':
-                    full_time += 1
-                else:
-                    part_time += 1
+                if faculty_type == 'Instructor':
+                    instructor += 1
+                elif faculty_type == 'Lecturer':
+                    lecturer += 1
+                elif faculty_type == 'Researcher':
+                    researcher += 1
+                elif faculty_type == 'Professor':
+                    professor += 1
+                elif faculty_type == 'Assistant Professor':
+                    assistant += 1
+                elif faculty_type == 'Associate Professor':
+                    associate += 1
+                elif faculty_type == 'Visiting Professor':
+                    visiting += 1
+                elif faculty_type == 'Emeritus Professor':
+                    emeritus += 1
                     
                 if faculty_rank == 'Instructor I':
                     total_instructor_I += 1
@@ -443,7 +487,16 @@ def adminH():
                     total_assistProf_IV += 1
                 elif faculty_rank == 'Assistant Professor V':
                     total_assistProf_V += 1
-        
+
+
+                if faculty_status == 'Active':
+                    faculty_active += 1
+                elif faculty_status == 'Disabled':
+                    faculty_disabled += 1
+                elif faculty_status == 'Locked':
+                    faculty_locked += 1
+                elif faculty_status == 'Deactivated':
+                    faculty_deactivated += 1
         
         # Determine the recent year dynamically
         current_year = datetime.now().year
@@ -462,20 +515,7 @@ def adminH():
         total_assistProfs = total_assistProf_I+total_assistProf_II+total_assistProf_III+total_assistProf_IV+total_assistProf_V
         total_assocProfs  = total_assocProf_I+total_assocProf_II+total_assocProf_III+total_assocProf_IV+total_assocProf_V
      
-        def count_faculty_tokens_with_account_ids(session: Session):
-            # Counting FISLoginToken entries where AdminId is not null
-            count = session.query(func.count()).filter(FISLoginToken.AdminId.isnot(None)).scalar()
-            return count
-        
-        db = SessionLocal()  # Assuming you have your session initialized
-        faculty_active = count_faculty_tokens_with_account_ids(db)
-        db.close()  # Remember to close the session when you're done
-           
-        all_projects = Project.query.all()
-
-        # Count the number of items
-        total_projects = len(all_projects) 
-                              
+                      
         return render_template("Admin-Home-Page/base.html", 
                                User= username.FirstName + " " + username.LastName,
                                user= current_user,
@@ -507,8 +547,14 @@ def adminH():
                                total_assistProfs = total_assistProfs,
                                total_assocProfs = total_assocProfs,
                                
-                               full_time = full_time,
-                               part_time = part_time,
+                               instructor = instructor,
+                               lecturer = lecturer,
+                               researcher = researcher,
+                               professor = professor,
+                               assistant = assistant,
+                               visiting = visiting,
+                               associate = associate,
+                               emeritus = emeritus,
                                
                                years_range7 = years_range7,
                                years_range6 = years_range6,
@@ -519,19 +565,36 @@ def adminH():
                                years_range1 = years_range1,
                                
                                years_range = years_range,
-                               part_time_counts = part_time_counts,
-                               full_time_counts = full_time_counts,
                                
-                               full_time_percentage = "{:.2f}".format((full_time / total_faculty)*100),
-                               part_time_percentage = "{:.2f}".format((part_time / total_faculty)*100),
+                               instructor_counts = instructor_counts,
+                               lecturer_counts = lecturer_counts,
+                               researcher_counts = researcher_counts,
+                               professor_counts = professor_counts,
+                               assistant_counts = assistant_counts,
+                               visiting_counts = visiting_counts,
+                               associate_counts = associate_counts,
+                               emeritus_counts = emeritus_counts,
+                               
+                               
+                               instructor_percentage = "{:.2f}".format((instructor / total_faculty)*100),
+                               lecturer_percentage = "{:.2f}".format((lecturer / total_faculty)*100),
+                               researcher_percentage = "{:.2f}".format((researcher / total_faculty)*100),
+                               professor_percentage = "{:.2f}".format((professor / total_faculty)*100),
+                               assistant_percentage = "{:.2f}".format((assistant / total_faculty)*100),
+                               visiting_percentage = "{:.2f}".format((visiting / total_faculty)*100),
+                               associate_percentage = "{:.2f}".format((associate / total_faculty)*100),
+                               emeritus_percentage = "{:.2f}".format((emeritus / total_faculty)*100),
+                               
                                
                                total_instructors_percentage = "{:.2f}".format((total_instructors / total_faculty)*100),
                                total_assistProfs_percentage = "{:.2f}".format((total_assistProfs / total_faculty)*100),
                                total_assocProfs_percentage = "{:.2f}".format((total_assocProfs / total_faculty)*100),
                                
-                               total_projects = total_projects,
-                               
                                faculty_active = faculty_active,
+                               faculty_locked = faculty_locked,
+                               faculty_disabled = faculty_disabled,
+                               faculty_deactivated = faculty_deactivated,
+                               
                                profile_pic=ProfilePic)
 
 # -------------------------------------------------------------
@@ -984,6 +1047,238 @@ def admin_viewMandatory(faculty_id):
 
 
 
+@admin.route("/faculty-member/<faculty_id>/attendance")
+@login_required
+@Check_Token
+def admin_viewAttendance(faculty_id):
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+    username = FISAdmin.query.filter_by(AdminId=current_user.AdminId).first() 
+    
+    if username.ProfilePic == None:
+        ProfilePic=profile_default
+    else:
+        ProfilePic=username.ProfilePic
+    
+    API_TOKENS = ast.literal_eval(os.environ["API_TOKENS"])
+    selected_token = API_TOKENS.get('WEBSITE1_API_TOKEN')
+    
+    if os.getenv('FLASK_ENV') == 'production':
+        base_url = 'https://pupqcfis-com.onrender.com'
+    else:
+        base_url = 'http://127.0.0.1:8000' 
+
+    endpoint = '/api/FISFaculty/'+faculty_id
+    url = f'{base_url}{endpoint}'
+    
+    api_key = selected_token
+
+    headers = {
+        'Authorization': 'API Key',
+        'token': api_key,  # 'token' key with the API key value
+        'Content-Type': 'application/json'  # Adjust content type as needed
+    }
+
+    # Make a GET request to the API with the API key in the headers
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        # Process the API response data
+        api_data = response.json()
+
+    # roles = IncidentReport.query.join(Student, IncidentReport.StudentId == Student.StudentId).\
+    #         add_columns(
+    #             IncidentReport.Date,
+    #             IncidentReport.Time,
+    #             IncidentReport.Description,
+    #             IncidentReport.Status,
+    #             Student.FirstName,
+    #             Student.LastName
+    #         ).\
+    #         filter(IncidentReport.InvestigatorId == faculty_id).all()
+    
+    # if roles is not None:
+    #         faculty_roles = roles
+        
+    # else:
+    #     faculty_roles = None
+   
+    return render_template("Admin-Home-Page/Faculty/Attendance-Management/index.html", 
+                           User= username.FirstName + " " + username.LastName,
+                           user= current_user,
+                           faculty_data = api_data['Faculties'],
+                           faculty_id = faculty_id,
+                        #    faculty_roles = faculty_roles,
+                           profile_pic=ProfilePic)   
+
+
+
+
+
+@admin.route("/faculty-member/<faculty_id>/medical-record")
+@login_required
+@Check_Token
+def admin_viewMedical(faculty_id):
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+    username = FISAdmin.query.filter_by(AdminId=current_user.AdminId).first() 
+    
+    if username.ProfilePic == None:
+        ProfilePic=profile_default
+    else:
+        ProfilePic=username.ProfilePic
+    
+    API_TOKENS = ast.literal_eval(os.environ["API_TOKENS"])
+    selected_token = API_TOKENS.get('WEBSITE1_API_TOKEN')
+    
+    if os.getenv('FLASK_ENV') == 'production':
+        base_url = 'https://pupqcfis-com.onrender.com'
+    else:
+        base_url = 'http://127.0.0.1:8000' 
+
+    endpoint = '/api/FISFaculty/'+faculty_id
+    url = f'{base_url}{endpoint}'
+    
+    api_key = selected_token
+
+    headers = {
+        'Authorization': 'API Key',
+        'token': api_key,  # 'token' key with the API key value
+        'Content-Type': 'application/json'  # Adjust content type as needed
+    }
+
+    # Make a GET request to the API with the API key in the headers
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        # Process the API response data
+        api_data = response.json()
+
+    is_medical_record =  FISMedicalInformation.query.filter_by(FacultyId=faculty_id).first() 
+
+    if is_medical_record:
+            record = is_medical_record  # Assuming you want to get the data from the first entry only
+
+            contact_person_name = record.contact_person_name
+            home_contact_number = record.home_contact_number
+            address = record.address
+            work_phone_number = record.work_phone_number
+
+            # Check and conditionally exclude True/False values
+            gridRadiosvaccine = record.gridRadiosvaccine if record.gridRadiosvaccine else "False"
+            gridRadiosBooster = record.gridRadiosBooster if record.gridRadiosBooster else "False"
+
+            medical_problem1 = record.medical_problem1
+            medical_problem2 = record.medical_problem2
+            medical_problem3 = record.medical_problem3
+            medical_problem4 = record.medical_problem4
+            medical_problem5 = record.medical_problem5
+            medical_problem6 = record.medical_problem6
+
+            # Check and conditionally exclude True/False values
+            q1 = str(record.q1) if record.q1 is not None else "False"
+            q2 = str(record.q2) if record.q2 is not None else "False"
+            q3 = str(record.q3) if record.q3 is not None else "False"
+    else:
+        contact_person_name = ""
+        home_contact_number = ""
+        address = ""
+        work_phone_number = ""
+        gridRadiosvaccine = "False"
+        gridRadiosBooster = "False"
+        medical_problem1 = ""
+        medical_problem2 = ""
+        medical_problem3 = ""
+        medical_problem4 = ""
+        medical_problem5 = ""
+        medical_problem6 = ""
+        q1 = "False"
+        q2 = "False"
+        q3 = "False"
+        
+    # Access weight by iterating over the FISPDS_PersonalDetails relationship
+    
+    faculty = FISPDS_PersonalDetails.query.filter_by(FacultyId=faculty_id).first()  
+        
+    if faculty:
+        weight = faculty.weight
+        height = faculty.height
+
+    else:
+        weight = 0
+        height = 0
+   
+    return render_template("Admin-Home-Page/Faculty/Medical-Information/index.html", 
+                           User= username.FirstName + " " + username.LastName,
+                           user= current_user,
+                           faculty_data = api_data['Faculties'],
+                           faculty_id = faculty_id,
+                        #    faculty_roles = faculty_roles,
+                            weight=weight,
+                            height=height,
+                            contact_person_name=contact_person_name,
+                            home_contact_number=home_contact_number,
+                            address=address,
+                            work_phone_number=work_phone_number,
+                            gridRadiosvaccine=gridRadiosvaccine,
+                            gridRadiosBooster=gridRadiosBooster,
+                            medical_problem1=medical_problem1,
+                            medical_problem2=medical_problem2,
+                            medical_problem3=medical_problem3,
+                            medical_problem4=medical_problem4,
+                            medical_problem5=medical_problem5,
+                            medical_problem6=medical_problem6,
+                            q1=q1,
+                            q2=q2,
+                            q3=q3,
+                           profile_pic=ProfilePic)   
+
+
+
+@admin.route("/faculty-member/<faculty_id>/absence-leave")
+@login_required
+@Check_Token
+def admin_viewLeave(faculty_id):
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+    username = FISAdmin.query.filter_by(AdminId=current_user.AdminId).first() 
+    
+    if username.ProfilePic == None:
+        ProfilePic=profile_default
+    else:
+        ProfilePic=username.ProfilePic
+    
+    API_TOKENS = ast.literal_eval(os.environ["API_TOKENS"])
+    selected_token = API_TOKENS.get('WEBSITE1_API_TOKEN')
+    
+    if os.getenv('FLASK_ENV') == 'production':
+        base_url = 'https://pupqcfis-com.onrender.com'
+    else:
+        base_url = 'http://127.0.0.1:8000' 
+
+    endpoint = '/api/FISFaculty/'+faculty_id
+    url = f'{base_url}{endpoint}'
+    
+    api_key = selected_token
+
+    headers = {
+        'Authorization': 'API Key',
+        'token': api_key,  # 'token' key with the API key value
+        'Content-Type': 'application/json'  # Adjust content type as needed
+    }
+
+    # Make a GET request to the API with the API key in the headers
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        # Process the API response data
+        api_data = response.json()
+
+
+    return render_template("Admin-Home-Page/Faculty/Leave-Absence-Management/index.html", 
+                           User= username.FirstName + " " + username.LastName,
+                           user= current_user,
+                           faculty_data = api_data['Faculties'],
+                           faculty_id = faculty_id,
+                        #    faculty_roles = faculty_roles,
+                           profile_pic=ProfilePic)   
 
 
 
@@ -991,6 +1286,54 @@ def admin_viewMandatory(faculty_id):
 
 
 
+
+@admin.route("/faculty-member/<faculty_id>/schedules")
+@login_required
+@Check_Token
+def admin_viewSchedules(faculty_id):
+    # INITIALIZING DATA FROM USER LOGGED IN ACCOUNT    
+    username = FISAdmin.query.filter_by(AdminId=current_user.AdminId).first() 
+    
+    if username.ProfilePic == None:
+        ProfilePic=profile_default
+    else:
+        ProfilePic=username.ProfilePic
+    
+    API_TOKENS = ast.literal_eval(os.environ["API_TOKENS"])
+    selected_token = API_TOKENS.get('WEBSITE1_API_TOKEN')
+    
+    if os.getenv('FLASK_ENV') == 'production':
+        base_url = 'https://pupqcfis-com.onrender.com'
+    else:
+        base_url = 'http://127.0.0.1:8000' 
+
+    endpoint = '/api/FISFaculty/'+faculty_id
+    url = f'{base_url}{endpoint}'
+    
+    api_key = selected_token
+
+    headers = {
+        'Authorization': 'API Key',
+        'token': api_key,  # 'token' key with the API key value
+        'Content-Type': 'application/json'  # Adjust content type as needed
+    }
+
+    # Make a GET request to the API with the API key in the headers
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        # Process the API response data
+        api_data = response.json()
+
+    
+
+    return render_template("Admin-Home-Page/Faculty/Schedule-Management/index.html", 
+                           User= username.FirstName + " " + username.LastName,
+                           user= current_user,
+                           faculty_data = api_data['Faculties'],
+                           faculty_id = faculty_id,
+                        #    faculty_roles = faculty_roles,
+                           profile_pic=ProfilePic)   
 
 
 
@@ -1131,3 +1474,54 @@ def adminLogout():
     logout_user()
     flash('Logged Out Successfully!', category='success')
     return redirect(url_for('admin.adminL')) 
+
+
+
+
+@admin.route('/api/FISFaculty/Researches', methods=['GET', 'POST'])
+@login_required
+@Check_Token
+def admin_api_research():
+    
+    API_TOKENS = ast.literal_eval(os.environ["API_TOKENS"])
+    selected_token = API_TOKENS.get('WEBSITE3_API_TOKEN')
+    
+    if os.getenv('FLASK_ENV') == 'production':
+        base_url = 'https://pupqcfis-com.onrender.com'
+    else:
+        base_url = 'http://127.0.0.1:8000' 
+
+    endpoint1 = '/api/RISUsers/Research_Papers'
+    url1 = f'{base_url}{endpoint1}'
+    
+    api_key = selected_token
+
+    headers = {
+        'Authorization': 'API Key',
+        'token': api_key,  # 'token' key with the API key value
+        'Content-Type': 'application/json'  # Adjust content type as needed
+    }
+
+    all_projects = Project.query.all()
+
+    # Count the number of items
+    total_projects = len(all_projects) 
+    
+    # Make a GET request to the API with the API key in the headers
+    response1 = requests.get(url1, headers=headers) 
+    
+    if response1.status_code == 200:
+        # Process the API response data
+        api_data = response1.json()
+        researches = api_data
+
+        total_researches = len(researches)
+
+        # Create a dictionary with the required data
+        api_response_data = {
+            'total_researches': total_researches,
+            'total_projects': total_projects,
+        }
+
+        # Return the data as JSON using Flask's jsonify
+        return jsonify(api_response_data)

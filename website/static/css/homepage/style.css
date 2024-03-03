@@ -850,6 +850,25 @@ h6 {
   background: #f6fef6;
 }
 
+
+.dashboard .locked-card .card-icon {
+  color: #ebb03a;
+  background: #f6fef6;
+}
+
+
+.dashboard .disabled-card .card-icon {
+  color: #403c33e1;
+  background: #f6fef6;
+}
+
+
+.dashboard .research-card .card-icon {
+  color: #94de1de1;
+  background: #f6fef6;
+}
+
+
 /* Activity */
 .dashboard .activity {
   font-size: 14px;

@@ -370,7 +370,7 @@
                     <i class="bi bi-files"></i>
                   </div>
                   <div class="ps-3">
-                    <h6>{{total_projects}}</h6>
+                    <h6 id="total_projects_placeholder"><span id="loadingDots">Scanning</span></h6>
                     <span class="text-success small pt-1 fw-bold">Projects</span>
 
                   </div>
@@ -380,29 +380,124 @@
             </div>
           </div><!-- End Projects Card -->
 
-          <!-- Customers Card -->
+          <!-- RESEARCH Card -->
           <div class="col-xxl-4 col-xl-12">
 
-            <div class="card info-card customers-card">
+            <div class="card info-card research-card">
 
               <div class="card-body">
-                <h5 class="card-title">Active</h5>
+                <h5 class="card-title">Researches</h5>
 
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <i class="bi bi-person-check"></i>
+                    <i class="bi bi-file-richtext"></i>
                   </div>
                   <div class="ps-3">
-                    <h6>{{faculty_active}}</h6>
-                    <span class="text-success small pt-1 fw-bold">Active Faculties</span>
-                   
-                  </div>
+                    <h6 id="total_researches_placeholder"><span id="loadingDots2">Scanning</span></h6>
+                    <span class="text-success small pt-1 fw-bold">Research Published by Faculties</span>
+                </div>
                 </div>
 
               </div>
             </div>
 
           </div><!-- End Customers Card -->
+
+            <!-- ACTIVE Card -->
+            <div class="col-xxl-3 col-xl-12">
+
+              <div class="card info-card customers-card">
+  
+                <div class="card-body">
+                  <h5 class="card-title">Active</h5>
+  
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-person-check"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{faculty_active}}</h6>
+                      <span class="text-success small pt-1 fw-bold">Active Faculties</span>
+                     
+                    </div>
+                  </div>
+  
+                </div>
+              </div>
+  
+            </div><!-- End Customers Card -->
+
+             <!-- ACTIVE Card -->
+             <div class="col-xxl-3 col-xl-12">
+
+              <div class="card info-card disabled-card">
+  
+                <div class="card-body">
+                  <h5 class="card-title">Disabled</h5>
+  
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-person-dash"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{faculty_disabled}}</h6>
+                      <span class="text-secondary small pt-1 fw-bold">Disabled Faculties</span>
+                     
+                    </div>
+                  </div>
+  
+                </div>
+              </div>
+  
+            </div><!-- End Customers Card -->
+
+             <!-- ACTIVE Card -->
+             <div class="col-xxl-3 col-xl-12">
+
+              <div class="card info-card locked-card">
+  
+                <div class="card-body">
+                  <h5 class="card-title">Locked</h5>
+  
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-person-square"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{faculty_locked}}</h6>
+                      <span class="text-warning small pt-1 fw-bold">Locked Faculties</span>
+                     
+                    </div>
+                  </div>
+  
+                </div>
+              </div>
+  
+            </div><!-- End Customers Card -->
+
+             <!-- ACTIVE Card -->
+             <div class="col-xxl-3 col-xl-12">
+
+              <div class="card info-card revenue-card">
+  
+                <div class="card-body">
+                  <h5 class="card-title">Deactivated</h5>
+  
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-person-x"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{faculty_deactivated}}</h6>
+                      <span class="text-danger small pt-1 fw-bold">Deactivated Faculties</span>
+                     
+                    </div>
+                  </div>
+  
+                </div>
+              </div>
+  
+            </div><!-- End Customers Card -->
 
           <div class="card">
             <div class="card-body pb-0">
@@ -733,13 +828,13 @@
             </script>
           
            <!-- Faculty Members -->
-           <div class="col-8">
+           <div class="col-12">
             <div class="card recent-sales overflow-auto">
 
               <div class="card-body">
                 <h5 class="card-title">Quantity of New Hired Faculty (Year: {{years_range7}} to {{years_range1}})</h5>
 
-                <div id="container" style="height: 400px"></div>
+                <div id="container" style="height: 500px"></div>
 
   
             <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
@@ -770,7 +865,7 @@
               }
             },
             legend: {
-              data: ['Full Time', 'Part Time']
+              data: ['Instructor', 'Lecturer', 'Researcher', 'Professor', 'Assistant', 'Associate', 'Visiting', 'Emeritus']
             },
             xAxis: [
               {
@@ -794,7 +889,7 @@
             ],
             series: [
             {
-              name: 'Full Time',
+              name: 'Instructor',
               type: 'bar',
               tooltip: {
                 valueFormatter: function (value) {
@@ -803,13 +898,13 @@
               },
               data: [
                 {% for year in years_range %}
-                  {% set full_time_count = full_time_counts[year] %}
-                  {{ full_time_count }},
+                  {% set instructor_count = instructor_counts[year] %}
+                  {{ instructor_count }},
                 {% endfor %}
               ]
             },
             {
-              name: 'Part Time',
+              name: 'Lecturer',
               type: 'bar',
               tooltip: {
                 valueFormatter: function (value) {
@@ -818,8 +913,98 @@
               },
               data: [
                 {% for year in years_range %}
-                  {% set part_time_count = part_time_counts[year] %}
-                  {{ part_time_count }},
+                  {% set lecturer_count = lecturer_counts[year] %}
+                  {{ lecturer_count }},
+                {% endfor %}
+              ]
+            },
+            {
+              name: 'Researcher',
+              type: 'bar',
+              tooltip: {
+                valueFormatter: function (value) {
+                  return value + '';
+                }
+              },
+              data: [
+                {% for year in years_range %}
+                  {% set researcher_count = researcher_counts[year] %}
+                  {{ researcher_count }},
+                {% endfor %}
+              ]
+            },
+            {
+              name: 'Professor',
+              type: 'bar',
+              tooltip: {
+                valueFormatter: function (value) {
+                  return value + '';
+                }
+              },
+              data: [
+                {% for year in years_range %}
+                  {% set professor_count = professor_counts[year] %}
+                  {{ professor_count }},
+                {% endfor %}
+              ]
+            },
+            {
+              name: 'Assistant',
+              type: 'bar',
+              tooltip: {
+                valueFormatter: function (value) {
+                  return value + '';
+                }
+              },
+              data: [
+                {% for year in years_range %}
+                  {% set assistant_count = assistant_counts[year] %}
+                  {{ assistant_count }},
+                {% endfor %}
+              ]
+            },
+            {
+              name: 'Associate',
+              type: 'bar',
+              tooltip: {
+                valueFormatter: function (value) {
+                  return value + '';
+                }
+              },
+              data: [
+                {% for year in years_range %}
+                  {% set associate_count = associate_counts[year] %}
+                  {{ associate_count }},
+                {% endfor %}
+              ]
+            },
+            {
+              name: 'Visiting',
+              type: 'bar',
+              tooltip: {
+                valueFormatter: function (value) {
+                  return value + '';
+                }
+              },
+              data: [
+                {% for year in years_range %}
+                  {% set visiting_count = visiting_counts[year] %}
+                  {{ visiting_count }},
+                {% endfor %}
+              ]
+            },
+            {
+              name: 'Emeritus',
+              type: 'bar',
+              tooltip: {
+                valueFormatter: function (value) {
+                  return value + '';
+                }
+              },
+              data: [
+                {% for year in years_range %}
+                  {% set emeritus_count = emeritus_counts[year] %}
+                  {{ emeritus_count }},
                 {% endfor %}
               ]
             }
@@ -839,14 +1024,14 @@
             </div>
           </div><!-- End -->
 
-          <!-- Faculty Members -->
-          <div class="col-4">
+          <!-- Faculty TYPES -->
+          <div class="col-12">
             <div class="card recent-sales overflow-auto">
 
               <div class="card-body">
                 <h5 class="card-title">Faculty Type</h5>
 
-                <div id="container2" style="height: 400px"></div>
+                <div id="container2" style="height: 400px;"></div>
           
             <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
             
@@ -869,7 +1054,14 @@
                 },
                 xAxis: {
                   type: 'category',
-                  data: ['Full Time: {{full_time_percentage}}%', 'Part Time: {{part_time_percentage}}%']
+                  data: ['Instructors: {{instructor_percentage}}%', 
+                  'Lecturers: {{lecturer_percentage}}%', 
+                  'Researchers: {{researcher_percentage}}%', 
+                  'Professors: {{professor_percentage}}%', 
+                  'Assistants: {{assistant_percentage}}%',
+                  'Associates: {{associate_percentage}}%',
+                  'Visitings: {{visiting_percentage}}%',
+                  'Emeritus: {{emeritus_percentage}}%',]
                 },
                 yAxis: {
                   name: 'Quantity',
@@ -879,7 +1071,15 @@
                 },
                 series: [
                   {
-                    data: [{{full_time}}, {{part_time}}],
+                    data: [{{instructor}}, 
+                    {{lecturer}},
+                    {{researcher}},
+                    {{professor}},
+                    {{assistant}},
+                    {{associate}},
+                    {{visiting}},
+                    {{emeritus}},
+                    ],
                     type: 'bar'
                   }
                 ]
@@ -943,13 +1143,26 @@
                 if (params.componentType === 'series') {
                   const clickedCategory = params.name.split(':')[0].trim();
 
-                  // Filter faculty data based on Full Time or Part Time category
+                  // Filter faculty data based on Faculty Types
                   const facultyInCategory = Object.values(facultyAccountIds).filter(faculty => {
-                    if (clickedCategory === 'Full Time') {
-                      return faculty.FacultyType === 'Full Time';
-                    } else if (clickedCategory === 'Part Time') {
-                      return faculty.FacultyType === 'Part Time';
+                    if (clickedCategory === 'Instructors') {
+                      return faculty.FacultyType === 'Instructor';
+                    } else if (clickedCategory === 'Lecturers') {
+                      return faculty.FacultyType === 'Lecturer';
+                    } else if (clickedCategory === 'Researchers') {
+                      return faculty.FacultyType === 'Researcher';
+                    } else if (clickedCategory === 'Professors') {
+                      return faculty.FacultyType === 'Professor';
+                    } else if (clickedCategory === 'Assistants') {
+                      return faculty.FacultyType === 'Assistant Professor';
+                    } else if (clickedCategory === 'Associates') {
+                      return faculty.FacultyType === 'Associate Professor';
+                    } else if (clickedCategory === 'Visitings') {
+                      return faculty.FacultyType === 'Visiting Professor';
+                    } else if (clickedCategory === 'Emeritus') {
+                      return faculty.FacultyType === 'Emeritus Professor';
                     }
+                    
                     return false;
                   });
 
@@ -1023,6 +1236,48 @@
         </div>
       </div><!-- End Left side columns -->
 
+      <script>
+        $(document).ready(function () {
+         
+          // Function to update the content and chart data
+          function updateContent(data) {
+            $('#total_researches_placeholder').text(data.total_researches);
+            $('#total_projects_placeholder').text(data.total_projects);
+          }
+      
+          // Function to simulate loading dots
+          function startLoadingDots() {
+            var dots = 1;
+            setInterval(function () {
+              $('#loadingDots').text('Scanning' + '.'.repeat(dots));
+              $('#loadingDots2').text('Scanning' + '.'.repeat(dots));
+              dots = (dots % 3) + 1; // Reset dots after 3 iterations
+            }, 500); // Adjust the interval as needed
+          }
+      
+          // Fetch data using Ajax
+          function fetchData() {
+            startLoadingDots(); // Start loading dots
+            $.ajax({
+              url: '/api/FISFaculty/Researches',
+              method: 'GET',
+              dataType: 'json',
+              success: function (data) {
+                updateContent(data);
+              },
+              error: function (xhr, status, error) {
+                // Handle errors if needed
+                console.error('Error fetching data:', error);
+              }
+            });
+          }
+      
+          // Initial data load on page load
+          fetchData();
+      
+        });
+      </script>
+
     </div>
   </section>
 
@@ -1084,7 +1339,7 @@
             return new Date(b.DateTime) - new Date(a.DateTime);
           });
           
-          document.getElementById("notification-count-title").innerText = newTitle + ' ' + '(' + pendingRequests.length + ')';
+          document.getElementById("notification-count-title").innerText = '(' + pendingRequests.length + ')' + ' ' + newTitle;
           
           // Update the notification count
           $('#notification-count').text(pendingRequests.length);

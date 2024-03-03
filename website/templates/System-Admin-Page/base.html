@@ -912,7 +912,7 @@
             return new Date(b.DateTime) - new Date(a.DateTime);
           });
 
-           document.getElementById("notification-count-title").innerText = newTitle + ' ' + '(' + pendingRequests.length + ')';
+          document.getElementById("notification-count-title").innerText = '(' + pendingRequests.length + ')' + ' ' + newTitle;
          
            // Update the notification count
           $('#notification-count').text(pendingRequests.length);
