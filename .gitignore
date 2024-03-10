@@ -384,6 +384,8 @@ $RECYCLE.BIN/
 # PYTHON FILES
 *app.py
 
+*migrations/
+*test/
 *client_secrets.json
 *credentials.json
 *settings.yaml
