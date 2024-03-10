@@ -138,6 +138,21 @@ def TI_TA():
             if current_course_description not in course_names_dict.values():
                 next_subject = chr(97 + len(course_names_dict))  # Use ASCII characters for subject_a, subject_b, etc.
                 course_names_dict[next_subject] = current_course_description
+                
+    # if request.method == 'POST':
+    #     acad_year = request.form.get('acad_year')
+    #     semester = request.form.get('semester')
+    #     for data in api_data.data:
+    #         if data.facultyid == current_user.FacultyId and data.semester_id == semester and data.acadyear_id == acad_year :
+    #             filtered_data = {
+    #                 'roomname': data.roomname,
+    #                 'course_code': data.course_code,
+    #                 'course_description': data.course_description,
+    #                 'classname': data.classname,
+    #                 'units': data.units,
+    #                 'lec': data.lec,
+    #                 'lab': data.lab,
+    #             }
 
     return render_template("Faculty-Home-Page/Teaching-Instructions/TI-Teaching-Assignments.html", 
                            User=username.FirstName + " " + username.LastName,

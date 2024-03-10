@@ -82,12 +82,6 @@
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
 
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
-            <i class="bi bi-search"></i>
-          </a>
-        </li><!-- End Search Icon-->
-
         <li class="nav-item dropdown">
           <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
             <i class="bi bi-bell"></i>
@@ -187,8 +181,8 @@
  <aside id="sidebar" class="sidebar">
  
   <ul class="sidebar-nav" id="sidebar-nav">
-    <li class="nav-item">
-      <a class="nav-link " href="/admin-home-page">
+    <li class="nav-item ">
+      <a class="nav-link collapsed" href="/admin-home-page">
         <i class="bi bi-grid"></i>
         <span>FACULTIES</span>
       </a>
@@ -417,7 +411,7 @@
                     </div>
                     <div class="ps-3">
                       <h6>{{faculty_active}}</h6>
-                      <span class="text-success small pt-1 fw-bold">Active Faculties</span>
+                      <span class="text-success small pt-1 fw-bold">Active Accounts</span>
                      
                     </div>
                   </div>
@@ -427,7 +421,7 @@
   
             </div><!-- End Customers Card -->
 
-             <!-- ACTIVE Card -->
+             <!-- Disabled Card -->
              <div class="col-xxl-3 col-xl-12">
 
               <div class="card info-card disabled-card">
@@ -441,7 +435,7 @@
                     </div>
                     <div class="ps-3">
                       <h6>{{faculty_disabled}}</h6>
-                      <span class="text-secondary small pt-1 fw-bold">Disabled Faculties</span>
+                      <span class="text-secondary small pt-1 fw-bold">Disabled Accounts</span>
                      
                     </div>
                   </div>
@@ -451,7 +445,7 @@
   
             </div><!-- End Customers Card -->
 
-             <!-- ACTIVE Card -->
+             <!-- Locked Card -->
              <div class="col-xxl-3 col-xl-12">
 
               <div class="card info-card locked-card">
@@ -465,7 +459,7 @@
                     </div>
                     <div class="ps-3">
                       <h6>{{faculty_locked}}</h6>
-                      <span class="text-warning small pt-1 fw-bold">Locked Faculties</span>
+                      <span class="text-warning small pt-1 fw-bold">Locked Accounts</span>
                      
                     </div>
                   </div>
@@ -475,7 +469,7 @@
   
             </div><!-- End Customers Card -->
 
-             <!-- ACTIVE Card -->
+             <!-- Deactivated Card -->
              <div class="col-xxl-3 col-xl-12">
 
               <div class="card info-card revenue-card">
@@ -489,7 +483,7 @@
                     </div>
                     <div class="ps-3">
                       <h6>{{faculty_deactivated}}</h6>
-                      <span class="text-danger small pt-1 fw-bold">Deactivated Faculties</span>
+                      <span class="text-danger small pt-1 fw-bold">Deactivated Accounts</span>
                      
                     </div>
                   </div>
@@ -505,19 +499,19 @@
                 <div class="col-lg-4">
                   <h5 class="card-title">Instructors ({{total_instructors}})</h5>
                   <div id="Rank1" style="min-height: 500px;" class="echart"></div>
-                  <h5 class="d-flex align-items-center justify-content-center">{{total_instructors_percentage}}%</h5>
+                  <h5 class="d-flex align-items-center justify-content-center">{{total_instructors_percentage}}% Instructors</h5>
                 </div>
           
                 <div class="col-lg-4">
                   <h5 class="card-title">Assistant Professors ({{total_assistProfs}})</h5>
                   <div id="Rank2" style="min-height: 500px;" class="echart"></div>
-                  <h5 class="d-flex align-items-center justify-content-center">{{total_assistProfs_percentage}}%</h5>
+                  <h5 class="d-flex align-items-center justify-content-center">{{total_assistProfs_percentage}}% Assistant Professors</h5>
                 </div>
           
                 <div class="col-lg-4">
                   <h5 class="card-title">Associate Professors ({{total_assocProfs}})</h5>
                   <div id="Rank3" style="min-height: 500px;" class="echart"></div>
-                  <h5 class="d-flex align-items-center justify-content-center">{{total_assocProfs_percentage}}%</h5>
+                  <h5 class="d-flex align-items-center justify-content-center">{{total_assocProfs_percentage}}% Associate Professors</h5>
                 </div>
               </div>
             </div>
@@ -535,8 +529,7 @@
                       },
                       series: [{
                         name: 'Access From',
-                        type: 'pie',
-                        radius: ['40%', '70%'],
+                        type: 'pie', // Set the type to 'pie'
                         avoidLabelOverlap: false,
                         itemStyle: {
                           borderRadius: 10,
@@ -544,8 +537,9 @@
                           borderWidth: 2
                         },
                         label: {
-                          show: false,
-                          position: 'center'
+                          show: true, // Set to true to display data labels
+                          position: 'inside', // You can adjust the position as per your preference
+                          formatter: '{d}%' // Adjust the formatter as needed
                         },
                         emphasis: {
                           label: {
@@ -595,8 +589,7 @@
                       },
                       series: [{
                         name: 'Access From',
-                        type: 'pie',
-                        radius: ['40%', '70%'],
+                        type: 'pie', // Set the type to 'pie'
                         avoidLabelOverlap: false,
                         itemStyle: {
                           borderRadius: 10,
@@ -604,8 +597,9 @@
                           borderWidth: 2
                         },
                         label: {
-                          show: false,
-                          position: 'center'
+                          show: true, // Set to true to display data labels
+                          position: 'inside', // You can adjust the position as per your preference
+                          formatter: '{d}%' // Adjust the formatter as needed
                         },
                         emphasis: {
                           label: {
@@ -615,7 +609,7 @@
                           }
                         },
                         labelLine: {
-                          show: false
+                          show: true // Set to true if you want to display label lines
                         },
                         data: [
                           {
@@ -656,8 +650,7 @@
                       },
                       series: [{
                         name: 'Access From',
-                        type: 'pie',
-                        radius: ['40%', '70%'],
+                        type: 'pie', // Set the type to 'pie'
                         avoidLabelOverlap: false,
                         itemStyle: {
                           borderRadius: 10,
@@ -665,8 +658,9 @@
                           borderWidth: 2
                         },
                         label: {
-                          show: false,
-                          position: 'center'
+                          show: true, // Set to true to display data labels
+                          position: 'inside', // You can adjust the position as per your preference
+                          formatter: '{d}%' // Adjust the formatter as needed
                         },
                         emphasis: {
                           label: {
@@ -1071,14 +1065,15 @@
                 },
                 series: [
                   {
-                    data: [{{instructor}}, 
-                    {{lecturer}},
-                    {{researcher}},
-                    {{professor}},
-                    {{assistant}},
-                    {{associate}},
-                    {{visiting}},
-                    {{emeritus}},
+                    data: [
+                      { value: {{instructor}}, itemStyle: { color: '#ff7f50' } },
+                      { value: {{lecturer}}, itemStyle: { color: '#87cefa' } },
+                      { value: {{researcher}}, itemStyle: { color: '#32cd32' } },
+                      { value: {{professor}}, itemStyle: { color: '#da70d6' } },
+                      { value: {{assistant}}, itemStyle: { color: '#6495ed' } },
+                      { value: {{associate}}, itemStyle: { color: '#ff69b4' } },
+                      { value: {{visiting}}, itemStyle: { color: '#ba55d3' } },
+                      { value: {{emeritus}}, itemStyle: { color: '#cd5c5c' } }
                     ],
                     type: 'bar'
                   }
